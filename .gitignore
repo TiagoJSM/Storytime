@@ -1,0 +1,28 @@
+/StorytimeDevKit/bin
+/StorytimeDevKit/obj
+/StoryTimeFramework/bin
+/StoryTimeFramework/obj
+/StoryTimeCore/bin
+/StoryTimeCore/obj
+/StoryTimeCoreTests/bin
+/StoryTimeCoreTests/obj
+/StoryTimeFrameworkTests/bin
+/StoryTimeFrameworkTests/obj
+/StoryTime/StoryTime/obj
+/StoryTime/StoryTime/bin
+/StoryTime/StoryTimeContent/obj
+/StoryTime/StoryTimeContent/bin
+/StoryTime.sln
+/StoryTime.vsmdi
+/TraceAndTestImpact.testsettings
+/Local.testsettings
+/StoryTime.suo
+/Physics
+/mathnet-numerics-master
+/Farseer Physics Engine 3.5 Samples/Farseer Physics Engine 3.5/obj
+/Farseer Physics Engine 3.5 Samples/Farseer Physics Engine 3.5/bin
+/Farseer Physics Engine 3.5 Samples/Farseer Physics Samples 3.5/bin
+/Farseer Physics Engine 3.5 Samples/Farseer Physics Samples 3.5/obj
+/Farseer Physics Engine 3.5 Samples/Farseer Physics DebugView 3.5/bin
+/Farseer Physics Engine 3.5 Samples/Farseer Physics DebugView 3.5/obj
+/StoryTimeSceneGraph
