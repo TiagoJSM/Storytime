@@ -78,7 +78,7 @@
     <Compile Include="Contexts\GraphicsContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="GamePipeline.cs" />
+    <Compile Include="MyGame.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
@@ -94,6 +94,10 @@
     <ProjectReference Include="..\..\StoryTimeFramework\StoryTimeFramework.csproj">
       <Project>{B3BC2FF1-6B9D-48A6-B392-A1C2FB98CB86}</Project>
       <Name>StoryTimeFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\XNAControl\XNAControl.csproj">
+      <Project>{D98D6FF4-6F72-4E54-B84E-3E8592B7A181}</Project>
+      <Name>XNAControl</Name>
     </ProjectReference>
     <ProjectReference Include="..\StoryTimeContent\StoryTimeContent.contentproj">
       <Name>StoryTimeContent %28Content%29</Name>

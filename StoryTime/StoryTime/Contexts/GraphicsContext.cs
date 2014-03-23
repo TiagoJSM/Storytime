@@ -73,7 +73,7 @@ namespace StoryTime.Contexts
                     Color.White, 
                     rotation,
                     Vector2.Zero,
-                    SpriteEffects.FlipVertically, 
+                    SpriteEffects.None, 
                     0
                 );
             }
@@ -259,6 +259,7 @@ namespace StoryTime.Contexts
         {
             _gdm.PreferredBackBufferWidth = width;
             _gdm.PreferredBackBufferHeight = height;
+            _gdm.ApplyChanges();
         }
     }
 }

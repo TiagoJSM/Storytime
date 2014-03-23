@@ -1,8 +1,55 @@
-﻿<Window x:Class="StorytimeDevKit.MainWindow"
+﻿<Window x:Class="StoryTimeDevKit.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525" xmlns:my="clr-namespace:StorytimeDevKit.XnaIntegration">
-    <Grid>
-        <my:XnaControl HorizontalAlignment="Left" x:Name="xnaControl1" VerticalAlignment="Top" Width="200" Height="300" />
+        Title="MainWindow" Height="600" Width="1024" xmlns:my="clr-namespace:XNAControl;assembly=XNAControl" xmlns:my1="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon" VerticalAlignment="Top" Topmost="True">
+    <Grid Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="54*" />
+            <RowDefinition Height="320*" />
+            <RowDefinition Height="187*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="This text is on the left."
+               TextWrapping="Wrap"
+               Background="LightYellow" Grid.ColumnSpan="3"/>
+        <!--<TextBlock Grid.Column="1"
+               Text="This text is at the top right."
+               TextWrapping="Wrap"
+               Background="AliceBlue"/>-->
+        <TextBlock Grid.Column="1"
+               Grid.Row="1"
+               Text="This text is at the bottom right."
+               TextWrapping="Wrap"
+               Background="AliceBlue"/>
+        <!--<TextBlock Text="This text is at the bottom right."
+               TextWrapping="Wrap"
+               Background="AliceBlue" Grid.ColumnSpan="3" />-->
+
+        <GridSplitter Width="5"
+                  Grid.Column="0"
+                  Grid.RowSpan="1"
+                  Grid.Row="1"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Stretch"
+                  Background="Red"/>
+        <GridSplitter Width="5"
+                  Grid.Column="1"
+                  Grid.RowSpan="1"
+                  Grid.Row="1"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Stretch"
+                  Background="Red"/>
+        <GridSplitter Height="5"
+                  Grid.Column="0"
+                  Grid.Row="2"
+                  Grid.ColumnSpan="3"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="top"
+                  Background="Green" />
     </Grid>
 </Window>

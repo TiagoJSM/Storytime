@@ -29,6 +29,7 @@ namespace StoryTimeCore.WorldManagement
 
         private List<Scene> _scenes;
         private IGraphicsContext _graphicsContext;
+        private int _activeScene;
 
         private World() 
         {
@@ -51,11 +52,16 @@ namespace StoryTimeCore.WorldManagement
 
         public int NumberOfScenes { get { return _scenes.Count; } }
         public Scene GetSceneAt(int index) { return _scenes[index]; }
+        public void AddScene(Scene scene) { _scenes.Add(scene); }
 
-        public void Render()
+        public void RenderActiveScene()
         {
-            foreach (Scene scene in _scenes)
-                scene.Render(_graphicsContext);
+            _scenes[_activeScene].Render(_graphicsContext);
+        }
+
+        public void SetActiveScene(int index)
+        {
+            _activeScene = index;
         }
     }
 }

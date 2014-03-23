@@ -10,7 +10,7 @@ namespace StoryTime
         /// </summary>
         static void Main(string[] args)
         {
-            using (GamePipeline game = new GamePipeline())
+            using (MyGame game = new MyGame())
             {
                 game.Run();
             }

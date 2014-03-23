@@ -64,6 +64,7 @@ namespace StoryTimeFramework.WorldManagement
             _renderables = new Quadtree<IRenderableAsset>();
             _assetDictionary = new Dictionary<IRenderableAsset, OrderedAsset>();
             _nextIndex = 0;
+            _activeCamera = new Camera() { Viewport = new Viewport(0, 0, 1280, 720) };
         }
 
         public void Render(IGraphicsContext graphicsContext)
@@ -72,6 +73,7 @@ namespace StoryTimeFramework.WorldManagement
             if (_activeCamera == null) return;
             //set viewport
             Viewport vp = _activeCamera.Viewport;
+            graphicsContext.SetSceneDimensions(vp.Width, vp.Height);
             Rectanglef renderingViewport = new Rectanglef(vp.X, vp.Y, vp.Height, vp.Width);
             IEnumerable<IRenderableAsset> enumRA = GetRenderablesIn(renderingViewport);
             IRenderer renderer = graphicsContext.GetRenderer();

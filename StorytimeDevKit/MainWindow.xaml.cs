@@ -11,17 +11,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using XNAControl;
+using StoryTime;
 
-namespace StorytimeDevKit
+namespace StoryTimeDevKit
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        MyGame m_game;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            //m_game = new MyGame(userControl11.Handle);
         }
     }
 }
