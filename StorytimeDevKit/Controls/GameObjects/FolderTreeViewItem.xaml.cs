@@ -11,29 +11,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using XNAControl;
-using StoryTime;
 
-namespace StoryTimeDevKit
+namespace StoryTimeDevKit.Controls.GameObjects
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for FolderTreeViewItem.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class FolderTreeViewItem : UserControl
     {
-        MyGame m_game;
-
-        public MainWindow()
+        public FolderTreeViewItem()
         {
             InitializeComponent();
-
-            //m_game = new MyGame(userControl11.Handle);
         }
 
-        private void actorPropertyEditor1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
+        public string AssemblyName 
+        { 
+            get { return this.Name.Text; }
+            set { this.Name.Text = value; }
         }
 
+        public ItemCollection Items { get { return TVItem.Items; } }
     }
 }

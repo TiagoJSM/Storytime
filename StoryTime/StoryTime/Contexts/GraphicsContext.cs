@@ -56,7 +56,6 @@ namespace StoryTime.Contexts
                 Texture2D tex = _xnaGD._gContentManager.GetTexture(texture);
                 //this calculation is done because XNA SpriteBatch origin is at the top left corner of the screen
                 //this makes the origin become the lower left corner in favor of the scene size
-                float scaleHeight = (float)_xnaGD._gdm.PreferredBackBufferHeight / (float)_xnaGD._sceneHeight;
                 int yPosition = (int)-y + _xnaGD._sceneHeight - (int)(height);
 
                 Rectangle rec = new Rectangle(

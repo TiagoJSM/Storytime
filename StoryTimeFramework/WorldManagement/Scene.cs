@@ -58,6 +58,8 @@ namespace StoryTimeFramework.WorldManagement
 
         private WorldTime _currentTime;
 
+        public string SceneName { get; set; }
+
         public Scene()
         {
             _baseActors = new List<BaseActor>();
@@ -90,7 +92,7 @@ namespace StoryTimeFramework.WorldManagement
             }
         }
 
-        public void AddWorldEntity(BaseActor ba)
+        public void AddActor(BaseActor ba)
         {
             if (_baseActors.Contains(ba)) return;
 

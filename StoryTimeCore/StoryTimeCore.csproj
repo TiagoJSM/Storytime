@@ -62,9 +62,11 @@
     <Compile Include="Bodies\IBody.cs" />
     <Compile Include="Contexts\Interfaces\IGraphicsContext.cs" />
     <Compile Include="Contexts\Interfaces\ITexture2D.cs" />
+    <Compile Include="CustomAttributes\Editor\EditableAttribute.cs" />
     <Compile Include="DataStructures\Rectanglef.cs" />
     <Compile Include="Exceptions\StoryTimeException.cs" />
     <Compile Include="Extensions\FloatExtensions.cs" />
+    <Compile Include="Extensions\PropertyInfoExtensions.cs" />
     <Compile Include="Extensions\RectanglefExtensions.cs" />
     <Compile Include="General\IBoundingBoxable.cs" />
     <Compile Include="Input\Time\WorldTime.cs" />

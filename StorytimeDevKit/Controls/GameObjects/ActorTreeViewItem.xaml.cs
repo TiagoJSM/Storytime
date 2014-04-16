@@ -11,29 +11,27 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using XNAControl;
-using StoryTime;
+using StoryTimeDevKit.Models;
 
-namespace StoryTimeDevKit
+namespace StoryTimeDevKit.Controls.GameObjects
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ActorTreeViewItem.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ActorTreeViewItem : UserControl
     {
-        MyGame m_game;
+        private GameObjectsActorModel _model;
 
-        public MainWindow()
+        public ActorTreeViewItem()
         {
             InitializeComponent();
-
-            //m_game = new MyGame(userControl11.Handle);
         }
 
-        private void actorPropertyEditor1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        public ActorTreeViewItem(GameObjectsActorModel model)
+            :this()
         {
-
+            _model = model;
+            this.Name.Text = model.ActorName;
         }
-
     }
 }

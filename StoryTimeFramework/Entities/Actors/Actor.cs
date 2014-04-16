@@ -8,6 +8,7 @@ using StoryTimeCore.DataStructures;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeCore.Input.Time;
 using StoryTimeCore.Resources.Graphic;
+using StoryTimeCore.CustomAttributes.Editor;
 
 namespace StoryTimeCore.Entities.Actors
 {

@@ -63,5 +63,13 @@ namespace StoryTimeCore.WorldManagement
         {
             _activeScene = index;
         }
+
+        public void SetActiveScene(Scene s)
+        {
+            int index = _scenes.IndexOf(s);
+            if (index == -1)
+                return;
+            SetActiveScene(index);
+        }
     }
 }

@@ -11,29 +11,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using XNAControl;
-using StoryTime;
 
-namespace StoryTimeDevKit
+namespace StoryTimeDevKit.Controls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ObjectsInSceneControl.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ObjectsInSceneControl : UserControl
     {
-        MyGame m_game;
-
-        public MainWindow()
+        public ObjectsInSceneControl()
         {
             InitializeComponent();
-
-            //m_game = new MyGame(userControl11.Handle);
         }
-
-        private void actorPropertyEditor1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
     }
 }

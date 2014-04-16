@@ -44,6 +44,8 @@
     <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -57,12 +59,72 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="Xceed.Wpf.Toolkit, Version=1.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configurations\RootConfigFiles.cs" />
+    <Compile Include="Controllers\GameObjects\GameObjectsController.cs" />
+    <Compile Include="Controllers\GameObjects\IGameObjectsController.cs" />
+    <Compile Include="Controllers\IController.cs" />
+    <Compile Include="Controls\GameObjects\ActorTreeViewItem.xaml.cs">
+      <DependentUpon>ActorTreeViewItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GameObjects\FolderTreeViewItem.xaml.cs">
+      <DependentUpon>FolderTreeViewItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GameObjects\IGameObjectsControl.cs" />
+    <Compile Include="Controls\Editors\ActorPropertyEditor.xaml.cs">
+      <DependentUpon>ActorPropertyEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SceneViewer\ISceneViewerControl.cs" />
+    <Compile Include="Controls\SceneViewer\SceneTabItem.xaml.cs">
+      <DependentUpon>SceneTabItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SceneViewer\SceneViewerControl.xaml.cs">
+      <DependentUpon>SceneViewerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ActorEditablePropertyModel.cs" />
+    <Compile Include="Models\ActorPropertyEditorModel.cs" />
+    <Compile Include="Models\GameObjectsActorModel.cs" />
+    <Compile Include="Models\GameObjectsTextureModel.cs" />
+    <Compile Include="Texts\ActorPropertyEditorDefaultValues.cs" />
+    <Compile Include="Utils\XMLSerializerUtils.cs" />
+    <Page Include="Controls\GameObjects\ActorTreeViewItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GameObjects\FolderTreeViewItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GameObjects\GameObjectsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ObjectsInSceneControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Editors\ActorPropertyEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SceneViewer\SceneTabItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SceneViewer\SceneViewerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -70,6 +132,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configurations\GameObjectsPathConfiguration.cs" />
+    <Compile Include="Controls\GameObjects\GameObjectsControl.xaml.cs">
+      <DependentUpon>GameObjectsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ObjectsInSceneControl.xaml.cs">
+      <DependentUpon>ObjectsInSceneControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -101,6 +170,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\StoryTimeCore\StoryTimeCore.csproj">
+      <Project>{768B1451-6637-4ADE-BB85-CB742B224D09}</Project>
+      <Name>StoryTimeCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StoryTimeFramework\StoryTimeFramework.csproj">
+      <Project>{B3BC2FF1-6B9D-48A6-B392-A1C2FB98CB86}</Project>
+      <Name>StoryTimeFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StoryTime\StoryTime\StoryTime.csproj">
       <Project>{0F0F1AAA-7FBE-4952-A7D0-4509D2221959}</Project>
       <Name>StoryTime</Name>
@@ -109,6 +186,19 @@
       <Project>{D98D6FF4-6F72-4E54-B84E-3E8592B7A181}</Project>
       <Name>XNAControl</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\GameObjectsControl\ActorTreeViewIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\GameObjectsControl\SceneTreeViewIcon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\GameObjectsControl\TextureTreeViewIcon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\GameObjectsControl\FolderTreeViewIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
