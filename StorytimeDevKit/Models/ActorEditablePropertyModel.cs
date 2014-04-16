@@ -10,5 +10,6 @@ namespace StoryTimeDevKit.Models
         public string PropertyName { get; set; }
         public string PropertyGroup { get; set; }
         public object Data { get; set; }
+        public Type DataType { get; set; }
     }
 }

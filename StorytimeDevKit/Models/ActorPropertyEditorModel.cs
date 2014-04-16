@@ -17,22 +17,23 @@ namespace StoryTimeDevKit.Models
     
     public class ActorPropertyEditorModel : DynamicObject, ICustomTypeDescriptor, INotifyPropertyChanged
     {
-        private readonly IDictionary<string, ObjectBucket> dynamicProperties =
-            new Dictionary<string, ObjectBucket>();
+        private readonly IDictionary<string, ActorEditablePropertyModel> dynamicProperties =
+            new Dictionary<string, ActorEditablePropertyModel>();
         private BaseActor _ba;
 
         public ActorPropertyEditorModel(BaseActor ba)
         {
             _ba = ba;
-            List<ActorEditablePropertyModel> editableProp =
+            List<ActorEditablePropertyModel> editableProps =
                 ba.GetType()
                 .GetProperties()
                 .Where(prop => prop.ContainsAttribute(typeof(EditableAttribute))) 
                 .Where(prop => prop.CanBeGettedAndSetted())
                 .Select(prop => ConvertToActorEditableProperty(prop))
                 .ToList();
-            //AddProperty("Body", _ba.Body, typeof(IBody));
-            //AddProperty("RenderableActor", _ba.RenderableActor, typeof(IRenderableAsset));
+
+            foreach (ActorEditablePropertyModel editableProp in editableProps)
+                AddProperty(editableProp);
         }
 
         private ActorEditablePropertyModel ConvertToActorEditableProperty(PropertyInfo prop)
@@ -53,14 +54,15 @@ namespace StoryTimeDevKit.Models
             {
                 PropertyGroup = propGroup,
                 PropertyName = propName,
-                Data = prop.GetValue(_ba, null)
+                Data = prop.GetValue(_ba, null),
+                DataType = prop.PropertyType
             };
         }
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             var memberName = binder.Name;
-            ObjectBucket bucket;
+            ActorEditablePropertyModel bucket;
             bool gotValue = dynamicProperties.TryGetValue(memberName, out bucket);
             result = bucket.Data;
             return gotValue;
@@ -69,18 +71,20 @@ namespace StoryTimeDevKit.Models
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
             var memberName = binder.Name;
-            AddProperty(memberName, value, binder.ReturnType);
+            ActorEditablePropertyModel model = new ActorEditablePropertyModel() 
+            {
+                Data = value,
+                DataType = binder.ReturnType,
+                PropertyName = memberName,
+                PropertyGroup = ActorPropertyEditorDefaultValues.DefaultGroupName
+            };
+            AddProperty(model);
             return true;
         }
 
-        protected void AddProperty(string propName, object value, Type valueType)
+        protected void AddProperty(ActorEditablePropertyModel editableProp)
         {
-            ObjectBucket objBuck = new ObjectBucket()
-            {
-                Data = value,
-                DataType = valueType 
-            };
-            dynamicProperties[propName] = objBuck;
+            dynamicProperties[editableProp.PropertyName] = editableProp;
             NotifyToRefreshAllProperties();
         }
 
@@ -91,11 +95,16 @@ namespace StoryTimeDevKit.Models
         {
             // of course, here must be the attributes associated
             // with each of the dynamic properties
-            var attributes = new Attribute[0];
+
             var properties = dynamicProperties
                 .Select(pair => new DynamicPropertyDescriptor(this,
-                    pair.Key, pair.Value.DataType, attributes));
+                    pair.Key, pair.Value.DataType, GetPropertyEditorAttributesFrom(pair.Value)));
             return new PropertyDescriptorCollection(properties.ToArray());
+        }
+
+        private Attribute[] GetPropertyEditorAttributesFrom(ActorEditablePropertyModel model)
+        {
+            return new Attribute[] { new CategoryAttribute(model.PropertyGroup) };
         }
 
         public string GetClassName()
@@ -233,12 +242,6 @@ namespace StoryTimeDevKit.Models
             {
                 get { return propertyType; }
             }
-        }
-
-        private class ObjectBucket
-        {
-            public Object Data { get; set; }
-            public Type DataType { get; set; }
         }
     }
 }
