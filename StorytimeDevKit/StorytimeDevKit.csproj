@@ -77,6 +77,9 @@
     <Compile Include="Controls\GameObjects\ActorTreeViewItem.xaml.cs">
       <DependentUpon>ActorTreeViewItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\GameObjects\TextureTreeViewItem.xaml.cs">
+      <DependentUpon>TextureTreeViewItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GameObjects\FolderTreeViewItem.xaml.cs">
       <DependentUpon>FolderTreeViewItem.xaml</DependentUpon>
     </Compile>
@@ -100,6 +103,10 @@
     <Page Include="Controls\GameObjects\ActorTreeViewItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GameObjects\TextureTreeViewItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\GameObjects\FolderTreeViewItem.xaml">
       <SubType>Designer</SubType>

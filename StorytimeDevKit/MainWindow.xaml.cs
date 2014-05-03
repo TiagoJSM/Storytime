@@ -30,10 +30,5 @@ namespace StoryTimeDevKit
             //m_game = new MyGame(userControl11.Handle);
         }
 
-        private void actorPropertyEditor1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
     }
 }

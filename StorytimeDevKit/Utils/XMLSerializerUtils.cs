@@ -10,10 +10,10 @@ namespace StoryTimeDevKit.Utils
 {
     public static class XMLSerializerUtils
     {
-        public static void SerializeToXML<TData>(TData data) where TData : class
+        public static void SerializeToXML<TData>(TData data, string path) where TData : class
         {
             XmlSerializer serializer = new XmlSerializer(typeof(TData));
-            TextWriter textWriter = new StreamWriter("GameObjectsPathConfiguration.xml");
+            TextWriter textWriter = new StreamWriter(path);
             serializer.Serialize(textWriter, data);
             textWriter.Close();
         }
@@ -21,9 +21,9 @@ namespace StoryTimeDevKit.Utils
         public static TData DeserializeFromXML<TData>(string filePath) where TData : class
         {
             XmlSerializer deserializer = new XmlSerializer(typeof(TData));
-            TextReader textReader = new StreamReader(filePath);
+            StreamReader stream = new StreamReader(filePath);
             
-            using(XmlReader xml = XmlReader.Create(textReader))
+            using(XmlReader xml = XmlReader.Create(stream))
             {
                 if (!deserializer.CanDeserialize(xml))
                 {
@@ -31,8 +31,13 @@ namespace StoryTimeDevKit.Utils
                 }
             }
 
-            TData data = (TData)deserializer.Deserialize(textReader);
-            textReader.Close();
+            //after being used by the XmlReader the stream has to be reset
+            stream.DiscardBufferedData();
+            stream.BaseStream.Seek(0, SeekOrigin.Begin);
+            stream.BaseStream.Position = 0;
+
+            TData data = deserializer.Deserialize(stream) as TData;
+            stream.Close();
             return data;
         }
     }

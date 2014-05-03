@@ -11,6 +11,7 @@ using StoryTimeCore.CustomAttributes.Editor;
 using StoryTimeCore.Extensions;
 using System.Reflection;
 using StoryTimeDevKit.Texts;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace StoryTimeDevKit.Models
 {
@@ -104,7 +105,22 @@ namespace StoryTimeDevKit.Models
 
         private Attribute[] GetPropertyEditorAttributesFrom(ActorEditablePropertyModel model)
         {
+            if (IsExpandable(model))
+                return new Attribute[] { new CategoryAttribute(model.PropertyGroup), new ExpandableObjectAttribute() };
             return new Attribute[] { new CategoryAttribute(model.PropertyGroup) };
+        }
+
+        private bool IsExpandable(ActorEditablePropertyModel model)
+        {
+            if (model.DataType.IsPrimitive)
+                return false;
+            if (model.DataType == typeof(string))
+                return false;
+            if (model.DataType.IsEnum)
+                return false;
+            if (model.DataType == typeof(DateTime))
+                return false;
+            return true;
         }
 
         public string GetClassName()

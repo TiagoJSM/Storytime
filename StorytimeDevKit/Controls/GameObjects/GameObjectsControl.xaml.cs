@@ -33,21 +33,47 @@ namespace StoryTimeDevKit.Controls.GameObjects
 
         public void LoadedHandler(object sender, RoutedEventArgs e)
         {
+            LoadActors();
+            LoadTextures();
+        }
+
+        private void LoadActors()
+        {
             List<GameObjectsActorModel> actors = _controller.LoadActors();
+            TreeViewItem root = ActorsRoot;
+
             foreach (GameObjectsActorModel actor in actors)
             {
-                FolderTreeViewItem folder = GetFolderForAssembly(ActorsRoot, actor.AssemblyName);
+                FolderTreeViewItem folder = GetFolderFromTreeViewItem(root, actor.AssemblyName);
                 if (folder == null)
                 {
                     folder = new FolderTreeViewItem();
-                    folder.AssemblyName = actor.AssemblyName;
-                    ActorsRoot.Items.Add(folder);
+                    folder.FolderName = actor.AssemblyName;
+                    root.Items.Add(folder);
                 }
                 folder.Items.Add(new ActorTreeViewItem(actor));
             }
         }
 
-        private FolderTreeViewItem GetFolderForAssembly(TreeViewItem treeViewItem, string assemblyName)
+        private void LoadTextures()
+        {
+            List<GameObjectsTextureModel> textures = _controller.LoadTextures();
+            TreeViewItem root = TexturesRoot;
+
+            foreach (GameObjectsTextureModel texture in textures)
+            {
+                FolderTreeViewItem folder = GetFolderFromTreeViewItem(root, texture.RelativePath);
+                if (folder == null)
+                {
+                    folder = new FolderTreeViewItem();
+                    folder.FolderName = texture.RelativePath;
+                    root.Items.Add(folder);
+                }
+                folder.Items.Add(new TextureTreeViewItem(texture));
+            }
+        }
+
+        private FolderTreeViewItem GetFolderFromTreeViewItem(TreeViewItem treeViewItem, string name)
         {
             foreach (object obj in treeViewItem.Items)
             {
@@ -55,7 +81,7 @@ namespace StoryTimeDevKit.Controls.GameObjects
                 if (folder == null)
                     continue;
 
-                if (folder.AssemblyName.Equals(assemblyName))
+                if (folder.FolderName.Equals(name))
                     return folder;
             }
             return null;

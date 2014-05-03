@@ -19,10 +19,10 @@ namespace StoryTimeDevKit.Controllers.GameObjects
 
         public GameObjectsController()
         {
-            //_goPathConfig = XMLSerializerUtils
-            //    .DeserializeFromXML<GameObjectsPathConfiguration>(
-            //        RootConfigFiles.GameObjectsPathName
-            //    );
+            _goPathConfig = XMLSerializerUtils
+                .DeserializeFromXML<GameObjectsPathConfiguration>(
+                    RootConfigFiles.GameObjectsPathName
+                );
         }
 
         public IGameObjectsControl Control

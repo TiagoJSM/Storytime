@@ -30,7 +30,7 @@
                         </StackPanel>
                     </TreeViewItem.Header>
                 </TreeViewItem>
-                    <TreeViewItem Padding="0" Margin="0,3,0,0">
+                <TreeViewItem Name="TexturesRoot" Padding="0" Margin="0,3,0,0">
                         <TreeViewItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <Image Height="20" Source="../../Images/GameObjectsControl/TextureTreeViewIcon.jpg" Width="20" Margin="0,0,2,0" />

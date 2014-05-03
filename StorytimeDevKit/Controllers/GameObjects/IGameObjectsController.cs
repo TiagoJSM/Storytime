@@ -10,5 +10,6 @@ namespace StoryTimeDevKit.Controllers.GameObjects
     public interface IGameObjectsController : IController<IGameObjectsControl>
     {
         List<GameObjectsActorModel> LoadActors();
+        List<GameObjectsTextureModel> LoadTextures();
     }
 }

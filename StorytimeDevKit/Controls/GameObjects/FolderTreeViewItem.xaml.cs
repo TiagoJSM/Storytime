@@ -24,10 +24,10 @@ namespace StoryTimeDevKit.Controls.GameObjects
             InitializeComponent();
         }
 
-        public string AssemblyName 
+        public string FolderName 
         { 
-            get { return this.Name.Text; }
-            set { this.Name.Text = value; }
+            get { return this.FolderNameTB.Text; }
+            set { this.FolderNameTB.Text = value; }
         }
 
         public ItemCollection Items { get { return TVItem.Items; } }
