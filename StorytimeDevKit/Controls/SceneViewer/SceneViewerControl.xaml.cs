@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using StoryTimeFramework.WorldManagement;
 using StoryTime;
 using System.ComponentModel;
+using StoryTimeCore.WorldManagement;
+using StoryTimeDevKit.Controllers.Scenes;
 
 namespace StoryTimeDevKit.Controls.SceneViewer
 {
@@ -23,19 +25,21 @@ namespace StoryTimeDevKit.Controls.SceneViewer
     public partial class SceneViewerControl : UserControl, ISceneViewerControl
     {
         private MyGame _game;
+        private ISceneViewerController _controller;
 
         public SceneViewerControl()
         {
             InitializeComponent();
             if (DesignerProperties.GetIsInDesignMode(this))
-            {
-                _game = new MyGame(userControl11.Handle);
-            }
-            
+                return;
+            _game = new MyGame(userControl11.Handle);
+            _controller = new SceneViewerController();
         }
 
         public void AddScene(Scene s)
         {
+            SceneTabItem item = ScenesControl.SelectedItem as SceneTabItem;
+            World.Singleton.AddScene(s);
             ScenesControl.Items.Add(new SceneTabItem(s));
         }
     }

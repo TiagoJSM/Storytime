@@ -60,6 +60,8 @@ namespace XNAControl
     /// </summary>
     public partial class UserControl1 : UserControl
     {
+        public event Func<System.Drawing.Point> DropItem;
+
         public IntPtr Handle
         {
             get { return GamePanel.Handle; }
@@ -69,5 +71,33 @@ namespace XNAControl
         {
             InitializeComponent();
         }
+
+        private System.Drawing.Point GetPointInGameWorld(System.Windows.Forms.MouseEventArgs e)
+        {
+            System.Drawing.Point p = e.Location;
+            p.Y = GamePanel.Height - p.Y;
+            return p;
+        }
+
+        private void GamePanel_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+
+        }
+
+        private void GamePanel_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+
+        }
+
+        private void GamePanel_DragLeave(object sender, EventArgs e)
+        {
+
+        }
+
+        private void GamePanel_DragOver(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+
+        }
+
     }
 }

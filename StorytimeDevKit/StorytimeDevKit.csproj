@@ -70,18 +70,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\AddActorCommand.cs" />
+    <Compile Include="Commands\CommandStack.cs" />
+    <Compile Include="Commands\IReversibleCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Configurations\RootConfigFiles.cs" />
     <Compile Include="Controllers\GameObjects\GameObjectsController.cs" />
     <Compile Include="Controllers\GameObjects\IGameObjectsController.cs" />
     <Compile Include="Controllers\IController.cs" />
-    <Compile Include="Controls\GameObjects\ActorTreeViewItem.xaml.cs">
-      <DependentUpon>ActorTreeViewItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\GameObjects\TextureTreeViewItem.xaml.cs">
-      <DependentUpon>TextureTreeViewItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\GameObjects\FolderTreeViewItem.xaml.cs">
-      <DependentUpon>FolderTreeViewItem.xaml</DependentUpon>
+    <Compile Include="Controllers\Scenes\ISceneViewerController.cs" />
+    <Compile Include="Controllers\Scenes\SceneViewerController.cs" />
+    <Compile Include="Controls\GameObjects\GameObjectsTreeViewControl.xaml.cs">
+      <DependentUpon>GameObjectsTreeViewControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\GameObjects\IGameObjectsControl.cs" />
     <Compile Include="Controls\Editors\ActorPropertyEditor.xaml.cs">
@@ -96,23 +97,16 @@
     </Compile>
     <Compile Include="Models\ActorEditablePropertyModel.cs" />
     <Compile Include="Models\ActorPropertyEditorModel.cs" />
-    <Compile Include="Models\GameObjectsActorModel.cs" />
-    <Compile Include="Models\GameObjectsTextureModel.cs" />
+    <Compile Include="Models\GameObjectsTreeViewModels\ActorViewModel.cs" />
+    <Compile Include="Models\GameObjectsTreeViewModels\AssemblyViewModel.cs" />
+    <Compile Include="Models\GameObjectsTreeViewModels\FolderViewModel.cs" />
+    <Compile Include="Models\GameObjectsTreeViewModels\GameObjectCategoryViewModel.cs" />
+    <Compile Include="Models\GameObjectsTreeViewModels\GameObjectsRoot.cs" />
+    <Compile Include="Models\GameObjectsTreeViewModels\TextureViewModel.cs" />
+    <Compile Include="Models\GameObjectsTreeViewModels\TreeViewItemViewModel.cs" />
     <Compile Include="Texts\ActorPropertyEditorDefaultValues.cs" />
     <Compile Include="Utils\XMLSerializerUtils.cs" />
-    <Page Include="Controls\GameObjects\ActorTreeViewItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\GameObjects\TextureTreeViewItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\GameObjects\FolderTreeViewItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\GameObjects\GameObjectsControl.xaml">
+    <Page Include="Controls\GameObjects\GameObjectsTreeViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -141,9 +135,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configurations\GameObjectsPathConfiguration.cs" />
-    <Compile Include="Controls\GameObjects\GameObjectsControl.xaml.cs">
-      <DependentUpon>GameObjectsControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\ObjectsInSceneControl.xaml.cs">
       <DependentUpon>ObjectsInSceneControl.xaml</DependentUpon>
     </Compile>

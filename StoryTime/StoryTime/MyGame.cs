@@ -83,19 +83,19 @@ namespace StoryTime
             //spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _gContext = new XNAGraphicsContext(this.GraphicsDeviceManager, this.Content);
-            //ITexture2D bitmap = _gContext.LoadTexture2D("Bitmap1");
+            ITexture2D bitmap = _gContext.LoadTexture2D("Bitmap1");
 
-            //_asset = new Static2DRenderableAsset();
-            //_asset.SetBoundingBox(new StoryTimeCore.DataStructures.Rectanglef(10, 100.0f, 160));
-            //_asset.Texture2D = bitmap;
-            //_gContext.SetSceneDimensions(1280, 720);
-            //_actor = new Actor()
-            //{
-            //    RenderableActor = _asset
-            //};
+            _asset = new Static2DRenderableAsset();
+            _asset.SetBoundingBox(new StoryTimeCore.DataStructures.Rectanglef(0, 0.0f, 160));
+            _asset.Texture2D = bitmap;
+            _gContext.SetSceneDimensions(1280, 720);
+            _actor = new Actor()
+            {
+                RenderableActor = _asset
+            };
 
             Scene s = new Scene();
-            //s.AddActor(_actor);
+            s.AddActor(_actor);
             World.Singleton.AddScene(s);
             World.Singleton.GraphicsContext = _gContext;
             //rectangle = new Texture2D(GraphicsDevice, 2, 2);

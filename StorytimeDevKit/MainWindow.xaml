@@ -1,7 +1,14 @@
 ﻿<Window xmlns:my3="clr-namespace:StoryTimeDevKit.Controls.SceneViewer"  x:Class="StoryTimeDevKit.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="600" Width="1024" xmlns:my="clr-namespace:XNAControl;assembly=XNAControl" xmlns:my1="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon" VerticalAlignment="Top" Topmost="True" xmlns:my2="clr-namespace:StoryTimeDevKit.Controls.GameObjects" xmlns:my4="clr-namespace:StoryTimeDevKit.Controls.Editors" Left="900" Top="600">
+        Title="MainWindow" 
+        Height="600" Width="1024" 
+        xmlns:my="clr-namespace:XNAControl;assembly=XNAControl" 
+        xmlns:my1="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon" 
+        VerticalAlignment="Top" 
+        xmlns:my2="clr-namespace:StoryTimeDevKit.Controls.GameObjects" 
+        xmlns:my4="clr-namespace:StoryTimeDevKit.Controls.Editors" 
+        Left="900" Top="600">
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
@@ -13,8 +20,9 @@
             <RowDefinition Height="320*" />
             <RowDefinition Height="187*" />
         </Grid.RowDefinitions>
-        <my2:GameObjectsControl HorizontalAlignment="Stretch" x:Name="gameObjectsControl1" VerticalAlignment="Stretch" Grid.Row="1" />
-        <my3:SceneViewerControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="SceneViewControl" VerticalAlignment="Stretch" />
+        <!--<my2:GameObjectsControl HorizontalAlignment="Stretch" x:Name="gameObjectsControl1" VerticalAlignment="Stretch" Grid.Row="1" />-->
+        <my2:GameObjectsTreeViewControl HorizontalAlignment="Stretch" x:Name="gameObjectsControl1" VerticalAlignment="Stretch" Grid.Row="1" />
+        <my3:SceneViewerControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="SceneViewControl" VerticalAlignment="Stretch"/>
         <GridSplitter Width="4"
                   Grid.Column="0"
                   Grid.RowSpan="1"

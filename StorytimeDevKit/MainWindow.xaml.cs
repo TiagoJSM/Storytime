@@ -29,6 +29,5 @@ namespace StoryTimeDevKit
 
             //m_game = new MyGame(userControl11.Handle);
         }
-
     }
 }

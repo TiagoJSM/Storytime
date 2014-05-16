@@ -102,7 +102,7 @@ namespace StoryTimeFramework.WorldManagement
             AddOrderedAsset(oa);
         }
 
-        public void RemoveWorldEntity(BaseActor ba)
+        public void RemoveActor(BaseActor ba)
         {
             if (!_baseActors.Contains(ba)) return;
 
