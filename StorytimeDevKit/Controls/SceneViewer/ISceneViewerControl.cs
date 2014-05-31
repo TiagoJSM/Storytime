@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using StoryTimeFramework.WorldManagement;
 using StoryTimeFramework.Entities.Actors;
+using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 
 namespace StoryTimeDevKit.Controls.SceneViewer
 {
     public interface ISceneViewerControl
     {
-        void AddScene(Scene s);
+        void AddScene(SceneViewModel s);
     }
 }

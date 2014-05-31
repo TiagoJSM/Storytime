@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using XNAControl;
 using StoryTime;
+using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 
 namespace StoryTimeDevKit
 {
@@ -28,6 +29,11 @@ namespace StoryTimeDevKit
             InitializeComponent();
 
             //m_game = new MyGame(userControl11.Handle);
+        }
+
+        private void gameObjectsControl1_OnSceneDoubleClicked(SceneViewModel obj)
+        {
+            SceneViewControl.AddScene(obj);
         }
     }
 }

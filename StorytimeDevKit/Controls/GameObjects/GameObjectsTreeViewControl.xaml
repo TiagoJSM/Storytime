@@ -6,9 +6,16 @@
              xmlns:gotvm="clr-namespace:StoryTimeDevKit.Models.GameObjectsTreeViewModels" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <!--<UserControl.Resources>
+        <Style TargetType="MenuItem">
+            <Setter Property="Header" Value="{Binding Header}"/>
+            <Setter Property="StaysOpenOnClick" Value="{Binding StaysOpenOnClick}"/>
+        </Style>
+    </UserControl.Resources>-->
+
     <Grid>
         <GroupBox Header="Game objects" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Name="groupBox1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
-            <TreeView ItemsSource="{Binding GameObjectsCategories}" BorderThickness="1" HorizontalContentAlignment="Stretch" Name="GameObjects" VerticalContentAlignment="Stretch">
+            <TreeView AllowDrop="True" ItemsSource="{Binding GameObjectsCategories}" BorderThickness="1" HorizontalContentAlignment="Stretch" Name="GameObjects" VerticalContentAlignment="Stretch" MouseDoubleClick="GameObjects_MouseDoubleClick">
                 <TreeView.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#313C62FF" Offset="0" />
@@ -19,7 +26,13 @@
                     <!-- 
                     This Style binds a TreeViewItem to a TreeViewItemViewModel. 
                     -->
+                    
                     <Style TargetType="{x:Type TreeViewItem}">
+                        <EventSetter Event="TreeViewItem.DragOver"  Handler="treeView_DragOver"/>
+                        <EventSetter Event="TreeViewItem.Drop" Handler="treeView_Drop"/>
+                        <EventSetter Event="TreeViewItem.MouseMove" Handler="treeView_MouseMove"/>
+                        <EventSetter Event="TreeViewItem.MouseDown" Handler="treeView_MouseDown"/>
+
                         <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                         <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                         <Setter Property="FontWeight" Value="Normal" />
@@ -28,20 +41,37 @@
                                 <Setter Property="FontWeight" Value="Bold" />
                             </Trigger>
                         </Style.Triggers>
+                        
                     </Style>
                 </TreeView.ItemContainerStyle>
                 <TreeView.Resources>
-                    <HierarchicalDataTemplate 
-                        DataType="{x:Type gotvm:GameObjectCategoryViewModel}" 
+                    <ContextMenu x:Key="Scenes">
+                        <MenuItem Header="Add">
+                            <MenuItem Header="New scene" Command="{Binding AddNewSceneCommand}"/>
+                            <MenuItem Header="Existing scene" Command="{Binding AddExistingSceneCommand}"/>
+                            <MenuItem Header="Folder" Command="{Binding AddNewFolderCommand}"/>
+                        </MenuItem>
+                    </ContextMenu>
+                    <ContextMenu x:Key="Textures">
+                        <MenuItem Header="New texture..."/>
+                    </ContextMenu>
+                    <ContextMenu x:Key="Actors">
+                        <MenuItem Header="New actor..."/>
+                    </ContextMenu>
+                    
+                    <HierarchicalDataTemplate DataType="{x:Type gotvm:GameObjectCategoryViewModel}" 
                         ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Tag="{Binding Tag}" ContextMenuOpening="GameObjectsCategory_ContextMenuOpening">
+                            <StackPanel.ContextMenu>
+                                <ContextMenu>
+                                </ContextMenu>
+                            </StackPanel.ContextMenu>
                             <Image Width="20" Height="20" Source="{Binding ImagePath}" Margin="0,2,2,0"/>
                             <TextBlock FontSize="14" Text="{Binding GameObjectCategory}" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
 
-                    <HierarchicalDataTemplate 
-                        DataType="{x:Type gotvm:TextureViewModel}" 
+                    <HierarchicalDataTemplate DataType="{x:Type gotvm:TextureViewModel}" 
                         ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal">
                             <!--<Image Width="20" Height="20" Source="{Binding ImagePath}" Margin="0,2,2,0"/>-->
@@ -49,8 +79,15 @@
                         </StackPanel>
                     </HierarchicalDataTemplate>
 
-                    <HierarchicalDataTemplate 
-                        DataType="{x:Type gotvm:AssemblyViewModel}" 
+                    <HierarchicalDataTemplate DataType="{x:Type gotvm:ActorViewModel}" 
+                        ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal">
+                            <!--<Image Width="20" Height="20" Source="{Binding ImagePath}" Margin="0,2,2,0"/>-->
+                            <TextBlock FontSize="14" Text="{Binding ActorName}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+
+                    <HierarchicalDataTemplate DataType="{x:Type gotvm:AssemblyViewModel}" 
                         ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="20" Height="20" Name="FolderImage" Margin="0,2,2,0" />
@@ -70,8 +107,7 @@
                         </HierarchicalDataTemplate.Triggers>
                     </HierarchicalDataTemplate>
 
-                    <HierarchicalDataTemplate 
-                        DataType="{x:Type gotvm:FolderViewModel}" 
+                    <HierarchicalDataTemplate DataType="{x:Type gotvm:FolderViewModel}" 
                         ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="20" Height="20" Name="FolderImage" Margin="0,2,2,0" />
@@ -91,12 +127,13 @@
                         </HierarchicalDataTemplate.Triggers>
                     </HierarchicalDataTemplate>
 
-                    <!--<DataTemplate DataType="{x:Type local:CityViewModel}">
+                    <HierarchicalDataTemplate DataType="{x:Type gotvm:SceneViewModel}" 
+                        ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal">
-                            <Image Width="16" Height="16" Margin="3,0" Source="Images\City.png" />
-                            <TextBlock Text="{Binding CityName}" />
+                            <TextBlock FontSize="14" Text="{Binding SceneName}" />
                         </StackPanel>
-                    </DataTemplate>-->
+                    </HierarchicalDataTemplate>
+                    
                 </TreeView.Resources>
             </TreeView>
         </GroupBox>

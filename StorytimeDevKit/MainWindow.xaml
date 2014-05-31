@@ -8,7 +8,7 @@
         VerticalAlignment="Top" 
         xmlns:my2="clr-namespace:StoryTimeDevKit.Controls.GameObjects" 
         xmlns:my4="clr-namespace:StoryTimeDevKit.Controls.Editors" 
-        Left="900" Top="600">
+        Left="300" Top="300">
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
@@ -21,7 +21,7 @@
             <RowDefinition Height="187*" />
         </Grid.RowDefinitions>
         <!--<my2:GameObjectsControl HorizontalAlignment="Stretch" x:Name="gameObjectsControl1" VerticalAlignment="Stretch" Grid.Row="1" />-->
-        <my2:GameObjectsTreeViewControl HorizontalAlignment="Stretch" x:Name="gameObjectsControl1" VerticalAlignment="Stretch" Grid.Row="1" />
+        <my2:GameObjectsTreeViewControl HorizontalAlignment="Stretch" x:Name="gameObjectsControl1" VerticalAlignment="Stretch" Grid.Row="1" OnSceneDoubleClicked="gameObjectsControl1_OnSceneDoubleClicked" />
         <my3:SceneViewerControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="SceneViewControl" VerticalAlignment="Stretch"/>
         <GridSplitter Width="4"
                   Grid.Column="0"

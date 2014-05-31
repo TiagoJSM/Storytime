@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
+using StoryTimeDevKit.Controls.GameObjects;
 
 namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
 {
@@ -10,8 +12,8 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
         public string FolderName { get; private set; }
         public string FolderFullPath { get; private set; }
 
-        public FolderViewModel(TreeViewItemViewModel parent, string folderName, string folderFullPath)
-            : base(parent, false)
+        public FolderViewModel(TreeViewItemViewModel parent, IGameObjectsControl gameObjects, string folderName, string folderFullPath)
+            : base(parent, gameObjects, false)
         {
             FolderName = folderName;
             FolderFullPath = folderFullPath;

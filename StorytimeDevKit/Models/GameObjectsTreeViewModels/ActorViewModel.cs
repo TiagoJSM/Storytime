@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
+using StoryTimeDevKit.Controls.GameObjects;
 
 namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
 {
@@ -11,8 +13,8 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
         public string ActorName { get; private set; }
         public string AssemblyName { get; private set; }
 
-        public ActorViewModel(TreeViewItemViewModel parent, string actorName, string assemblyName)
-            : base(parent, false)
+        public ActorViewModel(TreeViewItemViewModel parent, IGameObjectsControl gameObjects, string actorName, string assemblyName)
+            : base(parent, gameObjects, false)
         {
             ActorName = actorName;
             AssemblyName = assemblyName;

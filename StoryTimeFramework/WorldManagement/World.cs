@@ -16,6 +16,8 @@ namespace StoryTimeCore.WorldManagement
 
     public class World
     {
+        private const int NO_ACTIVE_SCENE = -1;
+
         public static World _singleton;
         public static World Singleton 
         { 
@@ -34,6 +36,7 @@ namespace StoryTimeCore.WorldManagement
         private World() 
         {
             _scenes = new List<Scene>();
+            _activeScene = NO_ACTIVE_SCENE;
         }
 
         public IGraphicsContext GraphicsContext
@@ -56,7 +59,8 @@ namespace StoryTimeCore.WorldManagement
 
         public void RenderActiveScene()
         {
-            _scenes[_activeScene].Render(_graphicsContext);
+            if(_activeScene != NO_ACTIVE_SCENE)
+                _scenes[_activeScene].Render(_graphicsContext);
         }
 
         public void SetActiveScene(int index)

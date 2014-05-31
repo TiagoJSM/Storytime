@@ -10,6 +10,11 @@ using StoryTimeDevKit.Utils;
 using StoryTimeDevKit.Configurations;
 using System.IO;
 using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
+using System.Windows.Input;
+using StoryTimeDevKit.Commands.UICommands;
+using System.Windows;
+using System.Windows.Controls;
+using StoryTimeDevKit.Controls.Dialogs;
 
 namespace StoryTimeDevKit.Controllers.GameObjects
 {
@@ -18,17 +23,66 @@ namespace StoryTimeDevKit.Controllers.GameObjects
         private IGameObjectsControl _control;
         private GameObjectsPathConfiguration _goPathConfig;
 
-        public GameObjectsController()
+        private class ActorsCategoryViewModel : GameObjectCategoryViewModel
         {
+            public ActorsCategoryViewModel(IGameObjectsControl gameObjects)
+                : base(gameObjects, "Actors", "/Images/GameObjectsControl/ActorTreeViewIcon.png", "Actors")
+            { }
+        }
+
+        private class ScenesCategoryViewModel : GameObjectCategoryViewModel
+        {
+            public ICommand AddNewSceneCommand { get; private set; }
+            public ICommand AddNewFolderCommand { get; private set; }
+            public ICommand AddExistingSceneCommand { get; private set; }
+
+            public ScenesCategoryViewModel(IGameObjectsControl gameObjects)
+                : base(gameObjects, "Scenes", "/Images/GameObjectsControl/SceneTreeViewIcon.jpg", "Scenes")
+            {
+                AddNewSceneCommand =
+                    new RelayCommand(
+                        (obj) =>
+                        {
+                            CreateSceneDialog dialog = new CreateSceneDialog();
+                            if (dialog.ShowDialog().Equals(true))
+                            {
+                                CreateSceneViewModel model = dialog.Model;
+                                Children.Add(new SceneViewModel(this, gameObjects, model.SceneName, "full"));
+                                IsExpanded = true;
+                            }
+                        });
+
+                AddNewFolderCommand =
+                    new RelayCommand(
+                        (obj) =>
+                        {
+                            MessageBox.Show("New Folder!");
+                        });
+
+                AddExistingSceneCommand =
+                    new RelayCommand(
+                        (obj) =>
+                        {
+                            MessageBox.Show("existing Scene!");
+                        });
+            }
+        }
+
+        private class TexturesCategoryViewModel : GameObjectCategoryViewModel
+        {
+            public TexturesCategoryViewModel(IGameObjectsControl gameObjects)
+                : base(gameObjects, "Textures", "/Images/GameObjectsControl/TextureTreeViewIcon.jpg", "Textures")
+            { }
+        }
+
+        public GameObjectsController(IGameObjectsControl control)
+        {
+            _control = control;
+
             _goPathConfig = XMLSerializerUtils
                 .DeserializeFromXML<GameObjectsPathConfiguration>(
                     RootConfigFiles.GameObjectsPathName
                 );
-        }
-
-        public IGameObjectsControl Control
-        {
-            set { _control = value; }
         }
 
         public GameObjectsRoot LoadGameObjectsTree()
@@ -40,9 +94,9 @@ namespace StoryTimeDevKit.Controllers.GameObjects
 
         private List<GameObjectCategoryViewModel> LoadGameObjectsCategories()
         {
-            GameObjectCategoryViewModel actors = new GameObjectCategoryViewModel("Actors", "/Images/GameObjectsControl/ActorTreeViewIcon.png");
-            GameObjectCategoryViewModel scenes = new GameObjectCategoryViewModel("Scenes", "/Images/GameObjectsControl/SceneTreeViewIcon.jpg");
-            GameObjectCategoryViewModel textures = new GameObjectCategoryViewModel("Textures", "/Images/GameObjectsControl/TextureTreeViewIcon.jpg");
+            GameObjectCategoryViewModel actors = new ActorsCategoryViewModel(_control);
+            GameObjectCategoryViewModel scenes = new ScenesCategoryViewModel(_control);
+            GameObjectCategoryViewModel textures = new TexturesCategoryViewModel(_control);
             
             LoadActorsTree(actors);
             LoadScenesTree(scenes);
@@ -54,7 +108,7 @@ namespace StoryTimeDevKit.Controllers.GameObjects
         private void LoadActorsTree(GameObjectCategoryViewModel actorsCategory)
         {
             Assembly assembly = Assembly.Load("StoryTimeFramework");
-            AssemblyViewModel folder = new AssemblyViewModel(actorsCategory, "StoryTimeFramework");
+            AssemblyViewModel folder = new AssemblyViewModel(actorsCategory, _control, "StoryTimeFramework");
 
             Type baseType = typeof(BaseActor);
             List<ActorViewModel> actorTypes = assembly.GetTypes()
@@ -62,12 +116,14 @@ namespace StoryTimeDevKit.Controllers.GameObjects
                 .Select(t =>
                 {
                     return new ActorViewModel(
-                        folder, 
+                        folder,
+                        _control, 
                         t.Name, 
                         assembly.GetName().Name);
                 })
                 .ToList();
 
+            actorTypes.ForEach(a => folder.Children.Add(a));
             actorsCategory.Children.Add(folder);
         }
 
@@ -90,7 +146,7 @@ namespace StoryTimeDevKit.Controllers.GameObjects
             foreach (FileInfo fi in fis)
             {
                 FolderViewModel folder = GetFolderFor(texturesCategory, folders, fi);
-                TextureViewModel texture = new TextureViewModel(folder, fi.Name, fi.FullName);
+                TextureViewModel texture = new TextureViewModel(folder, _control, fi.Name, fi.FullName);
                 folder.Children.Add(texture);
             }
 
@@ -111,7 +167,8 @@ namespace StoryTimeDevKit.Controllers.GameObjects
                 return folder;
 
             folder = new FolderViewModel(
-                texturesCategory, 
+                texturesCategory,
+                _control,
                 fi.DirectoryName.Replace(fi.Directory.FullName, fi.Directory.Name), 
                 fi.Directory.FullName);
 

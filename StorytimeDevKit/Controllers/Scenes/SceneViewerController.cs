@@ -6,6 +6,7 @@ using StoryTimeDevKit.Controls.SceneViewer;
 using StoryTimeFramework.WorldManagement;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeDevKit.Commands;
+using StoryTimeDevKit.Commands.ReversibleCommands;
 
 namespace StoryTimeDevKit.Controllers.Scenes
 {
@@ -13,6 +14,11 @@ namespace StoryTimeDevKit.Controllers.Scenes
     {
         private ISceneViewerControl _control;
         private CommandStack _commands;
+
+        public SceneViewerController()
+        {
+            _commands = new CommandStack();
+        }
 
         public void AddActor(Scene s, BaseActor actor)
         {

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows.Controls;
+using System.Collections.Specialized;
+using StoryTimeDevKit.Controls.GameObjects;
 
 namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
 {
@@ -15,6 +18,7 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
 
         readonly ObservableCollection<TreeViewItemViewModel> _children;
         readonly TreeViewItemViewModel _parent;
+        public IGameObjectsControl GameObjects { get; private set; }
 
         bool _isExpanded;
         bool _isSelected;
@@ -23,12 +27,18 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
 
         #region Constructors
 
-        protected TreeViewItemViewModel(TreeViewItemViewModel parent, bool lazyLoadChildren)
+        protected TreeViewItemViewModel(IGameObjectsControl gameObjects, bool lazyLoadChildren)
+            : this(null, gameObjects, lazyLoadChildren)
+        {
+        }
+
+        protected TreeViewItemViewModel(TreeViewItemViewModel parent, IGameObjectsControl gameObjects, bool lazyLoadChildren)
+            : this()
         {
             _parent = parent;
-
-            _children = new ObservableCollection<TreeViewItemViewModel>();
-
+            GameObjects = gameObjects;
+            ChildAdded += gameObjects.NodeAddedCallback;
+            
             if (lazyLoadChildren)
                 _children.Add(DummyChild);
         }
@@ -36,6 +46,8 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
         // This is used to create the DummyChild instance.
         private TreeViewItemViewModel()
         {
+            _children = new ObservableCollection<TreeViewItemViewModel>();
+            _children.CollectionChanged += new NotifyCollectionChangedEventHandler(children_CollectionChanged);
         }
 
         #endregion // Constructors
@@ -140,8 +152,11 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
 
         #endregion // Parent
 
+        public string Tag { get; protected set; }
+
         #endregion // Presentation Members
 
+        #region Events
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -153,5 +168,16 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
         }
 
         #endregion // INotifyPropertyChanged Members
+
+        public event Action<TreeViewItemViewModel, IEnumerable<TreeViewItemViewModel>> ChildAdded;
+
+        #endregion
+
+        private void children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if(ChildAdded != null)
+                ChildAdded(this, e.NewItems.Cast<TreeViewItemViewModel>());
+        }
+
     }
 }

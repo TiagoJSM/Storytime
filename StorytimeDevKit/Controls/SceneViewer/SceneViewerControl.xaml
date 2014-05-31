@@ -4,10 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" xmlns:my="clr-namespace:XNAControl;assembly=XNAControl">
+             d:DesignHeight="300" d:DesignWidth="300" xmlns:my1="clr-namespace:StoryTimeDevKit.Controls.XNA">
     <Grid>
-        <TabControl HorizontalAlignment="Stretch" Height ="30" Name="ScenesControl" VerticalAlignment="Top">
+        <TabControl HorizontalAlignment="Stretch" Height ="30" Name="ScenesControl" VerticalAlignment="Top" SelectionChanged="ScenesControl_SelectionChanged">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding SceneName}" Margin="0 0 20 0"/>
+                        <Button Content="X" Foreground="White"/>
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
         </TabControl>
-        <my:UserControl1 HorizontalAlignment="Stretch" Margin="0,34,5,0" Name="userControl11" VerticalAlignment="Stretch"/>
+        
+        <my1:XnaControl HorizontalAlignment="Stretch" Margin="0,34,5,0" x:Name="xna" VerticalAlignment="Stretch"/>
     </Grid>
 </UserControl>

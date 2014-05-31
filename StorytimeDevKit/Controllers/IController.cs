@@ -7,6 +7,5 @@ namespace StoryTimeDevKit.Controllers
 {
     public interface IController<TControl>
     {
-        TControl Control { set; }
     }
 }

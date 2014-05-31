@@ -209,6 +209,7 @@ namespace StoryTimeFramework.DataStructures
             {
                 DataSet.Add(data);
                 _dataHolding.Add(data, this);
+                return;
             }
 
             IQuadtreeNode<TData> bucket = _childNode.Add(data);

@@ -5,7 +5,7 @@ using System.Text;
 using StoryTimeFramework.WorldManagement;
 using StoryTimeFramework.Entities.Actors;
 
-namespace StoryTimeDevKit.Commands
+namespace StoryTimeDevKit.Commands.ReversibleCommands
 {
     public class AddActorCommand : IReversibleCommand
     {

@@ -37,9 +37,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Windows.Shell, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Game.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Graphics.dll</HintPath>
     </Reference>
     <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="System" />
@@ -70,17 +78,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commands\AddActorCommand.cs" />
-    <Compile Include="Commands\CommandStack.cs" />
-    <Compile Include="Commands\IReversibleCommand.cs">
+    <Compile Include="Commands\ReversibleCommands\AddActorCommand.cs" />
+    <Compile Include="Commands\ReversibleCommands\CommandStack.cs" />
+    <Compile Include="Commands\ReversibleCommands\IReversibleCommand.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\UICommands\RelayCommand.cs" />
     <Compile Include="Configurations\RootConfigFiles.cs" />
     <Compile Include="Controllers\GameObjects\GameObjectsController.cs" />
     <Compile Include="Controllers\GameObjects\IGameObjectsController.cs" />
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\Scenes\ISceneViewerController.cs" />
     <Compile Include="Controllers\Scenes\SceneViewerController.cs" />
+    <Compile Include="Controls\Dialogs\CreateSceneDialog.xaml.cs">
+      <DependentUpon>CreateSceneDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GameObjects\GameObjectsTreeViewControl.xaml.cs">
       <DependentUpon>GameObjectsTreeViewControl.xaml</DependentUpon>
     </Compile>
@@ -89,23 +101,31 @@
       <DependentUpon>ActorPropertyEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SceneViewer\ISceneViewerControl.cs" />
-    <Compile Include="Controls\SceneViewer\SceneTabItem.xaml.cs">
-      <DependentUpon>SceneTabItem.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\SceneViewer\SceneViewerControl.xaml.cs">
       <DependentUpon>SceneViewerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\XNA\XNAControl.xaml.cs">
+      <DependentUpon>XNAControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\XNA\XNAControlGame.cs" />
     <Compile Include="Models\ActorEditablePropertyModel.cs" />
     <Compile Include="Models\ActorPropertyEditorModel.cs" />
+    <Compile Include="Models\CreateSceneViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\ActorViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\AssemblyViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\FolderViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\GameObjectCategoryViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\GameObjectsRoot.cs" />
+    <Compile Include="Models\GameObjectsTreeViewModels\SceneViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\TextureViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\TreeViewItemViewModel.cs" />
+    <Compile Include="Models\SceneViewer\SceneViewModel.cs" />
     <Compile Include="Texts\ActorPropertyEditorDefaultValues.cs" />
     <Compile Include="Utils\XMLSerializerUtils.cs" />
+    <Page Include="Controls\Dialogs\CreateSceneDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\GameObjects\GameObjectsTreeViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -118,13 +138,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SceneViewer\SceneTabItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\SceneViewer\SceneViewerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\XNA\XNAControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -59,6 +59,7 @@ namespace StoryTimeFramework.WorldManagement
         private WorldTime _currentTime;
 
         public string SceneName { get; set; }
+        public ICamera Camera { get { return _activeCamera; } }
 
         public Scene()
         {
@@ -66,7 +67,7 @@ namespace StoryTimeFramework.WorldManagement
             _renderables = new Quadtree<IRenderableAsset>();
             _assetDictionary = new Dictionary<IRenderableAsset, OrderedAsset>();
             _nextIndex = 0;
-            _activeCamera = new Camera() { Viewport = new Viewport(0, 0, 1280, 720) };
+            _activeCamera = new Camera() { Viewport = new Viewport(0, 0, 1280, 720) }; //1280
         }
 
         public void Render(IGraphicsContext graphicsContext)

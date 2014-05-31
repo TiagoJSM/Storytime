@@ -55,7 +55,7 @@ using System.Windows.Shapes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace XNAControl
+namespace StoryTimeDevKit.Controls.XNA
 {
     public class XNAControlGame : Game
     {
@@ -104,7 +104,7 @@ namespace XNAControl
             m_graphics.PreparingDeviceSettings += new EventHandler<PreparingDeviceSettingsEventArgs>(PreparingDeviceSettings);
 
             // Now set the resolution and create the graphics device manually
-            ChangeGraphics(1280, 720);
+            ChangeGraphics(1366, 680);
 
             Content.RootDirectory = contentRoot;
 

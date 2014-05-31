@@ -14,6 +14,10 @@ using System.Windows.Shapes;
 using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 using System.ComponentModel;
 using StoryTimeDevKit.Controllers.GameObjects;
+using System.Globalization;
+using System.Collections.ObjectModel;
+using StoryTimeDevKit.Commands.UICommands;
+using System.Windows.Controls.Primitives;
 
 namespace StoryTimeDevKit.Controls.GameObjects
 {
@@ -23,6 +27,12 @@ namespace StoryTimeDevKit.Controls.GameObjects
     public partial class GameObjectsTreeViewControl : UserControl, IGameObjectsControl
     {
         private IGameObjectsController _controller;
+
+        Point _lastMouseDown;
+        TreeViewItemViewModel draggedItem, _target;
+
+        public event Action<TreeViewItemViewModel, IEnumerable<TreeViewItemViewModel>> OnGameObjectsAdded;
+        public event Action<SceneViewModel> OnSceneDoubleClicked;
 
         public GameObjectsTreeViewControl()
         {
@@ -35,10 +45,132 @@ namespace StoryTimeDevKit.Controls.GameObjects
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            _controller = new GameObjectsController();
-            _controller.Control = this;
+            _controller = new GameObjectsController(this);
             base.DataContext = _controller.LoadGameObjectsTree();
         }
 
+        private void treeView_MouseDown
+            (object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                _lastMouseDown = e.GetPosition(GameObjects);
+            }
+        }
+
+        private void treeView_MouseMove(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    Point currentPosition = e.GetPosition(GameObjects);
+
+                    if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 10.0) ||
+                        (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10.0))
+                    {
+                        draggedItem = (TreeViewItemViewModel)GameObjects.SelectedItem;
+                        if (draggedItem != null)
+                        {
+                            DragDropEffects finalDropEffect =
+                DragDrop.DoDragDrop(GameObjects,
+                    GameObjects.SelectedValue,
+                                DragDropEffects.Move);
+                            //Checking target is not null and item is 
+                            //dragging(moving)
+                            /*if ((finalDropEffect == DragDropEffects.Move) &&
+                    (_target != null))
+                            {
+                                // A Move drop was accepted
+                                /*if (!draggedItem.Header.ToString().Equals
+                    (_target.Header.ToString()))
+                                {
+                                    CopyItem(draggedItem, _target);
+                                    _target = null;
+                                    draggedItem = null;
+                                }
+                            }*/
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void treeView_DragOver(object sender, DragEventArgs e)
+        {
+            //try
+            //{
+            //    Point currentPosition = e.GetPosition(GameObjects);
+
+            //    if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 10.0) ||
+            //       (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10.0))
+            //    {
+            //        // Verify that this is a valid drop and then store the drop target
+            //        TreeViewItem item = GetNearestContainer
+            //        (e.OriginalSource as UIElement);
+            //        if (CheckDropTarget(draggedItem, item))
+            //        {
+            //            e.Effects = DragDropEffects.Move;
+            //        }
+            //        else
+            //        {
+            //            e.Effects = DragDropEffects.None;
+            //        }
+            //    }
+            //    e.Handled = true;
+            //}
+            //catch (Exception)
+            //{
+            //}
+        }
+
+        private void treeView_Drop(object sender, DragEventArgs e)
+        {
+            //try
+            //{
+            //    e.Effects = DragDropEffects.None;
+            //    e.Handled = true;
+
+            //    // Verify that this is a valid drop and then store the drop target
+            //    TreeViewItem TargetItem = GetNearestContainer
+            //        (e.OriginalSource as UIElement);
+            //    if (TargetItem != null && draggedItem != null)
+            //    {
+            //        _target = TargetItem;
+            //        e.Effects = DragDropEffects.Move;
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //}
+        }
+
+        private void GameObjectsCategory_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            StackPanel s = sender as StackPanel;
+            bool contains = GameObjects.Resources.Contains(s.Tag);
+            if(contains)
+                s.ContextMenu = GameObjects.Resources[s.Tag] as System.Windows.Controls.ContextMenu;
+        }
+
+        public TreeView TreeView
+        {
+            get { return this.GameObjects; }
+        }
+
+        public void NodeAddedCallback(TreeViewItemViewModel parent, IEnumerable<TreeViewItemViewModel> newModels)
+        {
+            if(OnGameObjectsAdded != null)
+                OnGameObjectsAdded(parent, newModels);
+        }
+
+        private void GameObjects_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (GameObjects.SelectedItem is SceneViewModel && OnSceneDoubleClicked != null)
+                OnSceneDoubleClicked(GameObjects.SelectedItem as SceneViewModel);
+        }
     }
 }

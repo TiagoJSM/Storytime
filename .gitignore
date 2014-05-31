@@ -50,3 +50,9 @@
 /XNAControl/obj/Debug/XNAControl.pdb
 /XNAControl/obj/Debug/XNAControl_MarkupCompile.cache
 /XNAControl/obj/Debug/XNAControl_MarkupCompile.i.cache
+
+/StoryTimeDevKit/StoryTimeDevKit.csproj.user
+
+/TestResults
+
+/StoryTime/StoryTime/*.cachefile
