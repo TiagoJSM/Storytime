@@ -8,7 +8,7 @@
         VerticalAlignment="Top" 
         xmlns:my2="clr-namespace:StoryTimeDevKit.Controls.GameObjects" 
         xmlns:my4="clr-namespace:StoryTimeDevKit.Controls.Editors" 
-        Left="300" Top="300">
+        Left="100" Top="100" xmlns:my5="clr-namespace:StoryTimeDevKit.Controls.Displayers">
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
@@ -52,7 +52,14 @@
                   BorderThickness="0.5"/>
         <Menu Height="24" HorizontalAlignment="Left" Name="menu1" VerticalAlignment="Top" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Grid.ColumnSpan="3" BorderThickness="0.5" BorderBrush="Black" />
         <TextBlock Grid.Row="2" Height="52" HorizontalAlignment="Left" Margin="133,48,0,0" Name="textBlock1" Text="TextBlockaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="719" />
-        <ToolBar Height="26" HorizontalAlignment="Left" Margin="0,22,0,0" Name="toolBar1" VerticalAlignment="Top" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Grid.ColumnSpan="3" Background="AliceBlue"/>
+        <ToolBar Height="26" HorizontalAlignment="Left" Margin="0,22,0,0" Name="toolBar1" VerticalAlignment="Top" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Grid.ColumnSpan="3" Background="AliceBlue">
+            <Button 
+                Command="{Binding RelativeSource={  
+                            RelativeSource FindAncestor, 
+					        AncestorType={x:Type Window}}, 
+					    Path=OpenImageViewer}"  
+                Content="Image Viewer" />
+        </ToolBar>
         <Grid Grid.Row="1"></Grid>
         <my4:ActorPropertyEditor Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0" x:Name="actorPropertyEditor1" VerticalAlignment="Stretch" />
     </Grid>

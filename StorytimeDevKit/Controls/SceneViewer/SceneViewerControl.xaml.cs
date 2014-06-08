@@ -23,6 +23,8 @@ using StoryTime.Contexts;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeFramework.Resources.Graphic;
 using StoryTimeCore.Entities.Actors;
+using Microsoft.Xna.Framework;
+using StoryTimeDevKit.Commands.UICommands;
 
 namespace StoryTimeDevKit.Controls.SceneViewer
 {
@@ -35,18 +37,25 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         private ISceneViewerController _controller;
 
         private ObservableCollection<SceneTabViewModel> Tabs { get; set; }
+        public RelayCommand RemoveTab { get; set; }
 
         public SceneViewerControl()
         {
             Tabs = new ObservableCollection<SceneTabViewModel>();
-            
+
+            RemoveTab = new RelayCommand((obj) =>
+            {
+                Tabs.Remove(obj as SceneTabViewModel);
+                //MessageBox.Show("New Folder!");
+            });
+
             InitializeComponent();
             ScenesControl.ItemsSource = Tabs;
 
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
             _game = new MyGame(xna.Handle);
-            _controller = new SceneViewerController();
+            _controller = new SceneViewerController(_game.GraphicsContext);
 
             xna.OnDropActor += OnDropActorHandler;
         }
@@ -77,20 +86,12 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         {
             SceneTabViewModel sceneVM = ScenesControl.SelectedItem as SceneTabViewModel;
             if(sceneVM == null) return;
-            ITexture2D bitmap = _game.GraphicsContext.LoadTexture2D("Bitmap1");
-            Static2DRenderableAsset asset = new Static2DRenderableAsset();
 
             float x = sceneVM.Scene.Camera.Viewport.Width * pointInGameWorld.X / gamePanelDimensions.X;
             float y = sceneVM.Scene.Camera.Viewport.Height * pointInGameWorld.Y / gamePanelDimensions.Y;
+            Vector2 position = new Vector2(x, y);
 
-            asset.SetBoundingBox(new StoryTimeCore.DataStructures.Rectanglef(x, y, 160));
-            asset.Texture2D = bitmap;
-            Actor actor = new Actor()
-            {
-                RenderableActor = asset
-            };
-
-            _controller.AddActor(sceneVM.Scene, actor);
+            _controller.AddActor(sceneVM, model, position);
         }
     }
 }

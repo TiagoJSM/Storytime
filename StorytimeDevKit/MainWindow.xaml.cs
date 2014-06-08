@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using XNAControl;
 using StoryTime;
 using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
+using StoryTimeDevKit.Commands.UICommands;
+using StoryTimeDevKit.Controls.Dialogs;
 
 namespace StoryTimeDevKit
 {
@@ -22,18 +24,35 @@ namespace StoryTimeDevKit
     /// </summary>
     public partial class MainWindow : Window
     {
-        MyGame m_game;
+        private ImageViewerDialog _imageViewer;
+        public RelayCommand OpenImageViewer { get; private set; }
 
         public MainWindow()
         {
-            InitializeComponent();
+            OpenImageViewer = new RelayCommand(
+                (o) =>
+                {
+                    _imageViewer = new ImageViewerDialog();
+                    _imageViewer.Closed += ImageViewer_Closed;
+                    _imageViewer.Show();
+                },
+                (o) =>
+                {
+                    return _imageViewer == null;
+                }
+            );
 
-            //m_game = new MyGame(userControl11.Handle);
+            InitializeComponent();
         }
 
         private void gameObjectsControl1_OnSceneDoubleClicked(SceneViewModel obj)
         {
             SceneViewControl.AddScene(obj);
+        }
+
+        private void ImageViewer_Closed(object sender, EventArgs e)
+        {
+            _imageViewer = null;
         }
     }
 }

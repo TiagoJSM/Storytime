@@ -5,7 +5,11 @@ using System.Text;
 
 namespace StoryTimeDevKit.Controllers
 {
-    public interface IController<TControl>
+    public interface IController 
+    { 
+    }
+
+    public interface IController<TControl> : IController
     {
     }
 }

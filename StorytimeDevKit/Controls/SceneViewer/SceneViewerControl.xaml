@@ -11,7 +11,11 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding SceneName}" Margin="0 0 20 0"/>
-                        <Button Content="X" Foreground="White"/>
+                        <Button Content="X" Foreground="White" 
+                            Command="{Binding RelativeSource={  RelativeSource FindAncestor, 
+					                                            AncestorType={x:Type UserControl}}, 
+					                                            Path=RemoveTab}"
+                            CommandParameter="{Binding}"/>
                     </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>

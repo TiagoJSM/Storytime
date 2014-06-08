@@ -88,10 +88,19 @@
     <Compile Include="Controllers\GameObjects\GameObjectsController.cs" />
     <Compile Include="Controllers\GameObjects\IGameObjectsController.cs" />
     <Compile Include="Controllers\IController.cs" />
+    <Compile Include="Controllers\ImageViewer\IImageViewerController.cs" />
+    <Compile Include="Controllers\ImageViewer\ImageViewerController.cs" />
     <Compile Include="Controllers\Scenes\ISceneViewerController.cs" />
     <Compile Include="Controllers\Scenes\SceneViewerController.cs" />
     <Compile Include="Controls\Dialogs\CreateSceneDialog.xaml.cs">
       <DependentUpon>CreateSceneDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\ImageViewerDialog.xaml.cs">
+      <DependentUpon>ImageViewerDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Displayers\IImageViewerControl.cs" />
+    <Compile Include="Controls\Displayers\ImageViewer.xaml.cs">
+      <DependentUpon>ImageViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\GameObjects\GameObjectsTreeViewControl.xaml.cs">
       <DependentUpon>GameObjectsTreeViewControl.xaml</DependentUpon>
@@ -108,8 +117,15 @@
       <DependentUpon>XNAControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\XNA\XNAControlGame.cs" />
+    <Compile Include="DataStructures\Virtualization\AsyncVirtualizingCollection.cs" />
+    <Compile Include="DataStructures\Virtualization\IItemsProvider.cs" />
+    <Compile Include="DataStructures\Virtualization\TextureItemsProvider.cs" />
+    <Compile Include="DataStructures\Virtualization\VirtualizingCollection.cs" />
+    <Compile Include="Exceptions\ApplicationBaseException.cs" />
+    <Compile Include="Exceptions\Generic\InvalidArgumentOnControllerMethodException.cs" />
     <Compile Include="Models\ActorEditablePropertyModel.cs" />
     <Compile Include="Models\ActorPropertyEditorModel.cs" />
+    <Compile Include="Models\BaseViewModel.cs" />
     <Compile Include="Models\CreateSceneViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\ActorViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\AssemblyViewModel.cs" />
@@ -119,10 +135,30 @@
     <Compile Include="Models\GameObjectsTreeViewModels\SceneViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\TextureViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\TreeViewItemViewModel.cs" />
+    <Compile Include="Models\ImageViewer\TexturePathViewModel.cs" />
+    <Compile Include="Models\ImageViewer\TextureViewModel.cs" />
     <Compile Include="Models\SceneViewer\SceneViewModel.cs" />
+    <Compile Include="Resources\Exceptions\LocalizedTexts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocalizedTexts.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\SceneViewer\LocalizedTexts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocalizedTexts.resx</DependentUpon>
+    </Compile>
     <Compile Include="Texts\ActorPropertyEditorDefaultValues.cs" />
     <Compile Include="Utils\XMLSerializerUtils.cs" />
     <Page Include="Controls\Dialogs\CreateSceneDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\ImageViewerDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Displayers\ImageViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -180,6 +216,14 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Exceptions\LocalizedTexts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocalizedTexts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\SceneViewer\LocalizedTexts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocalizedTexts.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

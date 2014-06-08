@@ -56,3 +56,8 @@
 /TestResults
 
 /StoryTime/StoryTime/*.cachefile
+/StoryTimeDevKit/bin/Release
+
+/XNAControl/bin/Release
+/XNAControl/bin
+/XNAControl/obj

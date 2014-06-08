@@ -5,11 +5,14 @@ using System.Text;
 using StoryTimeDevKit.Controls.SceneViewer;
 using StoryTimeFramework.WorldManagement;
 using StoryTimeFramework.Entities.Actors;
+using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
+using StoryTimeDevKit.Models.SceneViewer;
+using Microsoft.Xna.Framework;
 
 namespace StoryTimeDevKit.Controllers.Scenes
 {
     public interface ISceneViewerController : IController<ISceneViewerControl>
     {
-        void AddActor(Scene s, BaseActor actor);
+        void AddActor(SceneTabViewModel s, ActorViewModel actor, Vector2 position);
     }
 }

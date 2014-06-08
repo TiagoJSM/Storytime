@@ -118,7 +118,7 @@ namespace StoryTimeDevKit.Controllers.GameObjects
                     return new ActorViewModel(
                         folder,
                         _control, 
-                        t.Name, 
+                        t, 
                         assembly.GetName().Name);
                 })
                 .ToList();

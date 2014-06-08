@@ -1,0 +1,8 @@
+﻿<Window x:Class="StoryTimeDevKit.Controls.Dialogs.ImageViewerDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Image Viewer" Height="300" Width="300" xmlns:my="clr-namespace:StoryTimeDevKit.Controls.Displayers">
+    <Grid>
+        <my:ImageViewer HorizontalAlignment="Left" x:Name="imageViewer1" VerticalAlignment="Top" />
+    </Grid>
+</Window>
