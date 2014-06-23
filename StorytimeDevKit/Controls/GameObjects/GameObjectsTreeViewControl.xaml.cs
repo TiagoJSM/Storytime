@@ -18,6 +18,10 @@ using System.Globalization;
 using System.Collections.ObjectModel;
 using StoryTimeDevKit.Commands.UICommands;
 using System.Windows.Controls.Primitives;
+using StoryTimeDevKit.Controls.Dialogs;
+using StoryTimeDevKit.Models;
+using StoryTimeDevKit.Resources.GameObjectsTreeView;
+using StoryTimeDevKit.Resources;
 
 namespace StoryTimeDevKit.Controls.GameObjects
 {
@@ -34,6 +38,10 @@ namespace StoryTimeDevKit.Controls.GameObjects
         public event Action<TreeViewItemViewModel, IEnumerable<TreeViewItemViewModel>> OnGameObjectsAdded;
         public event Action<SceneViewModel> OnSceneDoubleClicked;
 
+        public ICommand AddNewSceneCommand { get; private set; }
+        public ICommand AddNewFolderCommand { get; private set; }
+        public ICommand ImportSceneCommand { get; private set; }
+
         public GameObjectsTreeViewControl()
         {
             InitializeComponent();
@@ -47,6 +55,48 @@ namespace StoryTimeDevKit.Controls.GameObjects
 
             _controller = new GameObjectsController(this);
             base.DataContext = _controller.LoadGameObjectsTree();
+            
+            #region Initialize Commands
+            AddNewSceneCommand =
+                new RelayCommand(
+                    (obj) =>
+                    {
+                        GameObjectCategoryViewModel category = obj as GameObjectCategoryViewModel;
+                        CreateSceneDialog dialog = new CreateSceneDialog();
+                        if (dialog.ShowDialog().Equals(false))
+                            return;
+
+                        CreateSceneViewModel model = dialog.Model;
+
+                        if(_controller.SceneFileExists(model.SceneName))
+                        {
+                            MessageBoxResult result = 
+                                MessageBox.Show(
+                                    string.Format(LocalizedTexts.SceneAlreadyExists, model.SceneName),
+                                    GenericTexts.Confirmation, 
+                                    MessageBoxButton.YesNo);
+
+                            if (!(result == MessageBoxResult.Yes))
+                                return;  
+                        }
+                            
+                        string path = _controller.CreateScene(model.SceneName);
+                        category.Children.Add(new SceneViewModel(category, this, model.SceneName, path));
+                        category.IsExpanded = true;
+                    });
+            AddNewFolderCommand =
+                new RelayCommand(
+                    (obj) =>
+                    {
+                        MessageBox.Show("TODO add new folder");
+                    });
+            ImportSceneCommand =
+                new RelayCommand(
+                    (obj) =>
+                    {
+                        MessageBox.Show("TODO import scene");
+                    });
+            #endregion
         }
 
         private void treeView_MouseDown

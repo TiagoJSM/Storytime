@@ -84,6 +84,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\UICommands\RelayCommand.cs" />
+    <Compile Include="Configurations\FileExtensions.cs" />
+    <Compile Include="Configurations\RelativePaths.cs" />
     <Compile Include="Configurations\RootConfigFiles.cs" />
     <Compile Include="Controllers\GameObjects\GameObjectsController.cs" />
     <Compile Include="Controllers\GameObjects\IGameObjectsController.cs" />
@@ -123,6 +125,8 @@
     <Compile Include="DataStructures\Virtualization\VirtualizingCollection.cs" />
     <Compile Include="Exceptions\ApplicationBaseException.cs" />
     <Compile Include="Exceptions\Generic\InvalidArgumentOnControllerMethodException.cs" />
+    <Compile Include="Extensions\DirectoryInfoExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions.cs" />
     <Compile Include="Models\ActorEditablePropertyModel.cs" />
     <Compile Include="Models\ActorPropertyEditorModel.cs" />
     <Compile Include="Models\BaseViewModel.cs" />
@@ -137,11 +141,22 @@
     <Compile Include="Models\GameObjectsTreeViewModels\TreeViewItemViewModel.cs" />
     <Compile Include="Models\ImageViewer\TexturePathViewModel.cs" />
     <Compile Include="Models\ImageViewer\TextureViewModel.cs" />
+    <Compile Include="Models\SavedData\SavedSceneModel.cs" />
     <Compile Include="Models\SceneViewer\SceneViewModel.cs" />
     <Compile Include="Resources\Exceptions\LocalizedTexts.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LocalizedTexts.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\GameObjectsTreeView\LocalizedTexts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocalizedTexts.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\GenericTexts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GenericTexts.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\SceneViewer\LocalizedTexts.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -149,6 +164,7 @@
       <DependentUpon>LocalizedTexts.resx</DependentUpon>
     </Compile>
     <Compile Include="Texts\ActorPropertyEditorDefaultValues.cs" />
+    <Compile Include="Utils\ApplicationUtils.cs" />
     <Compile Include="Utils\XMLSerializerUtils.cs" />
     <Page Include="Controls\Dialogs\CreateSceneDialog.xaml">
       <SubType>Designer</SubType>
@@ -221,6 +237,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LocalizedTexts.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\GameObjectsTreeView\LocalizedTexts.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocalizedTexts.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\GenericTexts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GenericTexts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\SceneViewer\LocalizedTexts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LocalizedTexts.Designer.cs</LastGenOutput>
@@ -249,7 +274,9 @@
       <Name>XNAControl</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\MainWindow\ToolBar\save.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\GameObjectsControl\ActorTreeViewIcon.png" />
   </ItemGroup>
@@ -261,6 +288,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\GameObjectsControl\FolderTreeViewIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MainWindow\ToolBar\save_all.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MainWindow\ToolBar\redo.png" />
+    <Resource Include="Images\MainWindow\ToolBar\undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MainWindow\ToolBar\images.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

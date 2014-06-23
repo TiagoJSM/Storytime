@@ -5,26 +5,23 @@ using System.Text;
 using StoryTimeDevKit.Utils;
 using StoryTimeDevKit.Configurations;
 using StoryTimeDevKit.Models.ImageViewer;
+using System.IO;
 
 namespace StoryTimeDevKit.Controllers.ImageViewer
 {
     public class ImageViewerController : IImageViewerController
     {
-        GameObjectsPathConfiguration _goPathConfig;
+        //GameObjectsPathConfiguration _goPathConfig;
 
         public ImageViewerController()
         {
-            _goPathConfig = XMLSerializerUtils
-                .DeserializeFromXML<GameObjectsPathConfiguration>(
-                    RootConfigFiles.GameObjectsPathName
-                );
         }
 
         public List<TexturePathViewModel> LoadTexturePaths()
         {
-            return 
-                _goPathConfig
-                .TexturesPaths
+            return
+                Directory
+                .GetDirectories(RelativePaths.Textures)
                 .Select(tp => new TexturePathViewModel(tp))
                 .ToList();
         }

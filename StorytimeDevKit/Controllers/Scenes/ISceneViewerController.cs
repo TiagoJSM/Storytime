@@ -14,5 +14,12 @@ namespace StoryTimeDevKit.Controllers.Scenes
     public interface ISceneViewerController : IController<ISceneViewerControl>
     {
         void AddActor(SceneTabViewModel s, ActorViewModel actor, Vector2 position);
+        void Undo();
+        void Redo();
+
+        int CommandCount { get; }
+        int? CommandIndex { get; }
+        bool CanUndo { get; }
+        bool CanRedo { get; }
     }
 }

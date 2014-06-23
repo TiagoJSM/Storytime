@@ -11,6 +11,8 @@ namespace StoryTimeDevKit.Controllers.GameObjects
     public interface IGameObjectsController : IController<IGameObjectsControl>
     {
         GameObjectsRoot LoadGameObjectsTree();
+        string CreateScene(string sceneName);
+        bool SceneFileExists(string sceneName);
         //List<GameObjectsActorModel> LoadActors();
         //List<GameObjectsTextureModel> LoadTextures();
     }

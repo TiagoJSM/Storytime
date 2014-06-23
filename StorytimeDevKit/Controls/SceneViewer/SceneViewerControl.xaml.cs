@@ -39,6 +39,8 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         private ObservableCollection<SceneTabViewModel> Tabs { get; set; }
         public RelayCommand RemoveTab { get; set; }
 
+        public event Action<ActorViewModel> OnActorAdded;
+
         public SceneViewerControl()
         {
             Tabs = new ObservableCollection<SceneTabViewModel>();
@@ -73,6 +75,36 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             ScenesControl.SelectedItem = sceneVM;
         }
 
+        public void Undo()
+        {
+            _controller.Undo();
+        }
+
+        public void Redo()
+        {
+            _controller.Redo();
+        }
+
+        public int CommandCount
+        {
+            get { return _controller.CommandCount; }
+        }
+
+        public int? CommandIndex
+        {
+            get { return _controller.CommandIndex; }
+        }
+
+        public bool CanUndo
+        {
+            get { return _controller.CanUndo; }
+        }
+
+        public bool CanRedo
+        {
+            get { return _controller.CanRedo; }
+        }
+
         private void ScenesControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
@@ -92,6 +124,9 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             Vector2 position = new Vector2(x, y);
 
             _controller.AddActor(sceneVM, model, position);
+
+            if (OnActorAdded != null)
+                OnActorAdded(model);
         }
     }
 }

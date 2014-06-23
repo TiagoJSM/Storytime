@@ -16,6 +16,9 @@ using StoryTime;
 using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 using StoryTimeDevKit.Commands.UICommands;
 using StoryTimeDevKit.Controls.Dialogs;
+using StoryTimeDevKit.Utils;
+using StoryTimeDevKit.Models.SavedData;
+using StoryTimeFramework.Entities.Actors;
 
 namespace StoryTimeDevKit
 {
@@ -26,13 +29,20 @@ namespace StoryTimeDevKit
     {
         private ImageViewerDialog _imageViewer;
         public RelayCommand OpenImageViewer { get; private set; }
+        public RelayCommand SaveScene { get; private set; }
+        public RelayCommand SaveAllScenes { get; private set; }
+
+        public RelayCommand Undo { get; private set; }
+        public RelayCommand Redo { get; private set; }
 
         public MainWindow()
         {
+            #region Command Setup
             OpenImageViewer = new RelayCommand(
                 (o) =>
                 {
                     _imageViewer = new ImageViewerDialog();
+                    _imageViewer.Owner = this;
                     _imageViewer.Closed += ImageViewer_Closed;
                     _imageViewer.Show();
                 },
@@ -42,7 +52,33 @@ namespace StoryTimeDevKit
                 }
             );
 
+            SaveScene = new RelayCommand(
+                (o) => { },
+                (o) => { return true; }
+            );
+
+            SaveAllScenes = new RelayCommand(
+                (o) => { },
+                (o) => { return true; }
+            );
+
+            Undo = new RelayCommand(
+                (o) => { SceneViewControl.Undo(); },
+                (o) => { return SceneViewControl.CanUndo; }
+            );
+
+            Redo = new RelayCommand(
+                (o) => { SceneViewControl.Redo(); },
+                (o) => { return SceneViewControl.CanRedo; }
+            );
+
+            #endregion
+
             InitializeComponent();
+
+            SceneViewControl.OnActorAdded += OnActorAddedHandler;
+            
+            ApplicationUtils.SetupApplicationFolders();
         }
 
         private void gameObjectsControl1_OnSceneDoubleClicked(SceneViewModel obj)
@@ -53,6 +89,11 @@ namespace StoryTimeDevKit
         private void ImageViewer_Closed(object sender, EventArgs e)
         {
             _imageViewer = null;
+        }
+
+        private void OnActorAddedHandler(ActorViewModel model)
+        {
+            CommandManager.InvalidateRequerySuggested();
         }
     }
 }

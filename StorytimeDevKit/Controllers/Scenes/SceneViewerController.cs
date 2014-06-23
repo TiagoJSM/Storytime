@@ -31,6 +31,36 @@ namespace StoryTimeDevKit.Controllers.Scenes
             _graphicsContext = graphicsContext;
         }
 
+        public void Undo()
+        {
+            _commands.Undo();
+        }
+
+        public void Redo()
+        {
+            _commands.Redo();
+        }
+
+        public int CommandCount
+        {
+            get { return _commands.CommandCount; }
+        }
+
+        public int? CommandIndex
+        {
+            get { return _commands.CommandIndex; }
+        }
+
+        public bool CanUndo
+        {
+            get { return _commands.CanUndo; }
+        }
+
+        public bool CanRedo
+        {
+            get { return _commands.CanRedo; }
+        }
+
         public void AddActor(SceneTabViewModel s, ActorViewModel actor, Vector2 position)
         {
             if(s == null) 
@@ -50,7 +80,6 @@ namespace StoryTimeDevKit.Controllers.Scenes
             PopulateActorWithDefaultValuesIfNeeded(ba, position);
 
             IReversibleCommand command = new AddActorCommand(s.Scene, ba);
-            command.Run();
             _commands.Push(command);
         }
 

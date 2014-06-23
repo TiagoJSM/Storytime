@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+
+namespace StoryTimeDevKit.Extensions
+{
+    public static class DirectoryInfoExtensions
+    {
+        public static FileInfo[] GetFilesByExtension(this DirectoryInfo di, string extension)
+        {
+            return di.GetFilesByExtension(extension, SearchOption.TopDirectoryOnly);
+        }
+
+        public static FileInfo[] GetFilesByExtension(this DirectoryInfo di, string extension, SearchOption option)
+        {
+            return di.GetFiles(string.Format("*{0}", extension), option);
+        }
+    }
+}

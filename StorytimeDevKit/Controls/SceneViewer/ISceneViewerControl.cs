@@ -11,5 +11,12 @@ namespace StoryTimeDevKit.Controls.SceneViewer
     public interface ISceneViewerControl
     {
         void AddScene(SceneViewModel s);
+        void Undo();
+        void Redo();
+
+        int CommandCount { get; }
+        int? CommandIndex { get; }
+        bool CanUndo { get; }
+        bool CanRedo { get; }
     }
 }

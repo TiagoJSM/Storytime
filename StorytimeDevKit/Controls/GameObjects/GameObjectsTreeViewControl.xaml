@@ -47,10 +47,22 @@
                 <TreeView.Resources>
                     <ContextMenu x:Key="Scenes">
                         <MenuItem Header="Add">
-                            <MenuItem Header="New scene" Command="{Binding AddNewSceneCommand}"/>
-                            <MenuItem Header="Existing scene" Command="{Binding AddExistingSceneCommand}"/>
-                            <MenuItem Header="Folder" Command="{Binding AddNewFolderCommand}"/>
+                            <MenuItem Header="New scene" Command="{Binding RelativeSource={  
+                                    RelativeSource FindAncestor, 
+					                AncestorType={x:Type UserControl}}, 
+					            Path=AddNewSceneCommand}"
+                                CommandParameter="{Binding}"/>
+                            <MenuItem Header="Folder" Command="{Binding RelativeSource={  
+                                    RelativeSource FindAncestor, 
+					                AncestorType={x:Type UserControl}}, 
+					            Path=AddNewFolderCommand}"
+                                CommandParameter="{Binding}"/>
                         </MenuItem>
+                        <MenuItem Header="Import scene" Command="{Binding RelativeSource={  
+                                RelativeSource FindAncestor, 
+					            AncestorType={x:Type UserControl}}, 
+					        Path=ImportSceneCommand}"
+                            CommandParameter="{Binding}"/>
                     </ContextMenu>
                     <ContextMenu x:Key="Textures">
                         <MenuItem Header="New texture..."/>

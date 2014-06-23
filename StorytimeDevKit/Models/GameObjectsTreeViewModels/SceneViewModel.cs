@@ -9,13 +9,13 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
     public class SceneViewModel : TreeViewItemViewModel
     {
         public string SceneName { get; private set; }
-        public string FullPath { get; private set; }
+        public string Path { get; private set; }
 
-        public SceneViewModel(TreeViewItemViewModel parent, IGameObjectsControl gameObjects, string sceneName, string fullpath)
+        public SceneViewModel(TreeViewItemViewModel parent, IGameObjectsControl gameObjects, string sceneName, string path)
             : base(parent, gameObjects, false)
         {
             SceneName = sceneName;
-            FullPath = fullpath;
+            Path = path;
         }
     }
 }

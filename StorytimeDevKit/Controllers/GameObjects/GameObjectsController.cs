@@ -15,13 +15,14 @@ using StoryTimeDevKit.Commands.UICommands;
 using System.Windows;
 using System.Windows.Controls;
 using StoryTimeDevKit.Controls.Dialogs;
+using StoryTimeDevKit.Models.SavedData;
+using StoryTimeDevKit.Extensions;
 
 namespace StoryTimeDevKit.Controllers.GameObjects
 {
     public class GameObjectsController : IGameObjectsController
     {
         private IGameObjectsControl _control;
-        private GameObjectsPathConfiguration _goPathConfig;
 
         private class ActorsCategoryViewModel : GameObjectCategoryViewModel
         {
@@ -32,40 +33,9 @@ namespace StoryTimeDevKit.Controllers.GameObjects
 
         private class ScenesCategoryViewModel : GameObjectCategoryViewModel
         {
-            public ICommand AddNewSceneCommand { get; private set; }
-            public ICommand AddNewFolderCommand { get; private set; }
-            public ICommand AddExistingSceneCommand { get; private set; }
-
             public ScenesCategoryViewModel(IGameObjectsControl gameObjects)
                 : base(gameObjects, "Scenes", "/Images/GameObjectsControl/SceneTreeViewIcon.jpg", "Scenes")
-            {
-                AddNewSceneCommand =
-                    new RelayCommand(
-                        (obj) =>
-                        {
-                            CreateSceneDialog dialog = new CreateSceneDialog();
-                            if (dialog.ShowDialog().Equals(true))
-                            {
-                                CreateSceneViewModel model = dialog.Model;
-                                Children.Add(new SceneViewModel(this, gameObjects, model.SceneName, "full"));
-                                IsExpanded = true;
-                            }
-                        });
-
-                AddNewFolderCommand =
-                    new RelayCommand(
-                        (obj) =>
-                        {
-                            MessageBox.Show("New Folder!");
-                        });
-
-                AddExistingSceneCommand =
-                    new RelayCommand(
-                        (obj) =>
-                        {
-                            MessageBox.Show("existing Scene!");
-                        });
-            }
+            { }
         }
 
         private class TexturesCategoryViewModel : GameObjectCategoryViewModel
@@ -78,11 +48,6 @@ namespace StoryTimeDevKit.Controllers.GameObjects
         public GameObjectsController(IGameObjectsControl control)
         {
             _control = control;
-
-            _goPathConfig = XMLSerializerUtils
-                .DeserializeFromXML<GameObjectsPathConfiguration>(
-                    RootConfigFiles.GameObjectsPathName
-                );
         }
 
         public GameObjectsRoot LoadGameObjectsTree()
@@ -92,17 +57,34 @@ namespace StoryTimeDevKit.Controllers.GameObjects
             return root;
         }
 
+        public string CreateScene(string sceneName)
+        {
+            SavedSceneModel model = new SavedSceneModel()
+            {
+                SceneActors = new SavedSceneActor[0],
+                SceneName = sceneName
+            };
+
+            ApplicationUtils.SaveScene(model);
+            return ApplicationUtils.GetPathOf(model);
+        }
+
+        public bool SceneFileExists(string sceneName)
+        {
+            return ApplicationUtils.SceneFileExists(sceneName);
+        }
+
         private List<GameObjectCategoryViewModel> LoadGameObjectsCategories()
         {
             GameObjectCategoryViewModel actors = new ActorsCategoryViewModel(_control);
             GameObjectCategoryViewModel scenes = new ScenesCategoryViewModel(_control);
-            GameObjectCategoryViewModel textures = new TexturesCategoryViewModel(_control);
+            //GameObjectCategoryViewModel textures = new TexturesCategoryViewModel(_control);
             
             LoadActorsTree(actors);
             LoadScenesTree(scenes);
-            LoadTexturesTree(textures);
+            //LoadTexturesTree(textures);
 
-            return new List<GameObjectCategoryViewModel>() { actors, scenes, textures };
+            return new List<GameObjectCategoryViewModel>() { actors, scenes };
         }
 
         private void LoadActorsTree(GameObjectCategoryViewModel actorsCategory)
@@ -129,7 +111,26 @@ namespace StoryTimeDevKit.Controllers.GameObjects
 
         private void LoadScenesTree(GameObjectCategoryViewModel scenes)
         {
+            DirectoryInfo di = new DirectoryInfo(RelativePaths.Scenes);
+            AddScenesAndFolders(scenes, di);
+        }
 
+        private void AddScenesAndFolders(TreeViewItemViewModel parent, DirectoryInfo currentDirectory)
+        {
+            FileInfo[] fis = currentDirectory.GetFilesByExtension(FileExtensions.SceneSavedModel);
+            foreach (FileInfo fi in fis)
+            {
+                SceneViewModel svm = new SceneViewModel(parent, _control, fi.Name, fi.FullName);
+                parent.Children.Add(svm);
+            }
+
+            DirectoryInfo[] childDirectories = currentDirectory.GetDirectories();
+            foreach (DirectoryInfo di in childDirectories)
+            {
+                FolderViewModel folder = new FolderViewModel(parent, _control, di.Name, di.FullName);
+                parent.Children.Add(folder);
+                AddScenesAndFolders(folder, di);
+            }
         }
 
         private void LoadTexturesTree(GameObjectCategoryViewModel texturesCategory)
@@ -137,7 +138,10 @@ namespace StoryTimeDevKit.Controllers.GameObjects
             List<FileInfo> fis = new List<FileInfo>();
             List<FolderViewModel> folders = new List<FolderViewModel>();
 
-            foreach(string path in _goPathConfig.TexturesPaths)
+            string [] textureDirectories =
+                Directory
+                .GetDirectories(RelativePaths.Textures);
+            foreach (string path in textureDirectories)
             {
                 DirectoryInfo di = new DirectoryInfo(path);
                 fis.AddRange(di.GetFiles("*.jpg", SearchOption.AllDirectories));

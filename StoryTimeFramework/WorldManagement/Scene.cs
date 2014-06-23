@@ -60,6 +60,7 @@ namespace StoryTimeFramework.WorldManagement
 
         public string SceneName { get; set; }
         public ICamera Camera { get { return _activeCamera; } }
+        public IEnumerable<BaseActor> Actors { get { return _baseActors; } }
 
         public Scene()
         {
