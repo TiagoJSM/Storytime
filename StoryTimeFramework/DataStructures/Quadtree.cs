@@ -219,14 +219,23 @@ namespace StoryTimeFramework.DataStructures
         public bool Remove(TData data)
         {
             IQuadtreeNode<TData> bucket;
-            if (_dataHolding.TryGetValue(data, out bucket))
+            if (!_dataHolding.TryGetValue(data, out bucket))
+                return false;
+
+            bool removed;
+            if (bucket == this)
             {
-                bool removed = bucket.Remove(data);
-                if (removed)
-                    _dataHolding.Remove(data);
-                return removed;
+                _dataSet.Remove(data);
+                removed = true;
             }
-            return false;
+            else
+            {
+                removed = bucket.Remove(data);
+            }
+
+            if (removed)
+                _dataHolding.Remove(data);
+            return removed;
         }
 
         public void Query(Action<TData> HitAction)
