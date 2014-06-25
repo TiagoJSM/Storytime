@@ -12,7 +12,9 @@ namespace StoryTimeDevKit.Controllers.GameObjects
     {
         GameObjectsRoot LoadGameObjectsTree();
         string CreateScene(string sceneName);
+        string CreateScene(FolderViewModel folder, string sceneName);
         bool SceneFileExists(string sceneName);
+        bool SceneFileExistsInFolder(FolderViewModel folder, string sceneName);
         //List<GameObjectsActorModel> LoadActors();
         //List<GameObjectsTextureModel> LoadTextures();
     }

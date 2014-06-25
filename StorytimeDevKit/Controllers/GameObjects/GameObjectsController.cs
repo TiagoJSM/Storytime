@@ -69,9 +69,26 @@ namespace StoryTimeDevKit.Controllers.GameObjects
             return ApplicationUtils.GetPathOf(model);
         }
 
+        public string CreateScene(FolderViewModel folder, string sceneName)
+        {
+            SavedSceneModel model = new SavedSceneModel()
+            {
+                SceneActors = new SavedSceneActor[0],
+                SceneName = sceneName
+            };
+
+            ApplicationUtils.SaveSceneInFolder(model, folder.FolderFullPath);
+            return ApplicationUtils.GetPathOfSceneInFolder(model, folder.FolderFullPath);
+        }
+
         public bool SceneFileExists(string sceneName)
         {
             return ApplicationUtils.SceneFileExists(sceneName);
+        }
+
+        public bool SceneFileExistsInFolder(FolderViewModel folder, string sceneName)
+        {
+            return ApplicationUtils.SceneFileExistsInFolder(folder.FolderFullPath, sceneName);
         }
 
         private List<GameObjectCategoryViewModel> LoadGameObjectsCategories()
@@ -127,7 +144,7 @@ namespace StoryTimeDevKit.Controllers.GameObjects
             DirectoryInfo[] childDirectories = currentDirectory.GetDirectories();
             foreach (DirectoryInfo di in childDirectories)
             {
-                FolderViewModel folder = new FolderViewModel(parent, _control, di.Name, di.FullName);
+                FolderViewModel folder = new FolderViewModel(parent, _control, di.Name, di.FullName, "Scenes");
                 parent.Children.Add(folder);
                 AddScenesAndFolders(folder, di);
             }
@@ -179,5 +196,6 @@ namespace StoryTimeDevKit.Controllers.GameObjects
             folders.Add(folder);
             return folder;
         }
+
     }
 }

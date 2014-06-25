@@ -121,7 +121,11 @@
 
                     <HierarchicalDataTemplate DataType="{x:Type gotvm:FolderViewModel}" 
                         ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Tag="{Binding Tag}" ContextMenuOpening="GameObjectsCategory_ContextMenuOpening">
+                            <StackPanel.ContextMenu>
+                                <ContextMenu>
+                                </ContextMenu>
+                            </StackPanel.ContextMenu>
                             <Image Width="20" Height="20" Name="FolderImage" Margin="0,2,2,0" />
                             <TextBlock FontSize="14" Text="{Binding FolderName}" />
                         </StackPanel>

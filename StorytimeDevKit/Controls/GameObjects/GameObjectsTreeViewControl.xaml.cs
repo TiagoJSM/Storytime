@@ -58,32 +58,7 @@ namespace StoryTimeDevKit.Controls.GameObjects
             
             #region Initialize Commands
             AddNewSceneCommand =
-                new RelayCommand(
-                    (obj) =>
-                    {
-                        GameObjectCategoryViewModel category = obj as GameObjectCategoryViewModel;
-                        CreateSceneDialog dialog = new CreateSceneDialog();
-                        if (dialog.ShowDialog().Equals(false))
-                            return;
-
-                        CreateSceneViewModel model = dialog.Model;
-
-                        if(_controller.SceneFileExists(model.SceneName))
-                        {
-                            MessageBoxResult result = 
-                                MessageBox.Show(
-                                    string.Format(LocalizedTexts.SceneAlreadyExists, model.SceneName),
-                                    GenericTexts.Confirmation, 
-                                    MessageBoxButton.YesNo);
-
-                            if (!(result == MessageBoxResult.Yes))
-                                return;  
-                        }
-                            
-                        string path = _controller.CreateScene(model.SceneName);
-                        category.Children.Add(new SceneViewModel(category, this, model.SceneName, path));
-                        category.IsExpanded = true;
-                    });
+                new RelayCommand(AddSceneTo);
             AddNewFolderCommand =
                 new RelayCommand(
                     (obj) =>
@@ -123,9 +98,10 @@ namespace StoryTimeDevKit.Controls.GameObjects
                         if (draggedItem != null)
                         {
                             DragDropEffects finalDropEffect =
-                DragDrop.DoDragDrop(GameObjects,
-                    GameObjects.SelectedValue,
-                                DragDropEffects.Move);
+                                DragDrop.DoDragDrop(
+                                    GameObjects,
+                                    GameObjects.SelectedValue,
+                                    DragDropEffects.Move);
                             //Checking target is not null and item is 
                             //dragging(moving)
                             /*if ((finalDropEffect == DragDropEffects.Move) &&
@@ -201,6 +177,11 @@ namespace StoryTimeDevKit.Controls.GameObjects
         private void GameObjectsCategory_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             StackPanel s = sender as StackPanel;
+            if(s.Tag == null)
+            {
+                e.Handled = true;
+                return;
+            }
             bool contains = GameObjects.Resources.Contains(s.Tag);
             if(contains)
                 s.ContextMenu = GameObjects.Resources[s.Tag] as System.Windows.Controls.ContextMenu;
@@ -221,6 +202,46 @@ namespace StoryTimeDevKit.Controls.GameObjects
         {
             if (GameObjects.SelectedItem is SceneViewModel && OnSceneDoubleClicked != null)
                 OnSceneDoubleClicked(GameObjects.SelectedItem as SceneViewModel);
+        }
+
+        private void AddSceneTo(object obj)
+        {
+            TreeViewItemViewModel parent = obj as TreeViewItemViewModel;
+            CreateSceneDialog dialog = new CreateSceneDialog();
+            if (dialog.ShowDialog().Equals(false))
+                return;
+
+            CreateSceneViewModel model = dialog.Model;
+
+            bool sceneFileExists;
+            if (parent is FolderViewModel)
+            {
+                FolderViewModel folder = parent as FolderViewModel;
+                sceneFileExists = _controller.SceneFileExistsInFolder(folder, model.SceneName);
+            }
+            else
+                sceneFileExists = _controller.SceneFileExists(model.SceneName);
+
+            if (sceneFileExists)
+            {
+                MessageBoxResult result = 
+                    MessageBox.Show(
+                        string.Format(LocalizedTexts.SceneAlreadyExists, model.SceneName),
+                        GenericTexts.Confirmation, 
+                        MessageBoxButton.YesNo);
+
+                if (!(result == MessageBoxResult.Yes))
+                    return;  
+            }
+            
+            string path;
+            if (parent is FolderViewModel)
+                path = _controller.CreateScene(parent as FolderViewModel, model.SceneName);
+            else
+                path = _controller.CreateScene(model.SceneName);
+
+            parent.Children.Add(new SceneViewModel(parent, this, model.SceneName, path));
+            parent.IsExpanded = true;
         }
     }
 }

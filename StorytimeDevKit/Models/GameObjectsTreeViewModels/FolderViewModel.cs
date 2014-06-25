@@ -12,11 +12,17 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
         public string FolderName { get; private set; }
         public string FolderFullPath { get; private set; }
 
-        public FolderViewModel(TreeViewItemViewModel parent, IGameObjectsControl gameObjects, string folderName, string folderFullPath)
+        public FolderViewModel(
+            TreeViewItemViewModel parent, 
+            IGameObjectsControl gameObjects, 
+            string folderName, 
+            string folderFullPath, 
+            string tag = null)
             : base(parent, gameObjects, false)
         {
             FolderName = folderName;
             FolderFullPath = folderFullPath;
+            Tag = tag;
         }
     }
 }
