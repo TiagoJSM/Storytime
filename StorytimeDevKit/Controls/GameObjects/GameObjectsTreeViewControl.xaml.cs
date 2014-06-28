@@ -212,7 +212,7 @@ namespace StoryTimeDevKit.Controls.GameObjects
                 return;
 
             CreateSceneViewModel model = dialog.Model;
-
+            
             bool sceneFileExists;
             if (parent is FolderViewModel)
             {
@@ -242,6 +242,10 @@ namespace StoryTimeDevKit.Controls.GameObjects
 
             parent.Children.Add(new SceneViewModel(parent, this, model.SceneName, path));
             parent.IsExpanded = true;
+        }
+
+        private void AddOjectToCurrectPosition(IList<TreeViewItemViewModel> list, TreeViewItemViewModel model)
+        {
         }
     }
 }

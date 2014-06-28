@@ -119,6 +119,7 @@
       <DependentUpon>XNAControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\XNA\XNAControlGame.cs" />
+    <Compile Include="Converters\Treeview\ScenesSortingValueConverter.cs" />
     <Compile Include="DataStructures\Virtualization\AsyncVirtualizingCollection.cs" />
     <Compile Include="DataStructures\Virtualization\IItemsProvider.cs" />
     <Compile Include="DataStructures\Virtualization\TextureItemsProvider.cs" />
@@ -126,16 +127,19 @@
     <Compile Include="Exceptions\ApplicationBaseException.cs" />
     <Compile Include="Exceptions\Generic\InvalidArgumentOnControllerMethodException.cs" />
     <Compile Include="Extensions\DirectoryInfoExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions.cs" />
     <Compile Include="Models\ActorEditablePropertyModel.cs" />
     <Compile Include="Models\ActorPropertyEditorModel.cs" />
     <Compile Include="Models\BaseViewModel.cs" />
     <Compile Include="Models\CreateSceneViewModel.cs" />
+    <Compile Include="Models\GameObjectsTreeViewModels\ActorsCategoryViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\ActorViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\AssemblyViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\FolderViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\GameObjectCategoryViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\GameObjectsRoot.cs" />
+    <Compile Include="Models\GameObjectsTreeViewModels\ScenesCategoryViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\SceneViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\TextureViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\TreeViewItemViewModel.cs" />

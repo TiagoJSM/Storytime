@@ -24,20 +24,6 @@ namespace StoryTimeDevKit.Controllers.GameObjects
     {
         private IGameObjectsControl _control;
 
-        private class ActorsCategoryViewModel : GameObjectCategoryViewModel
-        {
-            public ActorsCategoryViewModel(IGameObjectsControl gameObjects)
-                : base(gameObjects, "Actors", "/Images/GameObjectsControl/ActorTreeViewIcon.png", "Actors")
-            { }
-        }
-
-        private class ScenesCategoryViewModel : GameObjectCategoryViewModel
-        {
-            public ScenesCategoryViewModel(IGameObjectsControl gameObjects)
-                : base(gameObjects, "Scenes", "/Images/GameObjectsControl/SceneTreeViewIcon.jpg", "Scenes")
-            { }
-        }
-
         private class TexturesCategoryViewModel : GameObjectCategoryViewModel
         {
             public TexturesCategoryViewModel(IGameObjectsControl gameObjects)

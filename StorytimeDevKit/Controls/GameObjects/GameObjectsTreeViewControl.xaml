@@ -3,19 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:gotvm="clr-namespace:StoryTimeDevKit.Models.GameObjectsTreeViewModels" 
+             xmlns:gotvm="clr-namespace:StoryTimeDevKit.Models.GameObjectsTreeViewModels"
+             xmlns:conv="clr-namespace:StoryTimeDevKit.Converters.Treeview"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <!--<UserControl.Resources>
-        <Style TargetType="MenuItem">
-            <Setter Property="Header" Value="{Binding Header}"/>
-            <Setter Property="StaysOpenOnClick" Value="{Binding StaysOpenOnClick}"/>
-        </Style>
-    </UserControl.Resources>-->
-
+    <UserControl.Resources>
+        <conv:ScenesSortingValueConverter x:Key="scenesConverter"/>
+    </UserControl.Resources>
     <Grid>
         <GroupBox Header="Game objects" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Name="groupBox1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
-            <TreeView AllowDrop="True" ItemsSource="{Binding GameObjectsCategories}" BorderThickness="1" HorizontalContentAlignment="Stretch" Name="GameObjects" VerticalContentAlignment="Stretch" MouseDoubleClick="GameObjects_MouseDoubleClick">
+                <TreeView AllowDrop="True" ItemsSource="{Binding GameObjectsCategories}" BorderThickness="1" HorizontalContentAlignment="Stretch" Name="GameObjects" VerticalContentAlignment="Stretch" MouseDoubleClick="GameObjects_MouseDoubleClick">
                 <TreeView.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#313C62FF" Offset="0" />
@@ -70,9 +67,21 @@
                     <ContextMenu x:Key="Actors">
                         <MenuItem Header="New actor..."/>
                     </ContextMenu>
-                    
-                    <HierarchicalDataTemplate DataType="{x:Type gotvm:GameObjectCategoryViewModel}" 
+
+                    <HierarchicalDataTemplate DataType="{x:Type gotvm:ActorsCategoryViewModel}" 
                         ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal" Tag="{Binding Tag}" ContextMenuOpening="GameObjectsCategory_ContextMenuOpening">
+                            <StackPanel.ContextMenu>
+                                <ContextMenu>
+                                </ContextMenu>
+                            </StackPanel.ContextMenu>
+                            <Image Width="20" Height="20" Source="{Binding ImagePath}" Margin="0,2,2,0"/>
+                            <TextBlock FontSize="14" Text="{Binding GameObjectCategory}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+
+                    <HierarchicalDataTemplate DataType="{x:Type gotvm:ScenesCategoryViewModel}" 
+                        ItemsSource="{Binding Children, Converter={StaticResource scenesConverter}}">
                         <StackPanel Orientation="Horizontal" Tag="{Binding Tag}" ContextMenuOpening="GameObjectsCategory_ContextMenuOpening">
                             <StackPanel.ContextMenu>
                                 <ContextMenu>
@@ -120,7 +129,7 @@
                     </HierarchicalDataTemplate>
 
                     <HierarchicalDataTemplate DataType="{x:Type gotvm:FolderViewModel}" 
-                        ItemsSource="{Binding Children}">
+                        ItemsSource="{Binding Children, Converter={StaticResource scenesConverter}}">
                         <StackPanel Orientation="Horizontal" Tag="{Binding Tag}" ContextMenuOpening="GameObjectsCategory_ContextMenuOpening">
                             <StackPanel.ContextMenu>
                                 <ContextMenu>
