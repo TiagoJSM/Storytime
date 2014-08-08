@@ -9,6 +9,18 @@
         xmlns:my2="clr-namespace:StoryTimeDevKit.Controls.GameObjects" 
         xmlns:my4="clr-namespace:StoryTimeDevKit.Controls.Editors" 
         Left="100" Top="100" xmlns:my5="clr-namespace:StoryTimeDevKit.Controls.Displayers">
+
+    <Window.Resources>
+        <Style x:Key="ToolBarButtonStyle" TargetType="Button">
+            <Setter Property="IsEnabled" Value="True" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.25"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
@@ -64,7 +76,8 @@
                 Command="{Binding RelativeSource={  
                             RelativeSource FindAncestor, 
 					        AncestorType={x:Type Window}}, 
-					    Path=SaveScene}">
+					    Path=SaveScene}"
+                Style="{StaticResource ToolBarButtonStyle}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/save.png"/>
                 </Button>
             <Button 
@@ -78,35 +91,17 @@
                 Command="{Binding RelativeSource={  
                             RelativeSource FindAncestor, 
 					        AncestorType={x:Type Window}}, 
-					    Path=Undo}">
+					    Path=Undo}"
+                Style="{StaticResource ToolBarButtonStyle}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/undo.png"/>
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="IsEnabled" Value="True" />
-                        <Style.Triggers>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.25"></Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
             </Button>
             <Button 
                 Command="{Binding RelativeSource={  
                             RelativeSource FindAncestor, 
 					        AncestorType={x:Type Window}}, 
-					    Path=Redo}">
+					    Path=Redo}"
+                Style="{StaticResource ToolBarButtonStyle}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/redo.png"/>
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="IsEnabled" Value="True" />
-                        <Style.Triggers>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.25"></Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
             </Button>
         </ToolBar>
         <Grid Grid.Row="1"></Grid>

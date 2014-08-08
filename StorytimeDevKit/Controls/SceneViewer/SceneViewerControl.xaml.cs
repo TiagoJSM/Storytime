@@ -47,6 +47,13 @@ namespace StoryTimeDevKit.Controls.SceneViewer
 
         private ObservableCollection<SceneTabViewModel> Tabs { get; set; }
         public RelayCommand RemoveTab { get; set; }
+        public SceneTabViewModel SelectedScene
+        {
+            get
+            {
+                return ScenesControl.SelectedItem as SceneTabViewModel;
+            }
+        }
 
         public event Action<ActorViewModel> OnActorAdded;
 
@@ -124,7 +131,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             System.Drawing.Point gamePanelDimensions
         )
         {
-            SceneTabViewModel sceneVM = ScenesControl.SelectedItem as SceneTabViewModel;
+            SceneTabViewModel sceneVM = SelectedScene;
             if(sceneVM == null) return;
 
             float x = sceneVM.Scene.Camera.Viewport.Width * pointInGamePanel.X / gamePanelDimensions.X;
@@ -141,7 +148,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             System.Drawing.Point pointInGamePanel,
             System.Drawing.Point gamePanelDimensions)
         {
-            SceneTabViewModel sceneVM = ScenesControl.SelectedItem as SceneTabViewModel;
+            SceneTabViewModel sceneVM = SelectedScene;
             if (sceneVM == null) return;
 
             _clickPosition = GetPointInGameWorld(sceneVM.Scene.Camera, pointInGamePanel, gamePanelDimensions);
@@ -157,7 +164,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         private void xna_OnMouseDown(System.Drawing.Point pointInGamePanel, System.Drawing.Point gamePanelDimensions)
         {
             if(_intersectedActor == null) return;
-            SceneTabViewModel sceneVM = ScenesControl.SelectedItem as SceneTabViewModel;
+            SceneTabViewModel sceneVM = SelectedScene;
             if (sceneVM == null) return;
 
             Vector2 clickPosition = GetPointInGameWorld(sceneVM.Scene.Camera, pointInGamePanel, gamePanelDimensions);
@@ -172,7 +179,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             System.Drawing.Point gamePanelDimensions, 
             System.Windows.Forms.MouseButtons buttons)
         {
-            SceneTabViewModel sceneVM = ScenesControl.SelectedItem as SceneTabViewModel;
+            SceneTabViewModel sceneVM = SelectedScene;
             if (sceneVM == null) return;
             if (_intersectedActorChild == null) return;
 
@@ -183,7 +190,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         private void xna_OnMouseUp(System.Drawing.Point pointInGamePanel, System.Drawing.Point gamePanelDimensions)
         {
             if (_intersectedActorChild == null) return;
-            SceneTabViewModel sceneVM = ScenesControl.SelectedItem as SceneTabViewModel;
+            SceneTabViewModel sceneVM = SelectedScene;
             if (sceneVM == null) return;
 
             Vector2 mouseDownPosition = GetPointInGameWorld(sceneVM.Scene.Camera, pointInGamePanel, gamePanelDimensions);

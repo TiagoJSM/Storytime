@@ -54,7 +54,7 @@ namespace StoryTimeDevKit
 
             SaveScene = new RelayCommand(
                 (o) => { },
-                (o) => { return true; }
+                (o) => { return SceneViewControl.SelectedScene != null; }
             );
 
             SaveAllScenes = new RelayCommand(
