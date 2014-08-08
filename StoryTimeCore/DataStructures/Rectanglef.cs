@@ -30,6 +30,11 @@ namespace StoryTimeCore.DataStructures
             Y = y;
         }
 
+        public Rectanglef(Vector2 position)
+            : this(position.X, position.Y, 0)
+        {
+        }
+
         public float Top { get { return Y; } }
         public float Bottom { get { return Y + Height; } }
         public float Left { get { return X; } }
@@ -47,6 +52,13 @@ namespace StoryTimeCore.DataStructures
         public Vector2 TopRight { get { return new Vector2(Right, Top); } }
         public Vector2 BottomLeft { get { return new Vector2(Left, Bottom); } }
         public Vector2 BottomRight { get { return new Vector2(Right, Bottom); } }
+
+
+        public void Translate(Vector2 translation)
+        {
+            X += translation.X;
+            Y += translation.Y;
+        }
 
         public bool Contains(Vector2 point)
         {

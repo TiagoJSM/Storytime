@@ -75,13 +75,13 @@ namespace StoryTime
             GraphicsContext.SetSceneDimensions(1280, 720);
             _actor = new Actor()
             {
-                RenderableActor = _asset
+                RenderableAsset = _asset
             };
 
             Scene s = new Scene();
             s.AddActor(_actor);
-            World.Singleton.AddScene(s);
-            World.Singleton.GraphicsContext = GraphicsContext;
+            GameWorld.Singleton.AddScene(s);
+            GameWorld.Singleton.GraphicsContext = GraphicsContext;
             //rectangle = new Texture2D(GraphicsDevice, 2, 2);
             //rectangle.SetData(new[] { Color.White, Color.Red, Color.Green, Color.Blue });
             // TODO: use this.Content to load your game content here
@@ -140,7 +140,7 @@ namespace StoryTime
                 OnDraw(render, wt);
             }
             //_asset.Render(render);
-            World.Singleton.RenderActiveScene();
+            GameWorld.Singleton.RenderActiveScene();
 
             render.PostRender();
             base.Draw(gameTime);

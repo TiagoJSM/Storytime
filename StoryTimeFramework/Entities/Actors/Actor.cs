@@ -14,10 +14,9 @@ namespace StoryTimeCore.Entities.Actors
 {
     public class Actor : BaseActor
     {
-        public override IRenderableAsset RenderableActor { get; set; }
         public override void TimeElapse(WorldTime WTime)
         {
-            RenderableActor.TimeElapse(WTime);
+            RenderableAsset.TimeElapse(WTime);
         }
     }
 }

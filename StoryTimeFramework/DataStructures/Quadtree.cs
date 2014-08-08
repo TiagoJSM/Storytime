@@ -245,23 +245,35 @@ namespace StoryTimeFramework.DataStructures
 
         public void Query(Rectanglef boundingBox, Action<TData> HitAction)
         {
+            QueryWithIntersector((rec) => boundingBox.Intersects(rec), HitAction);
+        }
+
+        public List<TData> Intersect(Vector2 point)
+        {
+            List<TData> dataSet = new List<TData>();
+            QueryWithIntersector((rec) => rec.Contains(point), (data) => dataSet.Add(data));
+            return dataSet;
+        }
+
+        private void QueryWithIntersector(Func<Rectanglef, bool> intersector, Action<TData> HitAction)
+        {
             DataSet
-                .ForEach( 
+                .ForEach(
                     TData =>
                     {
-                        if(boundingBox.Intersects(TData.BoundingBox))
+                        if (intersector(TData.BoundingBox))
                             HitAction(TData);
                     }
                 );
 
-            QueryAux(boundingBox, _childNode, HitAction);
+            QueryWithIntersectorAux(intersector, _childNode, HitAction);
         }
 
-        private void QueryAux(Rectanglef boundingBox, QuadtreeNode<TData> node, Action<TData> HitAction)
+        private void QueryWithIntersectorAux(Func<Rectanglef, bool> intersector, QuadtreeNode<TData> node, Action<TData> HitAction)
         {
             if (node == null)
                 return;
-            if (!boundingBox.Intersects(node.NodeCoordinates))
+            if (!intersector(node.NodeCoordinates))
                 return;
 
             if (node.DataSet.Count > 0)
@@ -270,7 +282,7 @@ namespace StoryTimeFramework.DataStructures
                     .ForEach(
                         TData =>
                         {
-                            if (boundingBox.Intersects(TData.BoundingBox))
+                            if (intersector(TData.BoundingBox))
                                 HitAction(TData);
                         }
                     );
@@ -279,7 +291,7 @@ namespace StoryTimeFramework.DataStructures
             int numOfChilds = (int)NodesPosition.TotalNodes;
             for(int idx = 0; idx < numOfChilds; idx++)
             {
-                QueryAux(boundingBox, node.GetChildAt(idx), HitAction);
+                QueryWithIntersectorAux(intersector, node.GetChildAt(idx), HitAction);
             }
         }
 

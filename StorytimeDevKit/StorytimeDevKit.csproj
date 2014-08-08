@@ -78,6 +78,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\ReversibleCommands\MoveActorCommand.cs" />
+    <Compile Include="Commands\ReversibleCommands\SelectActorCommand.cs" />
+    <Compile Include="SceneWidgets\ActorWidgetAdapter.cs" />
+    <Compile Include="SceneWidgets\BaseSceneWidget.cs" />
+    <Compile Include="SceneWidgets\ISceneWidget.cs" />
+    <Compile Include="SceneWidgets\MoveWidgetRenderableAsset.cs" />
     <Compile Include="Commands\ReversibleCommands\AddActorCommand.cs" />
     <Compile Include="Commands\ReversibleCommands\CommandStack.cs" />
     <Compile Include="Commands\ReversibleCommands\IReversibleCommand.cs">
@@ -127,6 +133,7 @@
     <Compile Include="Exceptions\ApplicationBaseException.cs" />
     <Compile Include="Exceptions\Generic\InvalidArgumentOnControllerMethodException.cs" />
     <Compile Include="Extensions\DirectoryInfoExtensions.cs" />
+    <Compile Include="Extensions\ISceneWidgetExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions.cs" />
     <Compile Include="Models\ActorEditablePropertyModel.cs" />
@@ -261,6 +268,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Farseer Physics Engine 3.5\Farseer Physics XNA.csproj">
+      <Project>{0A850700-1ABB-4288-A391-6726B90EBEB9}</Project>
+      <Name>Farseer Physics XNA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FarseerPhysicsWrapper\FarseerPhysicsWrapper.csproj">
+      <Project>{85BD65F7-F869-474D-9FE8-2E87FAB35737}</Project>
+      <Name>FarseerPhysicsWrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StoryTimeCore\StoryTimeCore.csproj">
       <Project>{768B1451-6637-4ADE-BB85-CB742B224D09}</Project>
       <Name>StoryTimeCore</Name>

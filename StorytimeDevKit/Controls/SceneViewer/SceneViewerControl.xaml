@@ -20,7 +20,7 @@
                 </DataTemplate>
             </TabControl.ItemTemplate>
         </TabControl>
-        
-        <my1:XnaControl HorizontalAlignment="Stretch" Margin="0,34,5,0" x:Name="xna" VerticalAlignment="Stretch"/>
+
+        <my1:XnaControl HorizontalAlignment="Stretch" Margin="0,34,5,0" x:Name="xna" VerticalAlignment="Stretch" OnMouseMove="xna_OnMouseMove" OnMouseClick="xna_OnMouseClick" OnDropActor="xna_OnDropActorHandler" OnMouseDown="xna_OnMouseDown" OnMouseUp="xna_OnMouseUp"/>
     </Grid>
 </UserControl>

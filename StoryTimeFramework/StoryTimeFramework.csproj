@@ -83,12 +83,18 @@
     <Compile Include="Entities\WorldEntity.cs" />
     <Compile Include="GenericExceptions\InvalidIndexException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Graphic\CompositeRenderableAsset.cs" />
     <Compile Include="Resources\Graphic\Static2DRenderableAsset.cs" />
+    <Compile Include="Resources\Graphic\TemplateRenderableAsset.cs" />
     <Compile Include="WorldManagement\Manageables\ITimeUpdatable.cs" />
     <Compile Include="WorldManagement\Scene.cs" />
-    <Compile Include="WorldManagement\World.cs" />
+    <Compile Include="WorldManagement\GameWorld.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Farseer Physics Engine 3.5\Farseer Physics XNA.csproj">
+      <Project>{0A850700-1ABB-4288-A391-6726B90EBEB9}</Project>
+      <Name>Farseer Physics XNA</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StoryTimeCore\StoryTimeCore.csproj">
       <Project>{768B1451-6637-4ADE-BB85-CB742B224D09}</Project>
       <Name>StoryTimeCore</Name>

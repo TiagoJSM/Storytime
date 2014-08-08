@@ -54,6 +54,9 @@ namespace StoryTime.Contexts
             public void Render(ITexture2D texture, float x, float y, float width, float height, float rotation)
             {
                 Texture2D tex = _xnaGD._gContentManager.GetTexture(texture);
+                x += TranslationTransformation.X;
+                y += TranslationTransformation.Y;
+
                 //this calculation is done because XNA SpriteBatch origin is at the top left corner of the screen
                 //this makes the origin become the lower left corner in favor of the scene size
                 int yPosition = (int)-y + _xnaGD._sceneHeight - (int)(height);

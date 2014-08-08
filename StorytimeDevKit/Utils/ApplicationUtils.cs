@@ -10,7 +10,7 @@ namespace StoryTimeDevKit.Utils
 {
     public static class ApplicationUtils
     {
-        private const string SavedScenePathTemplate = "{0}\\{1}.{2}";
+        private const string SavedScenePathTemplate = "{0}\\{1}{2}";
 
         public static void SetupApplicationFolders()
         {

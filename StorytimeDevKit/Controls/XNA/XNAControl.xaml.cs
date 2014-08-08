@@ -63,6 +63,10 @@ namespace StoryTimeDevKit.Controls.XNA
     public partial class XnaControl : UserControl
     {
         public event Action<ActorViewModel, System.Drawing.Point, System.Drawing.Point> OnDropActor;
+        public event Action<System.Drawing.Point, System.Drawing.Point> OnMouseUp;
+        public event Action<System.Drawing.Point, System.Drawing.Point> OnMouseDown;
+        public event Action<System.Drawing.Point, System.Drawing.Point> OnMouseClick;
+        public event Action<System.Drawing.Point, System.Drawing.Point, System.Windows.Forms.MouseButtons> OnMouseMove;
 
         public IntPtr Handle
         {
@@ -74,10 +78,21 @@ namespace StoryTimeDevKit.Controls.XNA
             InitializeComponent();
         }
 
-        private System.Drawing.Point GetPointInGameWorldAux(System.Drawing.Point p)
+        private System.Drawing.Point GetPointInGamePanel()
         {
-            p.Y = GamePanel.Height - p.Y;
-            return p;
+            System.Drawing.Point cursorScreenCoords = System.Windows.Forms.Cursor.Position;
+            System.Drawing.Point controlRelatedCoords = this.GamePanel.PointToClient(cursorScreenCoords);
+
+            controlRelatedCoords.Y = GamePanel.Height - controlRelatedCoords.Y;
+            return controlRelatedCoords;
+        }
+
+        private System.Drawing.Point GetGamePanelDimensions()
+        {
+            System.Drawing.Point gamePanelDimensions =
+                new System.Drawing.Point(GamePanel.Width, GamePanel.Height);
+
+            return gamePanelDimensions;
         }
 
         private void GamePanel_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
@@ -85,11 +100,7 @@ namespace StoryTimeDevKit.Controls.XNA
             Type t = Type.GetType(e.Data.GetFormats()[0]);
             object o = GetDataOfType(t, e);
             
-            System.Drawing.Point cursorScreenCoords = System.Windows.Forms.Cursor.Position;
-            System.Drawing.Point controlRelatedCoords = this.GamePanel.PointToClient(cursorScreenCoords);
-
-            System.Drawing.Point pGameWorld = 
-                GetPointInGameWorldAux(controlRelatedCoords);
+            System.Drawing.Point pGameWorld =  GetPointInGamePanel();
             System.Drawing.Point gamePanelDimensions = 
                 new System.Drawing.Point(GamePanel.Width, GamePanel.Height);
 
@@ -131,6 +142,40 @@ namespace StoryTimeDevKit.Controls.XNA
             return item;
         }
 
+        private void GamePanel_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            System.Drawing.Point pGamePanel = GetPointInGamePanel();
+            System.Drawing.Point gamePanelDimensions = GetGamePanelDimensions();
 
+            if (OnMouseUp != null)
+                OnMouseUp(pGamePanel, gamePanelDimensions);
+        }
+
+        private void GamePanel_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            System.Drawing.Point pGamePanel = GetPointInGamePanel();
+            System.Drawing.Point gamePanelDimensions = GetGamePanelDimensions();
+
+            if (OnMouseMove != null)
+                OnMouseMove(pGamePanel, gamePanelDimensions, e.Button);
+        }
+
+        private void GamePanel_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            System.Drawing.Point pGamePanel = GetPointInGamePanel();
+            System.Drawing.Point gamePanelDimensions = GetGamePanelDimensions();
+
+            if (OnMouseDown != null)
+                OnMouseDown(pGamePanel, gamePanelDimensions);
+        }
+
+        private void GamePanel_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            System.Drawing.Point pGamePanel = GetPointInGamePanel();
+            System.Drawing.Point gamePanelDimensions = GetGamePanelDimensions();
+
+            if (OnMouseClick != null)
+                OnMouseClick(pGamePanel, gamePanelDimensions);
+        }
     }
 }

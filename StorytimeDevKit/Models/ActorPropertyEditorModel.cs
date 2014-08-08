@@ -5,7 +5,7 @@ using System.Text;
 using System.Dynamic;
 using System.ComponentModel;
 using StoryTimeFramework.Entities.Actors;
-using StoryTimeCore.Bodies;
+using StoryTimeCore.Physics;
 using StoryTimeCore.Resources.Graphic;
 using StoryTimeCore.CustomAttributes.Editor;
 using StoryTimeCore.Extensions;

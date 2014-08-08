@@ -22,6 +22,7 @@ using StoryTimeDevKit.Controls.Dialogs;
 using StoryTimeDevKit.Models;
 using StoryTimeDevKit.Resources.GameObjectsTreeView;
 using StoryTimeDevKit.Resources;
+using StoryTimeDevKit.Configurations;
 
 namespace StoryTimeDevKit.Controls.GameObjects
 {
@@ -240,12 +241,15 @@ namespace StoryTimeDevKit.Controls.GameObjects
             else
                 path = _controller.CreateScene(model.SceneName);
 
-            parent.Children.Add(new SceneViewModel(parent, this, model.SceneName, path));
+            parent.Children.Add(
+                new SceneViewModel(
+                    parent, 
+                    this, 
+                    string.Concat(model.SceneName, FileExtensions.SceneSavedModel), 
+                    path
+                )
+            );
             parent.IsExpanded = true;
-        }
-
-        private void AddOjectToCurrectPosition(IList<TreeViewItemViewModel> list, TreeViewItemViewModel model)
-        {
         }
     }
 }

@@ -105,7 +105,7 @@ namespace StoryTimeDevKit.Controls.Editors
         {
             InitializeComponent();
             Actor a = new Actor();
-            a.RenderableActor = new Rend();
+            a.RenderableAsset = new Rend();
             dynamic model = new ActorPropertyEditorModel(a);
             model.lol = "lol";
             //var model = new CustomObjectType

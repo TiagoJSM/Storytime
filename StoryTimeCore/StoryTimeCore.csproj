@@ -59,7 +59,8 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bodies\IBody.cs" />
+    <Compile Include="Manageables\ISynchronizable.cs" />
+    <Compile Include="Physics\IBody.cs" />
     <Compile Include="Contexts\Interfaces\IGraphicsContext.cs" />
     <Compile Include="Contexts\Interfaces\ITexture2D.cs" />
     <Compile Include="CustomAttributes\Editor\EditableAttribute.cs" />

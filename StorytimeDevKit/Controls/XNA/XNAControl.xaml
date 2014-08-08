@@ -5,8 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:winForms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" Name="click">
     <WindowsFormsHost Background="#FF347276">
-        <winForms:Panel x:Name="GamePanel" AllowDrop="True" DragDrop="GamePanel_DragDrop" DragEnter="GamePanel_DragEnter" DragLeave="GamePanel_DragLeave" DragOver="GamePanel_DragOver" />
+        <winForms:Panel 
+            x:Name="GamePanel" 
+            AllowDrop="True" 
+            DragDrop="GamePanel_DragDrop" 
+            DragEnter="GamePanel_DragEnter" 
+            DragLeave="GamePanel_DragLeave" 
+            DragOver="GamePanel_DragOver" 
+            MouseUp="GamePanel_MouseUp" 
+            MouseMove="GamePanel_MouseMove" MouseDown="GamePanel_MouseDown" MouseClick="GamePanel_MouseClick" />
     </WindowsFormsHost>
 </UserControl>

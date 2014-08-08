@@ -17,6 +17,8 @@ using StoryTimeCore.DataStructures;
 using StoryTimeSceneGraph;
 using StoryTimeCore.Resources.Graphic;
 using StoryTimeCore.General;
+using FarseerPhysics.Dynamics;
+using Microsoft.Xna.Framework;
 
 namespace StoryTimeFramework.WorldManagement
 {
@@ -27,33 +29,32 @@ namespace StoryTimeFramework.WorldManagement
     /// </summary>
     public class Scene
     {
-        private class OrderedAsset : IBoundingBoxable
+        private class OrderedActor : IBoundingBoxable
         {
-            private IRenderableAsset _asset;
+            private BaseActor _actor;
 
-            public OrderedAsset(IRenderableAsset asset)
+            public OrderedActor(BaseActor actor)
             {
-                _asset = asset;
+                _actor = actor;
             }
 
-            public OrderedAsset(IRenderableAsset asset, int zOrder)
-                :this(asset)
+            public OrderedActor(BaseActor actor, int zOrder)
+                : this(actor)
             {
-                _asset = asset;
                 ZOrder = zOrder;
             }
 
-            public Rectanglef BoundingBox { get { return _asset.BoundingBox; } }
-            public IRenderableAsset RenderableAsset { get { return _asset; } }
+            public Rectanglef BoundingBox { get { return _actor.BoundingBox; } }
+            public BaseActor Actor { get { return _actor; } }
             public int ZOrder { get; set; }
 
         }
 
         // The list of the many World Entities in the scene.
         private List<BaseActor> _baseActors;
-        private Quadtree<IRenderableAsset> _renderables;
+        private Quadtree<BaseActor> _actorsTree;
         private ICamera _activeCamera;
-        private Dictionary<IRenderableAsset, OrderedAsset> _assetDictionary;
+        private Dictionary<BaseActor, OrderedActor> _actorsDictionary;
         private int _nextIndex;
 
         private WorldTime _currentTime;
@@ -61,14 +62,22 @@ namespace StoryTimeFramework.WorldManagement
         public string SceneName { get; set; }
         public ICamera Camera { get { return _activeCamera; } }
         public IEnumerable<BaseActor> Actors { get { return _baseActors; } }
+        public World World { get; private set; }
 
         public Scene()
         {
             _baseActors = new List<BaseActor>();
-            _renderables = new Quadtree<IRenderableAsset>();
-            _assetDictionary = new Dictionary<IRenderableAsset, OrderedAsset>();
+            _actorsTree = new Quadtree<BaseActor>();
+            _actorsDictionary = new Dictionary<BaseActor, OrderedActor>();
             _nextIndex = 0;
             _activeCamera = new Camera() { Viewport = new Viewport(0, 0, 1280, 720) }; //1280
+            World = new World(Vector2.Zero);
+        }
+
+        public Scene(Vector2 gravity)
+            : this()
+        {
+            World.Gravity = gravity;
         }
 
         public void Render(IGraphicsContext graphicsContext)
@@ -79,10 +88,14 @@ namespace StoryTimeFramework.WorldManagement
             Viewport vp = _activeCamera.Viewport;
             graphicsContext.SetSceneDimensions(vp.Width, vp.Height);
             Rectanglef renderingViewport = new Rectanglef(vp.X, vp.Y, vp.Height, vp.Width);
-            IEnumerable<IRenderableAsset> enumRA = GetRenderablesIn(renderingViewport);
+            IEnumerable<BaseActor> enumActors = GetRenderablesIn(renderingViewport);
             IRenderer renderer = graphicsContext.GetRenderer();
-            foreach (IRenderableAsset ba in enumRA)
-                ba.Render(renderer);
+            foreach (BaseActor ba in enumActors)
+            {
+                renderer.TranslationTransformation += ba.Body.Position;
+                ba.RenderableAsset.Render(renderer);
+                renderer.TranslationTransformation -= ba.Body.Position;
+            }
         }
 
         public void Update(WorldTime WTime)
@@ -99,7 +112,7 @@ namespace StoryTimeFramework.WorldManagement
             if (_baseActors.Contains(ba)) return;
 
             _baseActors.Add(ba);
-            OrderedAsset oa = new OrderedAsset(ba.RenderableActor, _nextIndex);
+            OrderedActor oa = new OrderedActor(ba, _nextIndex);
             _nextIndex++;
             AddOrderedAsset(oa);
         }
@@ -109,59 +122,74 @@ namespace StoryTimeFramework.WorldManagement
             if (!_baseActors.Contains(ba)) return;
 
             _baseActors.Remove(ba);
-            OrderedAsset oa;
-            if (_assetDictionary.TryGetValue(ba.RenderableActor, out oa))
+            OrderedActor oa;
+            if (_actorsDictionary.TryGetValue(ba, out oa))
             {
-                RemoveOrderedAsset(oa);
-                ReOrderAssets();
+                RemoveOrderedActor(oa);
+                ReOrderActors();
             }
         }
 
-        private void AddOrderedAsset(OrderedAsset orderedAsset)
+        public List<BaseActor> Intersect(Vector2 point)
         {
-            _assetDictionary.Add(orderedAsset.RenderableAsset, orderedAsset);
-            orderedAsset.RenderableAsset.OnBoundingBoxChanges += RenderableAssetBoundsChange;
-            _renderables.Add(orderedAsset.RenderableAsset);
+            List<BaseActor> actors = _actorsTree.Intersect(point);
+            List<OrderedActor> orderActors = new List<OrderedActor>();
+            foreach (BaseActor actor in actors)
+            {
+                orderActors.Add(_actorsDictionary[actor]);
+            }
+            return
+                orderActors
+                .OrderByDescending((oActor) => oActor.ZOrder)
+                .Select((oActor) => oActor.Actor)
+                .ToList();
         }
 
-        private void RemoveOrderedAsset(OrderedAsset orderedAsset)
+        private void AddOrderedAsset(OrderedActor orderedAsset)
         {
-            bool removed = _renderables.Remove(orderedAsset.RenderableAsset);
+            _actorsDictionary.Add(orderedAsset.Actor, orderedAsset);
+            orderedAsset.Actor.OnBoundingBoxChanges += RenderableAssetBoundsChange;
+            _actorsTree.Add(orderedAsset.Actor);
+        }
+
+        private void RemoveOrderedActor(OrderedActor orderedAsset)
+        {
+            bool removed = _actorsTree.Remove(orderedAsset.Actor);
             if (removed)
             {
-                _assetDictionary.Remove(orderedAsset.RenderableAsset);
-                orderedAsset.RenderableAsset.OnBoundingBoxChanges -= RenderableAssetBoundsChange;
+                _actorsDictionary.Remove(orderedAsset.Actor);
+                orderedAsset.Actor.OnBoundingBoxChanges -= RenderableAssetBoundsChange;
             }
         }
 
-        private IEnumerable<IRenderableAsset> GetRenderablesIn(Rectanglef renderingViewport)
+        private IEnumerable<BaseActor> GetRenderablesIn(Rectanglef renderingViewport)
         {
-            List<IRenderableAsset> ras = new List<IRenderableAsset>();
-            Action<IRenderableAsset> renderHitAction = (ra) => ras.Add(ra);
-            _renderables.Query(renderingViewport, renderHitAction);
-            IEnumerable<IRenderableAsset> enumRA = ras.OrderBy(ra=>ZIndexOrder(ra));
-            return enumRA;
+            List<BaseActor> actors = new List<BaseActor>();
+            Action<BaseActor> renderHitAction = (actor) => actors.Add(actor);
+            _actorsTree.Query(renderingViewport, renderHitAction);
+            IEnumerable<BaseActor> enumActors = actors.OrderBy(actor => ZIndexOrder(actor));
+            return enumActors;
         }
 
-        private int ZIndexOrder(IRenderableAsset ra)
+        private int ZIndexOrder(BaseActor actor)
         {
-            return _assetDictionary[ra].ZOrder;
+            return _actorsDictionary[actor].ZOrder;
         }
 
-        private void RenderableAssetBoundsChange(IRenderableAsset asset)
+        private void RenderableAssetBoundsChange(BaseActor actor)
         {
-            OrderedAsset oa;
-            if (_assetDictionary.TryGetValue(asset, out oa))
+            OrderedActor oa;
+            if (_actorsDictionary.TryGetValue(actor, out oa))
             {
-                RemoveOrderedAsset(oa);
+                RemoveOrderedActor(oa);
                 AddOrderedAsset(oa);
             }
         }
 
-        private void ReOrderAssets()
+        private void ReOrderActors()
         {
             _nextIndex = 0;
-            foreach (OrderedAsset oa in _assetDictionary.Values)
+            foreach (OrderedActor oa in _actorsDictionary.Values)
             {
                 oa.ZOrder = _nextIndex;
                 _nextIndex++;

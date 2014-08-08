@@ -8,12 +8,16 @@ using StoryTimeFramework.Entities.Actors;
 using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 using StoryTimeDevKit.Models.SceneViewer;
 using Microsoft.Xna.Framework;
+using StoryTimeDevKit.SceneWidgets;
 
 namespace StoryTimeDevKit.Controllers.Scenes
 {
     public interface ISceneViewerController : IController<ISceneViewerControl>
     {
         void AddActor(SceneTabViewModel s, ActorViewModel actor, Vector2 position);
+        void MoveActor(BaseActor actor, Vector2 fromPosition, Vector2 toPosition);
+        void SelectWidget(ISceneWidget selected, ISceneWidget toSelect);
+
         void Undo();
         void Redo();
 

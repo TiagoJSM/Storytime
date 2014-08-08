@@ -83,7 +83,7 @@ namespace StoryTime
             //spriteBatch = new SpriteBatch(GraphicsDevice);
 
             GraphicsContext = new XNAGraphicsContext(this.GraphicsDeviceManager, this.Content);
-            World.Singleton.GraphicsContext = GraphicsContext;
+            GameWorld.Singleton.GraphicsContext = GraphicsContext;
             //ITexture2D bitmap = GraphicsContext.LoadTexture2D("Bitmap1");
 
             //_asset = new Static2DRenderableAsset();
@@ -181,7 +181,7 @@ namespace StoryTime
                 OnDraw(render, wt);
             }
             //_asset.Render(render);
-            World.Singleton.RenderActiveScene();
+            GameWorld.Singleton.RenderActiveScene();
 
             render.PostRender();
             base.Draw(gameTime);
