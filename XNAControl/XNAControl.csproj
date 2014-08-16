@@ -64,6 +64,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\SceneExtensions.cs" />
     <Compile Include="XNAControlGame.cs" />
     <Page Include="XNAControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -98,6 +99,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StoryTimeFramework\StoryTimeFramework.csproj">
+      <Project>{B3BC2FF1-6B9D-48A6-B392-A1C2FB98CB86}</Project>
+      <Name>StoryTimeFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

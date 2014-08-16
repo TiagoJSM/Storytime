@@ -5,17 +5,20 @@ using System.Text;
 using StoryTimeDevKit.Models.SavedData;
 using StoryTimeFramework.WorldManagement;
 using StoryTimeFramework.Entities.Actors;
+using StoryTimeDevKit.SceneWidgets;
 
 namespace StoryTimeDevKit.Extensions
 {
     public static class ModelExtensions
     {
-        public static SavedSceneModel From(this Scene scene)
+        public static SavedSceneModel ToSaveModel(this Scene scene)
         {
             SavedSceneModel model = new SavedSceneModel();
             List<SavedSceneActor> sceneActors = new List<SavedSceneActor>();
-            foreach (BaseActor ba in scene.Actors)
+            IEnumerable<ActorWidgetAdapter> widgetActors = scene.Actors.OfType<ActorWidgetAdapter>();
+            foreach (ActorWidgetAdapter widget in widgetActors)
             {
+                BaseActor ba = widget.BaseActor;
                 Type t = ba.GetType();
                 SavedSceneActor sceneActor = new SavedSceneActor()
                 {

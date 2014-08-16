@@ -30,6 +30,7 @@ using FarseerPhysics.Dynamics;
 using StoryTimeFramework.Entities.Interfaces;
 using StoryTimeDevKit.SceneWidgets;
 using StoryTimeDevKit.Extensions;
+using XNAControl.Extensions;
 
 namespace StoryTimeDevKit.Controls.SceneViewer
 {
@@ -88,6 +89,13 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             GameWorld.Singleton.AddScene(scene);
             GameWorld.Singleton.SetActiveScene(scene);
             ScenesControl.SelectedItem = sceneVM;
+        }
+
+        public void SaveSelectedScene()
+        {
+            SceneTabViewModel model = SelectedScene;
+            if(model == null) return;
+            _controller.SaveScene(model);
         }
 
         public void Undo()
@@ -151,7 +159,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             SceneTabViewModel sceneVM = SelectedScene;
             if (sceneVM == null) return;
 
-            _clickPosition = GetPointInGameWorld(sceneVM.Scene.Camera, pointInGamePanel, gamePanelDimensions);
+            _clickPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
             ISceneWidget newIntersectedActor = sceneVM.Scene.Intersect(_clickPosition).FirstOrDefault() as ISceneWidget;
             
             if (newIntersectedActor == null) return;
@@ -167,7 +175,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             SceneTabViewModel sceneVM = SelectedScene;
             if (sceneVM == null) return;
 
-            Vector2 clickPosition = GetPointInGameWorld(sceneVM.Scene.Camera, pointInGamePanel, gamePanelDimensions);
+            Vector2 clickPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
             List<ISceneWidget> children = _intersectedActor.GetAllIntersectedLeafChildren(clickPosition);
             _intersectedActorChild = children.FirstOrDefault();
             if (_intersectedActorChild == null) return;
@@ -183,7 +191,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             if (sceneVM == null) return;
             if (_intersectedActorChild == null) return;
 
-            Vector2 point = GetPointInGameWorld(sceneVM.Scene.Camera, pointInGamePanel, gamePanelDimensions);
+            Vector2 point = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
             _intersectedActorChild.Drag(Vector2.Zero, point);
         }
 
@@ -193,20 +201,9 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             SceneTabViewModel sceneVM = SelectedScene;
             if (sceneVM == null) return;
 
-            Vector2 mouseDownPosition = GetPointInGameWorld(sceneVM.Scene.Camera, pointInGamePanel, gamePanelDimensions);
+            Vector2 mouseDownPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
             _intersectedActorChild.StopDrag(mouseDownPosition);
             _intersectedActorChild = null;
         } 
-
-        private Vector2 GetPointInGameWorld(
-            ICamera cam,
-            System.Drawing.Point pointInGamePanel,
-            System.Drawing.Point gamePanelDimensions)
-        {
-            float x = cam.Viewport.Width * pointInGamePanel.X / gamePanelDimensions.X;
-            float y = cam.Viewport.Height * pointInGamePanel.Y / gamePanelDimensions.Y;
-            Vector2 position = new Vector2(x, y);
-            return position;
-        }
     }
 }

@@ -10,7 +10,7 @@ namespace StoryTimeDevKit.Utils
 {
     public static class ApplicationUtils
     {
-        private const string SavedScenePathTemplate = "{0}\\{1}{2}";
+        private const string SavedScenePathTemplate = "{0}\\{1}";
 
         public static void SetupApplicationFolders()
         {
@@ -49,13 +49,13 @@ namespace StoryTimeDevKit.Utils
         private static string GetPathOfScene(string sceneName)
         {
             return string.Format(SavedScenePathTemplate,
-                RelativePaths.Scenes, sceneName, FileExtensions.SceneSavedModel);
+                RelativePaths.Scenes, sceneName);
         }
 
         private static string GetPathOfSceneInFolder(string sceneName, string folderPath)
         {
             return string.Format(SavedScenePathTemplate,
-                folderPath, sceneName, FileExtensions.SceneSavedModel);
+                folderPath, sceneName);
         }
 
         public static bool SceneFileExistsInFolder(string folderPath, string sceneName)

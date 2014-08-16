@@ -11,6 +11,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
     public interface ISceneViewerControl
     {
         void AddScene(SceneViewModel s);
+        void SaveSelectedScene();
         void Undo();
         void Redo();
 

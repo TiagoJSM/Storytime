@@ -19,6 +19,9 @@ using StoryTimeCore.DataStructures;
 using FarseerPhysics.Factories;
 using StoryTimeDevKit.SceneWidgets;
 using FarseerPhysicsWrapper;
+using StoryTimeDevKit.Extensions;
+using StoryTimeDevKit.Models.SavedData;
+using StoryTimeDevKit.Utils;
 
 namespace StoryTimeDevKit.Controllers.Scenes
 {
@@ -97,6 +100,12 @@ namespace StoryTimeDevKit.Controllers.Scenes
         {
             IReversibleCommand command = new SelectActorCommand(selected, toSelect);
             _commands.Push(command);
+        }
+
+        public void SaveScene(SceneTabViewModel scene)
+        {
+            SavedSceneModel sceneSave = scene.Scene.ToSaveModel();
+            ApplicationUtils.SaveScene(sceneSave);
         }
 
         public ISceneViewerControl Control

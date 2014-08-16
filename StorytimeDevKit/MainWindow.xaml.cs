@@ -19,6 +19,7 @@ using StoryTimeDevKit.Controls.Dialogs;
 using StoryTimeDevKit.Utils;
 using StoryTimeDevKit.Models.SavedData;
 using StoryTimeFramework.Entities.Actors;
+using StoryTimeDevKit.Controls.Animation;
 
 namespace StoryTimeDevKit
 {
@@ -28,12 +29,15 @@ namespace StoryTimeDevKit
     public partial class MainWindow : Window
     {
         private ImageViewerDialog _imageViewer;
+        private PuppeteerEditorDialog _puppeteerWindow;
+
         public RelayCommand OpenImageViewer { get; private set; }
         public RelayCommand SaveScene { get; private set; }
         public RelayCommand SaveAllScenes { get; private set; }
 
         public RelayCommand Undo { get; private set; }
         public RelayCommand Redo { get; private set; }
+        public RelayCommand Puppeteer { get; private set; }
 
         public MainWindow()
         {
@@ -53,7 +57,7 @@ namespace StoryTimeDevKit
             );
 
             SaveScene = new RelayCommand(
-                (o) => { },
+                (o) => { SceneViewControl.SaveSelectedScene(); },
                 (o) => { return SceneViewControl.SelectedScene != null; }
             );
 
@@ -72,6 +76,19 @@ namespace StoryTimeDevKit
                 (o) => { return SceneViewControl.CanRedo; }
             );
 
+            Puppeteer = new RelayCommand(
+                (o) =>
+                {
+                    _puppeteerWindow = new PuppeteerEditorDialog();
+                    _puppeteerWindow.Owner = this;
+                    _puppeteerWindow.Closed += PuppeteerDialog_Closed;
+                    _puppeteerWindow.Show();
+                },
+                (o) =>
+                {
+                    return _puppeteerWindow == null;
+                }
+            );
             #endregion
 
             InitializeComponent();
@@ -94,6 +111,11 @@ namespace StoryTimeDevKit
         private void OnActorAddedHandler(ActorViewModel model)
         {
             CommandManager.InvalidateRequerySuggested();
+        }
+
+        private void PuppeteerDialog_Closed(object sender, EventArgs e)
+        {
+            _puppeteerWindow = null;
         }
     }
 }

@@ -80,6 +80,12 @@
     </ApplicationDefinition>
     <Compile Include="Commands\ReversibleCommands\MoveActorCommand.cs" />
     <Compile Include="Commands\ReversibleCommands\SelectActorCommand.cs" />
+    <Compile Include="Controls\Animation\PuppeteerEditorControl.xaml.cs">
+      <DependentUpon>PuppeteerEditorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\PuppeteerEditorDialog.xaml.cs">
+      <DependentUpon>PuppeteerEditorDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SceneWidgets\ActorWidgetAdapter.cs" />
     <Compile Include="SceneWidgets\BaseSceneWidget.cs" />
     <Compile Include="SceneWidgets\ISceneWidget.cs" />
@@ -177,11 +183,19 @@
     <Compile Include="Texts\ActorPropertyEditorDefaultValues.cs" />
     <Compile Include="Utils\ApplicationUtils.cs" />
     <Compile Include="Utils\XMLSerializerUtils.cs" />
+    <Page Include="Controls\Animation\PuppeteerEditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Dialogs\CreateSceneDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Dialogs\ImageViewerDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\PuppeteerEditorDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -317,6 +331,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\MainWindow\ToolBar\images.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MainWindow\ToolBar\puppet.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

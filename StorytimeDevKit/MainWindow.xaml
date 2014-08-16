@@ -1,4 +1,5 @@
-﻿<Window xmlns:my3="clr-namespace:StoryTimeDevKit.Controls.SceneViewer"  x:Class="StoryTimeDevKit.MainWindow"
+﻿<Window xmlns:my3="clr-namespace:StoryTimeDevKit.Controls.SceneViewer"  
+        x:Class="StoryTimeDevKit.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" 
@@ -8,7 +9,7 @@
         VerticalAlignment="Top" 
         xmlns:my2="clr-namespace:StoryTimeDevKit.Controls.GameObjects" 
         xmlns:my4="clr-namespace:StoryTimeDevKit.Controls.Editors" 
-        Left="100" Top="100" xmlns:my5="clr-namespace:StoryTimeDevKit.Controls.Displayers">
+        Left="100" Top="100" xmlns:my5="clr-namespace:StoryTimeDevKit.Controls.Displayers" Background="#FF46484A">
 
     <Window.Resources>
         <Style x:Key="ToolBarButtonStyle" TargetType="Button">
@@ -28,43 +29,34 @@
             <ColumnDefinition Width="250"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="57" />
-            <RowDefinition Height="320*" />
-            <RowDefinition Height="187*" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="315*" />
+            <RowDefinition Height="186*" />
         </Grid.RowDefinitions>
         <!--<my2:GameObjectsControl HorizontalAlignment="Stretch" x:Name="gameObjectsControl1" VerticalAlignment="Stretch" Grid.Row="1" />-->
-        <my2:GameObjectsTreeViewControl HorizontalAlignment="Stretch" x:Name="gameObjectsControl1" VerticalAlignment="Stretch" Grid.Row="1" OnSceneDoubleClicked="gameObjectsControl1_OnSceneDoubleClicked" />
-        <my3:SceneViewerControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="SceneViewControl" VerticalAlignment="Stretch"/>
+        <my2:GameObjectsTreeViewControl HorizontalAlignment="Stretch" x:Name="gameObjectsControl1" VerticalAlignment="Stretch" Grid.Row="1" OnSceneDoubleClicked="gameObjectsControl1_OnSceneDoubleClicked" Panel.ZIndex="1" />
+        <my3:SceneViewerControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="SceneViewControl" VerticalAlignment="Stretch" />
         <GridSplitter Width="4"
                   Grid.Column="0"
                   Grid.RowSpan="1"
                   Grid.Row="1"
                   HorizontalAlignment="Right"
-                  VerticalAlignment="Stretch"
-                  Foreground="#0099FF"
-                  BorderBrush="#0066FF"
-                  BorderThickness="0.5"/>
+                  VerticalAlignment="Stretch"/>
         <GridSplitter Width="4"
                   Grid.Column="1"
                   Grid.RowSpan="1"
                   Grid.Row="1"
                   HorizontalAlignment="Right"
-                  VerticalAlignment="Stretch"
-                  Foreground="#0099FF"
-                  BorderBrush="#0066FF"
-                  BorderThickness="0.5"/>
+                  VerticalAlignment="Stretch"/>
         <GridSplitter Height="4"
                   Grid.Column="0"
                   Grid.Row="2"
                   Grid.ColumnSpan="3"
                   HorizontalAlignment="Stretch"
-                  VerticalAlignment="top"
-                  Foreground="#0099FF"
-                  BorderBrush="#0066FF"
-                  BorderThickness="0.5"/>
+                  VerticalAlignment="top"/>
         <Menu Height="24" HorizontalAlignment="Left" Name="menu1" VerticalAlignment="Top" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Grid.ColumnSpan="3" BorderThickness="0.5" BorderBrush="Black" />
         <TextBlock Grid.Row="2" Height="52" HorizontalAlignment="Left" Margin="133,48,0,0" Name="textBlock1" Text="TextBlockaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="719" />
-        <ToolBar Height="Auto" HorizontalAlignment="Left" Margin="0,22,0,0" Name="toolBar1" VerticalAlignment="Top" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Grid.ColumnSpan="3" Background="AliceBlue" Grid.RowSpan="2">
+        <ToolBar Height="Auto" HorizontalAlignment="Left" Margin="0,22,0,0" Name="toolBar1" VerticalAlignment="Top" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Grid.ColumnSpan="3" Grid.RowSpan="2">
             <Button 
                 Command="{Binding RelativeSource={  
                             RelativeSource FindAncestor, 
@@ -102,6 +94,14 @@
 					    Path=Redo}"
                 Style="{StaticResource ToolBarButtonStyle}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/redo.png"/>
+            </Button>
+            <Button 
+                Command="{Binding RelativeSource={  
+                            RelativeSource FindAncestor, 
+					        AncestorType={x:Type Window}}, 
+					    Path=Puppeteer}"
+                Style="{StaticResource ToolBarButtonStyle}">
+                <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/puppet.png"/>
             </Button>
         </ToolBar>
         <Grid Grid.Row="1"></Grid>

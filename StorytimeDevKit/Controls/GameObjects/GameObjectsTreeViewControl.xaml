@@ -13,12 +13,7 @@
     <Grid>
         <GroupBox Header="Game objects" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Name="groupBox1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
                 <TreeView AllowDrop="True" ItemsSource="{Binding GameObjectsCategories}" BorderThickness="1" HorizontalContentAlignment="Stretch" Name="GameObjects" VerticalContentAlignment="Stretch" MouseDoubleClick="GameObjects_MouseDoubleClick">
-                <TreeView.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#313C62FF" Offset="0" />
-                        <GradientStop Color="#5350B2FF" Offset="0.625" />
-                    </LinearGradientBrush>
-                </TreeView.Background>
+                
                 <TreeView.ItemContainerStyle>
                     <!-- 
                     This Style binds a TreeViewItem to a TreeViewItemViewModel. 
