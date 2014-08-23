@@ -5,14 +5,15 @@ using System.Text;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.Input.Time;
+using Microsoft.Xna.Framework;
 
 namespace StoryTimeCore.Resources.Graphic
 {
     public abstract class TemplateRenderableAsset : IRenderableAsset
     {
-        public virtual bool IsVisible { get; set; }
-
         public abstract event Action<IRenderableAsset> OnBoundingBoxChanges;
+
+        public virtual bool IsVisible { get; set; }
 
         protected void Render(IRenderer renderer, ITexture2D texture, Rectanglef boundingBox, float rotation)
         {

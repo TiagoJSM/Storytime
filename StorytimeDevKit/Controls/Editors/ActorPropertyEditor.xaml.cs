@@ -97,6 +97,7 @@ namespace StoryTimeDevKit.Controls.Editors
             {
                 get { return new StoryTimeCore.DataStructures.Rectanglef(); }
             }
+
         }
 
         private T _t;

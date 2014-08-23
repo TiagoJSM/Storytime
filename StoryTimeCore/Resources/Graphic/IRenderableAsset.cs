@@ -5,6 +5,7 @@ using System.Text;
 using StoryTimeCore.Resources.Graphic;
 using StoryTimeCore.Manageables;
 using StoryTimeCore.General;
+using Microsoft.Xna.Framework;
 
 namespace StoryTimeCore.Resources.Graphic
 {
@@ -14,7 +15,7 @@ namespace StoryTimeCore.Resources.Graphic
     /// </summary>
     public interface IRenderableAsset : IRenderable, ITimeUpdatable, IBoundingBoxable
     {
-        bool IsVisible { get; set; }
         event Action<IRenderableAsset> OnBoundingBoxChanges;
+        bool IsVisible { get; set; }
     }
 }

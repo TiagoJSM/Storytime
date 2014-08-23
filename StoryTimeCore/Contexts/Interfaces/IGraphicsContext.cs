@@ -17,8 +17,8 @@ namespace StoryTimeCore.Contexts.Interfaces
         void PostRender();
         float RotationTransformation { get; set; }
         Vector2 TranslationTransformation { get; set; }
-        void Render(ITexture2D texture, float x, float y);
-        void Render(ITexture2D texture, float x, float y, float width, float height, float rotation);
+        void Render(ITexture2D texture, float x, float y, Vector2 origin = default(Vector2));
+        void Render(ITexture2D texture, float x, float y, float width, float height, float rotation, Vector2 origin = default(Vector2));
     }
 
     /// <summary>

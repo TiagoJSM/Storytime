@@ -23,6 +23,7 @@ namespace StoryTimeCore.DataStructures
         }
 
         public Rectanglef(float x, float y, float height, float width)
+            :this()
         {
             Height = height;
             Width = width;

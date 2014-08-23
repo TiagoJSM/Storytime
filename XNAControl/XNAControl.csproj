@@ -64,16 +64,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\SceneExtensions.cs" />
     <Compile Include="XNAControlGame.cs" />
-    <Page Include="XNAControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="XNAControl.xaml.cs">
-      <DependentUpon>XNAControl.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

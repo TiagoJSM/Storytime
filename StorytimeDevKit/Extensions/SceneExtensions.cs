@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using StoryTimeFramework.WorldManagement;
 
-namespace XNAControl.Extensions
+namespace StoryTimeDevKit.Extensions
 {
     public static class SceneExtensions
     {

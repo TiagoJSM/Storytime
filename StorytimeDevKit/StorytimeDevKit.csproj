@@ -86,6 +86,7 @@
     <Compile Include="Controls\Dialogs\PuppeteerEditorDialog.xaml.cs">
       <DependentUpon>PuppeteerEditorDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\SceneExtensions.cs" />
     <Compile Include="SceneWidgets\ActorWidgetAdapter.cs" />
     <Compile Include="SceneWidgets\BaseSceneWidget.cs" />
     <Compile Include="SceneWidgets\ISceneWidget.cs" />
@@ -130,7 +131,6 @@
     <Compile Include="Controls\XNA\XNAControl.xaml.cs">
       <DependentUpon>XNAControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\XNA\XNAControlGame.cs" />
     <Compile Include="Converters\Treeview\ScenesSortingValueConverter.cs" />
     <Compile Include="DataStructures\Virtualization\AsyncVirtualizingCollection.cs" />
     <Compile Include="DataStructures\Virtualization\IItemsProvider.cs" />

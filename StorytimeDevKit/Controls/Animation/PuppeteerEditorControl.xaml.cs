@@ -11,6 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using StoryTime;
+using StoryTimeCore.Contexts.Interfaces;
 
 namespace StoryTimeDevKit.Controls.Animation
 {
@@ -19,9 +22,17 @@ namespace StoryTimeDevKit.Controls.Animation
     /// </summary>
     public partial class PuppeteerEditorControl : UserControl
     {
+        private MyGame _game;
+        private IGraphicsContext _context;
+
         public PuppeteerEditorControl()
         {
             InitializeComponent();
+
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
+            _game = new MyGame(PuppeteerEditor.Handle);
+            _context = _game.GraphicsContext;
         }
     }
 }

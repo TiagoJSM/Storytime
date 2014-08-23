@@ -39,6 +39,11 @@ namespace StoryTimeCore.Resources.Graphic
             }
         }
 
+        protected void RaiseOnBoundingBoxChanges()
+        {
+            OnBoundingBoxChanges(this);
+        }
+
         protected IRenderableAsset[] Assets { get { return _assets; } }
     }
 }

@@ -24,6 +24,8 @@ namespace StoryTime
 
         ITexture2D tex;
 
+        private GameWorld _gameWorld;
+
         public event InitializeHandler OnInitialize;
         public event LoadContentHandler OnLoadContent;
         public event UnLoadContentHandler OnUnLoadContent;
@@ -32,7 +34,15 @@ namespace StoryTime
 
         public GraphicsDeviceManager Graphics { get; private set; }
         public XNAGraphicsContext GraphicsContext { get; private set; }
-
+        public GameWorld GameWorld
+        {
+            get
+            {
+                if (_gameWorld == null)
+                    _gameWorld = new GameWorld();
+                return _gameWorld;
+            }
+        }
 
         public NormalGame()
         {
@@ -70,7 +80,7 @@ namespace StoryTime
             ITexture2D bitmap = GraphicsContext.LoadTexture2D("Bitmap1");
 
             _asset = new Static2DRenderableAsset();
-            _asset.SetBoundingBox(new StoryTimeCore.DataStructures.Rectanglef(0, 0.0f, 720, 1280));
+            //_asset.SetBoundingBox(new StoryTimeCore.DataStructures.Rectanglef(0, 0.0f, 720, 1280));
             _asset.Texture2D = bitmap;
             GraphicsContext.SetSceneDimensions(1280, 720);
             _actor = new Actor()
@@ -80,8 +90,8 @@ namespace StoryTime
 
             Scene s = new Scene();
             s.AddActor(_actor);
-            GameWorld.Singleton.AddScene(s);
-            GameWorld.Singleton.GraphicsContext = GraphicsContext;
+            GameWorld.AddScene(s);
+            GameWorld.GraphicsContext = GraphicsContext;
             //rectangle = new Texture2D(GraphicsDevice, 2, 2);
             //rectangle.SetData(new[] { Color.White, Color.Red, Color.Green, Color.Blue });
             // TODO: use this.Content to load your game content here
@@ -140,7 +150,7 @@ namespace StoryTime
                 OnDraw(render, wt);
             }
             //_asset.Render(render);
-            GameWorld.Singleton.RenderActiveScene();
+            GameWorld.RenderActiveScene();
 
             render.PostRender();
             base.Draw(gameTime);

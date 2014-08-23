@@ -117,9 +117,9 @@ namespace StoryTimeDevKit.Controllers.Scenes
         {
             if (ba.RenderableAsset == null)
             {
-                ITexture2D bitmap = _graphicsContext.LoadTexture2D("Bitmap1");
+                ITexture2D bitmap = _graphicsContext.LoadTexture2D("default");
                 Static2DRenderableAsset asset = new Static2DRenderableAsset();
-                asset.SetBoundingBox(new Rectanglef(0, 0, 160));
+                //asset.SetBoundingBox(new Rectanglef(0, 0, 160));
                 asset.Texture2D = bitmap;
                 ba.RenderableAsset = asset;
                 string name = "one";

@@ -29,12 +29,14 @@ namespace StoryTime
     /// </summary>
     public class MyGame : XNAControl.XNAControlGame
     {
-        SpriteBatch spriteBatch;
-        Texture2D rectangle;
-        Static2DRenderableAsset _asset;
-        Actor _actor;
+        private SpriteBatch spriteBatch;
+        private Texture2D rectangle;
+        private Static2DRenderableAsset _asset;
+        private Actor _actor;
 
-        ITexture2D tex;
+        private ITexture2D tex;
+
+        private GameWorld _gameWorld;
 
         public event InitializeHandler OnInitialize;
         public event LoadContentHandler OnLoadContent;
@@ -44,6 +46,15 @@ namespace StoryTime
 
         public GraphicsDeviceManager Graphics { get; private set; }
         public XNAGraphicsContext GraphicsContext { get; private set; }
+        public GameWorld GameWorld 
+        {
+            get
+            {
+                if (_gameWorld == null)
+                    _gameWorld = new GameWorld();
+                return _gameWorld;
+            }
+        }
 
         public MyGame()
             :base("Content")
@@ -83,7 +94,7 @@ namespace StoryTime
             //spriteBatch = new SpriteBatch(GraphicsDevice);
 
             GraphicsContext = new XNAGraphicsContext(this.GraphicsDeviceManager, this.Content);
-            GameWorld.Singleton.GraphicsContext = GraphicsContext;
+            GameWorld.GraphicsContext = GraphicsContext;
             //ITexture2D bitmap = GraphicsContext.LoadTexture2D("Bitmap1");
 
             //_asset = new Static2DRenderableAsset();
@@ -181,7 +192,7 @@ namespace StoryTime
                 OnDraw(render, wt);
             }
             //_asset.Render(render);
-            GameWorld.Singleton.RenderActiveScene();
+            GameWorld.RenderActiveScene();
 
             render.PostRender();
             base.Draw(gameTime);

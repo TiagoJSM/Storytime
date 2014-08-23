@@ -136,7 +136,7 @@ namespace StoryTimeDevKit.Controls.XNA
             System.Windows.DataObject dataObj = innerDataFI.GetValue(innerDataObject) as System.Windows.DataObject;
 
             innerDataFI = dataObj.GetType().GetField("_innerData", BindingFlags.NonPublic | BindingFlags.Instance);
-
+            
             Object item = dataObj.GetData(t); 
 
             return item;

@@ -93,12 +93,26 @@ namespace StoryTimeDevKit.SceneWidgets
         {
             private MoveWidgetRenderableAsset _widgetAsset;
             private ActorWidgetAdapter _adapter;
+            private IRenderableAsset _asset;
 
             public ActorAdapterRenderableAsset(ActorWidgetAdapter adapter, IRenderableAsset asset, MoveWidgetRenderableAsset widgetAsset)
                 : base(asset, widgetAsset)
             {
                 _adapter = adapter;
                 _widgetAsset = widgetAsset;
+                _asset = asset;
+
+                _adapter.OnSelect += OnSelectHandler;
+            }
+
+            public override Rectanglef BoundingBox
+            {
+                get
+                {
+                    if (_adapter.Selected)
+                        return base.BoundingBox;
+                    return _asset.BoundingBox;
+                }
             }
 
             public override void Render(IRenderer renderer)
@@ -115,6 +129,11 @@ namespace StoryTimeDevKit.SceneWidgets
                         asset.Render(renderer);
                     }
                 }
+            }
+
+            private void OnSelectHandler(bool selected)
+            {
+                RaiseOnBoundingBoxChanges();
             }
         }
 
@@ -176,7 +195,7 @@ namespace StoryTimeDevKit.SceneWidgets
                 ba.RenderableAsset,
                 _moveWidget
             );
-
+            
             _horizontalArrow = new MoveArrowSceneWidget(this, _moveWidget, MoveArrowSceneWidget.MoveArrowDirection.Horizontal);
             _verticalArrow = new MoveArrowSceneWidget(this, _moveWidget, MoveArrowSceneWidget.MoveArrowDirection.Vertical);
             _controller = controller;

@@ -7,13 +7,32 @@ using StoryTimeFramework.DataStructures;
 using StoryTimeCore.Input.Time;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.Resources.Graphic;
+using Microsoft.Xna.Framework;
 
 namespace StoryTimeFramework.Resources.Graphic
 {
     public class Static2DRenderableAsset : IRenderableAsset
     {
         private Rectanglef _boundingBox;
-        public ITexture2D Texture2D { get; set; }
+        private ITexture2D _texture2D;
+
+        public ITexture2D Texture2D 
+        {
+            get
+            {
+                return _texture2D;
+            }
+            set
+            {
+                _texture2D = value;
+                Rectanglef bb = new Rectanglef(0, 0, value.Height, value.Width);
+                if (!_boundingBox.Equals(bb))
+                {
+                    _boundingBox = bb;
+                    if (OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
+                }
+            }
+        }
         public Rectanglef BoundingBox { get { return _boundingBox; } }
         public bool IsVisible { get; set; }
         public float Rotation { get; set; }

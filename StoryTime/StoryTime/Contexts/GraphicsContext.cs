@@ -46,21 +46,24 @@ namespace StoryTime.Contexts
 
             public Vector2 TranslationTransformation { get; set; }
 
-            public void Render(ITexture2D texture, float x, float y)
+            public void Render(ITexture2D texture, float x, float y, Vector2 origin = default(Vector2))
             {
-                Render(texture, x, y, texture.Width, texture.Height, 0);
+                Render(texture, x, y, texture.Width, texture.Height, 0, origin);
             }
 
-            public void Render(ITexture2D texture, float x, float y, float width, float height, float rotation)
+            public void Render(ITexture2D texture, float x, float y, float width, float height, float rotation, Vector2 origin = default(Vector2))
             {
                 Texture2D tex = _xnaGD._gContentManager.GetTexture(texture);
                 x += TranslationTransformation.X;
                 y += TranslationTransformation.Y;
 
+                x -= origin.X;
+                y -= origin.Y;
+
+
                 //this calculation is done because XNA SpriteBatch origin is at the top left corner of the screen
                 //this makes the origin become the lower left corner in favor of the scene size
                 int yPosition = (int)-y + _xnaGD._sceneHeight - (int)(height);
-
                 Rectangle rec = new Rectangle(
                     (int)x,
                     (int)yPosition, 
@@ -72,10 +75,10 @@ namespace StoryTime.Contexts
                     tex,
                     rec, 
                     null,
-                    Color.White, 
+                    Color.White,
                     rotation,
                     Vector2.Zero,
-                    SpriteEffects.None, 
+                    SpriteEffects.None,
                     0
                 );
             }

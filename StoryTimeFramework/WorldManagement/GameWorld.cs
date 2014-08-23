@@ -18,22 +18,11 @@ namespace StoryTimeCore.WorldManagement
     {
         private const int NO_ACTIVE_SCENE = -1;
 
-        public static GameWorld _singleton;
-        public static GameWorld Singleton 
-        { 
-            get 
-            {
-                if(_singleton == null)
-                    _singleton = new GameWorld();
-                return _singleton; 
-            } 
-        }
-
         private List<Scene> _scenes;
         private IGraphicsContext _graphicsContext;
         private int _activeScene;
 
-        private GameWorld() 
+        public GameWorld() 
         {
             _scenes = new List<Scene>();
             _activeScene = NO_ACTIVE_SCENE;

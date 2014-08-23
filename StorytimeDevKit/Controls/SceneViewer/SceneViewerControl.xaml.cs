@@ -30,7 +30,6 @@ using FarseerPhysics.Dynamics;
 using StoryTimeFramework.Entities.Interfaces;
 using StoryTimeDevKit.SceneWidgets;
 using StoryTimeDevKit.Extensions;
-using XNAControl.Extensions;
 
 namespace StoryTimeDevKit.Controls.SceneViewer
 {
@@ -86,8 +85,8 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             SceneTabViewModel sceneVM = new SceneTabViewModel(scene);
             Tabs.Add(sceneVM);
 
-            GameWorld.Singleton.AddScene(scene);
-            GameWorld.Singleton.SetActiveScene(scene);
+            _game.GameWorld.AddScene(scene);
+            _game.GameWorld.SetActiveScene(scene);
             ScenesControl.SelectedItem = sceneVM;
         }
 
