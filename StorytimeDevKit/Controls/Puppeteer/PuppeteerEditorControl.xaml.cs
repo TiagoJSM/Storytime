@@ -15,12 +15,12 @@ using System.ComponentModel;
 using StoryTime;
 using StoryTimeCore.Contexts.Interfaces;
 
-namespace StoryTimeDevKit.Controls.Animation
+namespace StoryTimeDevKit.Controls.Puppeteer
 {
     /// <summary>
     /// Interaction logic for PupeteerEditor.xaml
     /// </summary>
-    public partial class PuppeteerEditorControl : UserControl
+    public partial class PuppeteerEditorControl : UserControl, IPuppeteerEditorControl
     {
         private MyGame _game;
         private IGraphicsContext _context;

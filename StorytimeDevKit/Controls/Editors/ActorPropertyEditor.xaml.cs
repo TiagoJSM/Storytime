@@ -98,6 +98,19 @@ namespace StoryTimeDevKit.Controls.Editors
                 get { return new StoryTimeCore.DataStructures.Rectanglef(); }
             }
 
+
+
+            public Microsoft.Xna.Framework.Vector2 Origin
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+                set
+                {
+                    throw new NotImplementedException();
+                }
+            }
         }
 
         private T _t;

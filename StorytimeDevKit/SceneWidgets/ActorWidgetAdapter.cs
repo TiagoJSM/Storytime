@@ -105,7 +105,7 @@ namespace StoryTimeDevKit.SceneWidgets
                 _adapter.OnSelect += OnSelectHandler;
             }
 
-            public override Rectanglef BoundingBox
+            public Rectanglef BoundingBox
             {
                 get
                 {

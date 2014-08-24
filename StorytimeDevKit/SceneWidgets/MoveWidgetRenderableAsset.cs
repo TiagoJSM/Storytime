@@ -18,13 +18,6 @@ namespace StoryTimeDevKit.SceneWidgets
         private Rectanglef _verticalArrowBox;
         private Rectanglef _horizontalArrowBox;
 
-        public override event Action<IRenderableAsset> OnBoundingBoxChanges;
-
-        public override Rectanglef BoundingBox
-        {
-            get { return _verticalArrowBox.Combine(_horizontalArrowBox); }
-        }
-
         public Rectanglef VerticalArrowBox { get { return _verticalArrowBox; } }
         public Rectanglef HorizontalArrowBox { get { return _horizontalArrowBox; } }
 
@@ -53,6 +46,14 @@ namespace StoryTimeDevKit.SceneWidgets
             if (!IsVisible) return;
             Render(renderer, _verticalArrow, _verticalArrowBox, 0);
             Render(renderer, _horizontalArrow, _horizontalArrowBox, 0);
+        }
+
+        protected override Rectanglef RawBoundingBox
+        {
+            get
+            {
+                return _verticalArrowBox.Combine(_horizontalArrowBox);
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ using StoryTimeDevKit.Controls.Dialogs;
 using StoryTimeDevKit.Utils;
 using StoryTimeDevKit.Models.SavedData;
 using StoryTimeFramework.Entities.Actors;
-using StoryTimeDevKit.Controls.Animation;
+using StoryTimeDevKit.Controls.Puppeteer;
 
 namespace StoryTimeDevKit
 {

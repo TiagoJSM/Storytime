@@ -17,5 +17,6 @@ namespace StoryTimeCore.Resources.Graphic
     {
         event Action<IRenderableAsset> OnBoundingBoxChanges;
         bool IsVisible { get; set; }
+        Vector2 Origin { get; set; }
     }
 }

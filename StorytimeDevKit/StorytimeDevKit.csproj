@@ -80,7 +80,12 @@
     </ApplicationDefinition>
     <Compile Include="Commands\ReversibleCommands\MoveActorCommand.cs" />
     <Compile Include="Commands\ReversibleCommands\SelectActorCommand.cs" />
-    <Compile Include="Controls\Animation\PuppeteerEditorControl.xaml.cs">
+    <Compile Include="Controllers\IStackedCommandsController.cs" />
+    <Compile Include="Controllers\Puppeteer\IPuppeteerController.cs" />
+    <Compile Include="Controllers\Puppeteer\PuppeteerController.cs" />
+    <Compile Include="Controllers\TemplateControllers\StackedCommandsController.cs" />
+    <Compile Include="Controls\Puppeteer\IPuppeteerEditorControl.cs" />
+    <Compile Include="Controls\Puppeteer\PuppeteerEditorControl.xaml.cs">
       <DependentUpon>PuppeteerEditorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Dialogs\PuppeteerEditorDialog.xaml.cs">
@@ -180,10 +185,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LocalizedTexts.resx</DependentUpon>
     </Compile>
+    <Compile Include="SceneWidgets\Puppeteer\BoneRenderableAsset.cs" />
     <Compile Include="Texts\ActorPropertyEditorDefaultValues.cs" />
     <Compile Include="Utils\ApplicationUtils.cs" />
     <Compile Include="Utils\XMLSerializerUtils.cs" />
-    <Page Include="Controls\Animation\PuppeteerEditorControl.xaml">
+    <Page Include="Controls\Puppeteer\PuppeteerEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

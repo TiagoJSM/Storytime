@@ -12,8 +12,6 @@ namespace StoryTimeCore.Resources.Graphic
     {
         private IRenderableAsset[] _assets;
 
-        public override event Action<IRenderableAsset> OnBoundingBoxChanges;
-
         public CompositeRenderableAsset(params IRenderableAsset[] assets)
         {
             _assets = assets;
@@ -25,7 +23,7 @@ namespace StoryTimeCore.Resources.Graphic
                 asset.Render(renderer);
         }
 
-        public override Rectanglef BoundingBox
+        protected override Rectanglef RawBoundingBox
         {
             get 
             {
@@ -37,11 +35,6 @@ namespace StoryTimeCore.Resources.Graphic
                     box = box.Combine(_assets[idx].BoundingBox);
                 return box;     
             }
-        }
-
-        protected void RaiseOnBoundingBoxChanges()
-        {
-            OnBoundingBoxChanges(this);
         }
 
         protected IRenderableAsset[] Assets { get { return _assets; } }

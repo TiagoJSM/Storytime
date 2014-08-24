@@ -57,9 +57,8 @@ namespace StoryTime.Contexts
                 x += TranslationTransformation.X;
                 y += TranslationTransformation.Y;
 
-                x -= origin.X;
-                y -= origin.Y;
-
+                //x -= origin.X;
+                //y -= origin.Y;
 
                 //this calculation is done because XNA SpriteBatch origin is at the top left corner of the screen
                 //this makes the origin become the lower left corner in favor of the scene size
@@ -77,7 +76,7 @@ namespace StoryTime.Contexts
                     null,
                     Color.White,
                     rotation,
-                    Vector2.Zero,
+                    origin,
                     SpriteEffects.None,
                     0
                 );

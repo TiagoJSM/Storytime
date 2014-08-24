@@ -22,49 +22,18 @@ using FarseerPhysicsWrapper;
 using StoryTimeDevKit.Extensions;
 using StoryTimeDevKit.Models.SavedData;
 using StoryTimeDevKit.Utils;
+using StoryTimeDevKit.Controllers.TemplateControllers;
 
 namespace StoryTimeDevKit.Controllers.Scenes
 {
-    public class SceneViewerController : ISceneViewerController
+    public class SceneViewerController : StackedCommandsController<ISceneViewerControl>, ISceneViewerController
     {
         private ISceneViewerControl _control;
-        private CommandStack _commands;
         private IGraphicsContext _graphicsContext;
 
         public SceneViewerController(IGraphicsContext graphicsContext)
         {
-            _commands = new CommandStack();
             _graphicsContext = graphicsContext;
-        }
-
-        public void Undo()
-        {
-            _commands.Undo();
-        }
-
-        public void Redo()
-        {
-            _commands.Redo();
-        }
-
-        public int CommandCount
-        {
-            get { return _commands.CommandCount; }
-        }
-
-        public int? CommandIndex
-        {
-            get { return _commands.CommandIndex; }
-        }
-
-        public bool CanUndo
-        {
-            get { return _commands.CanUndo; }
-        }
-
-        public bool CanRedo
-        {
-            get { return _commands.CanRedo; }
         }
 
         public void AddActor(SceneTabViewModel s, ActorViewModel actor, Vector2 position)
@@ -87,19 +56,19 @@ namespace StoryTimeDevKit.Controllers.Scenes
             ActorWidgetAdapter adapter = new ActorWidgetAdapter(this, ba, _graphicsContext);
 
             IReversibleCommand command = new AddActorCommand(s.Scene, adapter);
-            _commands.Push(command);
+            Commands.Push(command);
         }
 
         public void MoveActor(BaseActor actor, Vector2 fromPosition, Vector2 toPosition)
         {
             IReversibleCommand command = new MoveActorCommand(actor, fromPosition, toPosition);
-            _commands.Push(command);
+            Commands.Push(command);
         }
 
         public void SelectWidget(ISceneWidget selected, ISceneWidget toSelect)
         {
             IReversibleCommand command = new SelectActorCommand(selected, toSelect);
-            _commands.Push(command);
+            Commands.Push(command);
         }
 
         public void SaveScene(SceneTabViewModel scene)

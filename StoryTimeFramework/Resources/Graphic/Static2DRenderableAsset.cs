@@ -8,15 +8,18 @@ using StoryTimeCore.Input.Time;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.Resources.Graphic;
 using Microsoft.Xna.Framework;
+using StoryTimeCore.Extensions;
 
 namespace StoryTimeFramework.Resources.Graphic
 {
-    public class Static2DRenderableAsset : IRenderableAsset
+    public class Static2DRenderableAsset : TemplateRenderableAsset//IRenderableAsset
     {
         private Rectanglef _boundingBox;
         private ITexture2D _texture2D;
 
-        public ITexture2D Texture2D 
+        public float Rotation { get; set; }
+
+        public ITexture2D Texture2D
         {
             get
             {
@@ -29,42 +32,34 @@ namespace StoryTimeFramework.Resources.Graphic
                 if (!_boundingBox.Equals(bb))
                 {
                     _boundingBox = bb;
-                    if (OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
+                    RaiseOnBoundingBoxChanges();
                 }
             }
         }
-        public Rectanglef BoundingBox { get { return _boundingBox; } }
-        public bool IsVisible { get; set; }
-        public float Rotation { get; set; }
-
-        public event Action<IRenderableAsset> OnBoundingBoxChanges;
 
         public Static2DRenderableAsset()
         {
             IsVisible = true;
         }
-
-        public void SetBoundingBox(Rectanglef boundingBox)
-        {
-            _boundingBox = boundingBox;
-            if(OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
-        }
-
-        public void Render(IRenderer renderer)
+        
+        public override void Render(IRenderer renderer)
         {
             if (!IsVisible) return;
 
             renderer
                 .Render(
-                    Texture2D, 
-                    BoundingBox.X, 
-                    BoundingBox.Y, 
-                    BoundingBox.Width, 
-                    BoundingBox.Height, 
+                    Texture2D,
+                    BoundingBox.X,
+                    BoundingBox.Y,
+                    BoundingBox.Width,
+                    BoundingBox.Height,
                     Rotation
                 );
         }
 
-        public void TimeElapse(WorldTime WTime) { }
+        protected override Rectanglef RawBoundingBox
+        {
+            get { return _boundingBox; }
+        }
     }
 }
