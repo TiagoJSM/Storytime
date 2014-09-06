@@ -20,6 +20,7 @@ using StoryTimeDevKit.Utils;
 using StoryTimeDevKit.Models.SavedData;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeDevKit.Controls.Puppeteer;
+using StoryTimeDevKit.SceneWidgets.Interfaces;
 
 namespace StoryTimeDevKit
 {
@@ -30,14 +31,18 @@ namespace StoryTimeDevKit
     {
         private ImageViewerDialog _imageViewer;
         private PuppeteerEditorDialog _puppeteerWindow;
+        private WidgetMode _mode;
 
-        public RelayCommand OpenImageViewer { get; private set; }
         public RelayCommand SaveScene { get; private set; }
         public RelayCommand SaveAllScenes { get; private set; }
 
+        public RelayCommand OpenImageViewer { get; private set; }
+        public RelayCommand Puppeteer { get; private set; }
+
         public RelayCommand Undo { get; private set; }
         public RelayCommand Redo { get; private set; }
-        public RelayCommand Puppeteer { get; private set; }
+
+        public RelayCommand TransformMode { get; private set; }
 
         public MainWindow()
         {
@@ -89,6 +94,19 @@ namespace StoryTimeDevKit
                     return _puppeteerWindow == null;
                 }
             );
+
+            TransformMode = new RelayCommand(
+                (o) =>
+                {
+                    _mode = (WidgetMode)o;
+                    (SceneViewControl.SelectedActor as ITransformableWidget).WidgetMode = _mode;
+                },
+                (o) =>
+                {
+                    if (!(o is WidgetMode)) return false;
+                    return SceneViewControl.SelectedActor != null && SceneViewControl.SelectedActor is ITransformableWidget;
+                });
+            
             #endregion
 
             InitializeComponent();
@@ -116,6 +134,13 @@ namespace StoryTimeDevKit
         private void PuppeteerDialog_Closed(object sender, EventArgs e)
         {
             _puppeteerWindow = null;
+        }
+
+        private void SceneViewControl_OnSelectedActorChange(BaseActor actor)
+        {
+            ITransformableWidget transformable = actor as ITransformableWidget;
+            if (transformable != null)
+                transformable.WidgetMode = _mode;
         }
     }
 }

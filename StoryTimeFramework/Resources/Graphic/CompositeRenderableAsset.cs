@@ -23,14 +23,14 @@ namespace StoryTimeCore.Resources.Graphic
                 asset.Render(renderer);
         }
 
-        protected override Rectanglef RawBoundingBox
+        protected override AxisAlignedBoundingBox2D RawBoundingBox
         {
             get 
             {
                 if (_assets == null || _assets.Length == 0)
-                    return new Rectanglef();
+                    return new AxisAlignedBoundingBox2D();
 
-                Rectanglef box = _assets[0].BoundingBox;
+                AxisAlignedBoundingBox2D box = _assets[0].BoundingBox;
                 for (int idx = 1; idx < _assets.Length; idx++)
                     box = box.Combine(_assets[idx].BoundingBox);
                 return box;     

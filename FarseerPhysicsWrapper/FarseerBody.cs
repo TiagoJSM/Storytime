@@ -12,8 +12,10 @@ namespace FarseerPhysicsWrapper
     {
         private Body _body;
         private Vector2 _position;
+        private float _rotation;
 
         public event Action<IBody> OnPositionChanges;
+        public event Action<IBody> OnRotationChanges;
 
         public Vector2 Position 
         {
@@ -27,6 +29,20 @@ namespace FarseerPhysicsWrapper
                 _position = value;
                 if (OnPositionChanges != null)
                     OnPositionChanges(this);
+            }
+        }
+        public float Rotation
+        {
+            get
+            {
+                return _rotation;
+            }
+            set
+            {
+                if (_rotation == value) return;
+                _rotation = value;
+                if (OnRotationChanges != null)
+                    OnRotationChanges(this);
             }
         }
 

@@ -15,6 +15,7 @@ using StoryTimeCore.CustomAttributes.Editor;
 using FarseerPhysics.Dynamics;
 using StoryTimeCore.General;
 using Microsoft.Xna.Framework;
+using StoryTimeCore.Extensions;
 
 namespace StoryTimeFramework.Entities.Actors
 {
@@ -40,9 +41,15 @@ namespace StoryTimeFramework.Entities.Actors
                 if (value == _body)
                     return;
                 if (_body != null)
+                {
                     _body.OnPositionChanges -= BodyPositionChangesHandler;
+                    _body.OnRotationChanges -= BodyRotationChangesHandler;
+                }
                 if (value != null)
+                {
                     value.OnPositionChanges += BodyPositionChangesHandler;
+                    value.OnRotationChanges += BodyRotationChangesHandler;
+                }
                 _body = value;
             }
         }
@@ -65,7 +72,7 @@ namespace StoryTimeFramework.Entities.Actors
             }
         }
         public abstract void TimeElapse(WorldTime WTime);
-        public Rectanglef BoundingBox
+        public AxisAlignedBoundingBox2D BoundingBox
         {
             get 
             {
@@ -75,10 +82,10 @@ namespace StoryTimeFramework.Entities.Actors
                 else
                     position = Body.Position;
                 if (RenderableAsset == null)
-                    return new Rectanglef(position);
-                Rectanglef box = RenderableAsset.BoundingBox;
+                    return new AxisAlignedBoundingBox2D(position);
+                AxisAlignedBoundingBox2D box = RenderableAsset.BoundingBox;
                 box.Translate(position);
-                return box;
+                return box.GetRotated(Body.Rotation, Body.Position);
             }
         }
 
@@ -89,6 +96,12 @@ namespace StoryTimeFramework.Entities.Actors
         }
 
         private void BodyPositionChangesHandler(IBody body)
+        {
+            if (OnBoundingBoxChanges != null)
+                OnBoundingBoxChanges(this);
+        }
+
+        private void BodyRotationChangesHandler(IBody body)
         {
             if (OnBoundingBoxChanges != null)
                 OnBoundingBoxChanges(this);

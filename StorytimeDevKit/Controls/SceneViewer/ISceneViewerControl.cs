@@ -10,6 +10,8 @@ namespace StoryTimeDevKit.Controls.SceneViewer
 {
     public interface ISceneViewerControl
     {
+        event Action<BaseActor> OnSelectedActorChange;
+
         void AddScene(SceneViewModel s);
         void SaveSelectedScene();
         void Undo();
@@ -19,5 +21,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         int? CommandIndex { get; }
         bool CanUndo { get; }
         bool CanRedo { get; }
+
+        BaseActor SelectedActor { get; }
     }
 }

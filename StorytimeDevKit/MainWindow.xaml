@@ -9,6 +9,7 @@
         VerticalAlignment="Top" 
         xmlns:my2="clr-namespace:StoryTimeDevKit.Controls.GameObjects" 
         xmlns:my4="clr-namespace:StoryTimeDevKit.Controls.Editors" 
+        xmlns:TransformableWidgetNS="clr-namespace:StoryTimeDevKit.SceneWidgets.Interfaces"
         Left="100" Top="100" xmlns:my5="clr-namespace:StoryTimeDevKit.Controls.Displayers" Background="#FF46484A">
 
     <Window.Resources>
@@ -35,7 +36,7 @@
         </Grid.RowDefinitions>
         <!--<my2:GameObjectsControl HorizontalAlignment="Stretch" x:Name="gameObjectsControl1" VerticalAlignment="Stretch" Grid.Row="1" />-->
         <my2:GameObjectsTreeViewControl HorizontalAlignment="Stretch" x:Name="gameObjectsControl1" VerticalAlignment="Stretch" Grid.Row="1" OnSceneDoubleClicked="gameObjectsControl1_OnSceneDoubleClicked" Panel.ZIndex="1" />
-        <my3:SceneViewerControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="SceneViewControl" VerticalAlignment="Stretch" />
+        <my3:SceneViewerControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="SceneViewControl" VerticalAlignment="Stretch" OnSelectedActorChange="SceneViewControl_OnSelectedActorChange" />
         <GridSplitter Width="4"
                   Grid.Column="0"
                   Grid.RowSpan="1"
@@ -61,13 +62,6 @@
                 Command="{Binding RelativeSource={  
                             RelativeSource FindAncestor, 
 					        AncestorType={x:Type Window}}, 
-					    Path=OpenImageViewer}" >
-                <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/images.png"/>
-            </Button>
-            <Button 
-                Command="{Binding RelativeSource={  
-                            RelativeSource FindAncestor, 
-					        AncestorType={x:Type Window}}, 
 					    Path=SaveScene}"
                 Style="{StaticResource ToolBarButtonStyle}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/save.png"/>
@@ -79,6 +73,7 @@
 					    Path=SaveAllScenes}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/save_all.png"/>
             </Button>
+            <Separator />
             <Button 
                 Command="{Binding RelativeSource={  
                             RelativeSource FindAncestor, 
@@ -95,6 +90,14 @@
                 Style="{StaticResource ToolBarButtonStyle}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/redo.png"/>
             </Button>
+            <Separator />
+            <Button 
+                Command="{Binding RelativeSource={  
+                            RelativeSource FindAncestor, 
+					        AncestorType={x:Type Window}}, 
+					    Path=OpenImageViewer}" >
+                <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/images.png"/>
+            </Button>
             <Button 
                 Command="{Binding RelativeSource={  
                             RelativeSource FindAncestor, 
@@ -103,6 +106,33 @@
                 Style="{StaticResource ToolBarButtonStyle}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/puppet.png"/>
             </Button>
+            <Separator />
+            <RadioButton 
+                Command="{Binding RelativeSource={  
+                            RelativeSource FindAncestor, 
+					        AncestorType={x:Type Window}}, 
+					    Path=TransformMode}"
+                CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Translate}"
+                IsChecked="True">
+                <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/translateIcon.png"/>
+            </RadioButton>
+            <RadioButton 
+                Command="{Binding RelativeSource={  
+                            RelativeSource FindAncestor, 
+					        AncestorType={x:Type Window}}, 
+					    Path=TransformMode}"
+                CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Rotate}">
+                <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/rotationIcon.png"/>
+            </RadioButton>
+            <RadioButton 
+                Command="{Binding RelativeSource={  
+                            RelativeSource FindAncestor, 
+					        AncestorType={x:Type Window}}, 
+					    Path=TransformMode}"
+                CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Scale}">
+                <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/scaleIcon.png"/>
+            </RadioButton>
+            <Separator />
         </ToolBar>
         <Grid Grid.Row="1"></Grid>
         <my4:ActorPropertyEditor Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0" x:Name="actorPropertyEditor1" VerticalAlignment="Stretch" />

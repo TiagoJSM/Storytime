@@ -14,6 +14,8 @@ namespace StoryTimeCore.Physics
     public interface IBody : ISynchronizable
     {
         event Action<IBody> OnPositionChanges;
+        event Action<IBody> OnRotationChanges;
         Vector2 Position { get; set; }
+        float Rotation { get; set; }
     }
 }

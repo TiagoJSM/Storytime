@@ -93,9 +93,9 @@ namespace StoryTimeDevKit.Controls.Editors
                 
             }
 
-            public StoryTimeCore.DataStructures.Rectanglef BoundingBox
+            public StoryTimeCore.DataStructures.AxisAlignedBoundingBox2D BoundingBox
             {
-                get { return new StoryTimeCore.DataStructures.Rectanglef(); }
+                get { return new StoryTimeCore.DataStructures.AxisAlignedBoundingBox2D(); }
             }
 
 
@@ -111,6 +111,33 @@ namespace StoryTimeDevKit.Controls.Editors
                     throw new NotImplementedException();
                 }
             }
+
+
+            public float Rotation
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+                set
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+
+            public Microsoft.Xna.Framework.Vector2 Scale
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+                set
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
         }
 
         private T _t;

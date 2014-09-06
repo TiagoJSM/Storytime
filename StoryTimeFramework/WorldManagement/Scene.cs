@@ -44,7 +44,7 @@ namespace StoryTimeFramework.WorldManagement
                 ZOrder = zOrder;
             }
 
-            public Rectanglef BoundingBox { get { return _actor.BoundingBox; } }
+            public AxisAlignedBoundingBox2D BoundingBox { get { return _actor.BoundingBox; } }
             public BaseActor Actor { get { return _actor; } }
             public int ZOrder { get; set; }
 
@@ -87,13 +87,15 @@ namespace StoryTimeFramework.WorldManagement
             //set viewport
             Viewport vp = _activeCamera.Viewport;
             graphicsContext.SetSceneDimensions(vp.Width, vp.Height);
-            Rectanglef renderingViewport = new Rectanglef(vp.X, vp.Y, vp.Height, vp.Width);
+            AxisAlignedBoundingBox2D renderingViewport = new AxisAlignedBoundingBox2D(vp.X, vp.Y, vp.Height, vp.Width);
             IEnumerable<BaseActor> enumActors = GetRenderablesIn(renderingViewport);
             IRenderer renderer = graphicsContext.GetRenderer();
             foreach (BaseActor ba in enumActors)
             {
                 renderer.TranslationTransformation += ba.Body.Position;
+                renderer.RotationTransformation += ba.Body.Rotation;
                 ba.RenderableAsset.Render(renderer);
+                renderer.RotationTransformation -= ba.Body.Rotation;
                 renderer.TranslationTransformation -= ba.Body.Position;
             }
         }
@@ -162,7 +164,7 @@ namespace StoryTimeFramework.WorldManagement
             }
         }
 
-        private IEnumerable<BaseActor> GetRenderablesIn(Rectanglef renderingViewport)
+        private IEnumerable<BaseActor> GetRenderablesIn(AxisAlignedBoundingBox2D renderingViewport)
         {
             List<BaseActor> actors = new List<BaseActor>();
             Action<BaseActor> renderHitAction = (actor) => actors.Add(actor);

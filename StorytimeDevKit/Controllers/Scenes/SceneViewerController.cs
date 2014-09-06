@@ -17,7 +17,7 @@ using StoryTime.Contexts;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.DataStructures;
 using FarseerPhysics.Factories;
-using StoryTimeDevKit.SceneWidgets;
+using StoryTimeDevKit.SceneWidgets.Interfaces;
 using FarseerPhysicsWrapper;
 using StoryTimeDevKit.Extensions;
 using StoryTimeDevKit.Models.SavedData;

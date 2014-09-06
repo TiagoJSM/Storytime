@@ -8,6 +8,6 @@ namespace StoryTimeCore.General
 {
     public interface IBoundingBoxable
     {
-        Rectanglef BoundingBox { get; }
+        AxisAlignedBoundingBox2D BoundingBox { get; }
     }
 }

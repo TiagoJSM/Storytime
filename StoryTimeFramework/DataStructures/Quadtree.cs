@@ -37,11 +37,11 @@ namespace StoryTimeFramework.DataStructures
     {
         private List<TData> _dataSet;
         private QuadtreeNode<TData>[] _childNodes;
-        private Rectanglef _nodeCoordinates;
+        private AxisAlignedBoundingBox2D _nodeCoordinates;
         private Quadtree<TData> _quadtree;
         private IQuadtreeNode<TData> _parent;
 
-        public QuadtreeNode(Rectanglef nodeCoordinates, Quadtree<TData> quadtree, IQuadtreeNode<TData> parent = null)
+        public QuadtreeNode(AxisAlignedBoundingBox2D nodeCoordinates, Quadtree<TData> quadtree, IQuadtreeNode<TData> parent = null)
         {
             _childNodes = new QuadtreeNode<TData>[(int)NodesPosition.TotalNodes];
             _nodeCoordinates = nodeCoordinates;
@@ -70,7 +70,7 @@ namespace StoryTimeFramework.DataStructures
                 return true;
             }
         }
-        public Rectanglef NodeCoordinates { get { return _nodeCoordinates; } }
+        public AxisAlignedBoundingBox2D NodeCoordinates { get { return _nodeCoordinates; } }
 
         public QuadtreeNode<TData> GetChildAt(NodesPosition position)
         {
@@ -87,11 +87,11 @@ namespace StoryTimeFramework.DataStructures
 
         private void CreateChildrenAt(int position)
         {
-            Rectanglef childNodeBounds = GetChildrenCoordinatesAt(position);
+            AxisAlignedBoundingBox2D childNodeBounds = GetChildrenCoordinatesAt(position);
             _childNodes[position] = new QuadtreeNode<TData>(childNodeBounds, Quadtree, this);
         }
 
-        private Rectanglef GetChildrenCoordinatesAt(int position)
+        private AxisAlignedBoundingBox2D GetChildrenCoordinatesAt(int position)
         {
             float childSize = _nodeCoordinates.Width / 2;
             float X = _nodeCoordinates.X;
@@ -114,7 +114,7 @@ namespace StoryTimeFramework.DataStructures
                     break;
             }
 
-            Rectanglef childNodeBounds = new Rectanglef(X, Y, childSize);
+            AxisAlignedBoundingBox2D childNodeBounds = new AxisAlignedBoundingBox2D(X, Y, childSize);
             return childNodeBounds;
         }
 
@@ -146,7 +146,7 @@ namespace StoryTimeFramework.DataStructures
             {
                 if (_childNodes[idx] == null)
                 {
-                    Rectanglef nodeCoords = GetChildrenCoordinatesAt(idx);
+                    AxisAlignedBoundingBox2D nodeCoords = GetChildrenCoordinatesAt(idx);
                     bool contains = nodeCoords.Contains(data.BoundingBox);
                     if (contains)
                     {
@@ -183,7 +183,7 @@ namespace StoryTimeFramework.DataStructures
         public Quadtree(float xOrigin = 0, float yOrigin = 0, float sideSize = 800, float nodeMinSideSize = 10) 
         {
             _childNode = new QuadtreeNode<TData>(
-                new Rectanglef(xOrigin, yOrigin, sideSize, sideSize),
+                new AxisAlignedBoundingBox2D(xOrigin, yOrigin, sideSize, sideSize),
                 this,
                 this
             );
@@ -243,7 +243,7 @@ namespace StoryTimeFramework.DataStructures
             Query(_childNode.NodeCoordinates, HitAction);
         }
 
-        public void Query(Rectanglef boundingBox, Action<TData> HitAction)
+        public void Query(AxisAlignedBoundingBox2D boundingBox, Action<TData> HitAction)
         {
             QueryWithIntersector((rec) => boundingBox.Intersects(rec), HitAction);
         }
@@ -255,7 +255,7 @@ namespace StoryTimeFramework.DataStructures
             return dataSet;
         }
 
-        private void QueryWithIntersector(Func<Rectanglef, bool> intersector, Action<TData> HitAction)
+        private void QueryWithIntersector(Func<AxisAlignedBoundingBox2D, bool> intersector, Action<TData> HitAction)
         {
             DataSet
                 .ForEach(
@@ -269,7 +269,7 @@ namespace StoryTimeFramework.DataStructures
             QueryWithIntersectorAux(intersector, _childNode, HitAction);
         }
 
-        private void QueryWithIntersectorAux(Func<Rectanglef, bool> intersector, QuadtreeNode<TData> node, Action<TData> HitAction)
+        private void QueryWithIntersectorAux(Func<AxisAlignedBoundingBox2D, bool> intersector, QuadtreeNode<TData> node, Action<TData> HitAction)
         {
             if (node == null)
                 return;

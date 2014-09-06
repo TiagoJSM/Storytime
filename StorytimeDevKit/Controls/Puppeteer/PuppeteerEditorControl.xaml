@@ -4,30 +4,43 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" xmlns:my="clr-namespace:StoryTimeDevKit.Controls.XNA">
-    <Grid>
+             d:DesignHeight="355" 
+             d:DesignWidth="523" 
+             xmlns:my="clr-namespace:StoryTimeDevKit.Controls.XNA"
+             Background="#FF46484A">
+    <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250*"/>
             <ColumnDefinition Width="70*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
             <RowDefinition Height="315*" />
             <RowDefinition Height="80*" />
         </Grid.RowDefinitions>
         <GridSplitter Width="4"
                   Grid.Column="0"
                   Grid.RowSpan="2"
-                  Grid.Row="0"
+                  Grid.Row="1"
                   HorizontalAlignment="Right"
                   VerticalAlignment="Stretch"/>
         <GridSplitter Height="4"
                   Grid.Column="0"
-                  Grid.Row="1"
+                  Grid.Row="2"
                   Grid.ColumnSpan="2"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="top"/>
-        <my:XnaControl  x:Name="PuppeteerEditor" Margin="0,0,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        <TextBlock Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="3,117,0,0" Name="textBlock1" Text="TextBlock" VerticalAlignment="Top" />
-        <Button Content="Button" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="88,30,0,0" Name="button1" VerticalAlignment="Top" Width="75" />
+        <my:XnaControl Grid.Row="1" Grid.Column="0" x:Name="PuppeteerEditor" Margin="0,0,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <TextBlock Grid.Column="1" Height="32" HorizontalAlignment="Left" Margin="3,62,0,0" Name="textBlock1" Text="TextBlock" VerticalAlignment="Top" Grid.Row="1" />
+        <Button Content="Button" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="88,30,0,0" Name="button1" VerticalAlignment="Top" Width="75" />
+        <ToolBar HorizontalAlignment="Left" Name="toolBar1" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Height="Auto">
+            <Button 
+                Command="{Binding RelativeSource={  
+                            RelativeSource FindAncestor, 
+					        AncestorType={x:Type Window}}, 
+					    Path=OpenImageViewer}" >
+                <Image Width ="25" Height="25" Source="/Images/Puppeteer/ToolBar/BoneIcon.png"/>
+            </Button>
+        </ToolBar>
     </Grid>
 </UserControl>

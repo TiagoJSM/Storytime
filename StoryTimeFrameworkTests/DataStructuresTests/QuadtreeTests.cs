@@ -16,14 +16,14 @@ namespace StoryTimeFrameworkTests.DataStructuresTests
     {
         class BoundableDummy : IBoundingBoxable
         {
-            private Rectanglef _boundingBox;
+            private AxisAlignedBoundingBox2D _boundingBox;
 
-            public BoundableDummy(Rectanglef boundingBox)
+            public BoundableDummy(AxisAlignedBoundingBox2D boundingBox)
             {
                 _boundingBox = boundingBox;
             }
 
-            public Rectanglef BoundingBox
+            public AxisAlignedBoundingBox2D BoundingBox
             {
                 get { return _boundingBox; }
             }
@@ -34,11 +34,11 @@ namespace StoryTimeFrameworkTests.DataStructuresTests
         {
             Quadtree<BoundableDummy> qtree = new Quadtree<BoundableDummy>();
             BoundableDummy dummy = new BoundableDummy(
-                new Rectanglef(10.0f, 10.0f, 20.0f)
+                new AxisAlignedBoundingBox2D(10.0f, 10.0f, 20.0f)
                 );
 
             qtree.Add(dummy);
-            Rectanglef searchBox = new Rectanglef(0, 0, 50.0f);
+            AxisAlignedBoundingBox2D searchBox = new AxisAlignedBoundingBox2D(0, 0, 50.0f);
             int hitCount = 0;
             Action<BoundableDummy> hitAction = (BoundableDummy) => hitCount++;
 
@@ -51,11 +51,11 @@ namespace StoryTimeFrameworkTests.DataStructuresTests
         {
             Quadtree<BoundableDummy> qtree = new Quadtree<BoundableDummy>();
             BoundableDummy dummy = new BoundableDummy(
-                new Rectanglef(10.0f, 10.0f, 20.0f)
+                new AxisAlignedBoundingBox2D(10.0f, 10.0f, 20.0f)
                 );
 
             qtree.Add(dummy);
-            Rectanglef searchBox = new Rectanglef(100.0f, 100.0f, 50.0f);
+            AxisAlignedBoundingBox2D searchBox = new AxisAlignedBoundingBox2D(100.0f, 100.0f, 50.0f);
             int hitCount = 0;
             Action<BoundableDummy> hitAction = (BoundableDummy) => hitCount++;
 
@@ -68,15 +68,15 @@ namespace StoryTimeFrameworkTests.DataStructuresTests
         {
             Quadtree<BoundableDummy> qtree = new Quadtree<BoundableDummy>();
             BoundableDummy dummy1 = new BoundableDummy(
-                new Rectanglef(10.0f, 10.0f, 20.0f)
+                new AxisAlignedBoundingBox2D(10.0f, 10.0f, 20.0f)
                 );
             BoundableDummy dummy2 = new BoundableDummy(
-                new Rectanglef(100.0f, 100.0f, 20.0f)
+                new AxisAlignedBoundingBox2D(100.0f, 100.0f, 20.0f)
                 );
 
             qtree.Add(dummy1);
             qtree.Add(dummy2);
-            Rectanglef searchBox = new Rectanglef(10.0f, 10.0f, 50.0f);
+            AxisAlignedBoundingBox2D searchBox = new AxisAlignedBoundingBox2D(10.0f, 10.0f, 50.0f);
             List<BoundableDummy> hitDummies = new List<BoundableDummy>();
             Action<BoundableDummy> hitAction = (bd) => hitDummies.Add(bd);
 
@@ -90,15 +90,15 @@ namespace StoryTimeFrameworkTests.DataStructuresTests
         {
             Quadtree<BoundableDummy> qtree = new Quadtree<BoundableDummy>();
             BoundableDummy dummy1 = new BoundableDummy(
-                new Rectanglef(10.0f, 10.0f, 20.0f)
+                new AxisAlignedBoundingBox2D(10.0f, 10.0f, 20.0f)
                 );
             BoundableDummy dummy2 = new BoundableDummy(
-                new Rectanglef(100.0f, 100.0f, 20.0f)
+                new AxisAlignedBoundingBox2D(100.0f, 100.0f, 20.0f)
                 );
 
             qtree.Add(dummy1);
             qtree.Add(dummy2);
-            Rectanglef searchBox = new Rectanglef(50.0f, 50.0f, 5.0f);
+            AxisAlignedBoundingBox2D searchBox = new AxisAlignedBoundingBox2D(50.0f, 50.0f, 5.0f);
             List<BoundableDummy> hitDummies = new List<BoundableDummy>();
             Action<BoundableDummy> hitAction = (bd) => hitDummies.Add(bd);
 
@@ -111,13 +111,13 @@ namespace StoryTimeFrameworkTests.DataStructuresTests
         {
             Quadtree<BoundableDummy> qtree = new Quadtree<BoundableDummy>();
             BoundableDummy dummy1 = new BoundableDummy(
-                new Rectanglef(10.0f, 10.0f, 20.0f)
+                new AxisAlignedBoundingBox2D(10.0f, 10.0f, 20.0f)
                 );
             BoundableDummy dummy2 = new BoundableDummy(
-                new Rectanglef(100.0f, 100.0f, 20.0f)
+                new AxisAlignedBoundingBox2D(100.0f, 100.0f, 20.0f)
                 );
             BoundableDummy dummy3 = new BoundableDummy(
-                new Rectanglef(10.0f, 60.0f, 20.0f)
+                new AxisAlignedBoundingBox2D(10.0f, 60.0f, 20.0f)
                 );
 
             qtree.Add(dummy1);

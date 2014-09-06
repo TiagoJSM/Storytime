@@ -10,19 +10,19 @@ namespace StoryTimeCore.DataStructures
     /// The struct that defines a rectangle built with float variables.
     /// It's a shallow implementation of XNA rectangle, but with float variables.
     /// </summary>
-    public struct Rectanglef
+    public struct AxisAlignedBoundingBox2D
     {
         public float Height;
         public float Width;
         public float X;
         public float Y;
 
-        public Rectanglef(float x, float y, float sideSize)
+        public AxisAlignedBoundingBox2D(float x, float y, float sideSize)
             : this(x, y, sideSize, sideSize)
         {
         }
 
-        public Rectanglef(float x, float y, float height, float width)
+        public AxisAlignedBoundingBox2D(float x, float y, float height, float width)
             :this()
         {
             Height = height;
@@ -31,7 +31,7 @@ namespace StoryTimeCore.DataStructures
             Y = y;
         }
 
-        public Rectanglef(Vector2 position)
+        public AxisAlignedBoundingBox2D(Vector2 position)
             : this(position.X, position.Y, 0)
         {
         }
@@ -70,7 +70,7 @@ namespace StoryTimeCore.DataStructures
             return true;
         }
 
-        public bool Contains(Rectanglef rec)
+        public bool Contains(AxisAlignedBoundingBox2D rec)
         {
             Vector2 TopLeftCorner = new Vector2(rec.Left, rec.Top);
             if (!Contains(TopLeftCorner))
@@ -83,14 +83,14 @@ namespace StoryTimeCore.DataStructures
             return true;
         }
 
-        public bool Intersects(Rectanglef rec)
+        public bool Intersects(AxisAlignedBoundingBox2D rec)
         {
             if (ContainsAnyVerticesFrom(rec)) return true;
             if (rec.Contains(this)) return true;
             return false;
         }
 
-        public bool ContainsAnyVerticesFrom(Rectanglef rec)
+        public bool ContainsAnyVerticesFrom(AxisAlignedBoundingBox2D rec)
         {
             if (Contains(rec.TopLeft)) return true;
             if (Contains(rec.TopRight)) return true;
@@ -99,7 +99,7 @@ namespace StoryTimeCore.DataStructures
             return false;
         }
 
-        public bool Equals(Rectanglef rec)
+        public bool Equals(AxisAlignedBoundingBox2D rec)
         {
             if (Top != rec.Top) return false;
             if (Bottom != rec.Bottom) return false;
@@ -111,10 +111,10 @@ namespace StoryTimeCore.DataStructures
 
         public override bool Equals(object obj)
         {
-            bool sameType = obj is Rectanglef;
+            bool sameType = obj is AxisAlignedBoundingBox2D;
             if (!sameType)
                 return false;
-            return Equals((Rectanglef)obj);
+            return Equals((AxisAlignedBoundingBox2D)obj);
         }
     }
 }

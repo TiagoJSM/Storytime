@@ -4,27 +4,22 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace StoryTimeDevKit.SceneWidgets
+namespace StoryTimeDevKit.SceneWidgets.Interfaces
 {
-    public enum WidgetMode
-    {
-        Translate,
-        Rotate,
-        Scale
-    }
-
     public interface ISceneWidget
     {
         event Action<Vector2> OnStartDrag;
         event Action<Vector2, Vector2> OnDrag;
         //Parameters: StartDrag, currentPosition
         event Action<Vector2, Vector2> OnStopDrag;
-        event Action<bool> OnSelect;
 
-        WidgetMode WidgetMode { get; set; }
+        event Action<bool> OnSelect;
+        event Action<bool> OnEnabled;
+
         IEnumerable<ISceneWidget> Children { get; }
         int ChildrenCount { get; }
         bool Selected { get; set; }
+        bool Enabled { get; set; }
 
         bool Intersects(Vector2 point);
         void StartDrag(Vector2 currentPosition);

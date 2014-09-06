@@ -26,13 +26,15 @@ namespace StoryTime.Contexts
             {
                 float scaleWidth = (float)_xnaGD._gdm.PreferredBackBufferWidth / (float)_xnaGD._sceneWidth;
                 float scaleHeight = (float)_xnaGD._gdm.PreferredBackBufferHeight / (float)_xnaGD._sceneHeight;
-                Matrix m = Matrix.CreateScale(scaleWidth, scaleHeight, 1);
+                Matrix m = Matrix.CreateScale(scaleWidth, -scaleHeight, 1);
+                m *= Matrix.CreateTranslation(0.0f, _xnaGD._sceneHeight, 0.0f);
+                
                 _xnaGD._spriteBatch.Begin(
                     SpriteSortMode.Deferred,
                     BlendState.AlphaBlend,
                     SamplerState.LinearClamp,
                     DepthStencilState.None,
-                    RasterizerState.CullCounterClockwise,
+                    RasterizerState.CullClockwise,
                     null,
                     m);
             }
@@ -57,15 +59,11 @@ namespace StoryTime.Contexts
                 x += TranslationTransformation.X;
                 y += TranslationTransformation.Y;
 
-                //x -= origin.X;
-                //y -= origin.Y;
+                rotation += RotationTransformation;
 
-                //this calculation is done because XNA SpriteBatch origin is at the top left corner of the screen
-                //this makes the origin become the lower left corner in favor of the scene size
-                int yPosition = (int)-y + _xnaGD._sceneHeight - (int)(height);
                 Rectangle rec = new Rectangle(
                     (int)x,
-                    (int)yPosition, 
+                    (int)y, 
                     (int)width, 
                     (int)height
                 );
@@ -75,9 +73,9 @@ namespace StoryTime.Contexts
                     rec, 
                     null,
                     Color.White,
-                    rotation,
+                    MathHelper.ToRadians(rotation),//rotation,
                     origin,
-                    SpriteEffects.None,
+                    SpriteEffects.FlipVertically,
                     0
                 );
             }

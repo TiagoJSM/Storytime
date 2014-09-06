@@ -28,7 +28,7 @@ using StoryTimeDevKit.Commands.UICommands;
 using StoryTimeFramework.Entities.Actors;
 using FarseerPhysics.Dynamics;
 using StoryTimeFramework.Entities.Interfaces;
-using StoryTimeDevKit.SceneWidgets;
+using StoryTimeDevKit.SceneWidgets.Interfaces;
 using StoryTimeDevKit.Extensions;
 
 namespace StoryTimeDevKit.Controls.SceneViewer
@@ -42,7 +42,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         private ISceneViewerController _controller;
         private IGraphicsContext _context;
         private Vector2 _clickPosition;
-        private ISceneWidget _intersectedActor;
+        private ActorWidgetAdapter _intersectedActor;
         private ISceneWidget _intersectedActorChild;
 
         private ObservableCollection<SceneTabViewModel> Tabs { get; set; }
@@ -54,8 +54,13 @@ namespace StoryTimeDevKit.Controls.SceneViewer
                 return ScenesControl.SelectedItem as SceneTabViewModel;
             }
         }
+        public BaseActor SelectedActor
+        {
+            get { return _intersectedActor; }
+        }
 
         public event Action<ActorViewModel> OnActorAdded;
+        public event Action<BaseActor> OnSelectedActorChange;
 
         public SceneViewerControl()
         {
@@ -159,13 +164,16 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             if (sceneVM == null) return;
 
             _clickPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
-            ISceneWidget newIntersectedActor = sceneVM.Scene.Intersect(_clickPosition).FirstOrDefault() as ISceneWidget;
+            ActorWidgetAdapter newIntersectedActor = sceneVM.Scene.Intersect(_clickPosition).FirstOrDefault() as ActorWidgetAdapter;
             
             if (newIntersectedActor == null) return;
             if (newIntersectedActor == _intersectedActor) return;
 
             _controller.SelectWidget(_intersectedActor, newIntersectedActor);
             _intersectedActor = newIntersectedActor;
+
+            if (OnSelectedActorChange != null)
+                OnSelectedActorChange(_intersectedActor);
         }
 
         private void xna_OnMouseDown(System.Drawing.Point pointInGamePanel, System.Drawing.Point gamePanelDimensions)
@@ -203,6 +211,6 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             Vector2 mouseDownPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
             _intersectedActorChild.StopDrag(mouseDownPosition);
             _intersectedActorChild = null;
-        } 
+        }
     }
 }

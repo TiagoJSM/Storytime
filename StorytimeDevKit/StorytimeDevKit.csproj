@@ -94,7 +94,9 @@
     <Compile Include="Extensions\SceneExtensions.cs" />
     <Compile Include="SceneWidgets\ActorWidgetAdapter.cs" />
     <Compile Include="SceneWidgets\BaseSceneWidget.cs" />
-    <Compile Include="SceneWidgets\ISceneWidget.cs" />
+    <Compile Include="SceneWidgets\Interfaces\ISceneWidget.cs" />
+    <Compile Include="SceneWidgets\Interfaces\ITransformableWidget.cs" />
+    <Compile Include="SceneWidgets\MoveArrowSceneWidget.cs" />
     <Compile Include="SceneWidgets\MoveWidgetRenderableAsset.cs" />
     <Compile Include="Commands\ReversibleCommands\AddActorCommand.cs" />
     <Compile Include="Commands\ReversibleCommands\CommandStack.cs" />
@@ -186,6 +188,8 @@
       <DependentUpon>LocalizedTexts.resx</DependentUpon>
     </Compile>
     <Compile Include="SceneWidgets\Puppeteer\BoneRenderableAsset.cs" />
+    <Compile Include="SceneWidgets\RotateSceneWidget.cs" />
+    <Compile Include="SceneWidgets\RotateWidgetRenderableAsset.cs" />
     <Compile Include="Texts\ActorPropertyEditorDefaultValues.cs" />
     <Compile Include="Utils\ApplicationUtils.cs" />
     <Compile Include="Utils\XMLSerializerUtils.cs" />
@@ -340,6 +344,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\MainWindow\ToolBar\puppet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Puppeteer\ToolBar\BoneIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MainWindow\ToolBar\translateIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MainWindow\ToolBar\scaleIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MainWindow\ToolBar\rotationIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

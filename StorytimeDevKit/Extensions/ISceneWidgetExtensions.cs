@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using StoryTimeDevKit.SceneWidgets;
+using StoryTimeDevKit.SceneWidgets.Interfaces;
 using Microsoft.Xna.Framework;
 
 namespace StoryTimeDevKit.Extensions
@@ -16,6 +16,7 @@ namespace StoryTimeDevKit.Extensions
             List<ISceneWidget> leafs = new List<ISceneWidget>();
             foreach (ISceneWidget childWidget in widget.Children)
             {
+                if (!childWidget.Enabled) continue;
                 leafs.AddRange(childWidget.GetAllIntersectedLeafs(point));
             }
             return leafs;
@@ -32,6 +33,7 @@ namespace StoryTimeDevKit.Extensions
             List<ISceneWidget> leafs = new List<ISceneWidget>();
             foreach (ISceneWidget childWidget in widget.Children)
             {
+                if (!childWidget.Enabled) continue;
                 leafs.AddRange(childWidget.GetAllIntersectedLeafs(point));
             }
             return leafs;

@@ -12,12 +12,10 @@ using StoryTimeCore.Extensions;
 
 namespace StoryTimeFramework.Resources.Graphic
 {
-    public class Static2DRenderableAsset : TemplateRenderableAsset//IRenderableAsset
+    public class Static2DRenderableAsset : TemplateRenderableAsset
     {
-        private Rectanglef _boundingBox;
+        private AxisAlignedBoundingBox2D _boundingBox;
         private ITexture2D _texture2D;
-
-        public float Rotation { get; set; }
 
         public ITexture2D Texture2D
         {
@@ -28,7 +26,7 @@ namespace StoryTimeFramework.Resources.Graphic
             set
             {
                 _texture2D = value;
-                Rectanglef bb = new Rectanglef(0, 0, value.Height, value.Width);
+                AxisAlignedBoundingBox2D bb = new AxisAlignedBoundingBox2D(0, 0, value.Height, value.Width);
                 if (!_boundingBox.Equals(bb))
                 {
                     _boundingBox = bb;
@@ -57,7 +55,7 @@ namespace StoryTimeFramework.Resources.Graphic
                 );
         }
 
-        protected override Rectanglef RawBoundingBox
+        protected override AxisAlignedBoundingBox2D RawBoundingBox
         {
             get { return _boundingBox; }
         }

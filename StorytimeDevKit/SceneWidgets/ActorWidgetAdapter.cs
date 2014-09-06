@@ -9,125 +9,65 @@ using StoryTimeCore.Resources.Graphic;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.DataStructures;
 using StoryTimeDevKit.Controllers.Scenes;
+using StoryTimeCore.Extensions;
 
-namespace StoryTimeDevKit.SceneWidgets
+namespace StoryTimeDevKit.SceneWidgets.Interfaces
 {
-    public class ActorWidgetAdapter : BaseActor, ISceneWidget
+    public class ActorWidgetAdapter : BaseActor, ITransformableWidget
     {
-        private class MoveArrowSceneWidget : BaseSceneWidget
+        private class TransformationActorRenderableAsset : TemplateRenderableAsset
         {
-            public enum MoveArrowDirection
-            {
-                Vertical,
-                Horizontal
-            }
-
-            private ActorWidgetAdapter _actor;
-            private MoveWidgetRenderableAsset _moveWidget;
-            private Vector2 _startDragPosition;
-            private MoveArrowDirection _direction;
-
-            public MoveArrowSceneWidget(ActorWidgetAdapter actor, MoveWidgetRenderableAsset moveWidget, MoveArrowDirection direction)
-            {
-                _actor = actor;
-                _moveWidget = moveWidget;
-                _direction = direction;
-                OnStartDrag += OnStartDragHandler;
-                OnDrag += OnDragHandler;
-                OnStopDrag += OnStopDragHandler;
-            }
-
-            public void OnStartDragHandler(Vector2 currentPosition)
-            {
-                _startDragPosition = _actor.Body.Position;
-            }
-
-            public void OnDragHandler(Vector2 dragged, Vector2 currentPosition)
-            {
-                if (_direction == MoveArrowDirection.Horizontal)
-                {
-                    dragged.Y = 0.0f;
-                    currentPosition.Y = _startDragPosition.Y;
-                }
-                else
-                {
-                    dragged.Y = 0.0f;
-                    currentPosition.X = _startDragPosition.X;
-                }
-                _actor.Body.Position = currentPosition;
-            }
-
-            private void OnStopDragHandler(Vector2 startDragPosition, Vector2 currentPosition)
-            {
-                if (_direction == MoveArrowDirection.Horizontal)
-                {
-                    currentPosition.Y = startDragPosition.Y;
-                }
-                else
-                {
-                    currentPosition.X = startDragPosition.X;
-                }
-                _actor._controller.MoveActor(_actor.BaseActor, _startDragPosition, currentPosition);
-            }
-
-            protected override Rectanglef BoundingBox
-            {
-                get 
-                {
-                    Rectanglef box;
-                    if (_direction == MoveArrowDirection.Horizontal)
-                    {
-                        box = _moveWidget.HorizontalArrowBox;
-                    }
-                    else
-                    {
-                        box = _moveWidget.VerticalArrowBox;
-                    }
-                    box.Translate(_actor.Body.Position);
-                    return box;
-                }
-            }
-        }
-
-        private class ActorAdapterRenderableAsset : CompositeRenderableAsset
-        {
-            private MoveWidgetRenderableAsset _widgetAsset;
+            private MoveWidgetRenderableAsset _moveWidgetAsset;
+            private RotateWidgetRenderableAsset _rotateWidgetAsset;
             private ActorWidgetAdapter _adapter;
             private IRenderableAsset _asset;
 
-            public ActorAdapterRenderableAsset(ActorWidgetAdapter adapter, IRenderableAsset asset, MoveWidgetRenderableAsset widgetAsset)
-                : base(asset, widgetAsset)
+            public TransformationActorRenderableAsset(
+                ActorWidgetAdapter adapter, 
+                IRenderableAsset asset, 
+                MoveWidgetRenderableAsset moveWidgetAsset,
+                RotateWidgetRenderableAsset rotateWidgetAsset)
             {
                 _adapter = adapter;
-                _widgetAsset = widgetAsset;
                 _asset = asset;
+                _moveWidgetAsset = moveWidgetAsset;
+                _rotateWidgetAsset = rotateWidgetAsset;
 
                 _adapter.OnSelect += OnSelectHandler;
+                _adapter.OnWidgetModeChange += OnWidgetModeChangeHandler;
             }
 
-            public Rectanglef BoundingBox
+            protected override AxisAlignedBoundingBox2D RawBoundingBox
             {
                 get
                 {
-                    if (_adapter.Selected)
-                        return base.BoundingBox;
-                    return _asset.BoundingBox;
+                    AxisAlignedBoundingBox2D box = _asset.BoundingBox;
+                    if (!_adapter.Selected)
+                        return box;
+                    
+                    if(_adapter.WidgetMode == WidgetMode.Translate)
+                        return box.Combine(_moveWidgetAsset.BoundingBox);
+                    else
+                        return box.Combine(_rotateWidgetAsset.BoundingBox);
                 }
             }
 
             public override void Render(IRenderer renderer)
             {
-                foreach (IRenderableAsset asset in Assets)
+                _asset.Render(renderer);
+                if (!_adapter.Selected)
+                    return;
+
+                if (_adapter.WidgetMode == WidgetMode.Translate)
                 {
-                    if (asset == _widgetAsset)
-                    {
-                        if (_adapter.Selected)
-                            asset.Render(renderer);
-                    }
-                    else
-                    {
-                        asset.Render(renderer);
-                    }
+                    float rendererRotation = renderer.RotationTransformation;
+                    renderer.RotationTransformation = 0;
+                    _moveWidgetAsset.Render(renderer);
+                    renderer.RotationTransformation = rendererRotation;
+                }
+                else
+                {
+                    _rotateWidgetAsset.Render(renderer);
                 }
             }
 
@@ -135,22 +75,49 @@ namespace StoryTimeDevKit.SceneWidgets
             {
                 RaiseOnBoundingBoxChanges();
             }
+            private void OnWidgetModeChangeHandler(WidgetMode mode)
+            {
+                RaiseOnBoundingBoxChanges();
+            }
         }
 
         private Vector2 _startDragPosition;
-        private MoveWidgetRenderableAsset _moveWidget;
+        private MoveWidgetRenderableAsset _moveAsset;
+        private RotateWidgetRenderableAsset _rotateAsset;
         private bool _selected;
+        private bool _enabled;
         private MoveArrowSceneWidget _horizontalArrow;
         private MoveArrowSceneWidget _verticalArrow;
+        private RotateSceneWidget _rotationWheel;
         private ISceneViewerController _controller;
+        private WidgetMode _widgetMode;
+        private Vector2 _startDrag;
 
         public event Action<Vector2> OnStartDrag;
         public event Action<Vector2, Vector2> OnDrag;
         public event Action<Vector2, Vector2> OnStopDrag;
+
         public event Action<bool> OnSelect;
+        public event Action<bool> OnEnabled;
+        public event Action<WidgetMode> OnWidgetModeChange;
 
         public BaseActor BaseActor { get; private set; }
-        public WidgetMode WidgetMode { get; set; }
+        public WidgetMode WidgetMode 
+        {
+            get 
+            { 
+                return _widgetMode; 
+            }
+            set
+            {
+                if (_widgetMode != value)
+                {
+                    _widgetMode = value;
+                    SetSceneWidgetsEnableStatus();
+                    if (OnWidgetModeChange != null) OnWidgetModeChange(_widgetMode);
+                }   
+            }
+        }
         public IEnumerable<ISceneWidget> Children
         {
             get 
@@ -158,14 +125,15 @@ namespace StoryTimeDevKit.SceneWidgets
                 return new List<ISceneWidget>() 
                 { 
                     _horizontalArrow, 
-                    _verticalArrow
+                    _verticalArrow,
+                    _rotationWheel
                 }; 
             }
         }
 
         public int ChildrenCount
         {
-            get { return 2; }
+            get { return 3; }
         }
 
         public bool Selected
@@ -184,21 +152,44 @@ namespace StoryTimeDevKit.SceneWidgets
                 }
             }
         }
+        public bool Enabled
+        {
+            get
+            {
+                return _enabled;
+            }
+            set
+            {
+                if (_enabled != value)
+                {
+                    _enabled = value;
+                    if (OnEnabled != null)
+                        OnEnabled(value);
+                }
+            }
+        }
 
         public ActorWidgetAdapter(ISceneViewerController controller, BaseActor ba, IGraphicsContext graphicsContext)
         {
-            _moveWidget = new MoveWidgetRenderableAsset(graphicsContext);
+            _controller = controller;
+            _moveAsset = new MoveWidgetRenderableAsset(graphicsContext);
+            _rotateAsset = new RotateWidgetRenderableAsset(graphicsContext);
             BaseActor = ba;
             Body = ba.Body;
-            RenderableAsset = new ActorAdapterRenderableAsset(
+            RenderableAsset = new TransformationActorRenderableAsset(
                 this,
                 ba.RenderableAsset,
-                _moveWidget
+                _moveAsset,
+                _rotateAsset
             );
-            
-            _horizontalArrow = new MoveArrowSceneWidget(this, _moveWidget, MoveArrowSceneWidget.MoveArrowDirection.Horizontal);
-            _verticalArrow = new MoveArrowSceneWidget(this, _moveWidget, MoveArrowSceneWidget.MoveArrowDirection.Vertical);
+
+            _horizontalArrow = new MoveArrowSceneWidget(_controller, this, _moveAsset, MoveArrowSceneWidget.MoveArrowDirection.Horizontal);
+            _verticalArrow = new MoveArrowSceneWidget(_controller, this, _moveAsset, MoveArrowSceneWidget.MoveArrowDirection.Vertical);
+            _rotationWheel = new RotateSceneWidget(_controller, this, _rotateAsset);
             _controller = controller;
+            _enabled = true;
+            WidgetMode = WidgetMode.Rotate;
+            SetSceneWidgetsEnableStatus();
         }
 
         public override void TimeElapse(WorldTime WTime)
@@ -211,8 +202,27 @@ namespace StoryTimeDevKit.SceneWidgets
             return BoundingBox.Contains(point);
         }
 
-        public void StartDrag(Vector2 currentPosition) { }
-        public void Drag(Vector2 dragged, Vector2 currentPosition) { }
-        public void StopDrag(Vector2 currentPosition) { }
+        public void StartDrag(Vector2 currentPosition)
+        {
+            if (OnStartDrag != null) OnStartDrag(currentPosition);
+            _startDrag = currentPosition;
+        }
+
+        public void Drag(Vector2 dragged, Vector2 currentPosition)
+        {
+            if (OnDrag != null) OnDrag(dragged, currentPosition);
+        }
+
+        public void StopDrag(Vector2 currentPosition)
+        {
+            if (OnStopDrag != null) OnStopDrag(_startDrag, currentPosition);
+        }
+
+        private void SetSceneWidgetsEnableStatus()
+        {
+            _horizontalArrow.Enabled = _widgetMode == WidgetMode.Translate;
+            _verticalArrow.Enabled = _widgetMode == WidgetMode.Translate;
+            _rotationWheel.Enabled = _widgetMode == WidgetMode.Rotate;
+        }
     }
 }

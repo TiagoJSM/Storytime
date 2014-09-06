@@ -8,7 +8,7 @@ using StoryTimeFramework.Entities.Actors;
 using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 using StoryTimeDevKit.Models.SceneViewer;
 using Microsoft.Xna.Framework;
-using StoryTimeDevKit.SceneWidgets;
+using StoryTimeDevKit.SceneWidgets.Interfaces;
 
 namespace StoryTimeDevKit.Controllers.Scenes
 {

@@ -13,6 +13,8 @@ namespace StoryTimeCore.Resources.Graphic
     public abstract class TemplateRenderableAsset : IRenderableAsset
     {
         private Vector2 _origin;
+        private float _rotation;
+        private Vector2 _scale;
         public event Action<IRenderableAsset> OnBoundingBoxChanges;
 
         public virtual bool IsVisible { get; set; }
@@ -32,8 +34,43 @@ namespace StoryTimeCore.Resources.Graphic
                 }
             }
         }
+        public float Rotation 
+        {
+            get
+            {
+                return _rotation;
+            }
+            set
+            {
+                if (_rotation != value)
+                {
+                    _rotation = value;
+                    if (OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
+                }
+            }
+        }
+        public Vector2 Scale
+        {
+            get
+            {
+                return _scale;
+            }
+            set
+            {
+                if (_scale != value)
+                {
+                    _scale = value;
+                    if (OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
+                }
+            }
+        }
 
-        protected void Render(IRenderer renderer, ITexture2D texture, Rectanglef boundingBox, float rotation)
+        public TemplateRenderableAsset()
+        {
+            IsVisible = true;
+        }
+
+        protected void Render(IRenderer renderer, ITexture2D texture, AxisAlignedBoundingBox2D boundingBox)
         {
             if (!IsVisible) return;
 
@@ -44,19 +81,20 @@ namespace StoryTimeCore.Resources.Graphic
                     boundingBox.Y,
                     boundingBox.Width,
                     boundingBox.Height,
-                    rotation
+                    Rotation,
+                    _origin
                 );
         }
 
         public abstract void Render(IRenderer renderer);
         public virtual void TimeElapse(WorldTime WTime) { }
-        public Rectanglef BoundingBox 
+        public AxisAlignedBoundingBox2D BoundingBox 
         {
             get
             {
-                Rectanglef computedBox = RawBoundingBox;
+                AxisAlignedBoundingBox2D computedBox = RawBoundingBox;
                 computedBox.Translate(Origin.Negative());
-                return computedBox;
+                return computedBox.GetRotated(_rotation).GetRotated(_rotation);
             }
         }
 
@@ -65,7 +103,6 @@ namespace StoryTimeCore.Resources.Graphic
             if(OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
         }
 
-        protected abstract Rectanglef RawBoundingBox { get; }
-
+        protected abstract AxisAlignedBoundingBox2D RawBoundingBox { get; }
     }
 }

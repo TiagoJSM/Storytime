@@ -10,13 +10,13 @@ using StoryTimeCore.Extensions;
 namespace StoryTimeCoreTests.DataStructuresTests
 {
     [TestClass]
-    public class RectanglefTests
+    public class AxisAlignedBoundingBoxesTests
     {
         [TestMethod]
         public void RectangleContainsAnotherSmallerOne()
         {
-            Rectanglef bigger = new Rectanglef(0, 0, 5.0f);
-            Rectanglef smaller = new Rectanglef(1.0f, 1.0f, 2.0f);
+            AxisAlignedBoundingBox2D bigger = new AxisAlignedBoundingBox2D(0, 0, 5.0f);
+            AxisAlignedBoundingBox2D smaller = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 2.0f);
 
             Assert.IsTrue(bigger.Contains(smaller));
         }
@@ -24,8 +24,8 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void RectangleContainsAnotherWithTheSameSize()
         {
-            Rectanglef rec1 = new Rectanglef(0, 0, 5.0f);
-            Rectanglef rec2 = new Rectanglef(0, 0, 5.0f);
+            AxisAlignedBoundingBox2D rec1 = new AxisAlignedBoundingBox2D(0, 0, 5.0f);
+            AxisAlignedBoundingBox2D rec2 = new AxisAlignedBoundingBox2D(0, 0, 5.0f);
 
             Assert.IsTrue(rec1.Contains(rec2));
         }
@@ -33,8 +33,8 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void RectangleDoesntContainerABiggerOneLocatedInside()
         {
-            Rectanglef rec1 = new Rectanglef(0, 0, 5.0f);
-            Rectanglef rec2 = new Rectanglef(1.0f, 1.0f, 10.0f);
+            AxisAlignedBoundingBox2D rec1 = new AxisAlignedBoundingBox2D(0, 0, 5.0f);
+            AxisAlignedBoundingBox2D rec2 = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 10.0f);
 
             Assert.IsFalse(rec1.Contains(rec2));
         }
@@ -42,8 +42,8 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void RectangleDoesntContainerABiggerTotallyOutside()
         {
-            Rectanglef rec1 = new Rectanglef(1.0f, 1.0f, 5.0f);
-            Rectanglef rec2 = new Rectanglef(0, 0, 10.0f);
+            AxisAlignedBoundingBox2D rec1 = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 5.0f);
+            AxisAlignedBoundingBox2D rec2 = new AxisAlignedBoundingBox2D(0, 0, 10.0f);
 
             Assert.IsFalse(rec1.Contains(rec2));
         }
@@ -51,7 +51,7 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void RectangleContainsAPointAsAVertice()
         {
-            Rectanglef rec = new Rectanglef(1.0f, 1.0f, 5.0f);
+            AxisAlignedBoundingBox2D rec = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 5.0f);
             Vector2 point = new Vector2(1.0f, 1.0f);
 
             Assert.IsTrue(rec.Contains(point));
@@ -60,7 +60,7 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void RectangleContainsAPointSomewhereInside()
         {
-            Rectanglef rec = new Rectanglef(1.0f, 1.0f, 5.0f);
+            AxisAlignedBoundingBox2D rec = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 5.0f);
             Vector2 point = new Vector2(2.0f, 2.0f);
 
             Assert.IsTrue(rec.Contains(point));
@@ -69,7 +69,7 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void RectangleDoesntContainAPointSomewhereOutside()
         {
-            Rectanglef rec = new Rectanglef(1.0f, 1.0f, 5.0f);
+            AxisAlignedBoundingBox2D rec = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 5.0f);
             Vector2 point = new Vector2(0.0f, 0.0f);
 
             Assert.IsFalse(rec.Contains(point));
@@ -78,8 +78,8 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void BiggerRectangleIntersectsSmallerNonTouchingRectangle()
         {
-            Rectanglef bigger = new Rectanglef(0.0f, 0.0f, 5.0f);
-            Rectanglef smaller = new Rectanglef(1.0f, 1.0f, 2.0f);
+            AxisAlignedBoundingBox2D bigger = new AxisAlignedBoundingBox2D(0.0f, 0.0f, 5.0f);
+            AxisAlignedBoundingBox2D smaller = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 2.0f);
 
             Assert.IsTrue(bigger.Intersects(smaller));
         }
@@ -87,8 +87,8 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void SmallerRectangleIntersectsBiggerNonTouchingRectangle()
         {
-            Rectanglef bigger = new Rectanglef(0.0f, 0.0f, 5.0f);
-            Rectanglef smaller = new Rectanglef(1.0f, 1.0f, 2.0f);
+            AxisAlignedBoundingBox2D bigger = new AxisAlignedBoundingBox2D(0.0f, 0.0f, 5.0f);
+            AxisAlignedBoundingBox2D smaller = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 2.0f);
 
             Assert.IsTrue(smaller.Intersects(bigger));
         }
@@ -96,8 +96,8 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void RectangleIntersectsTouchingRectangle()
         {
-            Rectanglef rec1 = new Rectanglef(2.0f, 2.0f, 5.0f);
-            Rectanglef rec2 = new Rectanglef(1.0f, 1.0f, 2.0f);
+            AxisAlignedBoundingBox2D rec1 = new AxisAlignedBoundingBox2D(2.0f, 2.0f, 5.0f);
+            AxisAlignedBoundingBox2D rec2 = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 2.0f);
 
             Assert.IsTrue(rec1.Intersects(rec2));
         }
@@ -105,8 +105,8 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void RectanglesDontIntersectEachOther()
         {
-            Rectanglef rec1 = new Rectanglef(10.0f, 10.0f, 5.0f);
-            Rectanglef rec2 = new Rectanglef(1.0f, 1.0f, 2.0f);
+            AxisAlignedBoundingBox2D rec1 = new AxisAlignedBoundingBox2D(10.0f, 10.0f, 5.0f);
+            AxisAlignedBoundingBox2D rec2 = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 2.0f);
 
             Assert.IsFalse(rec1.Intersects(rec2));
         }
@@ -114,9 +114,9 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void RectangleCombinationIsTheSameAsBoth()
         {
-            Rectanglef rec1 = new Rectanglef(1.0f, 1.0f, 2.0f);
-            Rectanglef rec2 = new Rectanglef(1.0f, 1.0f, 2.0f);
-            Rectanglef combined = rec1.Combine(rec2);
+            AxisAlignedBoundingBox2D rec1 = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 2.0f);
+            AxisAlignedBoundingBox2D rec2 = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 2.0f);
+            AxisAlignedBoundingBox2D combined = rec1.Combine(rec2);
 
             Assert.IsTrue(combined.Equals(rec1));
             Assert.IsTrue(combined.Equals(rec2));
@@ -125,9 +125,9 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void RectangleCombinationWithIntersectedRectangles()
         {
-            Rectanglef rec1 = new Rectanglef(1.0f, 1.0f, 5.0f);
-            Rectanglef rec2 = new Rectanglef(3.0f, 3.0f, 4.0f, 1.0f);
-            Rectanglef combined = rec1.Combine(rec2);
+            AxisAlignedBoundingBox2D rec1 = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 5.0f);
+            AxisAlignedBoundingBox2D rec2 = new AxisAlignedBoundingBox2D(3.0f, 3.0f, 4.0f, 1.0f);
+            AxisAlignedBoundingBox2D combined = rec1.Combine(rec2);
 
             Assert.AreEqual(1.0f, combined.Top);
             Assert.AreEqual(1.0f, combined.Left);
@@ -138,9 +138,9 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void RectangleCombinationWithNonIntersectedRectangles()
         {
-            Rectanglef rec1 = new Rectanglef(1.0f, 1.0f, 3.0f);
-            Rectanglef rec2 = new Rectanglef(5.0f, 6.0f, 4.0f, 1.0f);
-            Rectanglef combined = rec1.Combine(rec2);
+            AxisAlignedBoundingBox2D rec1 = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 3.0f);
+            AxisAlignedBoundingBox2D rec2 = new AxisAlignedBoundingBox2D(5.0f, 6.0f, 4.0f, 1.0f);
+            AxisAlignedBoundingBox2D combined = rec1.Combine(rec2);
 
             Assert.AreEqual(1.0f, combined.Top);
             Assert.AreEqual(1.0f, combined.Left);
@@ -151,9 +151,9 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void RectangleCombinationWithContainedRectangle()
         {
-            Rectanglef rec1 = new Rectanglef(1.0f, 1.0f, 5.0f);
-            Rectanglef rec2 = new Rectanglef(2.0f, 2.0f, 1.0f, 1.0f);
-            Rectanglef combined = rec1.Combine(rec2);
+            AxisAlignedBoundingBox2D rec1 = new AxisAlignedBoundingBox2D(1.0f, 1.0f, 5.0f);
+            AxisAlignedBoundingBox2D rec2 = new AxisAlignedBoundingBox2D(2.0f, 2.0f, 1.0f, 1.0f);
+            AxisAlignedBoundingBox2D combined = rec1.Combine(rec2);
             
             Assert.AreEqual(1.0f, combined.Top);
             Assert.AreEqual(1.0f, combined.Left);
