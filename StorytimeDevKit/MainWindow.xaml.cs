@@ -31,7 +31,7 @@ namespace StoryTimeDevKit
     {
         private ImageViewerDialog _imageViewer;
         private PuppeteerEditorDialog _puppeteerWindow;
-        private WidgetMode _mode;
+        private WidgetMode? _mode;
 
         public RelayCommand SaveScene { get; private set; }
         public RelayCommand SaveAllScenes { get; private set; }
@@ -98,8 +98,8 @@ namespace StoryTimeDevKit
             TransformMode = new RelayCommand(
                 (o) =>
                 {
-                    _mode = (WidgetMode)o;
-                    (SceneViewControl.SelectedActor as ITransformableWidget).WidgetMode = _mode;
+                    _mode = (WidgetMode?)o;
+                    (SceneViewControl.SelectedActor as ITransformableWidget).WidgetMode = _mode.Value;
                 },
                 (o) =>
                 {
@@ -138,9 +138,15 @@ namespace StoryTimeDevKit
 
         private void SceneViewControl_OnSelectedActorChange(BaseActor actor)
         {
+            if (_mode == null)
+            {
+                TranslateButton.IsChecked = true;
+                _mode = WidgetMode.Translate;
+            }
+            CommandManager.InvalidateRequerySuggested();
             ITransformableWidget transformable = actor as ITransformableWidget;
             if (transformable != null)
-                transformable.WidgetMode = _mode;
+                transformable.WidgetMode = _mode.Value;
         }
     }
 }

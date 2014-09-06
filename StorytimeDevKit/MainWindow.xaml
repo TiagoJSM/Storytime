@@ -13,7 +13,7 @@
         Left="100" Top="100" xmlns:my5="clr-namespace:StoryTimeDevKit.Controls.Displayers" Background="#FF46484A">
 
     <Window.Resources>
-        <Style x:Key="ToolBarButtonStyle" TargetType="Button">
+        <Style x:Key="ToolBarButtonStyle" TargetType="ButtonBase">
             <Setter Property="IsEnabled" Value="True" />
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
@@ -108,12 +108,13 @@
             </Button>
             <Separator />
             <RadioButton 
+                Name="TranslateButton"
                 Command="{Binding RelativeSource={  
                             RelativeSource FindAncestor, 
 					        AncestorType={x:Type Window}}, 
 					    Path=TransformMode}"
                 CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Translate}"
-                IsChecked="True">
+                Style="{StaticResource ToolBarButtonStyle}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/translateIcon.png"/>
             </RadioButton>
             <RadioButton 
@@ -121,7 +122,8 @@
                             RelativeSource FindAncestor, 
 					        AncestorType={x:Type Window}}, 
 					    Path=TransformMode}"
-                CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Rotate}">
+                CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Rotate}"
+                Style="{StaticResource ToolBarButtonStyle}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/rotationIcon.png"/>
             </RadioButton>
             <RadioButton 
@@ -129,7 +131,8 @@
                             RelativeSource FindAncestor, 
 					        AncestorType={x:Type Window}}, 
 					    Path=TransformMode}"
-                CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Scale}">
+                CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Scale}"
+                Style="{StaticResource ToolBarButtonStyle}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/scaleIcon.png"/>
             </RadioButton>
             <Separator />
