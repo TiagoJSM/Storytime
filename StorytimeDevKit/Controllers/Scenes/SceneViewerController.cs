@@ -65,6 +65,12 @@ namespace StoryTimeDevKit.Controllers.Scenes
             Commands.Push(command);
         }
 
+        public void RotateActor(BaseActor actor, float previousRotation, float rotation)
+        {
+            IReversibleCommand command = new RotateActorCommand(actor, previousRotation, rotation);
+            Commands.Push(command);
+        }
+
         public void SelectWidget(ISceneWidget selected, ISceneWidget toSelect)
         {
             IReversibleCommand command = new SelectActorCommand(selected, toSelect);

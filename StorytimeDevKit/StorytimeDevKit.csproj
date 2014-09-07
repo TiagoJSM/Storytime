@@ -79,6 +79,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\ReversibleCommands\MoveActorCommand.cs" />
+    <Compile Include="Commands\ReversibleCommands\RotateActorCommand.cs" />
     <Compile Include="Commands\ReversibleCommands\SelectActorCommand.cs" />
     <Compile Include="Controllers\IStackedCommandsController.cs" />
     <Compile Include="Controllers\Puppeteer\IPuppeteerController.cs" />

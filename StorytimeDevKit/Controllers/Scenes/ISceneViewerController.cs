@@ -16,6 +16,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
     {
         void AddActor(SceneTabViewModel s, ActorViewModel actor, Vector2 position);
         void MoveActor(BaseActor actor, Vector2 fromPosition, Vector2 toPosition);
+        void RotateActor(BaseActor actor, float previousRotation, float rotation);
         void SelectWidget(ISceneWidget selected, ISceneWidget toSelect);
         void SaveScene(SceneTabViewModel scene);
     }

@@ -16,6 +16,7 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
         private RotateWidgetRenderableAsset _asset;
         private float _startRotationAngle;
         private float _lastRotationAngle;
+        private float _bodyStartRotation;
 
         public event Action<float> OnStartRotate;
         public event Action<float> OnRotate;
@@ -58,6 +59,7 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
 
         private void OnStartRotateHandler(float angle)
         {
+            _bodyStartRotation = _actor.Body.Rotation;
         }
 
         private void OnRotateHandler(float rotation)
@@ -67,6 +69,7 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
 
         private void OnStopRotateHandler(float angle)
         {
+            _controller.RotateActor(_actor.BaseActor, _bodyStartRotation, _actor.Body.Rotation);
         }
 
         private void OnStartDragHandler(Vector2 currentPosition)
