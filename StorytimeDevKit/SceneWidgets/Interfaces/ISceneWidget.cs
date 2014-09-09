@@ -13,7 +13,7 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
         //Parameters: StartDrag, currentPosition
         event Action<Vector2, Vector2> OnStopDrag;
 
-        event Action<bool> OnSelect;
+        event Action<bool, ISceneWidget> OnSelect;
         event Action<bool> OnEnabled;
 
         IEnumerable<ISceneWidget> Children { get; }

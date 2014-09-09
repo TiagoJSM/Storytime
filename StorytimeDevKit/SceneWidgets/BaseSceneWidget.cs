@@ -18,7 +18,7 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
         public event Action<Vector2, Vector2> OnDrag;
         public event Action<Vector2, Vector2> OnStopDrag;
 
-        public event Action<bool> OnSelect;
+        public event Action<bool, ISceneWidget> OnSelect;
         public event Action<bool> OnEnabled;
 
         public BaseSceneWidget()
@@ -42,7 +42,7 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
                 {
                     _selected = value;
                     if (OnSelect != null)
-                        OnSelect(value);
+                        OnSelect(value, this);
                 }
             }
         }

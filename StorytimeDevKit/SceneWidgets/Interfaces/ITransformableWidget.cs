@@ -7,6 +7,7 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
 {
     public enum WidgetMode
     {
+        None,
         Translate,
         Rotate,
         Scale

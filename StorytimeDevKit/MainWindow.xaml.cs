@@ -21,6 +21,7 @@ using StoryTimeDevKit.Models.SavedData;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeDevKit.Controls.Puppeteer;
 using StoryTimeDevKit.SceneWidgets.Interfaces;
+using StoryTimeDevKit.Models.MainWindow;
 
 namespace StoryTimeDevKit
 {
@@ -32,6 +33,7 @@ namespace StoryTimeDevKit
         private ImageViewerDialog _imageViewer;
         private PuppeteerEditorDialog _puppeteerWindow;
         private WidgetMode? _mode;
+        private ActorWidgetAdapterViewModel _widgetModeViewModel;
 
         public RelayCommand SaveScene { get; private set; }
         public RelayCommand SaveAllScenes { get; private set; }
@@ -95,7 +97,7 @@ namespace StoryTimeDevKit
                 }
             );
 
-            TransformMode = new RelayCommand(
+            /*TransformMode = new RelayCommand(
                 (o) =>
                 {
                     _mode = (WidgetMode?)o;
@@ -105,13 +107,17 @@ namespace StoryTimeDevKit
                 {
                     if (!(o is WidgetMode)) return false;
                     return SceneViewControl.SelectedActor != null && SceneViewControl.SelectedActor is ITransformableWidget;
-                });
+                });*/
             
             #endregion
 
             InitializeComponent();
 
             SceneViewControl.OnActorAdded += OnActorAddedHandler;
+            _widgetModeViewModel = new ActorWidgetAdapterViewModel();
+            TranslateButton.DataContext = _widgetModeViewModel;
+            RotateButton.DataContext = _widgetModeViewModel;
+            ScaleButton.DataContext = _widgetModeViewModel;
             
             ApplicationUtils.SetupApplicationFolders();
         }
@@ -138,15 +144,24 @@ namespace StoryTimeDevKit
 
         private void SceneViewControl_OnSelectedActorChange(BaseActor actor)
         {
-            if (_mode == null)
+            ActorWidgetAdapter adapter = actor as ActorWidgetAdapter;
+            if (adapter == null) return;
+
+            //ActorWidgetAdapterViewModel widgetModeViewModel = new ActorWidgetAdapterViewModel();
+
+            if (!_widgetModeViewModel.HasActor)
             {
                 TranslateButton.IsChecked = true;
-                _mode = WidgetMode.Translate;
+                _widgetModeViewModel.WidgetMode = WidgetMode.Translate;
             }
+
+            _widgetModeViewModel.ActorWidgetAdapter = adapter;
+            
+
+            //_widgetModeViewModel = widgetModeViewModel;
+            
+            //adapter.WidgetMode = _mode.Value;
             CommandManager.InvalidateRequerySuggested();
-            ITransformableWidget transformable = actor as ITransformableWidget;
-            if (transformable != null)
-                transformable.WidgetMode = _mode.Value;
         }
     }
 }

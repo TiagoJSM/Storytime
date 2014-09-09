@@ -92,7 +92,9 @@
     <Compile Include="Controls\Dialogs\PuppeteerEditorDialog.xaml.cs">
       <DependentUpon>PuppeteerEditorDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ToolbarRadioButtons\BooleanToWidgetModeValueConverter.cs" />
     <Compile Include="Extensions\SceneExtensions.cs" />
+    <Compile Include="Models\MainWindow\ActorWidgetAdapterViewModel.cs" />
     <Compile Include="SceneWidgets\ActorWidgetAdapter.cs" />
     <Compile Include="SceneWidgets\BaseSceneWidget.cs" />
     <Compile Include="SceneWidgets\Interfaces\ISceneWidget.cs" />
