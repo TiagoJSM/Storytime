@@ -23,6 +23,9 @@ using StoryTimeDevKit.Models;
 using StoryTimeDevKit.Resources.GameObjectsTreeView;
 using StoryTimeDevKit.Resources;
 using StoryTimeDevKit.Configurations;
+using StoryTimeDevKit.Utils;
+using Ninject.Parameters;
+using Ninject;
 
 namespace StoryTimeDevKit.Controls.GameObjects
 {
@@ -54,7 +57,14 @@ namespace StoryTimeDevKit.Controls.GameObjects
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            _controller = new GameObjectsController(this);
+            ConstructorArgument controlArg =
+                new ConstructorArgument(
+                    ApplicationProperties.IGameObjectsControllerArgName,
+                    this);
+            _controller = DependencyInjectorHelper
+                            .Kernel
+                            .Get<IGameObjectsController>(controlArg);
+
             base.DataContext = _controller.LoadGameObjectsTree();
             
             #region Initialize Commands

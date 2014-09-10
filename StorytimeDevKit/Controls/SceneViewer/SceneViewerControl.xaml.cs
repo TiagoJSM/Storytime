@@ -30,6 +30,10 @@ using FarseerPhysics.Dynamics;
 using StoryTimeFramework.Entities.Interfaces;
 using StoryTimeDevKit.SceneWidgets.Interfaces;
 using StoryTimeDevKit.Extensions;
+using Ninject;
+using StoryTimeDevKit.Configurations;
+using Ninject.Parameters;
+using StoryTimeDevKit.Utils;
 
 namespace StoryTimeDevKit.Controls.SceneViewer
 {
@@ -77,9 +81,17 @@ namespace StoryTimeDevKit.Controls.SceneViewer
 
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
+
             _game = new MyGame(xna.Handle);
             _context = _game.GraphicsContext;
-            _controller = new SceneViewerController(_context);
+
+            ConstructorArgument graphicsContextArg = 
+                new ConstructorArgument(
+                    ApplicationProperties.ISceneViewerGraphicsContextArgName, 
+                    _context);
+            _controller = DependencyInjectorHelper
+                            .Kernel
+                            .Get<ISceneViewerController>(graphicsContextArg);
         }
 
         public void AddScene(SceneViewModel s)

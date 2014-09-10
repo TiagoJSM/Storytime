@@ -17,6 +17,8 @@ using StoryTimeDevKit.DataStructures.Virtualization;
 using StoryTimeDevKit.Controllers.ImageViewer;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using StoryTimeDevKit.Utils;
+using Ninject;
 
 namespace StoryTimeDevKit.Controls.Displayers
 {
@@ -35,7 +37,10 @@ namespace StoryTimeDevKit.Controls.Displayers
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            _controller = new ImageViewerController();
+            _controller = DependencyInjectorHelper
+                            .Kernel
+                            .Get<IImageViewerController>();
+            //_controller = new ImageViewerController();
 
             this.DataContext = _controller.LoadTexturePaths();
         }
