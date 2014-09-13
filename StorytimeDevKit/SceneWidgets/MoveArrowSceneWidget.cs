@@ -17,67 +17,28 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
         }
 
         private ActorWidgetAdapter _actor;
-        private Vector2 _startDragPosition;
         private MoveArrowDirection _direction;
-        private ISceneViewerController _controller;
         private MoveWidgetRenderableAsset _moveWidgetAsset;
 
-        public event Action<Vector2> OnStartTranslate;
-        public event Action<Vector2, Vector2> OnTranslate;
-        public event Action<Vector2, Vector2> OnStopTranslate;
+        public event Action<MoveArrowSceneWidget, Vector2> OnStartTranslate;
+        public event Action<MoveArrowSceneWidget, Vector2, Vector2> OnTranslate;
+        public event Action<MoveArrowSceneWidget, Vector2, Vector2, Vector2> OnStopTranslate;
 
-        public MoveArrowSceneWidget(ISceneViewerController controller, ActorWidgetAdapter actor, MoveWidgetRenderableAsset moveWidgetAsset, MoveArrowDirection direction)
+        public MoveArrowDirection Direction { get { return _direction; } }
+
+        public MoveArrowSceneWidget(ActorWidgetAdapter actor, MoveWidgetRenderableAsset moveWidgetAsset, MoveArrowDirection direction)
         {
-            _controller = controller;
-            _actor = actor;
             _direction = direction;
             _moveWidgetAsset = moveWidgetAsset;
-
-            OnStartTranslate += OnStartTranslateHandler;
-            OnTranslate += OnTranslateHandler;
-            OnStopTranslate += OnStopTranslateHandler;
-
+            _actor = actor;
             OnStartDrag += OnStartDragHandler;
             OnDrag += OnDragHandler;
             OnStopDrag += OnStopDragHandler;
         }
 
-        public void OnStartTranslateHandler(Vector2 currentPosition)
-        {
-            _startDragPosition = _actor.Body.Position;
-        }
-
-        public void OnTranslateHandler(Vector2 dragged, Vector2 currentPosition)
-        {
-            if (_direction == MoveArrowDirection.Horizontal)
-            {
-                dragged.Y = 0.0f;
-                currentPosition.Y = _startDragPosition.Y;
-            }
-            else
-            {
-                dragged.Y = 0.0f;
-                currentPosition.X = _startDragPosition.X;
-            }
-            _actor.Body.Position = currentPosition;
-        }
-
         public override bool Intersects(Vector2 point)
         {
             return BoundingBox.Contains(point);
-        }
-
-        private void OnStopTranslateHandler(Vector2 startDragPosition, Vector2 currentPosition)
-        {
-            if (_direction == MoveArrowDirection.Horizontal)
-            {
-                currentPosition.Y = startDragPosition.Y;
-            }
-            else
-            {
-                currentPosition.X = startDragPosition.X;
-            }
-            _controller.MoveActor(_actor.BaseActor, _startDragPosition, currentPosition);
         }
 
         private AxisAlignedBoundingBox2D BoundingBox
@@ -105,17 +66,34 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
 
         private void OnStartDragHandler(Vector2 currentPosition)
         {
-            if (OnStartTranslate != null) OnStartTranslate(currentPosition);
+            if (OnStartTranslate != null) OnStartTranslate(this, currentPosition);
         }
 
         private void OnDragHandler(Vector2 dragged, Vector2 currentPosition)
         {
-            if (OnTranslate != null) OnTranslate(dragged, currentPosition);
+            if (_direction == MoveArrowDirection.Horizontal)
+            {
+                dragged.Y = 0.0f;
+            }
+            else
+            {
+                dragged.X = 0.0f;
+            }
+            if (OnTranslate != null) OnTranslate(this, dragged, currentPosition);
         }
 
         private void OnStopDragHandler(Vector2 startDrag, Vector2 currentPosition)
         {
-            if (OnStopTranslate != null) OnStopTranslate(startDrag, currentPosition);
+            Vector2 totalTranslation = currentPosition - startDrag;
+            if (_direction == MoveArrowDirection.Horizontal)
+            {
+                totalTranslation.Y = 0;
+            }
+            else
+            {
+                totalTranslation.X = 0;
+            }
+            if (OnStopTranslate != null) OnStopTranslate(this, startDrag, currentPosition, totalTranslation);
         }
     }
 }

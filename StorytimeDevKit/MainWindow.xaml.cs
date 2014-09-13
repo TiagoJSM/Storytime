@@ -152,7 +152,7 @@ namespace StoryTimeDevKit
             if (!_widgetModeViewModel.HasActor)
             {
                 TranslateButton.IsChecked = true;
-                _widgetModeViewModel.WidgetMode = WidgetMode.Translate;
+                adapter.WidgetMode = WidgetMode.Translate;
             }
 
             _widgetModeViewModel.ActorWidgetAdapter = adapter;

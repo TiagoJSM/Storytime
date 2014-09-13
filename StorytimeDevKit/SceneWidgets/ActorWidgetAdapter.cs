@@ -92,6 +92,7 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
         private ISceneViewerController _controller;
         private WidgetMode _widgetMode;
         private Vector2 _startDrag;
+        private float _bodyStartRotation;
 
         public event Action<Vector2> OnStartDrag;
         public event Action<Vector2, Vector2> OnDrag;
@@ -183,13 +184,25 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
                 _rotateAsset
             );
 
-            _horizontalArrow = new MoveArrowSceneWidget(_controller, this, _moveAsset, MoveArrowSceneWidget.MoveArrowDirection.Horizontal);
-            _verticalArrow = new MoveArrowSceneWidget(_controller, this, _moveAsset, MoveArrowSceneWidget.MoveArrowDirection.Vertical);
-            _rotationWheel = new RotateSceneWidget(_controller, this, _rotateAsset);
+            _horizontalArrow = new MoveArrowSceneWidget(this, _moveAsset, MoveArrowSceneWidget.MoveArrowDirection.Horizontal);
+            _verticalArrow = new MoveArrowSceneWidget(this, _moveAsset, MoveArrowSceneWidget.MoveArrowDirection.Vertical);
+            _rotationWheel = new RotateSceneWidget(this, _rotateAsset);
             _controller = controller;
             _enabled = true;
-            WidgetMode = WidgetMode.Rotate;
+
             SetSceneWidgetsEnableStatus();
+
+            _horizontalArrow.OnStartTranslate += OnStartTranslateHandler;
+            _horizontalArrow.OnTranslate += OnTranslateHandler;
+            _horizontalArrow.OnStopTranslate += OnStopTranslateHandler;
+
+            _verticalArrow.OnStartTranslate += OnStartTranslateHandler;
+            _verticalArrow.OnTranslate += OnTranslateHandler;
+            _verticalArrow.OnStopTranslate += OnStopTranslateHandler;
+
+            _rotationWheel.OnStartRotate += OnStartRotateHandler;
+            _rotationWheel.OnRotate += OnRotateHandler;
+            _rotationWheel.OnStopRotate += OnStopRotateHandler;
         }
 
         public override void TimeElapse(WorldTime WTime)
@@ -224,5 +237,58 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
             _verticalArrow.Enabled = _widgetMode == WidgetMode.Translate;
             _rotationWheel.Enabled = _widgetMode == WidgetMode.Rotate;
         }
+
+        #region MoveArrowSceneWidgetEventHandlers
+        private void OnStartTranslateHandler(MoveArrowSceneWidget widget, Vector2 currentPosition)
+        {
+            _startDragPosition = Body.Position;
+        }
+
+        private void OnTranslateHandler(MoveArrowSceneWidget widget, Vector2 dragged, Vector2 currentPosition)
+        {
+            if (widget.Direction == MoveArrowSceneWidget.MoveArrowDirection.Horizontal)
+            {
+                dragged.Y = 0.0f;
+                currentPosition.Y = _startDragPosition.Y;
+            }
+            else
+            {
+                dragged.X = 0.0f;
+                currentPosition.X = _startDragPosition.X;
+            }
+            Body.Position = currentPosition;
+        }
+
+        private void OnStopTranslateHandler(
+            MoveArrowSceneWidget widget, Vector2 startDragPosition, Vector2 currentPosition, Vector2 totalTranslation)
+        {
+            if (widget.Direction == MoveArrowSceneWidget.MoveArrowDirection.Horizontal)
+            {
+                currentPosition.Y = startDragPosition.Y;
+            }
+            else
+            {
+                currentPosition.X = startDragPosition.X;
+            }
+            _controller.MoveActor(BaseActor, _startDragPosition, currentPosition);
+        }
+        #endregion
+
+        #region RotateSceneWidgetEventHandlers
+        private void OnStartRotateHandler(float angle)
+        {
+            _bodyStartRotation = Body.Rotation;
+        }
+
+        private void OnRotateHandler(float rotation)
+        {
+            Body.Rotation += rotation;
+        }
+
+        private void OnStopRotateHandler(float angle)
+        {
+            _controller.RotateActor(BaseActor, _bodyStartRotation, Body.Rotation);
+        }
+        #endregion
     }
 }

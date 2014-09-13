@@ -11,26 +11,19 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
 {
     public class RotateSceneWidget : BaseSceneWidget
     {
-        private ISceneViewerController _controller; 
         private ActorWidgetAdapter _actor;
         private RotateWidgetRenderableAsset _asset;
         private float _startRotationAngle;
         private float _lastRotationAngle;
-        private float _bodyStartRotation;
 
         public event Action<float> OnStartRotate;
         public event Action<float> OnRotate;
         public event Action<float> OnStopRotate;
 
-        public RotateSceneWidget(ISceneViewerController controller, ActorWidgetAdapter actor, RotateWidgetRenderableAsset asset)
+        public RotateSceneWidget(ActorWidgetAdapter actor, RotateWidgetRenderableAsset asset)
         {
-            _controller = controller;
             _actor = actor;
             _asset = asset;
-
-            OnStartRotate += OnStartRotateHandler;
-            OnRotate += OnRotateHandler;
-            OnStopRotate += OnStopRotateHandler;
 
             OnStartDrag += OnStartDragHandler;
             OnDrag += OnDragHandler;
@@ -55,21 +48,6 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
         protected override Vector2 Origin
         {
             get { return Vector2.Zero; }
-        }
-
-        private void OnStartRotateHandler(float angle)
-        {
-            _bodyStartRotation = _actor.Body.Rotation;
-        }
-
-        private void OnRotateHandler(float rotation)
-        {
-            _actor.Body.Rotation += rotation;
-        }
-
-        private void OnStopRotateHandler(float angle)
-        {
-            _controller.RotateActor(_actor.BaseActor, _bodyStartRotation, _actor.Body.Rotation);
         }
 
         private void OnStartDragHandler(Vector2 currentPosition)
