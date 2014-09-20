@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 using StoryTimeDevKit.Controls.GameObjects;
+using StoryTimeDevKit.Controls;
 
 namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
 {
@@ -13,8 +14,8 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
         public string AssemblyName { get; private set; }
         public Type ActorType { get; private set; }
 
-        public ActorViewModel(TreeViewItemViewModel parent, IGameObjectsControl gameObjects, Type t, string assemblyName)
-            : base(parent, gameObjects, false)
+        public ActorViewModel(TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB, Type t, string assemblyName)
+            : base(parent, nodeAddCB, false)
         {
             ActorType = t;
             ActorName = t.Name;

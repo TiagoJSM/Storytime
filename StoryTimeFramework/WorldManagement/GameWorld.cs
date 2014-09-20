@@ -5,8 +5,9 @@ using System.Text;
 using StoryTimeFramework.WorldManagement;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeCore.Exceptions;
+using StoryTimeUI;
 
-namespace StoryTimeCore.WorldManagement
+namespace StoryTimeFramework.WorldManagement
 {
     public class GraphicsContextConfigurationException : StoryTimeException
     {
@@ -21,35 +22,27 @@ namespace StoryTimeCore.WorldManagement
         private List<Scene> _scenes;
         private IGraphicsContext _graphicsContext;
         private int _activeScene;
+        private GUIManager _gui;
 
-        public GameWorld() 
+        public GameWorld(IGraphicsContext graphicsContext) 
         {
             _scenes = new List<Scene>();
             _activeScene = NO_ACTIVE_SCENE;
-        }
-
-        public IGraphicsContext GraphicsContext
-        { 
-            get 
-            {
-                return _graphicsContext;
-            } 
-            set
-            {
-                if (_graphicsContext != null)
-                    throw new GraphicsContextConfigurationException();
-                _graphicsContext = value;
-            } 
+            _graphicsContext = graphicsContext;
+            _gui = new GUIManager(_graphicsContext);
         }
 
         public int NumberOfScenes { get { return _scenes.Count; } }
         public Scene GetSceneAt(int index) { return _scenes[index]; }
         public void AddScene(Scene scene) { _scenes.Add(scene); }
+        public GUIManager GUI { get { return _gui; } }
 
         public void RenderActiveScene()
         {
             if(_activeScene != NO_ACTIVE_SCENE)
                 _scenes[_activeScene].Render(_graphicsContext);
+            //TODO: should reset renderer here!
+            _gui.Render(_graphicsContext.GetRenderer());
         }
 
         public void SetActiveScene(int index)

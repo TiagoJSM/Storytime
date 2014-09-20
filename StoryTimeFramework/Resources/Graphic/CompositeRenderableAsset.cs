@@ -5,8 +5,9 @@ using System.Text;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeCore.Extensions;
+using StoryTimeCore.Resources.Graphic;
 
-namespace StoryTimeCore.Resources.Graphic
+namespace StoryTimeFramework.Resources.Graphic
 {
     public class CompositeRenderableAsset : TemplateRenderableAsset
     {

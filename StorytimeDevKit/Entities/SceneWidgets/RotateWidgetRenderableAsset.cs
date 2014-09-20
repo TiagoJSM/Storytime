@@ -5,8 +5,9 @@ using System.Text;
 using StoryTimeCore.Resources.Graphic;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.Contexts.Interfaces;
+using StoryTimeFramework.Resources.Graphic;
 
-namespace StoryTimeDevKit.SceneWidgets.Interfaces
+namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
 {
     public class RotateWidgetRenderableAsset : TemplateRenderableAsset
     {

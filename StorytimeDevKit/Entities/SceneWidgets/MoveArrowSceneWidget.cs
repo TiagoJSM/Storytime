@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using StoryTimeDevKit.Controllers.Scenes;
 using StoryTimeCore.DataStructures;
 
-namespace StoryTimeDevKit.SceneWidgets.Interfaces
+namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
 {
     public class MoveArrowSceneWidget : BaseSceneWidget
     {

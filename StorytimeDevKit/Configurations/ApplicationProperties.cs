@@ -9,6 +9,7 @@ namespace StoryTimeDevKit.Configurations
     {
         public static string DependencyInjectorKey { get { return "DependencyInjectorKey"; } }
         public static string ISceneViewerGraphicsContextArgName { get { return "graphicsContext"; } }
-        public static string IGameObjectsControllerArgName { get { return "control"; } }
+        public static string IGameObjectsControllerArgName { get { return "nodeAddCB"; } }
+        public static string IPuppeteerControllerArgName { get { return "windowHandle"; } }
     }
 }

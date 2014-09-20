@@ -7,8 +7,9 @@ using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeCore.Input.Time;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.Extensions;
+using StoryTimeFramework.Resources.Graphic;
 
-namespace StoryTimeDevKit.SceneWidgets.Interfaces
+namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
 {
     public class MoveWidgetRenderableAsset : TemplateRenderableAsset
     {

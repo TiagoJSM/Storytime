@@ -69,3 +69,7 @@
 /StoryTimeDevKit/bin/Debug
 /Puppeteer/bin
 /Puppeteer/obj
+/StoryTimeUITests/bin
+/StoryTimeUITests/obj
+/StoryTimeUI/bin
+/StoryTimeUI/obj

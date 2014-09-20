@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using StoryTimeFramework.WorldManagement;
 
 namespace StoryTimeFramework.Entities
 {
@@ -11,7 +12,9 @@ namespace StoryTimeFramework.Entities
     /// </summary>
     public class WorldEntity
     {
-        protected event Action OnCreated;
-        protected event Action OnDestroyed;
+        public event Action OnCreated;
+        public event Action OnDestroyed;
+
+        public GameWorld World { get; set; }
     }
 }

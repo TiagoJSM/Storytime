@@ -19,14 +19,11 @@ using StoryTimeCore.Resources.Graphic;
 using StoryTimeCore.General;
 using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
+using StoryTimeCore.Physics;
+using StoryTimeUI;
 
 namespace StoryTimeFramework.WorldManagement
 {
-    /// <summary>
-    /// Singleton class that represents the world.
-    /// This class is the base of the framework, and will contain all the information about the elements of the world.
-    /// The purpose of this class is to process the pipeline of the game world and to contain queryable information about the world.
-    /// </summary>
     public class Scene
     {
         private class OrderedActor : IBoundingBoxable
@@ -62,7 +59,7 @@ namespace StoryTimeFramework.WorldManagement
         public string SceneName { get; set; }
         public ICamera Camera { get { return _activeCamera; } }
         public IEnumerable<BaseActor> Actors { get { return _baseActors; } }
-        public World World { get; private set; }
+        public IPhysicalWorld PhysicalWorld { get; set; }
 
         public Scene()
         {
@@ -71,13 +68,12 @@ namespace StoryTimeFramework.WorldManagement
             _actorsDictionary = new Dictionary<BaseActor, OrderedActor>();
             _nextIndex = 0;
             _activeCamera = new Camera() { Viewport = new Viewport(0, 0, 1280, 720) }; //1280
-            World = new World(Vector2.Zero);
         }
 
         public Scene(Vector2 gravity)
             : this()
         {
-            World.Gravity = gravity;
+            PhysicalWorld.Gravity = gravity;
         }
 
         public void Render(IGraphicsContext graphicsContext)

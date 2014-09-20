@@ -14,7 +14,6 @@ using System.Windows.Shapes;
 using StoryTimeFramework.WorldManagement;
 using StoryTime;
 using System.ComponentModel;
-using StoryTimeCore.WorldManagement;
 using StoryTimeDevKit.Controllers.Scenes;
 using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 using System.Collections.ObjectModel;
@@ -22,18 +21,19 @@ using StoryTimeDevKit.Models.SceneViewer;
 using StoryTime.Contexts;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeFramework.Resources.Graphic;
-using StoryTimeCore.Entities.Actors;
+using StoryTimeFramework.Entities.Actors;
 using Microsoft.Xna.Framework;
 using StoryTimeDevKit.Commands.UICommands;
-using StoryTimeFramework.Entities.Actors;
 using FarseerPhysics.Dynamics;
 using StoryTimeFramework.Entities.Interfaces;
-using StoryTimeDevKit.SceneWidgets.Interfaces;
 using StoryTimeDevKit.Extensions;
 using Ninject;
 using StoryTimeDevKit.Configurations;
 using Ninject.Parameters;
 using StoryTimeDevKit.Utils;
+using StoryTimeFramework.Extensions;
+using FarseerPhysicsWrapper;
+using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
 
 namespace StoryTimeDevKit.Controls.SceneViewer
 {
@@ -92,6 +92,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             _controller = DependencyInjectorHelper
                             .Kernel
                             .Get<ISceneViewerController>(graphicsContextArg);
+            _game.GameWorld.GUI.Add(new SceneWidgets.Transformation.RotateSceneWidget());
         }
 
         public void AddScene(SceneViewModel s)
@@ -99,6 +100,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             //build scene according to model
             Scene scene = new Scene();
             scene.SceneName = s.SceneName;
+            scene.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
             SceneTabViewModel sceneVM = new SceneTabViewModel(scene);
             Tabs.Add(sceneVM);
 
@@ -158,9 +160,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             SceneTabViewModel sceneVM = SelectedScene;
             if(sceneVM == null) return;
 
-            float x = sceneVM.Scene.Camera.Viewport.Width * pointInGamePanel.X / gamePanelDimensions.X;
-            float y = sceneVM.Scene.Camera.Viewport.Height * pointInGamePanel.Y / gamePanelDimensions.Y;
-            Vector2 position = new Vector2(x, y);
+            Vector2 position = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
 
             _controller.AddActor(sceneVM, model, position);
 

@@ -17,23 +17,24 @@ using System.Windows.Controls;
 using StoryTimeDevKit.Controls.Dialogs;
 using StoryTimeDevKit.Models.SavedData;
 using StoryTimeDevKit.Extensions;
+using StoryTimeDevKit.Controls;
 
 namespace StoryTimeDevKit.Controllers.GameObjects
 {
     public class GameObjectsController : IGameObjectsController
     {
-        private IGameObjectsControl _control;
+        private INodeAddedCallback _nodeAddCB;
 
         private class TexturesCategoryViewModel : GameObjectCategoryViewModel
         {
-            public TexturesCategoryViewModel(IGameObjectsControl gameObjects)
-                : base(gameObjects, "Textures", "/Images/GameObjectsControl/TextureTreeViewIcon.jpg", "Textures")
+            public TexturesCategoryViewModel(INodeAddedCallback nodeAddCB)
+                : base(nodeAddCB, "Textures", "/Images/GameObjectsControl/TextureTreeViewIcon.jpg", "Textures")
             { }
         }
 
-        public GameObjectsController(IGameObjectsControl control)
+        public GameObjectsController(INodeAddedCallback nodeAddCB)
         {
-            _control = control;
+            _nodeAddCB = nodeAddCB;
         }
 
         public GameObjectsRoot LoadGameObjectsTree()
@@ -79,8 +80,8 @@ namespace StoryTimeDevKit.Controllers.GameObjects
 
         private List<GameObjectCategoryViewModel> LoadGameObjectsCategories()
         {
-            GameObjectCategoryViewModel actors = new ActorsCategoryViewModel(_control);
-            GameObjectCategoryViewModel scenes = new ScenesCategoryViewModel(_control);
+            GameObjectCategoryViewModel actors = new ActorsCategoryViewModel(_nodeAddCB);
+            GameObjectCategoryViewModel scenes = new ScenesCategoryViewModel(_nodeAddCB);
             //GameObjectCategoryViewModel textures = new TexturesCategoryViewModel(_control);
             
             LoadActorsTree(actors);
@@ -93,7 +94,7 @@ namespace StoryTimeDevKit.Controllers.GameObjects
         private void LoadActorsTree(GameObjectCategoryViewModel actorsCategory)
         {
             Assembly assembly = Assembly.Load("StoryTimeFramework");
-            AssemblyViewModel folder = new AssemblyViewModel(actorsCategory, _control, "StoryTimeFramework");
+            AssemblyViewModel folder = new AssemblyViewModel(actorsCategory, _nodeAddCB, "StoryTimeFramework");
 
             Type baseType = typeof(BaseActor);
             List<ActorViewModel> actorTypes = assembly.GetTypes()
@@ -102,7 +103,7 @@ namespace StoryTimeDevKit.Controllers.GameObjects
                 {
                     return new ActorViewModel(
                         folder,
-                        _control, 
+                        _nodeAddCB, 
                         t, 
                         assembly.GetName().Name);
                 })
@@ -123,14 +124,14 @@ namespace StoryTimeDevKit.Controllers.GameObjects
             FileInfo[] fis = currentDirectory.GetFilesByExtension(FileExtensions.SceneSavedModel);
             foreach (FileInfo fi in fis)
             {
-                SceneViewModel svm = new SceneViewModel(parent, _control, fi.Name, fi.FullName);
+                SceneViewModel svm = new SceneViewModel(parent, _nodeAddCB, fi.Name, fi.FullName);
                 parent.Children.Add(svm);
             }
 
             DirectoryInfo[] childDirectories = currentDirectory.GetDirectories();
             foreach (DirectoryInfo di in childDirectories)
             {
-                FolderViewModel folder = new FolderViewModel(parent, _control, di.Name, di.FullName, "Scenes");
+                FolderViewModel folder = new FolderViewModel(parent, _nodeAddCB, di.Name, di.FullName, "Scenes");
                 parent.Children.Add(folder);
                 AddScenesAndFolders(folder, di);
             }
@@ -153,7 +154,7 @@ namespace StoryTimeDevKit.Controllers.GameObjects
             foreach (FileInfo fi in fis)
             {
                 FolderViewModel folder = GetFolderFor(texturesCategory, folders, fi);
-                TextureViewModel texture = new TextureViewModel(folder, _control, fi.Name, fi.FullName);
+                TextureViewModel texture = new TextureViewModel(folder, _nodeAddCB, fi.Name, fi.FullName);
                 folder.Children.Add(texture);
             }
 
@@ -175,7 +176,7 @@ namespace StoryTimeDevKit.Controllers.GameObjects
 
             folder = new FolderViewModel(
                 texturesCategory,
-                _control,
+                _nodeAddCB,
                 fi.DirectoryName.Replace(fi.Directory.FullName, fi.Directory.Name), 
                 fi.Directory.FullName);
 

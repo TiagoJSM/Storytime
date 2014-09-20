@@ -10,7 +10,7 @@ using StoryTimeCore.Input.Time;
 using StoryTimeCore.Resources.Graphic;
 using StoryTimeCore.CustomAttributes.Editor;
 
-namespace StoryTimeCore.Entities.Actors
+namespace StoryTimeFramework.Entities.Actors
 {
     public class Actor : BaseActor
     {

@@ -17,12 +17,12 @@ using StoryTime.Contexts;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.DataStructures;
 using FarseerPhysics.Factories;
-using StoryTimeDevKit.SceneWidgets.Interfaces;
 using FarseerPhysicsWrapper;
 using StoryTimeDevKit.Extensions;
 using StoryTimeDevKit.Models.SavedData;
 using StoryTimeDevKit.Utils;
 using StoryTimeDevKit.Controllers.TemplateControllers;
+using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
 
 namespace StoryTimeDevKit.Controllers.Scenes
 {
@@ -53,21 +53,11 @@ namespace StoryTimeDevKit.Controllers.Scenes
 
             BaseActor ba = Activator.CreateInstance(actor.ActorType) as BaseActor;
             PopulateActorWithDefaultValuesIfNeeded(ba, position, s.Scene);
-            ActorWidgetAdapter adapter = new ActorWidgetAdapter(this, ba, _graphicsContext);
+            ActorWidgetAdapter adapter = new ActorWidgetAdapter(ba, _graphicsContext);
+            adapter.OnTranslated += MoveActor;
+            adapter.OnRotated += RotateActor;
 
             IReversibleCommand command = new AddActorCommand(s.Scene, adapter);
-            Commands.Push(command);
-        }
-
-        public void MoveActor(BaseActor actor, Vector2 fromPosition, Vector2 toPosition)
-        {
-            IReversibleCommand command = new MoveActorCommand(actor, fromPosition, toPosition);
-            Commands.Push(command);
-        }
-
-        public void RotateActor(BaseActor actor, float previousRotation, float rotation)
-        {
-            IReversibleCommand command = new RotateActorCommand(actor, previousRotation, rotation);
             Commands.Push(command);
         }
 
@@ -88,17 +78,28 @@ namespace StoryTimeDevKit.Controllers.Scenes
             set { _control = value; }
         }
 
+        public void MoveActor(BaseActor actor, Vector2 fromPosition, Vector2 toPosition)
+        {
+            IReversibleCommand command = new MoveActorCommand(actor, fromPosition, toPosition);
+            Commands.Push(command);
+        }
+
+        public void RotateActor(BaseActor actor, float previousRotation, float rotation)
+        {
+            IReversibleCommand command = new RotateActorCommand(actor, previousRotation, rotation);
+            Commands.Push(command);
+        }
+
         private void PopulateActorWithDefaultValuesIfNeeded(BaseActor ba, Vector2 position, Scene s)
         {
             if (ba.RenderableAsset == null)
             {
                 ITexture2D bitmap = _graphicsContext.LoadTexture2D("default");
                 Static2DRenderableAsset asset = new Static2DRenderableAsset();
-                //asset.SetBoundingBox(new Rectanglef(0, 0, 160));
                 asset.Texture2D = bitmap;
                 ba.RenderableAsset = asset;
                 string name = "one";
-                ba.Body = new FarseerBody(BodyFactory.CreateRectangle(s.World, 160f, 160f, 1f, name));
+                ba.Body = s.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
                 ba.Body.Position = position;
             }
         }

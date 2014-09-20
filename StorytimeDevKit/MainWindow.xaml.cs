@@ -20,7 +20,7 @@ using StoryTimeDevKit.Utils;
 using StoryTimeDevKit.Models.SavedData;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeDevKit.Controls.Puppeteer;
-using StoryTimeDevKit.SceneWidgets.Interfaces;
+using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
 using StoryTimeDevKit.Models.MainWindow;
 
 namespace StoryTimeDevKit
@@ -147,8 +147,6 @@ namespace StoryTimeDevKit
             ActorWidgetAdapter adapter = actor as ActorWidgetAdapter;
             if (adapter == null) return;
 
-            //ActorWidgetAdapterViewModel widgetModeViewModel = new ActorWidgetAdapterViewModel();
-
             if (!_widgetModeViewModel.HasActor)
             {
                 TranslateButton.IsChecked = true;
@@ -157,10 +155,6 @@ namespace StoryTimeDevKit
 
             _widgetModeViewModel.ActorWidgetAdapter = adapter;
             
-
-            //_widgetModeViewModel = widgetModeViewModel;
-            
-            //adapter.WidgetMode = _mode.Value;
             CommandManager.InvalidateRequerySuggested();
         }
     }

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using StoryTimeDevKit.Controllers.Scenes;
 using StoryTimeCore.Extensions;
 
-namespace StoryTimeDevKit.SceneWidgets.Interfaces
+namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
 {
     public class RotateSceneWidget : BaseSceneWidget
     {

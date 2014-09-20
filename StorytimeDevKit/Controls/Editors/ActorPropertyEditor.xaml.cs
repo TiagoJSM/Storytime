@@ -15,7 +15,7 @@ using StoryTimeFramework.Entities.Actors;
 using StoryTimeDevKit.Models;
 using System.ComponentModel;
 using Xceed.Wpf.Toolkit.PropertyGrid;
-using StoryTimeCore.Entities.Actors;
+using StoryTimeFramework.Entities.Actors;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using StoryTimeCore.Resources.Graphic;
 

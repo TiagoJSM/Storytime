@@ -8,15 +8,13 @@ using StoryTimeFramework.Entities.Actors;
 using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 using StoryTimeDevKit.Models.SceneViewer;
 using Microsoft.Xna.Framework;
-using StoryTimeDevKit.SceneWidgets.Interfaces;
+using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
 
 namespace StoryTimeDevKit.Controllers.Scenes
 {
     public interface ISceneViewerController : IStackedCommandsController<ISceneViewerControl>
     {
         void AddActor(SceneTabViewModel s, ActorViewModel actor, Vector2 position);
-        void MoveActor(BaseActor actor, Vector2 fromPosition, Vector2 toPosition);
-        void RotateActor(BaseActor actor, float previousRotation, float rotation);
         void SelectWidget(ISceneWidget selected, ISceneWidget toSelect);
         void SaveScene(SceneTabViewModel scene);
     }

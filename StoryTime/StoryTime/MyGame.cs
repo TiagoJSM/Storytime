@@ -12,9 +12,8 @@ using StoryTime.Contexts;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeFramework.Resources.Graphic;
 using StoryTimeCore.Input.Time;
-using StoryTimeCore.Entities.Actors;
+using StoryTimeFramework.Entities.Actors;
 using StoryTimeFramework.WorldManagement;
-using StoryTimeCore.WorldManagement;
 
 namespace StoryTime
 {
@@ -50,8 +49,6 @@ namespace StoryTime
         {
             get
             {
-                if (_gameWorld == null)
-                    _gameWorld = new GameWorld();
                 return _gameWorld;
             }
         }
@@ -94,7 +91,7 @@ namespace StoryTime
             //spriteBatch = new SpriteBatch(GraphicsDevice);
 
             GraphicsContext = new XNAGraphicsContext(this.GraphicsDeviceManager, this.Content);
-            GameWorld.GraphicsContext = GraphicsContext;
+            _gameWorld = new GameWorld(GraphicsContext);
             /*ITexture2D bitmap = GraphicsContext.LoadTexture2D("default");
 
             _asset = new Static2DRenderableAsset();

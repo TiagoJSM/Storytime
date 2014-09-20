@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Collections.Specialized;
 using StoryTimeDevKit.Controls.GameObjects;
+using StoryTimeDevKit.Controls;
 
 namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
 {
@@ -18,7 +19,7 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
 
         readonly ObservableCollection<TreeViewItemViewModel> _children;
         readonly TreeViewItemViewModel _parent;
-        public IGameObjectsControl GameObjects { get; private set; }
+        //public IGameObjectsControl GameObjects { get; private set; }
 
         bool _isExpanded;
         bool _isSelected;
@@ -27,17 +28,17 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
 
         #region Constructors
 
-        protected TreeViewItemViewModel(IGameObjectsControl gameObjects, bool lazyLoadChildren)
-            : this(null, gameObjects, lazyLoadChildren)
+        protected TreeViewItemViewModel(INodeAddedCallback nodeAddCB, bool lazyLoadChildren)
+            : this(null, nodeAddCB, lazyLoadChildren)
         {
         }
 
-        protected TreeViewItemViewModel(TreeViewItemViewModel parent, IGameObjectsControl gameObjects, bool lazyLoadChildren)
+        protected TreeViewItemViewModel(TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB, bool lazyLoadChildren)
             : this()
         {
             _parent = parent;
-            GameObjects = gameObjects;
-            ChildAdded += gameObjects.NodeAddedCallback;
+            //GameObjects = gameObjects;
+            ChildAdded += nodeAddCB.NodeAddedCallback;
             
             if (lazyLoadChildren)
                 _children.Add(DummyChild);

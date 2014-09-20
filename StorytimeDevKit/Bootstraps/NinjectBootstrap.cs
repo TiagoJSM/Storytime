@@ -6,6 +6,7 @@ using Ninject;
 using StoryTimeDevKit.Controllers.Scenes;
 using StoryTimeDevKit.Controllers.GameObjects;
 using StoryTimeDevKit.Controllers.ImageViewer;
+using StoryTimeDevKit.Controllers.Puppeteer;
 
 namespace StoryTimeDevKit.Bootstraps
 {
@@ -16,6 +17,7 @@ namespace StoryTimeDevKit.Bootstraps
             kernel.Bind<ISceneViewerController>().To<SceneViewerController>().InSingletonScope();
             kernel.Bind<IGameObjectsController>().To<GameObjectsController>().InSingletonScope();
             kernel.Bind<IImageViewerController>().To<ImageViewerController>().InSingletonScope();
+            kernel.Bind<IPuppeteerController, ISkeletonViewerController>().To<PuppeteerController>().InSingletonScope();
         }
     }
 }

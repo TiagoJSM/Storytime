@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using StoryTimeFramework.WorldManagement;
 using StoryTimeFramework.Entities.Actors;
+using StoryTimeDevKit.Controllers;
 
 namespace StoryTimeDevKit.Commands.ReversibleCommands
 {

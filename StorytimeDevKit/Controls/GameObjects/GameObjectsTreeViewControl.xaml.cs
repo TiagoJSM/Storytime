@@ -32,7 +32,7 @@ namespace StoryTimeDevKit.Controls.GameObjects
     /// <summary>
     /// Interaction logic for GameObjectsTreeViewControl.xaml
     /// </summary>
-    public partial class GameObjectsTreeViewControl : UserControl, IGameObjectsControl
+    public partial class GameObjectsTreeViewControl : UserControl, IGameObjectsControl, INodeAddedCallback
     {
         private IGameObjectsController _controller;
 

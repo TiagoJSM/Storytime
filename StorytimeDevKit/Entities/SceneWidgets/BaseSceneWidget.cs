@@ -5,8 +5,9 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.Extensions;
+using StoryTimeDevKit.Delegates;
 
-namespace StoryTimeDevKit.SceneWidgets.Interfaces
+namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
 {
     public abstract class BaseSceneWidget : ISceneWidget
     {
@@ -14,9 +15,9 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
         private bool _enabled;
         private Vector2 _startDrag;
 
-        public event Action<Vector2> OnStartDrag;
-        public event Action<Vector2, Vector2> OnDrag;
-        public event Action<Vector2, Vector2> OnStopDrag;
+        public event OnStartDrag OnStartDrag;
+        public event OnDrag OnDrag;
+        public event OnStopDrag OnStopDrag;
 
         public event Action<bool, ISceneWidget> OnSelect;
         public event Action<bool> OnEnabled;

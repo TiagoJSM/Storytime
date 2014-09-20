@@ -7,7 +7,7 @@ using StoryTimeDevKit.Commands.ReversibleCommands;
 
 namespace StoryTimeDevKit.Controllers.TemplateControllers
 {
-    public class StackedCommandsController<TControl> : IStackedCommandsController<TControl>
+    public abstract class StackedCommandsController<TControl> : IStackedCommandsController<TControl>
     {
         private CommandStack _commands;
 

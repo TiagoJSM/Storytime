@@ -10,8 +10,11 @@ using Microsoft.Xna.Framework;
 using StoryTimeCore.DataStructures;
 using StoryTimeDevKit.Controllers.Scenes;
 using StoryTimeCore.Extensions;
+using StoryTimeDevKit.Controllers;
+using StoryTimeDevKit.Delegates;
+using StoryTimeFramework.Resources.Graphic;
 
-namespace StoryTimeDevKit.SceneWidgets.Interfaces
+namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
 {
     public class ActorWidgetAdapter : BaseActor, ITransformableWidget
     {
@@ -65,7 +68,7 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
                     _moveWidgetAsset.Render(renderer);
                     renderer.RotationTransformation = rendererRotation;
                 }
-                else
+                else if(_adapter.WidgetMode == WidgetMode.Rotate)
                 {
                     _rotateWidgetAsset.Render(renderer);
                 }
@@ -89,18 +92,20 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
         private MoveArrowSceneWidget _horizontalArrow;
         private MoveArrowSceneWidget _verticalArrow;
         private RotateSceneWidget _rotationWheel;
-        private ISceneViewerController _controller;
         private WidgetMode _widgetMode;
         private Vector2 _startDrag;
         private float _bodyStartRotation;
 
-        public event Action<Vector2> OnStartDrag;
-        public event Action<Vector2, Vector2> OnDrag;
-        public event Action<Vector2, Vector2> OnStopDrag;
+        public event OnStartDrag OnStartDrag;
+        public event OnDrag OnDrag;
+        public event OnStopDrag OnStopDrag;
 
         public event Action<bool, ISceneWidget> OnSelect;
         public event Action<bool> OnEnabled;
         public event Action<WidgetMode> OnWidgetModeChange;
+
+        public event OnTranslated OnTranslated;
+        public event OnRotated OnRotated;
 
         public BaseActor BaseActor { get; private set; }
         public WidgetMode WidgetMode 
@@ -170,9 +175,8 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
             }
         }
 
-        public ActorWidgetAdapter(ISceneViewerController controller, BaseActor ba, IGraphicsContext graphicsContext)
+        public ActorWidgetAdapter(BaseActor ba, IGraphicsContext graphicsContext)
         {
-            _controller = controller;
             _moveAsset = new MoveWidgetRenderableAsset(graphicsContext);
             _rotateAsset = new RotateWidgetRenderableAsset(graphicsContext);
             BaseActor = ba;
@@ -187,7 +191,6 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
             _horizontalArrow = new MoveArrowSceneWidget(this, _moveAsset, MoveArrowSceneWidget.MoveArrowDirection.Horizontal);
             _verticalArrow = new MoveArrowSceneWidget(this, _moveAsset, MoveArrowSceneWidget.MoveArrowDirection.Vertical);
             _rotationWheel = new RotateSceneWidget(this, _rotateAsset);
-            _controller = controller;
             _enabled = true;
 
             SetSceneWidgetsEnableStatus();
@@ -270,7 +273,9 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
             {
                 currentPosition.X = startDragPosition.X;
             }
-            _controller.MoveActor(BaseActor, _startDragPosition, currentPosition);
+
+            if (OnTranslated != null)
+                OnTranslated(BaseActor, _startDragPosition, currentPosition);
         }
         #endregion
 
@@ -287,7 +292,9 @@ namespace StoryTimeDevKit.SceneWidgets.Interfaces
 
         private void OnStopRotateHandler(float angle)
         {
-            _controller.RotateActor(BaseActor, _bodyStartRotation, Body.Rotation);
+            if (OnRotated != null)
+                OnRotated(BaseActor, _bodyStartRotation, Body.Rotation);
+            //_controller.RotateActor(BaseActor, _bodyStartRotation, Body.Rotation);
         }
         #endregion
     }

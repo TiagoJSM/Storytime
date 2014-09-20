@@ -12,7 +12,7 @@
     </UserControl.Resources>
     <Grid>
         <GroupBox Header="Game objects" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Name="groupBox1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
-                <TreeView AllowDrop="True" ItemsSource="{Binding GameObjectsCategories}" BorderThickness="1" HorizontalContentAlignment="Stretch" Name="GameObjects" VerticalContentAlignment="Stretch" MouseDoubleClick="GameObjects_MouseDoubleClick">
+            <TreeView AllowDrop="True" ItemsSource="{Binding GameObjectsCategories}" BorderThickness="1" HorizontalContentAlignment="Stretch" Name="GameObjects" VerticalContentAlignment="Stretch" MouseDoubleClick="GameObjects_MouseDoubleClick">
                 
                 <TreeView.ItemContainerStyle>
                     <!-- 

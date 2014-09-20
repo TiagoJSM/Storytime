@@ -7,8 +7,9 @@ using StoryTimeCore.DataStructures;
 using StoryTimeCore.Input.Time;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
+using StoryTimeCore.Resources.Graphic;
 
-namespace StoryTimeCore.Resources.Graphic
+namespace StoryTimeFramework.Resources.Graphic
 {
     public abstract class TemplateRenderableAsset : IRenderableAsset
     {

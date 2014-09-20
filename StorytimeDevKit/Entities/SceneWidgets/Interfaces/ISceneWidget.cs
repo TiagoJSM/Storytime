@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using StoryTimeDevKit.Delegates;
 
-namespace StoryTimeDevKit.SceneWidgets.Interfaces
+namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
 {
     public interface ISceneWidget
     {
-        event Action<Vector2> OnStartDrag;
-        event Action<Vector2, Vector2> OnDrag;
-        //Parameters: StartDrag, currentPosition
-        event Action<Vector2, Vector2> OnStopDrag;
-
+        event OnStartDrag OnStartDrag;
+        event OnDrag OnDrag;
+        event OnStopDrag OnStopDrag;
         event Action<bool, ISceneWidget> OnSelect;
         event Action<bool> OnEnabled;
 

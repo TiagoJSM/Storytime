@@ -7,11 +7,11 @@ using Microsoft.Xna.Framework.Graphics;
 using StoryTimeFramework.Resources.Graphic;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTime.Contexts;
-using StoryTimeCore.Entities.Actors;
+using StoryTimeFramework.Entities.Actors;
 using StoryTimeFramework.WorldManagement;
-using StoryTimeCore.WorldManagement;
-using Microsoft.Xna.Framework.Input;
 using StoryTimeCore.Input.Time;
+using Microsoft.Xna.Framework.Input;
+using FarseerPhysicsWrapper;
 
 namespace StoryTime
 {
@@ -38,8 +38,6 @@ namespace StoryTime
         {
             get
             {
-                if (_gameWorld == null)
-                    _gameWorld = new GameWorld();
                 return _gameWorld;
             }
         }
@@ -89,9 +87,10 @@ namespace StoryTime
             };
 
             Scene s = new Scene();
+            s.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
             s.AddActor(_actor);
-            GameWorld.AddScene(s);
-            GameWorld.GraphicsContext = GraphicsContext;
+            _gameWorld = new GameWorld(GraphicsContext);
+            _gameWorld.AddScene(s);
             //rectangle = new Texture2D(GraphicsDevice, 2, 2);
             //rectangle.SetData(new[] { Color.White, Color.Red, Color.Green, Color.Blue });
             // TODO: use this.Content to load your game content here

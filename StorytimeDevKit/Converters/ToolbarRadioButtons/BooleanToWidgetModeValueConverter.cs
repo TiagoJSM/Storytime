@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Data;
 using System.Globalization;
-using StoryTimeDevKit.SceneWidgets.Interfaces;
+using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
 
 namespace StoryTimeDevKit.Converters.ToolbarRadioButtons
 {

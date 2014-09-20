@@ -97,24 +97,37 @@
     <Compile Include="Configurations\ApplicationProperties.cs" />
     <Compile Include="Controllers\IStackedCommandsController.cs" />
     <Compile Include="Controllers\Puppeteer\IPuppeteerController.cs" />
+    <Compile Include="Controllers\Puppeteer\ISkeletonViewerController.cs" />
     <Compile Include="Controllers\Puppeteer\PuppeteerController.cs" />
+    <Compile Include="Controllers\Puppeteer\WorkingModes\AddBoneMode.cs" />
+    <Compile Include="Controllers\Puppeteer\WorkingModes\IPuppeteerWorkingMode.cs" />
+    <Compile Include="Controllers\Puppeteer\WorkingModes\SelectionMode.cs" />
     <Compile Include="Controllers\TemplateControllers\StackedCommandsController.cs" />
+    <Compile Include="Controls\INodeAddedCallback.cs" />
     <Compile Include="Controls\Puppeteer\IPuppeteerEditorControl.cs" />
+    <Compile Include="Controls\Puppeteer\ISkeletonTreeViewControl.cs" />
     <Compile Include="Controls\Puppeteer\PuppeteerEditorControl.xaml.cs">
       <DependentUpon>PuppeteerEditorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Dialogs\PuppeteerEditorDialog.xaml.cs">
       <DependentUpon>PuppeteerEditorDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Puppeteer\SkeletonTreeViewControl.xaml.cs">
+      <DependentUpon>SkeletonTreeViewControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToWidgetModeValueConverter.cs" />
+    <Compile Include="Delegates\TransformDelegates.cs" />
+    <Compile Include="Entities\Actors\BoneActor.cs" />
     <Compile Include="Extensions\SceneExtensions.cs" />
     <Compile Include="Models\MainWindow\ActorWidgetAdapterViewModel.cs" />
-    <Compile Include="SceneWidgets\ActorWidgetAdapter.cs" />
-    <Compile Include="SceneWidgets\BaseSceneWidget.cs" />
-    <Compile Include="SceneWidgets\Interfaces\ISceneWidget.cs" />
-    <Compile Include="SceneWidgets\Interfaces\ITransformableWidget.cs" />
-    <Compile Include="SceneWidgets\MoveArrowSceneWidget.cs" />
-    <Compile Include="SceneWidgets\MoveWidgetRenderableAsset.cs" />
+    <Compile Include="Models\Puppeteer\BoneViewModel.cs" />
+    <Compile Include="Models\Puppeteer\SkeletonViewModel.cs" />
+    <Compile Include="Entities\SceneWidgets\ActorWidgetAdapter.cs" />
+    <Compile Include="Entities\SceneWidgets\BaseSceneWidget.cs" />
+    <Compile Include="Entities\SceneWidgets\Interfaces\ISceneWidget.cs" />
+    <Compile Include="Entities\SceneWidgets\Interfaces\ITransformableWidget.cs" />
+    <Compile Include="Entities\SceneWidgets\MoveArrowSceneWidget.cs" />
+    <Compile Include="Entities\SceneWidgets\MoveWidgetRenderableAsset.cs" />
     <Compile Include="Commands\ReversibleCommands\AddActorCommand.cs" />
     <Compile Include="Commands\ReversibleCommands\CommandStack.cs" />
     <Compile Include="Commands\ReversibleCommands\IReversibleCommand.cs">
@@ -204,9 +217,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LocalizedTexts.resx</DependentUpon>
     </Compile>
-    <Compile Include="SceneWidgets\Puppeteer\BoneRenderableAsset.cs" />
-    <Compile Include="SceneWidgets\RotateSceneWidget.cs" />
-    <Compile Include="SceneWidgets\RotateWidgetRenderableAsset.cs" />
+    <Compile Include="Entities\SceneWidgets\Puppeteer\BoneRenderableAsset.cs" />
+    <Compile Include="Entities\SceneWidgets\RotateSceneWidget.cs" />
+    <Compile Include="Entities\SceneWidgets\RotateWidgetRenderableAsset.cs" />
+    <Compile Include="SceneWidgets\Transformation\RotateSceneWidget.cs" />
     <Compile Include="Texts\ActorPropertyEditorDefaultValues.cs" />
     <Compile Include="Utils\ApplicationUtils.cs" />
     <Compile Include="Utils\DependencyInjectorHelper.cs" />
@@ -240,6 +254,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Editors\ActorPropertyEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Puppeteer\SkeletonTreeViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -327,6 +345,10 @@
       <Project>{B3BC2FF1-6B9D-48A6-B392-A1C2FB98CB86}</Project>
       <Name>StoryTimeFramework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StoryTimeUI\StoryTimeUI.csproj">
+      <Project>{8D4CF4B3-D49F-4320-9857-AEA7278EE1B2}</Project>
+      <Name>StoryTimeUI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StoryTime\StoryTime\StoryTime.csproj">
       <Project>{0F0F1AAA-7FBE-4952-A7D0-4509D2221959}</Project>
       <Name>StoryTime</Name>
@@ -375,6 +397,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\MainWindow\ToolBar\rotationIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Puppeteer\ToolBar\SelectionIcon.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

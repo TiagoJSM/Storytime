@@ -88,6 +88,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\FarseerPhysicsWrapper\FarseerPhysicsWrapper.csproj">
+      <Project>{85BD65F7-F869-474D-9FE8-2E87FAB35737}</Project>
+      <Name>FarseerPhysicsWrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\StoryTimeCore\StoryTimeCore.csproj">
       <Project>{768B1451-6637-4ADE-BB85-CB742B224D09}</Project>
       <Name>StoryTimeCore</Name>

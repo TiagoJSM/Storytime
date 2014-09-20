@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using StoryTimeCore.Input.Time;
 using StoryTimeFramework.Entities.Controllers;
-using StoryTimeCore.Entities.Actors;
+using StoryTimeFramework.Entities.Actors;
 
 namespace StoryTimeFramework.Entities.Actors
 {
