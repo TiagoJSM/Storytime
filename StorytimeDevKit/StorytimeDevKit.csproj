@@ -118,6 +118,7 @@
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToWidgetModeValueConverter.cs" />
     <Compile Include="Delegates\TransformDelegates.cs" />
     <Compile Include="Entities\Actors\BoneActor.cs" />
+    <Compile Include="Entities\SceneWidgets\TranslateWidgetRenderableAsset.cs" />
     <Compile Include="Extensions\SceneExtensions.cs" />
     <Compile Include="Models\MainWindow\ActorWidgetAdapterViewModel.cs" />
     <Compile Include="Models\Puppeteer\BoneViewModel.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="Models\ImageViewer\TextureViewModel.cs" />
     <Compile Include="Models\SavedData\SavedSceneModel.cs" />
     <Compile Include="Models\SceneViewer\SceneViewModel.cs" />
+    <Compile Include="Models\TransformActorViewModel.cs" />
     <Compile Include="Resources\Exceptions\LocalizedTexts.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -221,6 +223,7 @@
     <Compile Include="Entities\SceneWidgets\RotateSceneWidget.cs" />
     <Compile Include="Entities\SceneWidgets\RotateWidgetRenderableAsset.cs" />
     <Compile Include="SceneWidgets\Transformation\RotateSceneWidget.cs" />
+    <Compile Include="SceneWidgets\Transformation\TranslateSceneWidget.cs" />
     <Compile Include="Texts\ActorPropertyEditorDefaultValues.cs" />
     <Compile Include="Utils\ApplicationUtils.cs" />
     <Compile Include="Utils\DependencyInjectorHelper.cs" />

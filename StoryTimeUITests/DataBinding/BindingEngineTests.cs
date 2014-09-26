@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel;
 using StoryTimeUI.DataBinding;
+using StoryTimeUI.DataBinding.Engines;
 
 namespace StoryTimeUITests.DataBinding
 {
@@ -43,13 +44,37 @@ namespace StoryTimeUITests.DataBinding
             }
         }
 
-        private class Destination
+        private class Destination : INotifyPropertyChanged
         {
-            public int DestinationData { get; set; }
+            private int _data;
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public int DestinationData
+            {
+                get
+                {
+                    return _data;
+                }
+                set
+                {
+                    if (_data == value) return;
+                    _data = value;
+                    OnPropertyChanged("DestinationData");
+                }
+            }
+
+            private void OnPropertyChanged(string propertyName)
+            {
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                }
+            }
         }
         
         [TestMethod]
-        public void BindingWorksCorrectly()
+        public void BindingWithExpressionsOneWayToDestintionWorks()
         {
             Source source = new Source();
             Destination destination = new Destination();
@@ -58,6 +83,30 @@ namespace StoryTimeUITests.DataBinding
                 .Bind(d => d.DestinationData, s => s.Data);
             source.Data = 5;
             Assert.AreEqual(5, destination.DestinationData);
+        }
+
+        [TestMethod]
+        public void BindingWithExpressionsOneWayToSourceWorks()
+        {
+            Source source = new Source();
+            Destination destination = new Destination();
+            BindingEngine<Destination, Source> engine =
+                new BindingEngine<Destination, Source>(destination, source)
+                .Bind(d => d.DestinationData, s => s.Data, BindingType.OneWayToSource);
+            destination.DestinationData = 5;
+            Assert.AreEqual(5, source.Data);
+        }
+
+        [TestMethod]
+        public void BindingWithPropertyNameOneWayToSourceWorks()
+        {
+            Source source = new Source();
+            Destination destination = new Destination();
+            BindingEngine engine = 
+                new BindingEngine(destination, source)
+                .Bind("DestinationData", "Data", BindingType.OneWayToSource);
+            destination.DestinationData = 5;
+            Assert.AreEqual(5, source.Data);
         }
     }
 }

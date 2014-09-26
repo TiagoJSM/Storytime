@@ -20,5 +20,13 @@ namespace StoryTimeCore.Extensions
                 return f2;
             return f1;
         }
+
+        public static float PowerOf(this float value, int power)
+        {
+            float result = value;
+            for (int idx = 1; idx < power; idx++)
+                result *= value;
+            return result;
+        }
     }
 }

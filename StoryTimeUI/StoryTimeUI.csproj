@@ -45,7 +45,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseWidget.cs" />
-    <Compile Include="DataBinding\BindingEngine.cs" />
+    <Compile Include="DataBinding\Binders\PropertyBinder.cs" />
+    <Compile Include="DataBinding\Binders\IBinder.cs" />
+    <Compile Include="DataBinding\Binders\OneWayToDestinationBinder.cs" />
+    <Compile Include="DataBinding\Binders\OneWayToSourceBinder.cs" />
+    <Compile Include="DataBinding\Binders\TwoWaysBinder.cs" />
+    <Compile Include="DataBinding\Engines\BindingEngine.cs" />
+    <Compile Include="DataBinding\Engines\StronglyTypedBindingEngine.cs" />
+    <Compile Include="Delegates\TransformDelegates.cs" />
+    <Compile Include="Exceptions\DataBinding\PropertyIsNotReadableException.cs" />
+    <Compile Include="Exceptions\DataBinding\PropertyIsNotWritableException.cs" />
     <Compile Include="GUIManager.cs" />
     <Compile Include="Interfaces\IParent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

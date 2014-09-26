@@ -59,6 +59,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataStructures\Circle.cs" />
     <Compile Include="Extensions\Vector2Extensions.cs" />
     <Compile Include="Manageables\ISynchronizable.cs" />
     <Compile Include="Physics\IBody.cs" />

@@ -34,6 +34,9 @@ using StoryTimeDevKit.Utils;
 using StoryTimeFramework.Extensions;
 using FarseerPhysicsWrapper;
 using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
+using StoryTimeUI.DataBinding;
+using StoryTimeDevKit.Models;
+using StoryTimeUI.DataBinding.Engines;
 
 namespace StoryTimeDevKit.Controls.SceneViewer
 {
@@ -66,6 +69,11 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         public event Action<ActorViewModel> OnActorAdded;
         public event Action<BaseActor> OnSelectedActorChange;
 
+        private SceneWidgets.Transformation.RotateSceneWidget _rotateWidg;
+        private SceneWidgets.Transformation.TranslateSceneWidget _translateWidg;
+        private BindingEngine<SceneWidgets.Transformation.RotateSceneWidget, TransformActorViewModel> _bindingEngine;
+        private BindingEngine<SceneWidgets.Transformation.TranslateSceneWidget, TransformActorViewModel> _translateBindingEngine;
+
         public SceneViewerControl()
         {
             Tabs = new ObservableCollection<SceneTabViewModel>();
@@ -92,7 +100,10 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             _controller = DependencyInjectorHelper
                             .Kernel
                             .Get<ISceneViewerController>(graphicsContextArg);
-            _game.GameWorld.GUI.Add(new SceneWidgets.Transformation.RotateSceneWidget());
+            //_rotateWidg = new SceneWidgets.Transformation.RotateSceneWidget();
+            //_game.GameWorld.GUI.Children.Add(_rotateWidg);
+            _translateWidg = new SceneWidgets.Transformation.TranslateSceneWidget();
+            _game.GameWorld.GUI.Children.Add(_translateWidg);
         }
 
         public void AddScene(SceneViewModel s)
@@ -177,12 +188,25 @@ namespace StoryTimeDevKit.Controls.SceneViewer
 
             _clickPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
             ActorWidgetAdapter newIntersectedActor = sceneVM.Scene.Intersect(_clickPosition).FirstOrDefault() as ActorWidgetAdapter;
-            
+
+            _game.GameWorld.GUI.Intersect(_clickPosition);
+
             if (newIntersectedActor == null) return;
             if (newIntersectedActor == _intersectedActor) return;
 
             _controller.SelectWidget(_intersectedActor, newIntersectedActor);
             _intersectedActor = newIntersectedActor;
+
+            TransformActorViewModel model = new TransformActorViewModel(_intersectedActor);
+            //_bindingEngine= 
+            //    new BindingEngine<SceneWidgets.Transformation.RotateSceneWidget, TransformActorViewModel>(
+            //        _rotateWidg, model);
+            //_bindingEngine.Bind(rw => rw.Position, a => a.Position);
+
+            _translateBindingEngine=
+                new BindingEngine<SceneWidgets.Transformation.TranslateSceneWidget, TransformActorViewModel>(
+                    _translateWidg, model);
+            _translateBindingEngine.Bind(tw => tw.Position, a => a.Position);
 
             if (OnSelectedActorChange != null)
                 OnSelectedActorChange(_intersectedActor);

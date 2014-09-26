@@ -13,10 +13,11 @@ using StoryTimeCore.Extensions;
 using StoryTimeDevKit.Controllers;
 using StoryTimeDevKit.Delegates;
 using StoryTimeFramework.Resources.Graphic;
+using System.ComponentModel;
 
 namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
 {
-    public class ActorWidgetAdapter : BaseActor, ITransformableWidget
+    public class ActorWidgetAdapter : BaseActor, ITransformableWidget, INotifyPropertyChanged
     {
         private class TransformationActorRenderableAsset : TemplateRenderableAsset
         {
@@ -57,7 +58,9 @@ namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
 
             public override void Render(IRenderer renderer)
             {
+                
                 _asset.Render(renderer);
+                return;
                 if (!_adapter.Selected)
                     return;
 
@@ -106,6 +109,8 @@ namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
 
         public event OnTranslated OnTranslated;
         public event OnRotated OnRotated;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public BaseActor BaseActor { get; private set; }
         public WidgetMode WidgetMode 
@@ -239,6 +244,14 @@ namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
             _horizontalArrow.Enabled = _widgetMode == WidgetMode.Translate;
             _verticalArrow.Enabled = _widgetMode == WidgetMode.Translate;
             _rotationWheel.Enabled = _widgetMode == WidgetMode.Rotate;
+        }
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         #region MoveArrowSceneWidgetEventHandlers
