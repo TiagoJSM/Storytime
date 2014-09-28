@@ -18,6 +18,9 @@ namespace StoryTimeUI
 
         private bool _isDragging;
         private Vector2 _startDrag;
+        private Vector2 _lastDrag;
+
+        public Vector2 Position { get; set; }
 
         public GUIManager(IGraphicsContext context)
         {
@@ -34,14 +37,6 @@ namespace StoryTimeUI
 
         public ObservableCollection<BaseWidget> Children { get { return _widgets; } }
 
-        //public void Add(BaseWidget widget)
-        //{
-        //    widget.Parent = this;
-        //    widget.GraphicsContext = _context;
-        //    widget.Initialize();
-        //    _widgets.Add(widget);
-        //}
-
         public BaseWidget Intersect(Vector2 point)
         {
             IParent intersected = GetIntersectedLeafChildren(this, point);
@@ -52,7 +47,9 @@ namespace StoryTimeUI
         public void MouseDown(Vector2 point)
         {
             _intersected = Intersect(point);
+            if (_intersected == null) return;
             _startDrag = point;
+            _lastDrag = point;
             _intersected.MouseDown(point);
         }
 
@@ -62,9 +59,9 @@ namespace StoryTimeUI
             {
                 _isDragging = false;
                 _intersected.StopDrag(point);
+                _intersected.MouseUp(point);
             }
-            _intersected = Intersect(point);
-            _intersected.MouseUp(point);
+            _intersected = null;
         }
 
         public void MouseMove(Vector2 point)
@@ -75,9 +72,8 @@ namespace StoryTimeUI
                 _intersected.StartDrag(_startDrag);
                 _isDragging = true;
             }
-            Vector2 dragged = new Vector2(
-                point.X - _startDrag.X,
-                point.Y - _startDrag.Y);
+            Vector2 dragged = point - _lastDrag;
+            _lastDrag = point;
             _intersected.Drag(dragged, point);
         }
 
@@ -87,9 +83,11 @@ namespace StoryTimeUI
             ObservableCollection<BaseWidget> children = parent.Children;
             for (int idx = children.Count - 1; idx >= 0; idx--)
             {
-                if (_widgets[idx].Intersects(point))
+                if (!children[idx].Active) continue;
+
+                if (children[idx].Intersects(point))
                 {
-                    intersected = _widgets[idx];
+                    intersected = children[idx];
                     break;
                 }
             }

@@ -23,17 +23,48 @@ using StoryTimeDevKit.Models.SavedData;
 using StoryTimeDevKit.Utils;
 using StoryTimeDevKit.Controllers.TemplateControllers;
 using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
+using StoryTimeUI.DataBinding.Engines;
+using StoryTimeDevKit.SceneWidgets.Transformation;
+using StoryTimeDevKit.Models;
+using StoryTimeUI;
+using StoryTimeDevKit.Entities.SceneWidgets;
+using Ninject;
+using StoryTimeDevKit.Models.MainWindow;
 
 namespace StoryTimeDevKit.Controllers.Scenes
 {
-    public class SceneViewerController : StackedCommandsController<ISceneViewerControl>, ISceneViewerController
+    public class SceneViewerController : 
+        StackedCommandsController<ISceneViewerControl>, ISceneViewerController
     {
         private ISceneViewerControl _control;
-        private IGraphicsContext _graphicsContext;
-
-        public SceneViewerController(IGraphicsContext graphicsContext)
+        private GameWorld _world;
+        private BaseActor _intersectedActor;
+        private BindingEngine<TranslateSceneWidget, TransformActorViewModel> _translateBindingEngine;
+        private BindingEngine<RotateSceneWidget, TransformActorViewModel> _rotateBindingEngine;
+        private TranslateSceneWidget _translateWidg;
+        private RotateSceneWidget _rotateWidg;
+        private TransformModeViewModel _transformModeModel;
+        
+        [Inject]
+        public TransformModeViewModel TransformModeModel 
         {
-            _graphicsContext = graphicsContext;
+            get
+            {
+                return _transformModeModel;
+            }
+            set
+            {
+                if(_transformModeModel != null)
+                    UnassignTransformModeModelEvents();
+                _transformModeModel = value;
+                AssignTransformModeModelEvents();
+                SetTransformWidgetMode();
+            }
+        }
+
+        public SceneViewerController(GameWorld world/*, TransformActorViewModel model*/)
+        {
+            _world = world;
         }
 
         public void AddActor(SceneTabViewModel s, ActorViewModel actor, Vector2 position)
@@ -53,19 +84,16 @@ namespace StoryTimeDevKit.Controllers.Scenes
 
             BaseActor ba = Activator.CreateInstance(actor.ActorType) as BaseActor;
             PopulateActorWithDefaultValuesIfNeeded(ba, position, s.Scene);
-            ActorWidgetAdapter adapter = new ActorWidgetAdapter(ba, _graphicsContext);
-            adapter.OnTranslated += MoveActor;
-            adapter.OnRotated += RotateActor;
 
-            IReversibleCommand command = new AddActorCommand(s.Scene, adapter);
+            IReversibleCommand command = new AddActorCommand(s.Scene, ba);
             Commands.Push(command);
         }
 
-        public void SelectWidget(ISceneWidget selected, ISceneWidget toSelect)
+        /*public void SelectWidget(ISceneWidget selected, ISceneWidget toSelect)
         {
             IReversibleCommand command = new SelectActorCommand(selected, toSelect);
             Commands.Push(command);
-        }
+        }*/
 
         public void SaveScene(SceneTabViewModel scene)
         {
@@ -75,7 +103,15 @@ namespace StoryTimeDevKit.Controllers.Scenes
 
         public ISceneViewerControl Control
         {
-            set { _control = value; }
+            set 
+            { 
+                if (_control == value) return;
+                if (_control != null)
+                    UnassignControlEventHandlers();
+                _control = value;
+                if (value != null)
+                    AssignControlEventHandlers();
+            }
         }
 
         public void MoveActor(BaseActor actor, Vector2 fromPosition, Vector2 toPosition)
@@ -94,7 +130,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
         {
             if (ba.RenderableAsset == null)
             {
-                ITexture2D bitmap = _graphicsContext.LoadTexture2D("default");
+                ITexture2D bitmap = _world.GraphicsContext.LoadTexture2D("default");
                 Static2DRenderableAsset asset = new Static2DRenderableAsset();
                 asset.Texture2D = bitmap;
                 ba.RenderableAsset = asset;
@@ -102,6 +138,147 @@ namespace StoryTimeDevKit.Controllers.Scenes
                 ba.Body = s.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
                 ba.Body.Position = position;
             }
+        }
+
+        private void AssignControlEventHandlers()
+        {
+            _control.OnMouseMove += OnMouseMoveHandler;
+            _control.OnMouseClick += OnMouseClickHandler;
+            _control.OnDropActor += OnDropActorHandler;
+            _control.OnMouseDown += OnMouseDownHandler;
+            _control.OnMouseUp += OnMouseUpHandler;
+            _control.OnSceneAdded += OnSceneAddedHandler;
+        }
+
+        private void UnassignControlEventHandlers()
+        {
+            _control.OnMouseMove -= OnMouseMoveHandler;
+            _control.OnMouseClick -= OnMouseClickHandler;
+            _control.OnDropActor -= OnDropActorHandler;
+            _control.OnMouseDown -= OnMouseDownHandler;
+            _control.OnMouseUp -= OnMouseUpHandler;
+            _control.OnSceneAdded -= OnSceneAddedHandler;
+        }
+
+        private void OnDropActorHandler(ActorViewModel actorModel, SceneTabViewModel sceneTabModel, Vector2 position)
+        {
+            AddActor(sceneTabModel, actorModel, position);
+        }
+
+        private void OnMouseMoveHandler(SceneTabViewModel model, Vector2 position)
+        {
+            model.Scene.GUI.MouseMove(position);
+        }
+
+        private void OnMouseClickHandler(SceneTabViewModel model, Vector2 position)
+        {
+            BaseActor newIntersectedActor = model.Scene.Intersect(position).FirstOrDefault();
+            
+            if (newIntersectedActor == null) return;
+            if (newIntersectedActor == _intersectedActor) return;
+
+            _intersectedActor = newIntersectedActor;
+
+            TransformActorViewModel transformModel = new TransformActorViewModel(_intersectedActor);
+
+            //_translateWidg.Active = true;
+            //_translateWidg.Visible = true;
+            //_rotateWidg.Active = true;
+            //_rotateWidg.Visible = true;
+
+            _transformModeModel.HasActor = true;
+            _transformModeModel.WidgetMode = WidgetMode.Translate;
+            SetTransformWidgetMode();
+
+            _translateBindingEngine =
+                new BindingEngine<TranslateSceneWidget, TransformActorViewModel>(_translateWidg, transformModel)
+                    .Bind(tw => tw.Position, a => a.Position);
+
+            _rotateBindingEngine =
+                new BindingEngine<RotateSceneWidget, TransformActorViewModel>(_rotateWidg, transformModel)
+                    .Bind(tw => tw.Position, a => a.Position)
+                    .Bind(tw => tw.Rotation, a => a.Rotation);
+        }
+
+        private void OnMouseDownHandler(SceneTabViewModel model, Vector2 position)
+        {
+            model.Scene.GUI.MouseDown(position);
+        }
+
+        private void OnMouseUpHandler(SceneTabViewModel model, Vector2 position)
+        {
+            model.Scene.GUI.MouseUp(position);
+        }
+
+        private void OnSceneAddedHandler(SceneTabViewModel model)
+        {
+            _translateWidg = new TranslateSceneWidget();
+            model.Scene.GUI.Children.Add(_translateWidg);
+            _translateWidg.OnTranslate += OnTranslateHandler;
+            _translateWidg.OnTranslationComplete += OnTranslationCompleteHandler;
+
+            _rotateWidg = new RotateSceneWidget();
+            model.Scene.GUI.Children.Add(_rotateWidg);
+            _rotateWidg.OnRotation += OnRotationHandler;
+            _rotateWidg.OnStopRotation += OnStopRotationHandler;
+
+            SetTransformWidgetMode();
+        }
+
+        private void OnTranslateHandler(Vector2 translation)
+        {
+            if (_intersectedActor == null) return;
+            _intersectedActor.Body.Position += translation;
+        }
+
+        private void OnTranslationCompleteHandler(Vector2 startPosition, Vector2 currentPosition)
+        {
+            if (_intersectedActor == null) return;
+            IReversibleCommand command = new MoveActorCommand(_intersectedActor, startPosition, currentPosition);
+            Commands.Push(command);
+        }
+
+        private void OnRotationHandler(float rotation)
+        {
+            if (_intersectedActor == null) return;
+            _intersectedActor.Body.Rotation += rotation;
+        }
+
+        private void OnStopRotationHandler(float originalRotation, float finalRotation)
+        {
+            if (_intersectedActor == null) return;
+            IReversibleCommand command = new RotateActorCommand(_intersectedActor, originalRotation, finalRotation);
+            Commands.Push(command);
+        }
+
+        private void SetTransformWidgetMode()
+        {
+            if (_rotateWidg != null)
+            {
+                _rotateWidg.Active = TransformModeModel.WidgetMode == WidgetMode.Rotate;
+                _rotateWidg.Visible = TransformModeModel.WidgetMode == WidgetMode.Rotate;
+            }
+
+            if (_translateWidg != null)
+            {
+                _translateWidg.Active = TransformModeModel.WidgetMode == WidgetMode.Translate;
+                _translateWidg.Visible = TransformModeModel.WidgetMode == WidgetMode.Translate;
+            }
+        }
+
+        private void UnassignTransformModeModelEvents()
+        {
+            _transformModeModel.OnWidgetModeChanges -= OnWidgetModeChangesHandler;
+        }
+
+        private void AssignTransformModeModelEvents()
+        {
+            _transformModeModel.OnWidgetModeChanges += OnWidgetModeChangesHandler;
+        }
+
+        private void OnWidgetModeChangesHandler(WidgetMode mode)
+        {
+            SetTransformWidgetMode();
         }
     }
 }

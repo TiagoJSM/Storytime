@@ -7,12 +7,19 @@ using StoryTimeCore.Resources.Graphic;
 using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.DataStructures;
+using StoryTimeCore.Extensions;
 
 namespace StoryTimeDevKit.SceneWidgets.Transformation
 {
+    public delegate void OnRotation(float rotation);
+    public delegate void OnStopRotation(float originalRotation, float finalRotation);
+
     public class RotateSceneWidget : BaseWidget
     {
         private RotateWidgetRenderableAsset _asset;
+        private float _startRotation;
+        private float _lastAngle;
+        private float _originalRotation;
         private Circle Intersection
         {
             get
@@ -25,9 +32,15 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
             }
         }
 
+        public OnRotation OnRotation;
+        public OnStopRotation OnStopRotation;
+
         public RotateSceneWidget()
         {
             OnInitialize += OnInitializeHandler;
+            OnStartDrag += OnStartDragHandler;
+            OnDrag += OnDragHandler;
+            OnStopDrag += OnStopDragHandler;
         }
 
         protected override IRenderableAsset RenderableAsset
@@ -43,6 +56,27 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
         public override bool Intersects(Vector2 point)
         {
             return Intersection.Contains(point);
+        }
+
+        private void OnStartDragHandler(Vector2 currentPosition)
+        {
+            _lastAngle = currentPosition.AngleWithCenterIn(Position);
+            _originalRotation = Rotation;
+        }
+
+        private void OnDragHandler(Vector2 dragged, Vector2 currentPosition)
+        {
+            float currentAngle = currentPosition.AngleWithCenterIn(Position);
+            float rotation = currentAngle - _lastAngle;
+            _lastAngle = currentAngle;
+            if (OnRotation != null)
+                OnRotation(rotation);
+        }
+
+        private void OnStopDragHandler(Vector2 startDrag, Vector2 currentPosition)
+        {
+            if (OnStopRotation != null)
+                OnStopRotation(_originalRotation, Rotation);
         }
     }
 }

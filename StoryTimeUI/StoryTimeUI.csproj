@@ -50,6 +50,7 @@
     <Compile Include="DataBinding\Binders\OneWayToDestinationBinder.cs" />
     <Compile Include="DataBinding\Binders\OneWayToSourceBinder.cs" />
     <Compile Include="DataBinding\Binders\TwoWaysBinder.cs" />
+    <Compile Include="DataBinding\Converters\IDataConverter.cs" />
     <Compile Include="DataBinding\Engines\BindingEngine.cs" />
     <Compile Include="DataBinding\Engines\StronglyTypedBindingEngine.cs" />
     <Compile Include="Delegates\TransformDelegates.cs" />

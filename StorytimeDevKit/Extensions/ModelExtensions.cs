@@ -15,10 +15,12 @@ namespace StoryTimeDevKit.Extensions
         {
             SavedSceneModel model = new SavedSceneModel();
             List<SavedSceneActor> sceneActors = new List<SavedSceneActor>();
-            IEnumerable<ActorWidgetAdapter> widgetActors = scene.Actors.OfType<ActorWidgetAdapter>();
-            foreach (ActorWidgetAdapter widget in widgetActors)
+            //IEnumerable<ActorWidgetAdapter> widgetActors = scene.Actors.OfType<ActorWidgetAdapter>();
+            //foreach (ActorWidgetAdapter widget in widgetActors)
+            IEnumerable<BaseActor> actors = scene.Actors;
+            foreach (BaseActor ba in actors)
             {
-                BaseActor ba = widget.BaseActor;
+                //BaseActor ba = widget.BaseActor;
                 Type t = ba.GetType();
                 SavedSceneActor sceneActor = new SavedSceneActor()
                 {

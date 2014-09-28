@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
+namespace StoryTimeDevKit.Entities.SceneWidgets
 {
     public enum WidgetMode
     {
@@ -11,10 +11,5 @@ namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
         Translate,
         Rotate,
         Scale
-    }
-
-    public interface ITransformableWidget : ISceneWidget
-    {
-        WidgetMode WidgetMode { get; set; }
     }
 }

@@ -21,33 +21,44 @@ namespace StoryTimeFramework.WorldManagement
 
         private List<Scene> _scenes;
         private IGraphicsContext _graphicsContext;
-        private int _activeScene;
-        private GUIManager _gui;
+        private int _activeSceneIndex;
+
+        public int NumberOfScenes { get { return _scenes.Count; } }
+        public Scene ActiveScene 
+        { 
+            get 
+            {
+                if (_activeSceneIndex == NO_ACTIVE_SCENE) return null;
+                return _scenes[_activeSceneIndex];
+            } 
+        }
+        public IGraphicsContext GraphicsContext { get { return _graphicsContext; } }
 
         public GameWorld(IGraphicsContext graphicsContext) 
         {
             _scenes = new List<Scene>();
-            _activeScene = NO_ACTIVE_SCENE;
+            _activeSceneIndex = NO_ACTIVE_SCENE;
             _graphicsContext = graphicsContext;
-            _gui = new GUIManager(_graphicsContext);
         }
 
-        public int NumberOfScenes { get { return _scenes.Count; } }
         public Scene GetSceneAt(int index) { return _scenes[index]; }
-        public void AddScene(Scene scene) { _scenes.Add(scene); }
-        public GUIManager GUI { get { return _gui; } }
+        public void AddScene(Scene scene) 
+        {
+            scene.GraphicsContext = _graphicsContext;
+            scene.Initialize();
+            _scenes.Add(scene); 
+        }
 
         public void RenderActiveScene()
         {
-            if(_activeScene != NO_ACTIVE_SCENE)
-                _scenes[_activeScene].Render(_graphicsContext);
+            if(_activeSceneIndex != NO_ACTIVE_SCENE)
+                _scenes[_activeSceneIndex].Render(_graphicsContext);
             //TODO: should reset renderer here!
-            _gui.Render(_graphicsContext.GetRenderer());
         }
 
         public void SetActiveScene(int index)
         {
-            _activeScene = index;
+            _activeSceneIndex = index;
         }
 
         public void SetActiveScene(Scene s)

@@ -21,6 +21,9 @@ using StoryTimeDevKit.Models.SavedData;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeDevKit.Controls.Puppeteer;
 using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
+using StoryTimeDevKit.Entities.SceneWidgets;
+using System.ComponentModel;
+using Ninject;
 using StoryTimeDevKit.Models.MainWindow;
 
 namespace StoryTimeDevKit
@@ -32,8 +35,8 @@ namespace StoryTimeDevKit
     {
         private ImageViewerDialog _imageViewer;
         private PuppeteerEditorDialog _puppeteerWindow;
-        private WidgetMode? _mode;
-        private ActorWidgetAdapterViewModel _widgetModeViewModel;
+        private WidgetMode _mode;
+        //private ActorWidgetAdapterViewModel _widgetModeViewModel;
 
         public RelayCommand SaveScene { get; private set; }
         public RelayCommand SaveAllScenes { get; private set; }
@@ -100,13 +103,15 @@ namespace StoryTimeDevKit
             /*TransformMode = new RelayCommand(
                 (o) =>
                 {
-                    _mode = (WidgetMode?)o;
-                    (SceneViewControl.SelectedActor as ITransformableWidget).WidgetMode = _mode.Value;
+                    _mode = (WidgetMode)o;
+                    _controller.WidgetMode = _mode;
+                    //(SceneViewControl.SelectedActor as ITransformableWidget).WidgetMode = _mode.Value;
                 },
                 (o) =>
                 {
                     if (!(o is WidgetMode)) return false;
-                    return SceneViewControl.SelectedActor != null && SceneViewControl.SelectedActor is ITransformableWidget;
+                    return _controller.HasActorSelected;
+                    //return SceneViewControl.SelectedActor != null && SceneViewControl.SelectedActor is ITransformableWidget;
                 });*/
             
             #endregion
@@ -114,12 +119,19 @@ namespace StoryTimeDevKit
             InitializeComponent();
 
             SceneViewControl.OnActorAdded += OnActorAddedHandler;
-            _widgetModeViewModel = new ActorWidgetAdapterViewModel();
-            TranslateButton.DataContext = _widgetModeViewModel;
-            RotateButton.DataContext = _widgetModeViewModel;
-            ScaleButton.DataContext = _widgetModeViewModel;
+            TransformModeViewModel model = 
+                DependencyInjectorHelper
+                    .Kernel
+                    .Get<TransformModeViewModel>();
+
+            TranslateButton.DataContext = model;
+            RotateButton.DataContext = model;
+            ScaleButton.DataContext = model;
             
             ApplicationUtils.SetupApplicationFolders();
+
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
         }
 
         private void gameObjectsControl1_OnSceneDoubleClicked(SceneViewModel obj)
@@ -144,7 +156,7 @@ namespace StoryTimeDevKit
 
         private void SceneViewControl_OnSelectedActorChange(BaseActor actor)
         {
-            ActorWidgetAdapter adapter = actor as ActorWidgetAdapter;
+            /*ActorWidgetAdapter adapter = actor as ActorWidgetAdapter;
             if (adapter == null) return;
 
             if (!_widgetModeViewModel.HasActor)
@@ -153,7 +165,7 @@ namespace StoryTimeDevKit
                 adapter.WidgetMode = WidgetMode.Translate;
             }
 
-            _widgetModeViewModel.ActorWidgetAdapter = adapter;
+            _widgetModeViewModel.ActorWidgetAdapter = adapter;*/
             
             CommandManager.InvalidateRequerySuggested();
         }

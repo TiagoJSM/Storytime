@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Data;
 using System.Globalization;
 using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
+using StoryTimeDevKit.Entities.SceneWidgets;
 
 namespace StoryTimeDevKit.Converters.ToolbarRadioButtons
 {

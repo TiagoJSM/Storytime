@@ -156,8 +156,9 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             float y = _scene.Camera.Viewport.Height * pointInGamePanel.Y / gamePanelDimensions.Y;
             Vector2 position = new Vector2(x, y);
             actor.Body.Position = position;
-            ActorWidgetAdapter adapter = new ActorWidgetAdapter(/*this,*/ actor, _graphicsContext);
-            _scene.AddActor(adapter);
+            //ActorWidgetAdapter adapter = new ActorWidgetAdapter(/*this,*/ actor, _graphicsContext);
+            //_scene.AddActor(adapter);
+            _scene.AddActor(actor);
         }
 
         private void MoveActor(BaseActor actor, Vector2 fromPosition, Vector2 toPosition)

@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using StoryTimeFramework.WorldManagement;
 using StoryTime;
 using System.ComponentModel;
@@ -18,25 +8,20 @@ using StoryTimeDevKit.Controllers.Scenes;
 using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 using System.Collections.ObjectModel;
 using StoryTimeDevKit.Models.SceneViewer;
-using StoryTime.Contexts;
 using StoryTimeCore.Contexts.Interfaces;
-using StoryTimeFramework.Resources.Graphic;
 using StoryTimeFramework.Entities.Actors;
 using Microsoft.Xna.Framework;
 using StoryTimeDevKit.Commands.UICommands;
-using FarseerPhysics.Dynamics;
-using StoryTimeFramework.Entities.Interfaces;
 using StoryTimeDevKit.Extensions;
 using Ninject;
 using StoryTimeDevKit.Configurations;
 using Ninject.Parameters;
 using StoryTimeDevKit.Utils;
-using StoryTimeFramework.Extensions;
 using FarseerPhysicsWrapper;
 using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
-using StoryTimeUI.DataBinding;
 using StoryTimeDevKit.Models;
 using StoryTimeUI.DataBinding.Engines;
+using StoryTimeDevKit.Delegates;
 
 namespace StoryTimeDevKit.Controls.SceneViewer
 {
@@ -49,8 +34,14 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         private ISceneViewerController _controller;
         private IGraphicsContext _context;
         private Vector2 _clickPosition;
-        private ActorWidgetAdapter _intersectedActor;
-        private ISceneWidget _intersectedActorChild;
+        private BaseActor _intersectedActor;
+
+        public event OnDropActor OnDropActor;
+        public event OnMouseMove OnMouseMove;
+        public event OnMouseClick OnMouseClick;
+        public event OnMouseDown OnMouseDown;
+        public event OnMouseUp OnMouseUp;
+        public event OnSceneAdded OnSceneAdded;
 
         private ObservableCollection<SceneTabViewModel> Tabs { get; set; }
         public RelayCommand RemoveTab { get; set; }
@@ -93,17 +84,14 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             _game = new MyGame(xna.Handle);
             _context = _game.GraphicsContext;
 
-            ConstructorArgument graphicsContextArg = 
+            ConstructorArgument gameWorldArg = 
                 new ConstructorArgument(
-                    ApplicationProperties.ISceneViewerGraphicsContextArgName, 
-                    _context);
+                    ApplicationProperties.ISceneViewerGameWorldArgName,
+                    _game.GameWorld);
             _controller = DependencyInjectorHelper
                             .Kernel
-                            .Get<ISceneViewerController>(graphicsContextArg);
-            //_rotateWidg = new SceneWidgets.Transformation.RotateSceneWidget();
-            //_game.GameWorld.GUI.Children.Add(_rotateWidg);
-            _translateWidg = new SceneWidgets.Transformation.TranslateSceneWidget();
-            _game.GameWorld.GUI.Children.Add(_translateWidg);
+                            .Get<ISceneViewerController>(gameWorldArg);
+            _controller.Control = this;
         }
 
         public void AddScene(SceneViewModel s)
@@ -117,7 +105,10 @@ namespace StoryTimeDevKit.Controls.SceneViewer
 
             _game.GameWorld.AddScene(scene);
             _game.GameWorld.SetActiveScene(scene);
+
             ScenesControl.SelectedItem = sceneVM;
+            if (OnSceneAdded != null)
+                OnSceneAdded(sceneVM);
         }
 
         public void SaveSelectedScene()
@@ -173,7 +164,8 @@ namespace StoryTimeDevKit.Controls.SceneViewer
 
             Vector2 position = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
 
-            _controller.AddActor(sceneVM, model, position);
+            if (OnDropActor != null)
+                OnDropActor(model, sceneVM, position);
 
             if (OnActorAdded != null)
                 OnActorAdded(model);
@@ -187,26 +179,18 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             if (sceneVM == null) return;
 
             _clickPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
-            ActorWidgetAdapter newIntersectedActor = sceneVM.Scene.Intersect(_clickPosition).FirstOrDefault() as ActorWidgetAdapter;
 
-            _game.GameWorld.GUI.Intersect(_clickPosition);
+            if (OnMouseClick != null)
+                OnMouseClick(sceneVM, _clickPosition);
+
+            BaseActor newIntersectedActor = sceneVM.Scene.Intersect(_clickPosition).FirstOrDefault();
+
+            sceneVM.Scene.GUI.Intersect(_clickPosition);
 
             if (newIntersectedActor == null) return;
             if (newIntersectedActor == _intersectedActor) return;
 
-            _controller.SelectWidget(_intersectedActor, newIntersectedActor);
             _intersectedActor = newIntersectedActor;
-
-            TransformActorViewModel model = new TransformActorViewModel(_intersectedActor);
-            //_bindingEngine= 
-            //    new BindingEngine<SceneWidgets.Transformation.RotateSceneWidget, TransformActorViewModel>(
-            //        _rotateWidg, model);
-            //_bindingEngine.Bind(rw => rw.Position, a => a.Position);
-
-            _translateBindingEngine=
-                new BindingEngine<SceneWidgets.Transformation.TranslateSceneWidget, TransformActorViewModel>(
-                    _translateWidg, model);
-            _translateBindingEngine.Bind(tw => tw.Position, a => a.Position);
 
             if (OnSelectedActorChange != null)
                 OnSelectedActorChange(_intersectedActor);
@@ -219,10 +203,9 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             if (sceneVM == null) return;
 
             Vector2 clickPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
-            List<ISceneWidget> children = _intersectedActor.GetAllIntersectedLeafChildren(clickPosition);
-            _intersectedActorChild = children.FirstOrDefault();
-            if (_intersectedActorChild == null) return;
-            _intersectedActorChild.StartDrag(clickPosition);
+
+            if (OnMouseDown != null)
+                OnMouseDown(sceneVM, clickPosition);
         }
 
         private void xna_OnMouseMove(
@@ -232,21 +215,22 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         {
             SceneTabViewModel sceneVM = SelectedScene;
             if (sceneVM == null) return;
-            if (_intersectedActorChild == null) return;
 
             Vector2 point = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
-            _intersectedActorChild.Drag(Vector2.Zero, point);
+
+            if (OnMouseMove != null)
+                OnMouseMove(sceneVM, point);
         }
 
         private void xna_OnMouseUp(System.Drawing.Point pointInGamePanel, System.Drawing.Point gamePanelDimensions)
         {
-            if (_intersectedActorChild == null) return;
             SceneTabViewModel sceneVM = SelectedScene;
             if (sceneVM == null) return;
 
             Vector2 mouseDownPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
-            _intersectedActorChild.StopDrag(mouseDownPosition);
-            _intersectedActorChild = null;
+
+            if (OnMouseUp != null)
+                OnMouseUp(sceneVM, mouseDownPosition);
         }
     }
 }

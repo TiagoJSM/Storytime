@@ -53,6 +53,9 @@ namespace StoryTimeFramework.WorldManagement
         private ICamera _activeCamera;
         private Dictionary<BaseActor, OrderedActor> _actorsDictionary;
         private int _nextIndex;
+        private bool _initialized;
+        private IGraphicsContext _graphicsContext;
+        private GUIManager _gui;
 
         private WorldTime _currentTime;
 
@@ -60,6 +63,19 @@ namespace StoryTimeFramework.WorldManagement
         public ICamera Camera { get { return _activeCamera; } }
         public IEnumerable<BaseActor> Actors { get { return _baseActors; } }
         public IPhysicalWorld PhysicalWorld { get; set; }
+        public IGraphicsContext GraphicsContext
+        {  
+            get 
+            {
+                return _graphicsContext;
+            }
+            set 
+            {
+                if(_graphicsContext == null)
+                    _graphicsContext = value;
+            }
+        }
+        public GUIManager GUI { get { return _gui; } }
 
         public Scene()
         {
@@ -74,6 +90,14 @@ namespace StoryTimeFramework.WorldManagement
             : this()
         {
             PhysicalWorld.Gravity = gravity;
+        }
+
+        public void Initialize()
+        {
+            if (_initialized) return;
+            _gui = new GUIManager(_graphicsContext);
+            //TODO: other required logic
+            _initialized = true;
         }
 
         public void Render(IGraphicsContext graphicsContext)
@@ -94,6 +118,8 @@ namespace StoryTimeFramework.WorldManagement
                 renderer.RotationTransformation -= ba.Body.Rotation;
                 renderer.TranslationTransformation -= ba.Body.Position;
             }
+            //TODO: should reset renderer here!
+            _gui.Render(renderer);
         }
 
         public void Update(WorldTime WTime)

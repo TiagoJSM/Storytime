@@ -14,8 +14,9 @@ namespace StoryTimeDevKit.Controllers.Scenes
 {
     public interface ISceneViewerController : IStackedCommandsController<ISceneViewerControl>
     {
+        ISceneViewerControl Control { set; }
         void AddActor(SceneTabViewModel s, ActorViewModel actor, Vector2 position);
-        void SelectWidget(ISceneWidget selected, ISceneWidget toSelect);
+        //void SelectWidget(ISceneWidget selected, ISceneWidget toSelect);
         void SaveScene(SceneTabViewModel scene);
     }
 }
