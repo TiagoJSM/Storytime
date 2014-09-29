@@ -19,6 +19,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         event OnMouseDown OnMouseDown;
         event OnMouseUp OnMouseUp;
         event OnSceneAdded OnSceneAdded;
+        event OnSceneChanged OnSceneChanged;
 
         void AddScene(SceneViewModel s);
         void SaveSelectedScene();
@@ -30,6 +31,6 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         bool CanUndo { get; }
         bool CanRedo { get; }
 
-        BaseActor SelectedActor { get; }
+        //BaseActor SelectedActor { get; }
     }
 }

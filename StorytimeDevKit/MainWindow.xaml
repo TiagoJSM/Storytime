@@ -58,7 +58,7 @@
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="top"/>
         <Menu Height="24" HorizontalAlignment="Left" Name="menu1" VerticalAlignment="Top" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Grid.ColumnSpan="3" BorderThickness="0.5" BorderBrush="Black" />
-        <TextBlock Grid.Row="2" Height="52" HorizontalAlignment="Left" Margin="133,48,0,0" Name="textBlock1" Text="TextBlockaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="719" />
+        <!--<TextBlock Grid.Row="2" Height="52" HorizontalAlignment="Left" Margin="133,48,0,0" Name="textBlock1" Text="TextBlockaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="719" />-->
         <ToolBar Height="Auto" HorizontalAlignment="Left" Margin="0,22,0,0" Name="toolBar1" VerticalAlignment="Top" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Grid.ColumnSpan="3" Grid.RowSpan="2">
             <Button 
                 Command="{Binding RelativeSource={  

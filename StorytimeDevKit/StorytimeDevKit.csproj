@@ -95,6 +95,7 @@
     <Compile Include="Commands\ReversibleCommands\RotateActorCommand.cs" />
     <Compile Include="Commands\ReversibleCommands\SelectActorCommand.cs" />
     <Compile Include="Configurations\ApplicationProperties.cs" />
+    <Compile Include="Controllers\IMultiStackedCommandsController.cs" />
     <Compile Include="Controllers\IStackedCommandsController.cs" />
     <Compile Include="Controllers\Puppeteer\IPuppeteerController.cs" />
     <Compile Include="Controllers\Puppeteer\ISkeletonViewerController.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Controllers\Puppeteer\WorkingModes\AddBoneMode.cs" />
     <Compile Include="Controllers\Puppeteer\WorkingModes\IPuppeteerWorkingMode.cs" />
     <Compile Include="Controllers\Puppeteer\WorkingModes\SelectionMode.cs" />
+    <Compile Include="Controllers\TemplateControllers\MultiStackedCommandsController.cs" />
     <Compile Include="Controllers\TemplateControllers\StackedCommandsController.cs" />
     <Compile Include="Controls\INodeAddedCallback.cs" />
     <Compile Include="Controls\Puppeteer\IPuppeteerEditorControl.cs" />
@@ -399,7 +401,9 @@
   <ItemGroup>
     <Resource Include="Images\Puppeteer\ToolBar\SelectionIcon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\GameObjectsControl\BlueClosedFolder.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

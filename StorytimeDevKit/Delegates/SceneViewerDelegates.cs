@@ -14,4 +14,5 @@ namespace StoryTimeDevKit.Delegates
     public delegate void OnMouseDown(SceneTabViewModel model, Vector2 position);
     public delegate void OnMouseUp(SceneTabViewModel model, Vector2 position);
     public delegate void OnSceneAdded(SceneTabViewModel model);
+    public delegate void OnSceneChanged(SceneTabViewModel model);
 }

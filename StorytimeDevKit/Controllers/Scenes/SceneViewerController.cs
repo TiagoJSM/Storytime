@@ -33,8 +33,8 @@ using StoryTimeDevKit.Models.MainWindow;
 
 namespace StoryTimeDevKit.Controllers.Scenes
 {
-    public class SceneViewerController : 
-        StackedCommandsController<ISceneViewerControl>, ISceneViewerController
+    public class SceneViewerController :
+        MultiStackedCommandsController<ISceneViewerControl, Scene>, ISceneViewerController
     {
         private ISceneViewerControl _control;
         private GameWorld _world;
@@ -86,7 +86,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
             PopulateActorWithDefaultValuesIfNeeded(ba, position, s.Scene);
 
             IReversibleCommand command = new AddActorCommand(s.Scene, ba);
-            Commands.Push(command);
+            SelectedStack.Push(command);
         }
 
         /*public void SelectWidget(ISceneWidget selected, ISceneWidget toSelect)
@@ -117,13 +117,13 @@ namespace StoryTimeDevKit.Controllers.Scenes
         public void MoveActor(BaseActor actor, Vector2 fromPosition, Vector2 toPosition)
         {
             IReversibleCommand command = new MoveActorCommand(actor, fromPosition, toPosition);
-            Commands.Push(command);
+            SelectedStack.Push(command);
         }
 
         public void RotateActor(BaseActor actor, float previousRotation, float rotation)
         {
             IReversibleCommand command = new RotateActorCommand(actor, previousRotation, rotation);
-            Commands.Push(command);
+            SelectedStack.Push(command);
         }
 
         private void PopulateActorWithDefaultValuesIfNeeded(BaseActor ba, Vector2 position, Scene s)
@@ -148,6 +148,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
             _control.OnMouseDown += OnMouseDownHandler;
             _control.OnMouseUp += OnMouseUpHandler;
             _control.OnSceneAdded += OnSceneAddedHandler;
+            _control.OnSceneChanged += OnSceneChangedHandler;
         }
 
         private void UnassignControlEventHandlers()
@@ -158,6 +159,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
             _control.OnMouseDown -= OnMouseDownHandler;
             _control.OnMouseUp -= OnMouseUpHandler;
             _control.OnSceneAdded -= OnSceneAddedHandler;
+            _control.OnSceneChanged -= OnSceneChangedHandler;
         }
 
         private void OnDropActorHandler(ActorViewModel actorModel, SceneTabViewModel sceneTabModel, Vector2 position)
@@ -180,11 +182,6 @@ namespace StoryTimeDevKit.Controllers.Scenes
             _intersectedActor = newIntersectedActor;
 
             TransformActorViewModel transformModel = new TransformActorViewModel(_intersectedActor);
-
-            //_translateWidg.Active = true;
-            //_translateWidg.Visible = true;
-            //_rotateWidg.Active = true;
-            //_rotateWidg.Visible = true;
 
             _transformModeModel.HasActor = true;
             _transformModeModel.WidgetMode = WidgetMode.Translate;
@@ -223,6 +220,8 @@ namespace StoryTimeDevKit.Controllers.Scenes
             _rotateWidg.OnStopRotation += OnStopRotationHandler;
 
             SetTransformWidgetMode();
+
+            AddStackFor(model.Scene);
         }
 
         private void OnTranslateHandler(Vector2 translation)
@@ -235,7 +234,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
         {
             if (_intersectedActor == null) return;
             IReversibleCommand command = new MoveActorCommand(_intersectedActor, startPosition, currentPosition);
-            Commands.Push(command);
+            SelectedStack.Push(command);
         }
 
         private void OnRotationHandler(float rotation)
@@ -248,7 +247,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
         {
             if (_intersectedActor == null) return;
             IReversibleCommand command = new RotateActorCommand(_intersectedActor, originalRotation, finalRotation);
-            Commands.Push(command);
+            SelectedStack.Push(command);
         }
 
         private void SetTransformWidgetMode()
@@ -279,6 +278,11 @@ namespace StoryTimeDevKit.Controllers.Scenes
         private void OnWidgetModeChangesHandler(WidgetMode mode)
         {
             SetTransformWidgetMode();
+        }
+
+        private void OnSceneChangedHandler(SceneTabViewModel model)
+        {
+            StackKey = model.Scene;
         }
     }
 }

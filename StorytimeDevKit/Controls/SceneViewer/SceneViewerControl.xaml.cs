@@ -34,7 +34,6 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         private ISceneViewerController _controller;
         private IGraphicsContext _context;
         private Vector2 _clickPosition;
-        private BaseActor _intersectedActor;
 
         public event OnDropActor OnDropActor;
         public event OnMouseMove OnMouseMove;
@@ -42,6 +41,11 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         public event OnMouseDown OnMouseDown;
         public event OnMouseUp OnMouseUp;
         public event OnSceneAdded OnSceneAdded;
+
+        public event Action<ActorViewModel> OnActorAdded;
+        public event Action<BaseActor> OnSelectedActorChange;
+
+        public event OnSceneChanged OnSceneChanged;
 
         private ObservableCollection<SceneTabViewModel> Tabs { get; set; }
         public RelayCommand RemoveTab { get; set; }
@@ -52,18 +56,6 @@ namespace StoryTimeDevKit.Controls.SceneViewer
                 return ScenesControl.SelectedItem as SceneTabViewModel;
             }
         }
-        public BaseActor SelectedActor
-        {
-            get { return _intersectedActor; }
-        }
-
-        public event Action<ActorViewModel> OnActorAdded;
-        public event Action<BaseActor> OnSelectedActorChange;
-
-        private SceneWidgets.Transformation.RotateSceneWidget _rotateWidg;
-        private SceneWidgets.Transformation.TranslateSceneWidget _translateWidg;
-        private BindingEngine<SceneWidgets.Transformation.RotateSceneWidget, TransformActorViewModel> _bindingEngine;
-        private BindingEngine<SceneWidgets.Transformation.TranslateSceneWidget, TransformActorViewModel> _translateBindingEngine;
 
         public SceneViewerControl()
         {
@@ -106,9 +98,10 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             _game.GameWorld.AddScene(scene);
             _game.GameWorld.SetActiveScene(scene);
 
-            ScenesControl.SelectedItem = sceneVM;
             if (OnSceneAdded != null)
                 OnSceneAdded(sceneVM);
+
+            ScenesControl.SelectedItem = sceneVM;
         }
 
         public void SaveSelectedScene()
@@ -150,7 +143,9 @@ namespace StoryTimeDevKit.Controls.SceneViewer
 
         private void ScenesControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            _game.GameWorld.SetActiveScene(SelectedScene.Scene);
+            if (OnSceneChanged != null)
+                OnSceneChanged(SelectedScene);
         }
 
         private void xna_OnDropActorHandler(
@@ -182,23 +177,10 @@ namespace StoryTimeDevKit.Controls.SceneViewer
 
             if (OnMouseClick != null)
                 OnMouseClick(sceneVM, _clickPosition);
-
-            BaseActor newIntersectedActor = sceneVM.Scene.Intersect(_clickPosition).FirstOrDefault();
-
-            sceneVM.Scene.GUI.Intersect(_clickPosition);
-
-            if (newIntersectedActor == null) return;
-            if (newIntersectedActor == _intersectedActor) return;
-
-            _intersectedActor = newIntersectedActor;
-
-            if (OnSelectedActorChange != null)
-                OnSelectedActorChange(_intersectedActor);
         }
 
         private void xna_OnMouseDown(System.Drawing.Point pointInGamePanel, System.Drawing.Point gamePanelDimensions)
         {
-            if(_intersectedActor == null) return;
             SceneTabViewModel sceneVM = SelectedScene;
             if (sceneVM == null) return;
 

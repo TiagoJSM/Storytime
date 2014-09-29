@@ -113,12 +113,12 @@
                             <DataTrigger Binding="{Binding IsExpanded}" Value="True">
                                 <Setter TargetName="FolderImage"
                                     Property="Source"
-                                    Value="/Images/GameObjectsControl/TextureTreeViewIcon.jpg"/>
+                                    Value="/Images/GameObjectsControl/FolderTreeViewIcon.png"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsExpanded}" Value="False">
                                 <Setter TargetName="FolderImage"
                                     Property="Source"
-                                    Value="/Images/GameObjectsControl/FolderTreeViewIcon.png"/>
+                                    Value="/Images/GameObjectsControl/BlueClosedFolder.png"/>
                             </DataTrigger>
                         </HierarchicalDataTemplate.Triggers>
                     </HierarchicalDataTemplate>
@@ -137,12 +137,12 @@
                             <DataTrigger Binding="{Binding IsExpanded}" Value="True">
                                 <Setter TargetName="FolderImage"
                                     Property="Source"
-                                    Value="/Images/GameObjectsControl/TextureTreeViewIcon.jpg"/>
+                                    Value="/Images/GameObjectsControl/FolderTreeViewIcon.png"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsExpanded}" Value="False">
                                 <Setter TargetName="FolderImage"
                                     Property="Source"
-                                    Value="/Images/GameObjectsControl/FolderTreeViewIcon.png"/>
+                                    Value="/Images/GameObjectsControl/BlueClosedFolder.png"/>
                             </DataTrigger>
                         </HierarchicalDataTemplate.Triggers>
                     </HierarchicalDataTemplate>
