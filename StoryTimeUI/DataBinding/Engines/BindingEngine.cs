@@ -23,16 +23,16 @@ namespace StoryTimeUI.DataBinding.Engines
         private readonly object _destination;
         private readonly object _source;
         //first PropertyInfo is for destination, second is for source
-        private readonly Dictionary<string, PropertyBinder> _sourcePropertyMapping;
-        private readonly Dictionary<string, PropertyBinder> _destinationPropertyMapping;
+        private readonly Dictionary<string, List<PropertyBinder>> _sourcePropertyMapping;
+        private readonly Dictionary<string, List<PropertyBinder>> _destinationPropertyMapping;
 
         public BindingEngine(object destination, object source)
         {
             _destination = destination;
             _source = source;
 
-            _sourcePropertyMapping = new Dictionary<string, PropertyBinder>();
-            _destinationPropertyMapping = new Dictionary<string, PropertyBinder>();
+            _sourcePropertyMapping = new Dictionary<string, List<PropertyBinder>>();
+            _destinationPropertyMapping = new Dictionary<string,  List<PropertyBinder>>();
 
             //listen for INotifyPropertyChanged event on the source
             INotifyPropertyChanged sourceNotifiable = source as INotifyPropertyChanged;
@@ -65,11 +65,16 @@ namespace StoryTimeUI.DataBinding.Engines
             ValidateBinding(destinationPropInfo, sourcePropInfo, bindingType);
 
             if ((bindingType & BindingType.OneWayToDestination) == BindingType.OneWayToDestination)
-                _sourcePropertyMapping.Add(
-                    sourcePropInfo.Name, new PropertyBinder(destinationPropInfo, sourcePropInfo, _destination, _source));
+            {
+                GetSourceBindersFor(sourcePropInfo.Name)
+                    .Add(new PropertyBinder(destinationPropInfo, sourcePropInfo, _destination, _source));
+            }
+
             if ((bindingType & BindingType.OneWayToSource) == BindingType.OneWayToSource)
-                _destinationPropertyMapping.Add(
-                    destinationPropInfo.Name, new PropertyBinder(sourcePropInfo, destinationPropInfo, _source, _destination));
+            {
+                GetDestinationBindersFor(destinationPropInfo.Name)
+                    .Add(new PropertyBinder(sourcePropInfo, destinationPropInfo, _source, _destination));
+            }
 
             if (bindingType == BindingType.OneWayToSource)
                 RunDestinationBindingFor(destinationPropInfo.Name);
@@ -81,8 +86,9 @@ namespace StoryTimeUI.DataBinding.Engines
         {
             if (_sourcePropertyMapping.ContainsKey(propertyName))
             {
-                PropertyBinder binder = _sourcePropertyMapping[propertyName];
-                binder.Bind();
+                List<PropertyBinder> binders = _sourcePropertyMapping[propertyName];
+                foreach(PropertyBinder binder in binders)
+                    binder.Bind();
             }
         }
 
@@ -90,8 +96,9 @@ namespace StoryTimeUI.DataBinding.Engines
         {
             if (_destinationPropertyMapping.ContainsKey(propertyName))
             {
-                PropertyBinder binder = _destinationPropertyMapping[propertyName];
-                binder.Bind();
+                List<PropertyBinder> binders = _destinationPropertyMapping[propertyName];
+                foreach(PropertyBinder binder in binders)
+                    binder.Bind();
             }
         }
 
@@ -122,6 +129,33 @@ namespace StoryTimeUI.DataBinding.Engines
                 if (!sourcePropInfo.CanWrite)
                     throw new PropertyIsNotWritableException(sourcePropInfo);
             }
+        }
+
+        private List<PropertyBinder> GetSourceBindersFor(string property)
+        {
+            return GetBindersFor(property, _sourcePropertyMapping);
+        }
+
+        private List<PropertyBinder> GetDestinationBindersFor(string property)
+        {
+            return GetBindersFor(property, _destinationPropertyMapping);
+        }
+
+        private List<PropertyBinder> GetBindersFor(string property, Dictionary<string, List<PropertyBinder>> bindersMap)
+        {
+            List<PropertyBinder> binders = null;
+
+            if (bindersMap.ContainsKey(property))
+            {
+                binders = bindersMap[property];
+            }
+            else
+            {
+                binders = new List<PropertyBinder>();
+                bindersMap.Add(property, binders);
+            }
+
+            return binders;
         }
     }
 }

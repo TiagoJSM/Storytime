@@ -30,6 +30,7 @@ using StoryTimeUI;
 using StoryTimeDevKit.Entities.SceneWidgets;
 using Ninject;
 using StoryTimeDevKit.Models.MainWindow;
+using StoryTimeDevKit.DataStructures;
 
 namespace StoryTimeDevKit.Controllers.Scenes
 {
@@ -38,33 +39,25 @@ namespace StoryTimeDevKit.Controllers.Scenes
     {
         private ISceneViewerControl _control;
         private GameWorld _world;
-        private BaseActor _intersectedActor;
-        private BindingEngine<TranslateSceneWidget, TransformActorViewModel> _translateBindingEngine;
-        private BindingEngine<RotateSceneWidget, TransformActorViewModel> _rotateBindingEngine;
-        private TranslateSceneWidget _translateWidg;
-        private RotateSceneWidget _rotateWidg;
-        private TransformModeViewModel _transformModeModel;
+
+        private Dictionary<Scene, SceneControlData> _scenesControlData;
+        private SceneControlData CurrentSceneControlData 
+        { 
+            get 
+            {
+                if(StackKey == null) return null;
+                if (!_scenesControlData.ContainsKey(StackKey)) return null;
+                return _scenesControlData[StackKey]; 
+            } 
+        }
         
         [Inject]
-        public TransformModeViewModel TransformModeModel 
-        {
-            get
-            {
-                return _transformModeModel;
-            }
-            set
-            {
-                if(_transformModeModel != null)
-                    UnassignTransformModeModelEvents();
-                _transformModeModel = value;
-                AssignTransformModeModelEvents();
-                SetTransformWidgetMode();
-            }
-        }
+        public TransformModeViewModel TransformModeModel { get; set; }
 
-        public SceneViewerController(GameWorld world/*, TransformActorViewModel model*/)
+        public SceneViewerController(GameWorld world)
         {
             _world = world;
+            _scenesControlData = new Dictionary<Scene, SceneControlData>();
         }
 
         public void AddActor(SceneTabViewModel s, ActorViewModel actor, Vector2 position)
@@ -89,11 +82,11 @@ namespace StoryTimeDevKit.Controllers.Scenes
             SelectedStack.Push(command);
         }
 
-        /*public void SelectWidget(ISceneWidget selected, ISceneWidget toSelect)
+        private void SelectWidget(BaseActor selected, BaseActor toSelect)
         {
             IReversibleCommand command = new SelectActorCommand(selected, toSelect);
-            Commands.Push(command);
-        }*/
+            SelectedStack.Push(command);
+        }
 
         public void SaveScene(SceneTabViewModel scene)
         {
@@ -175,26 +168,14 @@ namespace StoryTimeDevKit.Controllers.Scenes
         private void OnMouseClickHandler(SceneTabViewModel model, Vector2 position)
         {
             BaseActor newIntersectedActor = model.Scene.Intersect(position).FirstOrDefault();
-            
             if (newIntersectedActor == null) return;
-            if (newIntersectedActor == _intersectedActor) return;
 
-            _intersectedActor = newIntersectedActor;
-
-            TransformActorViewModel transformModel = new TransformActorViewModel(_intersectedActor);
-
-            _transformModeModel.HasActor = true;
-            _transformModeModel.WidgetMode = WidgetMode.Translate;
-            SetTransformWidgetMode();
-
-            _translateBindingEngine =
-                new BindingEngine<TranslateSceneWidget, TransformActorViewModel>(_translateWidg, transformModel)
-                    .Bind(tw => tw.Position, a => a.Position);
-
-            _rotateBindingEngine =
-                new BindingEngine<RotateSceneWidget, TransformActorViewModel>(_rotateWidg, transformModel)
-                    .Bind(tw => tw.Position, a => a.Position)
-                    .Bind(tw => tw.Rotation, a => a.Rotation);
+            SceneControlData controlData = CurrentSceneControlData;
+            controlData.TransformActorModel.Actor = newIntersectedActor;
+            
+            TransformModeModel.HasActor = true;
+            if (TransformModeModel.WidgetMode == WidgetMode.None)
+                TransformModeModel.WidgetMode = WidgetMode.Translate;
         }
 
         private void OnMouseDownHandler(SceneTabViewModel model, Vector2 position)
@@ -209,75 +190,54 @@ namespace StoryTimeDevKit.Controllers.Scenes
 
         private void OnSceneAddedHandler(SceneTabViewModel model)
         {
-            _translateWidg = new TranslateSceneWidget();
-            model.Scene.GUI.Children.Add(_translateWidg);
-            _translateWidg.OnTranslate += OnTranslateHandler;
-            _translateWidg.OnTranslationComplete += OnTranslationCompleteHandler;
+            TranslateSceneWidget translateWidg = new TranslateSceneWidget();
+            model.Scene.GUI.Children.Add(translateWidg);
+            translateWidg.OnTranslate += OnTranslateHandler;
+            translateWidg.OnTranslationComplete += OnTranslationCompleteHandler;
 
-            _rotateWidg = new RotateSceneWidget();
-            model.Scene.GUI.Children.Add(_rotateWidg);
-            _rotateWidg.OnRotation += OnRotationHandler;
-            _rotateWidg.OnStopRotation += OnStopRotationHandler;
+            RotateSceneWidget rotateWidg = new RotateSceneWidget();
+            model.Scene.GUI.Children.Add(rotateWidg);
+            rotateWidg.OnRotation += OnRotationHandler;
+            rotateWidg.OnStopRotation += OnStopRotationHandler;
 
-            SetTransformWidgetMode();
+            SceneControlData controlData = new SceneControlData(translateWidg, rotateWidg, TransformModeModel);
 
             AddStackFor(model.Scene);
+            _scenesControlData.Add(model.Scene, controlData);
         }
 
         private void OnTranslateHandler(Vector2 translation)
         {
-            if (_intersectedActor == null) return;
-            _intersectedActor.Body.Position += translation;
+            SceneControlData controlData = CurrentSceneControlData;
+
+            if (!controlData.TransformActorModel.HasActor) return;
+            controlData.TransformActorModel.Actor.Body.Position += translation;
         }
 
         private void OnTranslationCompleteHandler(Vector2 startPosition, Vector2 currentPosition)
         {
-            if (_intersectedActor == null) return;
-            IReversibleCommand command = new MoveActorCommand(_intersectedActor, startPosition, currentPosition);
+            SceneControlData controlData = CurrentSceneControlData;
+
+            if (!controlData.TransformActorModel.HasActor) return;
+            IReversibleCommand command = new MoveActorCommand(controlData.TransformActorModel.Actor, startPosition, currentPosition);
             SelectedStack.Push(command);
         }
 
         private void OnRotationHandler(float rotation)
         {
-            if (_intersectedActor == null) return;
-            _intersectedActor.Body.Rotation += rotation;
+            SceneControlData controlData = CurrentSceneControlData;
+
+            if (!controlData.TransformActorModel.HasActor) return;
+            controlData.TransformActorModel.Actor.Body.Rotation += rotation;
         }
 
         private void OnStopRotationHandler(float originalRotation, float finalRotation)
         {
-            if (_intersectedActor == null) return;
-            IReversibleCommand command = new RotateActorCommand(_intersectedActor, originalRotation, finalRotation);
+            SceneControlData controlData = CurrentSceneControlData;
+
+            if (!controlData.TransformActorModel.HasActor) return;
+            IReversibleCommand command = new RotateActorCommand(controlData.TransformActorModel.Actor, originalRotation, finalRotation);
             SelectedStack.Push(command);
-        }
-
-        private void SetTransformWidgetMode()
-        {
-            if (_rotateWidg != null)
-            {
-                _rotateWidg.Active = TransformModeModel.WidgetMode == WidgetMode.Rotate;
-                _rotateWidg.Visible = TransformModeModel.WidgetMode == WidgetMode.Rotate;
-            }
-
-            if (_translateWidg != null)
-            {
-                _translateWidg.Active = TransformModeModel.WidgetMode == WidgetMode.Translate;
-                _translateWidg.Visible = TransformModeModel.WidgetMode == WidgetMode.Translate;
-            }
-        }
-
-        private void UnassignTransformModeModelEvents()
-        {
-            _transformModeModel.OnWidgetModeChanges -= OnWidgetModeChangesHandler;
-        }
-
-        private void AssignTransformModeModelEvents()
-        {
-            _transformModeModel.OnWidgetModeChanges += OnWidgetModeChangesHandler;
-        }
-
-        private void OnWidgetModeChangesHandler(WidgetMode mode)
-        {
-            SetTransformWidgetMode();
         }
 
         private void OnSceneChangedHandler(SceneTabViewModel model)

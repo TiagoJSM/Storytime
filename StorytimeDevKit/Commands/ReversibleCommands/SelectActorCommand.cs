@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
+using StoryTimeFramework.Entities.Actors;
 
 namespace StoryTimeDevKit.Commands.ReversibleCommands
 {
     public class SelectActorCommand : IReversibleCommand
     {
-        /*private ISceneWidget _previouslySelected;
-        private ISceneWidget _newlySelected;
+        private BaseActor _previouslySelected;
+        private BaseActor _newlySelected;
 
-        public SelectActorCommand(ISceneWidget selected, ISceneWidget toSelect)
+        public SelectActorCommand(BaseActor selected, BaseActor toSelect)
         {
             _previouslySelected = selected;
             _newlySelected = toSelect;
-        }*/
+        }
 
         public void Run()
         {
