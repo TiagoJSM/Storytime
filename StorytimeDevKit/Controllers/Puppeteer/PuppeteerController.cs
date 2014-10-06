@@ -16,6 +16,7 @@ using FarseerPhysics.Factories;
 using StoryTimeFramework.Entities.Actors;
 using Microsoft.Xna.Framework;
 using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
+using StoryTimeDevKit.Entities.Actors;
 
 namespace StoryTimeDevKit.Controllers.Puppeteer
 {
@@ -30,9 +31,9 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         private ISkeletonTreeViewControl _skeletonTreeViewControl;
         private IPuppeteerWorkingMode _activeWorkingMode;
 
-        private MyGame _game;
-        private IGraphicsContext _graphicsContext;
-        private Scene _scene;
+        private GameWorld _world;
+        private IGraphicsContext GraphicsContext { get { return _world.GraphicsContext; } }
+        private Scene Scene { get { return _world.ActiveScene; } }
 
         private Dictionary<PuppeteerWorkingMode, IPuppeteerWorkingMode> _workingModes;
 
@@ -70,7 +71,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             }
         }
 
-        public PuppeteerController(IntPtr windowHandle)
+        public PuppeteerController(GameWorld world)
         {
             _workingModes =
                 new Dictionary<PuppeteerWorkingMode, IPuppeteerWorkingMode>()
@@ -79,13 +80,12 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                     { PuppeteerWorkingMode.AddBoneMode, new AddBoneMode() }
                 };
 
-            _game = new MyGame(windowHandle);
-            _graphicsContext = _game.GraphicsContext;
+            _world = world;
 
-            _scene = new Scene();
-            _scene.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
-            _game.GameWorld.AddScene(_scene);
-            _game.GameWorld.SetActiveScene(_scene);
+            Scene scene = new Scene();
+            scene.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
+            _world.AddScene(scene);
+            _world.SetActiveScene(scene);
         }
 
         private void AssignPuppeteerEditorControlEvents()
@@ -139,26 +139,14 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             UnassignSkeletonTreeViewControlEvents();
         }
 
-        private void OnMouseClickHandler(
-            System.Drawing.Point pointInGamePanel, 
-            System.Drawing.Point gamePanelDimensions)
+        private void OnMouseClickHandler(Vector2 position)
         {
             //TODO: create a specific actor for this
-            Actor actor = new Actor();
-            ITexture2D bitmap = _graphicsContext.LoadTexture2D("Bone");
-            Static2DRenderableAsset asset = new Static2DRenderableAsset();
-            //asset.SetBoundingBox(new Rectanglef(0, 0, 160));
-            asset.Texture2D = bitmap;
-            actor.RenderableAsset = asset;
+            BoneActor actor = new BoneActor();
             string name = "one";
-            actor.Body = _scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
-            float x = _scene.Camera.Viewport.Width * pointInGamePanel.X / gamePanelDimensions.X;
-            float y = _scene.Camera.Viewport.Height * pointInGamePanel.Y / gamePanelDimensions.Y;
-            Vector2 position = new Vector2(x, y);
+            actor.Body = Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
             actor.Body.Position = position;
-            //ActorWidgetAdapter adapter = new ActorWidgetAdapter(/*this,*/ actor, _graphicsContext);
-            //_scene.AddActor(adapter);
-            _scene.AddActor(actor);
+            Scene.AddActor(actor);
         }
 
         private void MoveActor(BaseActor actor, Vector2 fromPosition, Vector2 toPosition)

@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToWidgetModeValueConverter.cs" />
     <Compile Include="DataStructures\SceneControlData.cs" />
+    <Compile Include="Delegates\Puppeteer\PuppeteerEditorDelegates.cs" />
     <Compile Include="Delegates\SceneViewerDelegates.cs" />
     <Compile Include="Delegates\TransformDelegates.cs" />
     <Compile Include="Entities\Actors\BoneActor.cs" />

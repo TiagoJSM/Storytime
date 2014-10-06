@@ -12,9 +12,19 @@ namespace StoryTimeFramework.Entities
     /// </summary>
     public class WorldEntity
     {
+        private bool _initialized;
         public event Action OnCreated;
         public event Action OnDestroyed;
 
         public GameWorld World { get; set; }
+        public Scene Scene { get; set; }
+
+        public void Initialize()
+        {
+            if (_initialized) return;
+            if (OnCreated != null)
+                OnCreated();
+            _initialized = true;
+        }
     }
 }

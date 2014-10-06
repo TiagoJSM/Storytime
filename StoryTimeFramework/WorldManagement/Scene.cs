@@ -135,6 +135,9 @@ namespace StoryTimeFramework.WorldManagement
         {
             if (_baseActors.Contains(ba)) return;
 
+            ba.Scene = this;
+            ba.Initialize();
+
             _baseActors.Add(ba);
             OrderedActor oa = new OrderedActor(ba, _nextIndex);
             _nextIndex++;

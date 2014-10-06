@@ -19,6 +19,9 @@ using StoryTimeDevKit.Utils;
 using Ninject;
 using Ninject.Parameters;
 using StoryTimeDevKit.Configurations;
+using StoryTimeDevKit.Delegates.Puppeteer;
+using Microsoft.Xna.Framework;
+using StoryTimeDevKit.Extensions;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
@@ -27,12 +30,14 @@ namespace StoryTimeDevKit.Controls.Puppeteer
     /// </summary>
     public partial class PuppeteerEditorControl : UserControl, IPuppeteerEditorControl
     {
+        //_clickPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
+        private MyGame _game;
         private IPuppeteerController _puppeteerController;
 
         public event Action<IPuppeteerEditorControl> OnLoaded;
         public event Action<IPuppeteerEditorControl> OnUnloaded;
         public event Action<PuppeteerWorkingMode> OnWorkingModeChanges;
-        public event Action<System.Drawing.Point, System.Drawing.Point> OnMouseClick;
+        public event OnMouseClick OnMouseClick;
 
         public PuppeteerEditorControl()
         {
@@ -45,15 +50,17 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            ConstructorArgument windowHandle =
+            _game = new MyGame(PuppeteerEditor.Handle);
+
+            ConstructorArgument gameWorldArg =
                 new ConstructorArgument(
                     ApplicationProperties.IPuppeteerControllerArgName,
-                    PuppeteerEditor.Handle);
+                    _game.GameWorld);
 
             _puppeteerController =
                 DependencyInjectorHelper
                             .Kernel
-                            .Get<IPuppeteerController>(windowHandle);
+                            .Get<IPuppeteerController>(gameWorldArg);
 
             _puppeteerController.PuppeteerControl = this;
 
@@ -84,8 +91,11 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             System.Drawing.Point pointInGamePanel, 
             System.Drawing.Point gamePanelDimensions)
         {
-            if (OnMouseClick != null)
-                OnMouseClick(pointInGamePanel, gamePanelDimensions);
+            
+            if (OnMouseClick == null) return;
+            Vector2 clickPosition = 
+                _game.GameWorld.ActiveScene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
+            OnMouseClick(clickPosition);
         }
     }
 }
