@@ -30,6 +30,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         private IPuppeteerEditorControl _puppeteerEditorControl;
         private ISkeletonTreeViewControl _skeletonTreeViewControl;
         private IPuppeteerWorkingMode _activeWorkingMode;
+        BoneActor _actor;
 
         private GameWorld _world;
         private IGraphicsContext GraphicsContext { get { return _world.GraphicsContext; } }
@@ -141,12 +142,19 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
         private void OnMouseClickHandler(Vector2 position)
         {
+            if (_actor != null)
+            {
+                //_actor.BoneEnd = position;
+                _actor.BoneEnd = new Vector2(32 * 2, 128 * 2);
+                return;
+            }
             //TODO: create a specific actor for this
-            BoneActor actor = new BoneActor();
+            _actor = new BoneActor();
             string name = "one";
-            actor.Body = Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
-            actor.Body.Position = position;
-            Scene.AddActor(actor);
+            _actor.Body = Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
+            _actor.Body.Position = position;
+            _actor.Body.Position = Vector2.Zero;
+            Scene.AddActor(_actor);
         }
 
         private void MoveActor(BaseActor actor, Vector2 fromPosition, Vector2 toPosition)

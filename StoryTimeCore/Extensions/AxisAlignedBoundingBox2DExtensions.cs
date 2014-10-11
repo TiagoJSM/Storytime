@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace StoryTimeCore.Extensions
 {
-    public static class RectanglefExtensions
+    public static class AxisAlignedBoundingBox2DExtensions
     {
         public static AxisAlignedBoundingBox2D Combine(this AxisAlignedBoundingBox2D rec1, AxisAlignedBoundingBox2D rec2)
         {
@@ -48,7 +48,7 @@ namespace StoryTimeCore.Extensions
             float smallestY = yValues.Min();
             float biggestY = yValues.Max();
 
-            return new AxisAlignedBoundingBox2D(smallestX, smallestY, biggestX - smallestX, biggestY - smallestY);
+            return new AxisAlignedBoundingBox2D(smallestX, smallestY, biggestY - smallestY, biggestX - smallestX);
         }
 
         public static AxisAlignedBoundingBox2D GetScaled(

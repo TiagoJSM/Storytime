@@ -76,16 +76,22 @@ namespace StoryTimeFramework.Entities.Actors
         {
             get 
             {
-                Vector2 position;
-                if (Body == null)
-                    position = Vector2.Zero;
-                else
+                Vector2 position = Vector2.Zero;
+                float rotation = 0;
+
+                if (Body != null)
+                {
                     position = Body.Position;
+                    rotation = Body.Rotation;
+                }
                 if (RenderableAsset == null)
                     return new AxisAlignedBoundingBox2D(position);
+
                 AxisAlignedBoundingBox2D box = RenderableAsset.BoundingBox;
                 box.Translate(position);
-                return box.GetRotated(Body.Rotation, Body.Position);
+                return
+                    box
+                    .GetRotated(rotation, position);
             }
         }
 
@@ -102,6 +108,12 @@ namespace StoryTimeFramework.Entities.Actors
         }
 
         private void BodyRotationChangesHandler(IBody body)
+        {
+            if (OnBoundingBoxChanges != null)
+                OnBoundingBoxChanges(this);
+        }
+
+        private void BodyScaleChangesHandler(IBody body)
         {
             if (OnBoundingBoxChanges != null)
                 OnBoundingBoxChanges(this);

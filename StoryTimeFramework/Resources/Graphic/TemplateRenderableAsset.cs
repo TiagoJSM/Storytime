@@ -69,6 +69,7 @@ namespace StoryTimeFramework.Resources.Graphic
         public TemplateRenderableAsset()
         {
             IsVisible = true;
+            _scale = new Vector2(1);
         }
 
         protected void Render(IRenderer renderer, ITexture2D texture, AxisAlignedBoundingBox2D boundingBox)
@@ -95,7 +96,15 @@ namespace StoryTimeFramework.Resources.Graphic
             {
                 AxisAlignedBoundingBox2D computedBox = RawBoundingBox;
                 computedBox.Translate(Origin.Negative());
-                return computedBox.GetRotated(_rotation).GetRotated(_rotation);
+                return computedBox.GetScaled(_scale, Vector2.Zero).GetRotated(_rotation);
+            }
+        }
+        public AxisAlignedBoundingBox2D BoundingBoxWithoutOrigin
+        {
+            get
+            {
+                AxisAlignedBoundingBox2D computedBox = RawBoundingBox;
+                return computedBox.GetScaled(_scale, Vector2.Zero).GetRotated(_rotation);
             }
         }
 

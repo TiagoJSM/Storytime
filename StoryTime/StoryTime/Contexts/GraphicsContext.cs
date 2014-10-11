@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using StoryTimeFramework.DataStructures;
 using Microsoft.Xna.Framework;
+using StoryTimeCore.Extensions;
 
 namespace StoryTime.Contexts
 {
@@ -70,7 +71,7 @@ namespace StoryTime.Contexts
 
                 _xnaGD._spriteBatch.Draw(
                     tex,
-                    rec, 
+                    rec,
                     null,
                     Color.White,
                     MathHelper.ToRadians(rotation),//rotation,

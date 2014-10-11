@@ -138,6 +138,12 @@ namespace StoryTimeDevKit.Controls.Editors
                 }
             }
 
+
+
+            public StoryTimeCore.DataStructures.AxisAlignedBoundingBox2D BoundingBoxWithoutOrigin
+            {
+                get { throw new NotImplementedException(); }
+            }
         }
 
         private T _t;

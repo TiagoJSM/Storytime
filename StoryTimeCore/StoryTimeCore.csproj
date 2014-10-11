@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataStructures\Circle.cs" />
+    <Compile Include="Extensions\RectangleExtensions.cs" />
     <Compile Include="Extensions\Vector2Extensions.cs" />
     <Compile Include="Manageables\ISynchronizable.cs" />
     <Compile Include="Physics\IBody.cs" />
@@ -70,7 +71,7 @@
     <Compile Include="Exceptions\StoryTimeException.cs" />
     <Compile Include="Extensions\FloatExtensions.cs" />
     <Compile Include="Extensions\PropertyInfoExtensions.cs" />
-    <Compile Include="Extensions\RectanglefExtensions.cs" />
+    <Compile Include="Extensions\AxisAlignedBoundingBox2DExtensions.cs" />
     <Compile Include="General\IBoundingBoxable.cs" />
     <Compile Include="Input\Time\WorldTime.cs" />
     <Compile Include="Manageables\ITimeUpdatable.cs" />

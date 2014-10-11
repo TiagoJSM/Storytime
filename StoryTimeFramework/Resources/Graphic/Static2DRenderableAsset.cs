@@ -42,17 +42,10 @@ namespace StoryTimeFramework.Resources.Graphic
         
         public override void Render(IRenderer renderer)
         {
-            if (!IsVisible) return;
+            //if (!IsVisible) return;
 
-            renderer
-                .Render(
-                    Texture2D,
-                    BoundingBox.X,
-                    BoundingBox.Y,
-                    BoundingBox.Width,
-                    BoundingBox.Height,
-                    Rotation
-                );
+            AxisAlignedBoundingBox2D boundings = BoundingBoxWithoutOrigin;
+            Render(renderer, Texture2D, boundings);
         }
 
         protected override AxisAlignedBoundingBox2D RawBoundingBox

@@ -13,6 +13,11 @@ namespace StoryTimeCore.Extensions
             return new Vector2(-vec.X, -vec.Y);
         }
 
+        public static Vector2 Inverse(this Vector2 vec)
+        {
+            return new Vector2(1/vec.X, 1/vec.Y);
+        }
+
         public static Vector2 Rotate(this Vector2 vec, float rotation)
         {
             return vec.Rotate(rotation, Vector2.Zero);
@@ -31,7 +36,7 @@ namespace StoryTimeCore.Extensions
         {
             float xDisplacementToCenter = vec.X - center.X;
             float yDisplacementToCenter = vec.Y - center.Y;
-            return new Vector2(vec.X + scale.X * xDisplacementToCenter, vec.Y + scale.Y * yDisplacementToCenter);
+            return new Vector2(/*vec.X +*/ scale.X * xDisplacementToCenter, /*vec.Y +*/ scale.Y * yDisplacementToCenter);
         }
 
         public static float AngleWithCenterIn(this Vector2 point, Vector2 center)

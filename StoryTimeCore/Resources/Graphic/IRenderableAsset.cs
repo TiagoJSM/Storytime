@@ -6,6 +6,7 @@ using StoryTimeCore.Resources.Graphic;
 using StoryTimeCore.Manageables;
 using StoryTimeCore.General;
 using Microsoft.Xna.Framework;
+using StoryTimeCore.DataStructures;
 
 namespace StoryTimeCore.Resources.Graphic
 {
@@ -20,5 +21,6 @@ namespace StoryTimeCore.Resources.Graphic
         Vector2 Origin { get; set; }
         float Rotation { get; set; }
         Vector2 Scale { get; set; }
+        AxisAlignedBoundingBox2D BoundingBoxWithoutOrigin { get; }
     }
 }

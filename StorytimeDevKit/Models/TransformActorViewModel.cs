@@ -128,6 +128,11 @@ namespace StoryTimeDevKit.Models
             OnPropertyChanged("Rotation");
         }
 
+        private void OnScaleChangesHandler(IBody body)
+        {
+            OnPropertyChanged("Scale");
+        }
+
         private void AssignEvents()
         {
             if (_ba == null) return;
@@ -146,6 +151,7 @@ namespace StoryTimeDevKit.Models
         {
             OnPositionChangesHandler(null);
             OnRotationChangesHandler(null);
+            OnScaleChangesHandler(null);
             OnPropertyChanged("HasActor");
         }
 

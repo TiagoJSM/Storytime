@@ -13,9 +13,11 @@ namespace FarseerPhysicsWrapper
         private Body _body;
         private Vector2 _position;
         private float _rotation;
+        private Vector2 _scale;
 
         public event Action<IBody> OnPositionChanges;
         public event Action<IBody> OnRotationChanges;
+        public event Action<IBody> OnScaleChanges;
 
         public Vector2 Position 
         {
@@ -46,9 +48,25 @@ namespace FarseerPhysicsWrapper
             }
         }
 
+        public Vector2 Scale
+        {
+            get
+            {
+                return _scale;
+            }
+            set
+            {
+                if (_scale == value) return;
+                _scale = value;
+                if (OnScaleChanges != null)
+                    OnScaleChanges(this);
+            }
+        }
+
         public FarseerBody(Body body)
         {
             _body = body;
+            _scale = new Vector2(1);
         }
 
         public void Synchronize()
