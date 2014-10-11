@@ -36,8 +36,8 @@ namespace StoryTimeCore.DataStructures
         {
         }
 
-        public float Top { get { return Y; } }
-        public float Bottom { get { return Y + Height; } }
+        public float Top { get { return Y + Height; } }
+        public float Bottom { get { return Y; } }
         public float Left { get { return X; } }
         public float Right { get { return X + Width; } }
         public Vector2 Center
@@ -65,7 +65,7 @@ namespace StoryTimeCore.DataStructures
         {
             if (!(X <= point.X && point.X <= Right))
                 return false;
-            if (!(Y <= point.Y && point.Y <= Bottom))
+            if (!(Y <= point.Y && point.Y <= Top))
                 return false;
             return true;
         }
