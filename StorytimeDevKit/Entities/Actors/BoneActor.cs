@@ -29,10 +29,9 @@ namespace StoryTimeDevKit.Entities.Actors
                     .BoundingBoxWithoutOrigin
                     .GetScaled(RenderableAsset.Scale.Inverse(), Vector2.Zero);
 
-                float distance = Vector2.Distance(BoneEnd, value);
+                float distance = Vector2.Distance(Body.Position, value);
                 float angle = value.AngleWithCenterIn(Body.Position) - 90.0f;
-                float yScale = distance / originalBounds.Height + 1.0f;
-                float xScale = distance / originalBounds.Width + 1.0f;
+                float yScale = distance / originalBounds.Height;
                 Body.Rotation = angle;
                 RenderableAsset.Scale = new Vector2(1.0f, yScale);
             }

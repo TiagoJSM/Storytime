@@ -142,18 +142,11 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
         private void OnMouseClickHandler(Vector2 position)
         {
-            if (_actor != null)
-            {
-                //_actor.BoneEnd = position;
-                _actor.BoneEnd = new Vector2(32 * 2, 128 * 2);
-                return;
-            }
             //TODO: create a specific actor for this
             _actor = new BoneActor();
             string name = "one";
             _actor.Body = Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
             _actor.Body.Position = position;
-            _actor.Body.Position = Vector2.Zero;
             Scene.AddActor(_actor);
         }
 
