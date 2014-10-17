@@ -22,6 +22,7 @@ using StoryTimeDevKit.Configurations;
 using StoryTimeDevKit.Delegates.Puppeteer;
 using Microsoft.Xna.Framework;
 using StoryTimeDevKit.Extensions;
+using StoryTimeDevKit.Models.MainWindow;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
@@ -33,6 +34,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         //_clickPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
         private MyGame _game;
         private IPuppeteerController _puppeteerController;
+        private TransformModeViewModel transformModeModel;
 
         public event Action<IPuppeteerEditorControl> OnLoaded;
         public event Action<IPuppeteerEditorControl> OnUnloaded;
@@ -52,21 +54,26 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
             _game = new MyGame(PuppeteerEditor.Handle);
 
-            ConstructorArgument gameWorldArg =
-                new ConstructorArgument(
-                    ApplicationProperties.IPuppeteerControllerArgName,
-                    _game.GameWorld);
-
             _puppeteerController =
                 DependencyInjectorHelper
-                            .Kernel
-                            .Get<IPuppeteerController>(gameWorldArg);
+                            .PuppeteerKernel
+                            .Get<IPuppeteerController>();
+            _puppeteerController.GameWorld = _game.GameWorld;
 
             _puppeteerController.PuppeteerControl = this;
 
             if (OnLoaded != null)
                 OnLoaded(this);
             SelectionMode.IsChecked = true;
+
+            transformModeModel =
+                DependencyInjectorHelper
+                    .PuppeteerKernel
+                    .Get<TransformModeViewModel>();
+
+            TranslateButton.DataContext = transformModeModel;
+            RotateButton.DataContext = transformModeModel;
+            ScaleButton.DataContext = transformModeModel;
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

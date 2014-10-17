@@ -47,7 +47,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
             _skeletonController =
                 DependencyInjectorHelper
-                            .Kernel
+                            .PuppeteerKernel
                             .Get<ISkeletonViewerController>();
 
             _skeletonController.SkeletonTreeViewControl = this;

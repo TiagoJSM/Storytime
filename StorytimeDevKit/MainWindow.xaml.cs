@@ -121,7 +121,7 @@ namespace StoryTimeDevKit
             SceneViewControl.OnActorAdded += OnActorAddedHandler;
             TransformModeViewModel model = 
                 DependencyInjectorHelper
-                    .Kernel
+                    .MainWindowKernel
                     .Get<TransformModeViewModel>();
 
             TranslateButton.DataContext = model;

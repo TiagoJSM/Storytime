@@ -81,7 +81,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
                     ApplicationProperties.ISceneViewerGameWorldArgName,
                     _game.GameWorld);
             _controller = DependencyInjectorHelper
-                            .Kernel
+                            .MainWindowKernel
                             .Get<ISceneViewerController>(gameWorldArg);
             _controller.Control = this;
         }

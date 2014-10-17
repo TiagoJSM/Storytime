@@ -38,7 +38,7 @@ namespace StoryTimeDevKit.Controls.Displayers
                 return;
 
             _controller = DependencyInjectorHelper
-                            .Kernel
+                            .MainWindowKernel
                             .Get<IImageViewerController>();
             //_controller = new ImageViewerController();
 

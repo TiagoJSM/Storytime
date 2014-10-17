@@ -7,7 +7,22 @@
              d:DesignHeight="355" 
              d:DesignWidth="523" 
              xmlns:my="clr-namespace:StoryTimeDevKit.Controls.XNA"
+             xmlns:TransformableWidgetNS="clr-namespace:StoryTimeDevKit.Entities.SceneWidgets"
+             xmlns:RadioButtonsConvNS="clr-namespace:StoryTimeDevKit.Converters.ToolbarRadioButtons"
              Background="#FF46484A" xmlns:my1="clr-namespace:StoryTimeDevKit.Controls.Puppeteer" Unloaded="UserControl_Unloaded">
+
+    <UserControl.Resources>
+        <RadioButtonsConvNS:BooleanToWidgetModeValueConverter x:Key="BooleanToWidgetModeValueConverter"/>
+        <Style x:Key="ToolBarButtonStyle" TargetType="ButtonBase">
+            <Setter Property="IsEnabled" Value="True" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.25"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250*"/>
@@ -48,6 +63,54 @@
 					    Path=OpenImageViewer}" Checked="RadioButton_AddBone_Checked">
                 <Image Width ="25" Height="25" Source="/Images/Puppeteer/ToolBar/BoneIcon.png"/>
             </RadioButton>
+
+            <Separator />
+            <RadioButton 
+                Name="TranslateButton"
+                Command="{Binding RelativeSource={  
+                            RelativeSource FindAncestor, 
+					        AncestorType={x:Type Window}}, 
+					    Path=TransformMode}"
+                CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Translate}"
+                Style="{StaticResource ToolBarButtonStyle}"
+                IsChecked="{Binding 
+                    Path=WidgetMode, 
+                    Converter={StaticResource BooleanToWidgetModeValueConverter}, 
+                    ConverterParameter={x:Static TransformableWidgetNS:WidgetMode.Translate}}"
+                IsEnabled="{Binding Path=HasActor}">
+                <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/translateIcon.png"/>
+            </RadioButton>
+            <RadioButton 
+                Name="RotateButton"
+                Command="{Binding RelativeSource={  
+                            RelativeSource FindAncestor, 
+					        AncestorType={x:Type Window}}, 
+					    Path=TransformMode}"
+                CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Rotate}"
+                Style="{StaticResource ToolBarButtonStyle}"
+                IsChecked="{Binding 
+                    Path=WidgetMode, 
+                    Converter={StaticResource BooleanToWidgetModeValueConverter}, 
+                    ConverterParameter={x:Static TransformableWidgetNS:WidgetMode.Rotate}}"
+                IsEnabled="{Binding Path=HasActor}">
+                <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/rotationIcon.png"/>
+            </RadioButton>
+            <RadioButton 
+                Name="ScaleButton"
+                Command="{Binding RelativeSource={  
+                            RelativeSource FindAncestor, 
+					        AncestorType={x:Type Window}}, 
+					    Path=TransformMode}"
+                CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Scale}"
+                Style="{StaticResource ToolBarButtonStyle}"
+                IsChecked="{Binding 
+                    Path=WidgetMode, 
+                    Converter={StaticResource BooleanToWidgetModeValueConverter}, 
+                    ConverterParameter={x:Static TransformableWidgetNS:WidgetMode.Scale}}"
+                IsEnabled="{Binding Path=HasActor}">
+                <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/scaleIcon.png"/>
+            </RadioButton>
+            <Separator />
         </ToolBar>
         <my1:SkeletonTreeViewControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Grid>

@@ -10,13 +10,23 @@ namespace StoryTimeDevKit.Utils
 {
     public static class DependencyInjectorHelper
     {
-        public static IKernel Kernel
+        public static IKernel MainWindowKernel
         {
             get 
             { 
                 return Application
                         .Current
-                        .Properties[ApplicationProperties.DependencyInjectorKey] as IKernel;
+                        .Properties[ApplicationProperties.MainWindowDependencyInjectorKey] as IKernel;
+            }
+        }
+
+        public static IKernel PuppeteerKernel
+        {
+            get
+            {
+                return Application
+                        .Current
+                        .Properties[ApplicationProperties.PuppeteerDependencyInjectorKey] as IKernel;
             }
         }
     }

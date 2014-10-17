@@ -12,8 +12,15 @@ using StoryTimeCore.DataStructures;
 
 namespace StoryTimeDevKit.Entities.Actors
 {
+    public delegate void OnPositionChange(BoneActor bone);
+
     public class BoneActor : BaseActor
     {
+        private List<BoneActor> _children;
+        private BoneActor _parent;
+
+        public event OnPositionChange OnPositionChange;
+        
         public Vector2 BoneEnd
         {
             get 
@@ -36,14 +43,39 @@ namespace StoryTimeDevKit.Entities.Actors
                 RenderableAsset.Scale = new Vector2(1.0f, yScale);
             }
         }
+        public BoneActor Parent 
+        {
+            get
+            {
+                return _parent;
+            }
+            set
+            {
+                if (_parent == value) return;
+                if(_parent != null)
+                    _parent.OnPositionChange -= OnParentPositionChangeHandler;
+                _parent = value;
+                if(_parent != null)
+                    _parent.OnPositionChange += OnParentPositionChangeHandler;
+            }
+        }
+        public IEnumerable<BoneActor> Children { get { return _children; } }
 
         public BoneActor()
         {
+            _children = new List<BoneActor>();
             OnCreated += OnCreatedHandler;
+            OnBoundingBoxChanges += OnBoundingBoxChangesHandler;
         }
 
         public override void TimeElapse(WorldTime WTime)
         {
+        }
+
+        public void AddChildren(BoneActor bone)
+        {
+            bone.Parent = this;
+            _children.Add(bone);
         }
 
         private void OnCreatedHandler()
@@ -53,6 +85,16 @@ namespace StoryTimeDevKit.Entities.Actors
             asset.Texture2D = bitmap;
             asset.Origin = new Vector2(bitmap.Width / 2, 0.0f);
             RenderableAsset = asset;
+        }
+        private void OnParentPositionChangeHandler(BoneActor boneActor)
+        {
+            Body.Position = boneActor.BoneEnd;
+        }
+
+        private void OnBoundingBoxChangesHandler(BaseActor actor)
+        {
+            if (OnPositionChange != null)
+                OnPositionChange(this);
         }
     }
 }

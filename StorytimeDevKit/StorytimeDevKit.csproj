@@ -102,6 +102,7 @@
     <Compile Include="Controllers\Puppeteer\PuppeteerController.cs" />
     <Compile Include="Controllers\Puppeteer\WorkingModes\AddBoneMode.cs" />
     <Compile Include="Controllers\Puppeteer\WorkingModes\IPuppeteerWorkingMode.cs" />
+    <Compile Include="Controllers\Puppeteer\WorkingModes\IPuppeteerWorkingModeContext.cs" />
     <Compile Include="Controllers\Puppeteer\WorkingModes\SelectionMode.cs" />
     <Compile Include="Controllers\TemplateControllers\MultiStackedCommandsController.cs" />
     <Compile Include="Controllers\TemplateControllers\StackedCommandsController.cs" />

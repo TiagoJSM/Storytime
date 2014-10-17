@@ -17,27 +17,52 @@ using StoryTimeFramework.Entities.Actors;
 using Microsoft.Xna.Framework;
 using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
 using StoryTimeDevKit.Entities.Actors;
+using StoryTimeDevKit.DataStructures;
+using StoryTimeDevKit.SceneWidgets.Transformation;
+using Ninject;
+using StoryTimeDevKit.Models.MainWindow;
+using StoryTimeDevKit.Entities.SceneWidgets;
 
 namespace StoryTimeDevKit.Controllers.Puppeteer
 {
     public class PuppeteerController 
         :   StackedCommandsController<IPuppeteerEditorControl>, 
             IPuppeteerController, 
-            ISkeletonViewerController
+            ISkeletonViewerController,
+            IPuppeteerWorkingModeContext
     {
         private SkeletonViewModel _skeleton;
 
         private IPuppeteerEditorControl _puppeteerEditorControl;
         private ISkeletonTreeViewControl _skeletonTreeViewControl;
         private IPuppeteerWorkingMode _activeWorkingMode;
-        BoneActor _actor;
+        private SceneControlData _sceneControlData;
 
         private GameWorld _world;
         private IGraphicsContext GraphicsContext { get { return _world.GraphicsContext; } }
-        private Scene Scene { get { return _world.ActiveScene; } }
-
         private Dictionary<PuppeteerWorkingMode, IPuppeteerWorkingMode> _workingModes;
+        private BoneActor _selectedBone;
 
+        public Scene Scene { get { return _world.ActiveScene; } }
+
+        public GameWorld GameWorld 
+        {
+            get
+            {
+                return _world;
+            }
+            set
+            {
+                _world = value;
+
+                Scene scene = new Scene();
+                scene.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
+                _world.AddScene(scene);
+                _world.SetActiveScene(scene);
+
+                ConfigureSceneUI();
+            }
+        }
         public IPuppeteerEditorControl PuppeteerControl 
         {
             get
@@ -52,6 +77,30 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                 _puppeteerEditorControl = value;
                 if (value != null)
                     AssignPuppeteerEditorControlEvents();
+            }
+        }
+        public BoneActor SelectedBone 
+        {
+            get
+            {
+                return _selectedBone;
+            }
+            set
+            {
+                if (_selectedBone == value) return;
+                _selectedBone = value;
+
+                if (_selectedBone != null)
+                {
+                    _sceneControlData.TransformActorModel.Actor = _selectedBone;
+                    TransformModeModel.HasActor = true;
+                    //if (TransformModeModel.WidgetMode == WidgetMode.None)
+                    //    TransformModeModel.WidgetMode = WidgetMode.Translate;
+                }
+                else
+                {
+                    TransformModeModel.HasActor = false;
+                }
             }
         }
 
@@ -72,21 +121,38 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             }
         }
 
-        public PuppeteerController(GameWorld world)
+        [Inject]
+        public TransformModeViewModel TransformModeModel { get; set; }
+
+        public PuppeteerController()
         {
             _workingModes =
                 new Dictionary<PuppeteerWorkingMode, IPuppeteerWorkingMode>()
                 {
-                    { PuppeteerWorkingMode.SelectionMode, new SelectionMode() },
-                    { PuppeteerWorkingMode.AddBoneMode, new AddBoneMode() }
+                    { PuppeteerWorkingMode.SelectionMode, new SelectionMode(this) },
+                    { PuppeteerWorkingMode.AddBoneMode, new AddBoneMode(this) }
                 };
+        }
 
-            _world = world;
+        public BoneActor AddBoneActor(Vector2 boneStartPosition)
+        {
+            BoneActor bone = new BoneActor();
+            bone.Body = Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f);
+            bone.Body.Position = boneStartPosition;
+            Scene.AddActor(bone);
+            return bone;
+        }
 
-            Scene scene = new Scene();
-            scene.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
-            _world.AddScene(scene);
-            _world.SetActiveScene(scene);
+        public BoneActor AddBoneActor(Vector2 boneStartPosition, Vector2 boneEndPosition)
+        {
+            BoneActor bone = AddBoneActor(boneStartPosition);
+            bone.BoneEnd = boneEndPosition;
+            return bone;
+        }
+
+        public BoneActor GetIntersectedBone(Vector2 position)
+        {
+            return Scene.Intersect(position).OfType<BoneActor>().FirstOrDefault();
         }
 
         private void AssignPuppeteerEditorControlEvents()
@@ -129,6 +195,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         private void OnWorkingModeChangesHandler(PuppeteerWorkingMode mode)
         {
             _activeWorkingMode = _workingModes[mode];
+            _activeWorkingMode.Reset();
         }
 
         private void SkeletonViewerOnLoadedHandler(ISkeletonTreeViewControl control)
@@ -142,12 +209,8 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
         private void OnMouseClickHandler(Vector2 position)
         {
-            //TODO: create a specific actor for this
-            _actor = new BoneActor();
-            string name = "one";
-            _actor.Body = Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
-            _actor.Body.Position = position;
-            Scene.AddActor(_actor);
+            if (_activeWorkingMode == null) return;
+            _activeWorkingMode.Click(position);
         }
 
         private void MoveActor(BaseActor actor, Vector2 fromPosition, Vector2 toPosition)
@@ -158,6 +221,37 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         private void RotateActor(BaseActor actor, float previousRotation, float rotation)
         {
 
+        }
+
+        private void ConfigureSceneUI()
+        {
+            TranslateSceneWidget translateWidg = new TranslateSceneWidget();
+            Scene.GUI.Children.Add(translateWidg);
+            translateWidg.OnTranslate += OnTranslateHandler;
+            translateWidg.OnTranslationComplete += OnTranslationCompleteHandler;
+
+            RotateSceneWidget rotateWidg = new RotateSceneWidget();
+            Scene.GUI.Children.Add(rotateWidg);
+            rotateWidg.OnRotation += OnRotationHandler;
+            rotateWidg.OnStopRotation += OnStopRotationHandler;
+
+            _sceneControlData = new SceneControlData(translateWidg, rotateWidg, TransformModeModel);
+        }
+
+        private void OnTranslateHandler(Vector2 translation)
+        {
+        }
+
+        private void OnTranslationCompleteHandler(Vector2 fromPosition, Vector2 toPosition)
+        {
+        }
+
+        private void OnRotationHandler(float rotation)
+        {
+        }
+
+        private void OnStopRotationHandler(float originalRotation, float finalRotation)
+        {
         }
     }
 }

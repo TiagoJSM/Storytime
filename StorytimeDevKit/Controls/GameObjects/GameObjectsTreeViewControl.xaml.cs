@@ -62,7 +62,7 @@ namespace StoryTimeDevKit.Controls.GameObjects
                     ApplicationProperties.IGameObjectsControllerArgName,
                     this);
             _controller = DependencyInjectorHelper
-                            .Kernel
+                            .MainWindowKernel
                             .Get<IGameObjectsController>(controlArg);
 
             base.DataContext = _controller.LoadGameObjectsTree();

@@ -18,13 +18,17 @@ namespace StoryTimeDevKit
     /// </summary>
     public partial class App : Application
     {
-        private IKernel _container;
+        private IKernel _mainWindowContainer;
+        private IKernel _puppeteerContainer;
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            _container = new StandardKernel();
-            NinjectBootstrap.Configure(_container);
-            Properties[ApplicationProperties.DependencyInjectorKey] = _container;
+            _mainWindowContainer = new StandardKernel();
+            _puppeteerContainer = new StandardKernel();
+            NinjectBootstrap.MainWindowConfigure(_mainWindowContainer);
+            NinjectBootstrap.PuppeteerConfigure(_puppeteerContainer);
+            Properties[ApplicationProperties.MainWindowDependencyInjectorKey] = _mainWindowContainer;
+            Properties[ApplicationProperties.PuppeteerDependencyInjectorKey] = _puppeteerContainer;
             base.OnStartup(e);
         }
 
