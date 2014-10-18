@@ -99,6 +99,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                 }
                 else
                 {
+                    _sceneControlData.TransformActorModel.Actor = null;
                     TransformModeModel.HasActor = false;
                 }
             }
@@ -196,6 +197,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         {
             _activeWorkingMode = _workingModes[mode];
             _activeWorkingMode.Reset();
+            _sceneControlData.TransformActorModel.Enabled = mode == PuppeteerWorkingMode.SelectionMode;
         }
 
         private void SkeletonViewerOnLoadedHandler(ISkeletonTreeViewControl control)

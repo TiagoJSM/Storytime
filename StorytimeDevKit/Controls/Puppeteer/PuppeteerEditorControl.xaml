@@ -53,7 +53,7 @@
                 Command="{Binding RelativeSource={  
                             RelativeSource FindAncestor, 
 					        AncestorType={x:Type Window}}, 
-					    Path=OpenImageViewer}" Checked="RadioButton_Selection_Checked">
+					    Path=OpenImageViewer}" Checked="RadioButton_Selection_Checked" Unchecked="SelectionMode_Unchecked">
                 <Image Width ="25" Height="25" Source="/Images/Puppeteer/ToolBar/SelectionIcon.png"/>
             </RadioButton>
             <RadioButton 
@@ -76,8 +76,7 @@
                 IsChecked="{Binding 
                     Path=WidgetMode, 
                     Converter={StaticResource BooleanToWidgetModeValueConverter}, 
-                    ConverterParameter={x:Static TransformableWidgetNS:WidgetMode.Translate}}"
-                IsEnabled="{Binding Path=HasActor}">
+                    ConverterParameter={x:Static TransformableWidgetNS:WidgetMode.Translate}}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/translateIcon.png"/>
             </RadioButton>
             <RadioButton 
@@ -91,8 +90,7 @@
                 IsChecked="{Binding 
                     Path=WidgetMode, 
                     Converter={StaticResource BooleanToWidgetModeValueConverter}, 
-                    ConverterParameter={x:Static TransformableWidgetNS:WidgetMode.Rotate}}"
-                IsEnabled="{Binding Path=HasActor}">
+                    ConverterParameter={x:Static TransformableWidgetNS:WidgetMode.Rotate}}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/rotationIcon.png"/>
             </RadioButton>
             <RadioButton 
@@ -106,8 +104,7 @@
                 IsChecked="{Binding 
                     Path=WidgetMode, 
                     Converter={StaticResource BooleanToWidgetModeValueConverter}, 
-                    ConverterParameter={x:Static TransformableWidgetNS:WidgetMode.Scale}}"
-                IsEnabled="{Binding Path=HasActor}">
+                    ConverterParameter={x:Static TransformableWidgetNS:WidgetMode.Scale}}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/scaleIcon.png"/>
             </RadioButton>
             <Separator />

@@ -15,6 +15,7 @@ namespace StoryTimeDevKit.Models
         private WidgetMode _widgetMode;
         private bool _translateWidgetMode;
         private bool _rotateWidgetMode;
+        private bool _enabled;
 
         public BaseActor Actor 
         { 
@@ -80,6 +81,20 @@ namespace StoryTimeDevKit.Models
                 ResolveTranformWidgetProperties();
             }
         }
+        public bool Enabled
+        {
+            get
+            {
+                return _enabled;
+            }
+            set
+            {
+                if (_enabled == value) return;
+                _enabled = value;
+                OnPropertyChanged("Enabled");
+                ResolveTranformWidgetProperties();
+            }
+        }
 
         public bool TranslateWidgetMode
         {
@@ -87,7 +102,7 @@ namespace StoryTimeDevKit.Models
             {
                 return _translateWidgetMode;
             }
-            set
+            private set
             {
                 if (_translateWidgetMode == value) return;
                 _translateWidgetMode = value;
@@ -111,6 +126,7 @@ namespace StoryTimeDevKit.Models
 
         public TransformActorViewModel()
         {
+            _enabled = true;
         }
 
         public TransformActorViewModel(BaseActor ba)
@@ -157,8 +173,8 @@ namespace StoryTimeDevKit.Models
 
         private void ResolveTranformWidgetProperties()
         {
-            TranslateWidgetMode = WidgetMode == WidgetMode.Translate && HasActor;
-            RotateWidgetMode = WidgetMode == WidgetMode.Rotate && HasActor;
+            TranslateWidgetMode = WidgetMode == WidgetMode.Translate && HasActor && Enabled;
+            RotateWidgetMode = WidgetMode == WidgetMode.Rotate && HasActor && Enabled;
         }
     }
 }

@@ -86,6 +86,16 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         {
             if (OnWorkingModeChanges != null)
                 OnWorkingModeChanges(PuppeteerWorkingMode.SelectionMode);
+            TranslateButton.IsEnabled = true;
+            RotateButton.IsEnabled = true;
+            ScaleButton.IsEnabled = true;
+        }
+
+        private void SelectionMode_Unchecked(object sender, RoutedEventArgs e)
+        {
+            TranslateButton.IsEnabled = false;
+            RotateButton.IsEnabled = false;
+            ScaleButton.IsEnabled = false;
         }
 
         private void RadioButton_AddBone_Checked(object sender, RoutedEventArgs e)
