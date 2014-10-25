@@ -129,9 +129,9 @@ namespace StoryTimeCoreTests.DataStructuresTests
             AxisAlignedBoundingBox2D rec2 = new AxisAlignedBoundingBox2D(3.0f, 3.0f, 4.0f, 1.0f);
             AxisAlignedBoundingBox2D combined = rec1.Combine(rec2);
 
-            Assert.AreEqual(1.0f, combined.Top);
+            Assert.AreEqual(7.0f, combined.Top);
             Assert.AreEqual(1.0f, combined.Left);
-            Assert.AreEqual(7.0f, combined.Bottom);
+            Assert.AreEqual(1.0f, combined.Bottom);
             Assert.AreEqual(6.0f, combined.Right); 
         }
 
@@ -142,9 +142,9 @@ namespace StoryTimeCoreTests.DataStructuresTests
             AxisAlignedBoundingBox2D rec2 = new AxisAlignedBoundingBox2D(5.0f, 6.0f, 4.0f, 1.0f);
             AxisAlignedBoundingBox2D combined = rec1.Combine(rec2);
 
-            Assert.AreEqual(1.0f, combined.Top);
+            Assert.AreEqual(10.0f, combined.Top);
             Assert.AreEqual(1.0f, combined.Left);
-            Assert.AreEqual(10.0f, combined.Bottom);
+            Assert.AreEqual(1.0f, combined.Bottom);
             Assert.AreEqual(6.0f, combined.Right);
         }
 
@@ -155,9 +155,9 @@ namespace StoryTimeCoreTests.DataStructuresTests
             AxisAlignedBoundingBox2D rec2 = new AxisAlignedBoundingBox2D(2.0f, 2.0f, 1.0f, 1.0f);
             AxisAlignedBoundingBox2D combined = rec1.Combine(rec2);
             
-            Assert.AreEqual(1.0f, combined.Top);
+            Assert.AreEqual(6.0f, combined.Top);
             Assert.AreEqual(1.0f, combined.Left);
-            Assert.AreEqual(6.0f, combined.Bottom);
+            Assert.AreEqual(1.0f, combined.Bottom);
             Assert.AreEqual(6.0f, combined.Right);
         }
     }

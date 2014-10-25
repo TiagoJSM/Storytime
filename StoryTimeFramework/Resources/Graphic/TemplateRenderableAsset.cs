@@ -16,6 +16,7 @@ namespace StoryTimeFramework.Resources.Graphic
         private Vector2 _origin;
         private float _rotation;
         private Vector2 _scale;
+        private Vector2 _renderingOffset;
         public event Action<IRenderableAsset> OnBoundingBoxChanges;
 
         public virtual bool IsVisible { get; set; }
@@ -65,6 +66,21 @@ namespace StoryTimeFramework.Resources.Graphic
                 }
             }
         }
+        public Vector2 RenderingOffset
+        {
+            get
+            {
+                return _renderingOffset;
+            }
+            set
+            {
+                if (_renderingOffset != value)
+                {
+                    _renderingOffset = value;
+                    if (OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
+                }
+            }
+        }
 
         public TemplateRenderableAsset()
         {
@@ -84,18 +100,28 @@ namespace StoryTimeFramework.Resources.Graphic
                     boundingBox.Width,
                     boundingBox.Height,
                     Rotation,
-                    _origin
+                    _origin,
+                    _renderingOffset
                 );
         }
 
         public abstract void Render(IRenderer renderer);
         public virtual void TimeElapse(WorldTime WTime) { }
-        public AxisAlignedBoundingBox2D BoundingBox 
+        public AxisAlignedBoundingBox2D AABoundingBox 
         {
             get
             {
                 AxisAlignedBoundingBox2D computedBox = RawBoundingBox;
-                computedBox.Translate(Origin.Negative());
+                computedBox.Translate(RenderingOffset);
+                return computedBox.GetScaled(_scale, Vector2.Zero).GetRotated(_rotation);
+            }
+        }
+        public BoundingBox2D BoundingBox
+        {
+            get 
+            {
+                BoundingBox2D computedBox = RawBoundingBox.GetBoundingBox2D();
+                computedBox.Translate(RenderingOffset);
                 return computedBox.GetScaled(_scale, Vector2.Zero).GetRotated(_rotation);
             }
         }

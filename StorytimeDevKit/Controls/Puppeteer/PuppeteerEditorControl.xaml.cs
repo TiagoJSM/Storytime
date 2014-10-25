@@ -19,19 +19,19 @@ using StoryTimeDevKit.Utils;
 using Ninject;
 using Ninject.Parameters;
 using StoryTimeDevKit.Configurations;
-using StoryTimeDevKit.Delegates.Puppeteer;
 using Microsoft.Xna.Framework;
 using StoryTimeDevKit.Extensions;
 using StoryTimeDevKit.Models.MainWindow;
+using StoryTimeDevKit.Controls.Templates;
+using StoryTimeFramework.WorldManagement;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
     /// <summary>
     /// Interaction logic for PupeteerEditor.xaml
     /// </summary>
-    public partial class PuppeteerEditorControl : UserControl, IPuppeteerEditorControl
+    public partial class PuppeteerEditorControl : BaseSceneUserControl, IPuppeteerEditorControl
     {
-        //_clickPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
         private MyGame _game;
         private IPuppeteerController _puppeteerController;
         private TransformModeViewModel transformModeModel;
@@ -39,11 +39,11 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         public event Action<IPuppeteerEditorControl> OnLoaded;
         public event Action<IPuppeteerEditorControl> OnUnloaded;
         public event Action<PuppeteerWorkingMode> OnWorkingModeChanges;
-        public event OnMouseClick OnMouseClick;
 
         public PuppeteerEditorControl()
         {
             InitializeComponent();
+            AssignPanelEventHandling(PuppeteerEditor);
             Loaded += LoadedHandler;
         }
 
@@ -76,6 +76,11 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             ScaleButton.DataContext = transformModeModel;
         }
 
+        protected override Scene GetScene()
+        {
+            return _game.GameWorld.ActiveScene;
+        }
+
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             if (OnUnloaded != null)
@@ -102,17 +107,6 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         {
             if (OnWorkingModeChanges != null)
                 OnWorkingModeChanges(PuppeteerWorkingMode.AddBoneMode);
-        }
-
-        private void PuppeteerEditor_OnMouseClick(
-            System.Drawing.Point pointInGamePanel, 
-            System.Drawing.Point gamePanelDimensions)
-        {
-            
-            if (OnMouseClick == null) return;
-            Vector2 clickPosition = 
-                _game.GameWorld.ActiveScene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
-            OnMouseClick(clickPosition);
         }
     }
 }

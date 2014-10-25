@@ -9,15 +9,20 @@ using StoryTimeUI.Interfaces;
 using System.Collections.ObjectModel;
 using StoryTimeUI.Delegates;
 using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace StoryTimeUI
 {
-    public abstract class BaseWidget : IParent
+    public abstract class BaseWidget : IParent, INotifyPropertyChanged
     {
         private IGraphicsContext _graphicsContext;
         private bool _initialized;
         private ObservableCollection<BaseWidget> _children;
         private Vector2 _startDrag;
+        private float _rotation;
+        private Vector2 _position;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public event Action OnInitialize;
         public event OnStartDrag OnStartDrag;
@@ -39,8 +44,32 @@ namespace StoryTimeUI
             }
         }
 
-        public Vector2 Position { get; set; }
-        public float Rotation { get; set; }
+        public Vector2 Position
+        {
+            get
+            {
+                return _position;
+            }
+            set
+            {
+                if (_position == value) return;
+                _position = value;
+                OnPropertyChanged("Position");
+            }
+        }
+        public float Rotation
+        {
+            get
+            {
+                return _rotation;
+            }
+            set
+            {
+                if (_rotation == value) return;
+                _rotation = value;
+                OnPropertyChanged("Rotation");
+            }
+        }
         public IParent Parent { get; set; }
         public bool Active { get; set; }
         public bool Visible { get; set; }
@@ -116,6 +145,12 @@ namespace StoryTimeUI
         }
 
         public abstract bool Intersects(Vector2 point);
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         private void CollectionChangedHandler(object sender, NotifyCollectionChangedEventArgs e)
         {

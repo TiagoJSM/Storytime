@@ -106,6 +106,8 @@
     <Compile Include="Controllers\Puppeteer\WorkingModes\SelectionMode.cs" />
     <Compile Include="Controllers\TemplateControllers\MultiStackedCommandsController.cs" />
     <Compile Include="Controllers\TemplateControllers\StackedCommandsController.cs" />
+    <Compile Include="Controls\IMouseInteractiveControl.cs" />
+    <Compile Include="Controls\IMouseInteractivePanel.cs" />
     <Compile Include="Controls\INodeAddedCallback.cs" />
     <Compile Include="Controls\Puppeteer\IPuppeteerEditorControl.cs" />
     <Compile Include="Controls\Puppeteer\ISkeletonTreeViewControl.cs" />
@@ -118,9 +120,10 @@
     <Compile Include="Controls\Puppeteer\SkeletonTreeViewControl.xaml.cs">
       <DependentUpon>SkeletonTreeViewControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Templates\BaseSceneUserControl.cs" />
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToWidgetModeValueConverter.cs" />
+    <Compile Include="DataStructures\BoneMapper.cs" />
     <Compile Include="DataStructures\SceneControlData.cs" />
-    <Compile Include="Delegates\Puppeteer\PuppeteerEditorDelegates.cs" />
     <Compile Include="Delegates\SceneViewerDelegates.cs" />
     <Compile Include="Delegates\TransformDelegates.cs" />
     <Compile Include="Entities\Actors\BoneActor.cs" />
@@ -340,6 +343,10 @@
       <Project>{85BD65F7-F869-474D-9FE8-2E87FAB35737}</Project>
       <Name>FarseerPhysicsWrapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Puppeteer\Puppeteer.csproj">
+      <Project>{DD4F2F02-05CE-49D1-B65C-3BEC38DD3369}</Project>
+      <Name>Puppeteer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StoryTimeCore\StoryTimeCore.csproj">
       <Project>{768B1451-6637-4ADE-BB85-CB742B224D09}</Project>
       <Name>StoryTimeCore</Name>
@@ -406,6 +413,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\GameObjectsControl\BlueClosedFolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Delegates\Puppeteer\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -60,13 +60,13 @@ namespace StoryTimeDevKit.Controls.XNA
     /// <summary>
     /// Interaktionslogik für UserControl1.xaml
     /// </summary>
-    public partial class XnaControl : UserControl
+    public partial class XnaControl : UserControl, IMouseInteractivePanel
     {
         public event Action<ActorViewModel, System.Drawing.Point, System.Drawing.Point> OnDropActor;
-        public event Action<System.Drawing.Point, System.Drawing.Point> OnMouseUp;
-        public event Action<System.Drawing.Point, System.Drawing.Point> OnMouseDown;
-        public event Action<System.Drawing.Point, System.Drawing.Point> OnMouseClick;
-        public event Action<System.Drawing.Point, System.Drawing.Point, System.Windows.Forms.MouseButtons> OnMouseMove;
+        public event OnPanelMouseUp OnMouseUp;
+        public event OnPanelMouseDown OnMouseDown;
+        public event OnPanelMouseClick OnMouseClick;
+        public event OnPanelMouseMove OnMouseMove;
 
         public IntPtr Handle
         {

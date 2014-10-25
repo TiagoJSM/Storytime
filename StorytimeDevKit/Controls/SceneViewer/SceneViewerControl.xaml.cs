@@ -22,24 +22,20 @@ using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
 using StoryTimeDevKit.Models;
 using StoryTimeUI.DataBinding.Engines;
 using StoryTimeDevKit.Delegates;
+using StoryTimeDevKit.Controls.Templates;
 
 namespace StoryTimeDevKit.Controls.SceneViewer
 {
     /// <summary>
     /// Interaction logic for SceneViewerControl.xaml
     /// </summary>
-    public partial class SceneViewerControl : UserControl, ISceneViewerControl
+    public partial class SceneViewerControl : BaseSceneUserControl, ISceneViewerControl
     {
         private MyGame _game;
         private ISceneViewerController _controller;
         private IGraphicsContext _context;
-        private Vector2 _clickPosition;
 
         public event OnDropActor OnDropActor;
-        public event OnMouseMove OnMouseMove;
-        public event OnMouseClick OnMouseClick;
-        public event OnMouseDown OnMouseDown;
-        public event OnMouseUp OnMouseUp;
         public event OnSceneAdded OnSceneAdded;
 
         public event Action<ActorViewModel> OnActorAdded;
@@ -68,6 +64,8 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             });
 
             InitializeComponent();
+            AssignPanelEventHandling(xna);
+
             ScenesControl.ItemsSource = Tabs;
 
             if (DesignerProperties.GetIsInDesignMode(this))
@@ -141,6 +139,13 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             get { return _controller.CanRedo; }
         }
 
+        protected override Scene GetScene()
+        {
+            SceneTabViewModel sceneVM = SelectedScene;
+            if (sceneVM == null) return null;
+            return sceneVM.Scene;
+        }
+
         private void ScenesControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _game.GameWorld.SetActiveScene(SelectedScene.Scene);
@@ -164,55 +169,6 @@ namespace StoryTimeDevKit.Controls.SceneViewer
 
             if (OnActorAdded != null)
                 OnActorAdded(model);
-        }
-
-        private void xna_OnMouseClick(
-            System.Drawing.Point pointInGamePanel,
-            System.Drawing.Point gamePanelDimensions)
-        {
-            SceneTabViewModel sceneVM = SelectedScene;
-            if (sceneVM == null) return;
-
-            _clickPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
-
-            if (OnMouseClick != null)
-                OnMouseClick(sceneVM, _clickPosition);
-        }
-
-        private void xna_OnMouseDown(System.Drawing.Point pointInGamePanel, System.Drawing.Point gamePanelDimensions)
-        {
-            SceneTabViewModel sceneVM = SelectedScene;
-            if (sceneVM == null) return;
-
-            Vector2 clickPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
-
-            if (OnMouseDown != null)
-                OnMouseDown(sceneVM, clickPosition);
-        }
-
-        private void xna_OnMouseMove(
-            System.Drawing.Point pointInGamePanel, 
-            System.Drawing.Point gamePanelDimensions, 
-            System.Windows.Forms.MouseButtons buttons)
-        {
-            SceneTabViewModel sceneVM = SelectedScene;
-            if (sceneVM == null) return;
-
-            Vector2 point = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
-
-            if (OnMouseMove != null)
-                OnMouseMove(sceneVM, point);
-        }
-
-        private void xna_OnMouseUp(System.Drawing.Point pointInGamePanel, System.Drawing.Point gamePanelDimensions)
-        {
-            SceneTabViewModel sceneVM = SelectedScene;
-            if (sceneVM == null) return;
-
-            Vector2 mouseDownPosition = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
-
-            if (OnMouseUp != null)
-                OnMouseUp(sceneVM, mouseDownPosition);
         }
     }
 }

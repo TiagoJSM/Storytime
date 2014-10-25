@@ -25,12 +25,12 @@ namespace StoryTimeDevKit.Entities.SceneWidgets
             if (direction == TranslateArrowDirection.Horizontal)
             {
                 _texture = context.LoadTexture2D("ArrowHorizontal");
-                Origin = new Vector2(0, _texture.Height / 2);
+                RenderingOffset = - new Vector2(0, _texture.Height / 2);
             }
             else
             {
                 _texture = context.LoadTexture2D("ArrowVertical");
-                Origin = new Vector2(_texture.Width / 2, 0);
+                RenderingOffset = - new Vector2(_texture.Width / 2, 0);
             }
             _boundingBox = new AxisAlignedBoundingBox2D(0, 0, _texture.Height, _texture.Width);
         }

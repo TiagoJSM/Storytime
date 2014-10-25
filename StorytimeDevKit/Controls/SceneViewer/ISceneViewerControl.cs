@@ -9,15 +9,12 @@ using StoryTimeDevKit.Delegates;
 
 namespace StoryTimeDevKit.Controls.SceneViewer
 {
-    public interface ISceneViewerControl
+    public interface ISceneViewerControl : IMouseInteractiveControl
     {
         event Action<BaseActor> OnSelectedActorChange;
 
         event OnDropActor OnDropActor;
-        event OnMouseMove OnMouseMove;
-        event OnMouseClick OnMouseClick;
-        event OnMouseDown OnMouseDown;
-        event OnMouseUp OnMouseUp;
+
         event OnSceneAdded OnSceneAdded;
         event OnSceneChanged OnSceneChanged;
 

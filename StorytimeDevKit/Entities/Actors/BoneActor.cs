@@ -9,24 +9,29 @@ using StoryTimeFramework.Resources.Graphic;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
 using StoryTimeCore.DataStructures;
+using StoryTimeDevKit.Entities.SceneWidgets.Interfaces.Puppeteer;
 
 namespace StoryTimeDevKit.Entities.Actors
 {
     public delegate void OnPositionChange(BoneActor bone);
+    public delegate void OnParentChange(BoneActor bone);
 
     public class BoneActor : BaseActor
     {
         private List<BoneActor> _children;
         private BoneActor _parent;
+        private Vector2 _parentBoneEndReference;
+        private float _parentRotationReference;
 
         public event OnPositionChange OnPositionChange;
+        public event OnParentChange OnParentChange;
         
         public Vector2 BoneEnd
         {
             get 
             {
                 Vector2 position = Body.Position;
-                position.Y += RenderableAsset.BoundingBox.Height;
+                position.Y += RenderableAsset.AABoundingBox.Height;
                 return position.Rotate(Body.Rotation, Body.Position);
             }
             set
@@ -52,11 +57,17 @@ namespace StoryTimeDevKit.Entities.Actors
             set
             {
                 if (_parent == value) return;
-                if(_parent != null)
-                    _parent.OnPositionChange -= OnParentPositionChangeHandler;
+                /*if(_parent != null)
+                    _parent.OnPositionChange -= OnParentPositionChangeHandler;*/
                 _parent = value;
-                if(_parent != null)
-                    _parent.OnPositionChange += OnParentPositionChangeHandler;
+                if (_parent != null)
+                {
+                    _parentBoneEndReference = _parent.BoneEnd;
+                    _parentRotationReference = _parent.Body.Rotation;
+                    //_parent.OnPositionChange += OnParentPositionChangeHandler;
+                }
+                if (OnParentChange != null)
+                    OnParentChange(this);
             }
         }
         public IEnumerable<BoneActor> Children { get { return _children; } }
@@ -80,15 +91,19 @@ namespace StoryTimeDevKit.Entities.Actors
 
         private void OnCreatedHandler()
         {
-            ITexture2D bitmap = Scene.GraphicsContext.LoadTexture2D("Bone");
-            Static2DRenderableAsset asset = new Static2DRenderableAsset();
-            asset.Texture2D = bitmap;
-            asset.Origin = new Vector2(bitmap.Width / 2, 0.0f);
-            RenderableAsset = asset;
+            RenderableAsset = new BoneRenderableAsset(Scene.GraphicsContext);
         }
         private void OnParentPositionChangeHandler(BoneActor boneActor)
         {
-            Body.Position = boneActor.BoneEnd;
+            Vector2 translationFromReference = Body.Position - _parentBoneEndReference;
+            float rotation = boneActor.Body.Rotation - _parentRotationReference;
+            _parentBoneEndReference = boneActor.BoneEnd;
+            _parentRotationReference = boneActor.Body.Rotation;
+            Body.Position = (boneActor.BoneEnd + translationFromReference);
+            Body.Rotation = Body.Rotation + rotation;
+            // TODO: fix bug
+            //RenderableAsset.Origin = -(Body.Position - _parent.BoneEnd) + (new Vector2(this.RenderableAsset.BoundingBoxWithoutOrigin.Width / 2, 0.0f));
+
         }
 
         private void OnBoundingBoxChangesHandler(BaseActor actor)

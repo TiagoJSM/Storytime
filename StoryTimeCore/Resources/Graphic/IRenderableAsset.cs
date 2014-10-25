@@ -19,6 +19,7 @@ namespace StoryTimeCore.Resources.Graphic
         event Action<IRenderableAsset> OnBoundingBoxChanges;
         bool IsVisible { get; set; }
         Vector2 Origin { get; set; }
+        Vector2 RenderingOffset { get; set; }
         float Rotation { get; set; }
         Vector2 Scale { get; set; }
         AxisAlignedBoundingBox2D BoundingBoxWithoutOrigin { get; }

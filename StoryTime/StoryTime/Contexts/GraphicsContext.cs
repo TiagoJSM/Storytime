@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Content;
 using StoryTimeFramework.DataStructures;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
+using C3.XNA;
+using StoryTimeCore.DataStructures;
 
 namespace StoryTime.Contexts
 {
@@ -54,7 +56,7 @@ namespace StoryTime.Contexts
                 Render(texture, x, y, texture.Width, texture.Height, 0, origin);
             }
 
-            public void Render(ITexture2D texture, float x, float y, float width, float height, float rotation, Vector2 origin = default(Vector2))
+            public void Render(ITexture2D texture, float x, float y, float width, float height, float rotation, Vector2 origin = default(Vector2), Vector2 renderingOffset = default(Vector2))
             {
                 Texture2D tex = _xnaGD._gContentManager.GetTexture(texture);
                 x += TranslationTransformation.X;
@@ -63,8 +65,8 @@ namespace StoryTime.Contexts
                 rotation += RotationTransformation;
 
                 Rectangle rec = new Rectangle(
-                    (int)x,
-                    (int)y, 
+                    (int)(x + origin.X + renderingOffset.X),
+                    (int)(y + origin.Y + renderingOffset.Y), 
                     (int)width, 
                     (int)height
                 );
@@ -79,6 +81,19 @@ namespace StoryTime.Contexts
                     SpriteEffects.FlipVertically,
                     0
                 );
+            }
+
+            public void RenderRectangle(Rectangle rec, Color color, float thickness = 1.0f)
+            {
+                _xnaGD._spriteBatch.DrawRectangle(rec, color, thickness);
+            }
+
+            public void RenderBoundingBox(BoundingBox2D box, Color color, float thickness = 1.0f)
+            {
+                _xnaGD._spriteBatch.DrawLine(box.Point1, box.Point2, color, thickness);
+                _xnaGD._spriteBatch.DrawLine(box.Point2, box.Point3, color, thickness);
+                _xnaGD._spriteBatch.DrawLine(box.Point3, box.Point4, color, thickness);
+                _xnaGD._spriteBatch.DrawLine(box.Point4, box.Point1, color, thickness);
             }
         }
 

@@ -16,24 +16,28 @@ namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
             _context = context;
         }
 
+        public void OnEnterMode()
+        {
+        }
+
+        public void OnLeaveMode()
+        {
+        }
+
         public void Click(Vector2 position)
         {
             BoneActor bone;
             if (_context.SelectedBone == null)
             {
-                bone = _context.AddBoneActor(position);
+                bone = _context.AddBone(position);
             }
             else
             {
-                bone = _context.AddBoneActor(_context.SelectedBone.BoneEnd, position);
+                bone = _context.AddBone(_context.SelectedBone.BoneEnd, position);
                 _context.SelectedBone.AddChildren(bone);
             }
 
             _context.SelectedBone = bone;
-        }
-
-        public void Reset()
-        {
         }
     }
 }

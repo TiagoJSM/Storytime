@@ -129,7 +129,7 @@ namespace StoryTimeFramework.DataStructures
 
         public bool CanAdd(TData data)
         {
-            return _nodeCoordinates.Contains(data.BoundingBox);
+            return _nodeCoordinates.Contains(data.AABoundingBox);
         }
 
         public IQuadtreeNode<TData> Add(TData data)
@@ -147,7 +147,7 @@ namespace StoryTimeFramework.DataStructures
                 if (_childNodes[idx] == null)
                 {
                     AxisAlignedBoundingBox2D nodeCoords = GetChildrenCoordinatesAt(idx);
-                    bool contains = nodeCoords.Contains(data.BoundingBox);
+                    bool contains = nodeCoords.Contains(data.AABoundingBox);
                     if (contains)
                     {
                         CreateChildrenAt(idx);
@@ -261,7 +261,7 @@ namespace StoryTimeFramework.DataStructures
                 .ForEach(
                     TData =>
                     {
-                        if (intersector(TData.BoundingBox))
+                        if (intersector(TData.AABoundingBox))
                             HitAction(TData);
                     }
                 );
@@ -282,7 +282,7 @@ namespace StoryTimeFramework.DataStructures
                     .ForEach(
                         TData =>
                         {
-                            if (intersector(TData.BoundingBox))
+                            if (intersector(TData.AABoundingBox))
                                 HitAction(TData);
                         }
                     );

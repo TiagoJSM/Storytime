@@ -14,8 +14,9 @@ namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces.Puppeteer
     {
         public BoneRenderableAsset(IGraphicsContext graphicsContext)
         {
-            Texture2D = graphicsContext.LoadTexture2D("ArrowVertical");
+            Texture2D = graphicsContext.LoadTexture2D("Bone");
             Origin = new Vector2(Texture2D.Width / 2, 0.0f);
+            RenderingOffset = -new Vector2(Texture2D.Width / 2, 0.0f);
         }
     }
 }

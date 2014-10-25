@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using StoryTimeDevKit.Delegates.Puppeteer;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
     public enum PuppeteerWorkingMode
     {
         SelectionMode,
-        AddBoneMode
+        AddBoneMode,
+        Test
     }
 
-    public interface IPuppeteerEditorControl
+    public interface IPuppeteerEditorControl : IMouseInteractiveControl
     {
         event Action<IPuppeteerEditorControl> OnLoaded;
         event Action<IPuppeteerEditorControl> OnUnloaded;
         event Action<PuppeteerWorkingMode> OnWorkingModeChanges;
-        event OnMouseClick OnMouseClick;
     }
 }

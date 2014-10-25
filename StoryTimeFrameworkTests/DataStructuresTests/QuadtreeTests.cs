@@ -23,9 +23,15 @@ namespace StoryTimeFrameworkTests.DataStructuresTests
                 _boundingBox = boundingBox;
             }
 
-            public AxisAlignedBoundingBox2D BoundingBox
+            public AxisAlignedBoundingBox2D AABoundingBox
             {
                 get { return _boundingBox; }
+            }
+
+
+            public BoundingBox2D BoundingBox
+            {
+                get { throw new NotImplementedException(); }
             }
         }
 

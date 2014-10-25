@@ -6,11 +6,11 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{243E5465-5B8E-48C6-939B-A4CB66136587}</ProjectGuid>
+    <ProjectGuid>{0F1AFCAF-2BB5-495B-BC2D-FB0EA76F71AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StoryTimeCoreTests</RootNamespace>
-    <AssemblyName>StoryTimeCoreTests</AssemblyName>
+    <RootNamespace>PuppeteerTests</RootNamespace>
+    <AssemblyName>PuppeteerTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -36,7 +36,7 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -49,18 +49,15 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStructuresTests\AxisAlignedBoundingBoxesTests.cs" />
-    <Compile Include="DataStructuresTests\BoundingBox2DTests.cs" />
-    <Compile Include="ExtensionsTests\Vector2ExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StoryTimeCore\StoryTimeCore.csproj">
-      <Project>{768B1451-6637-4ADE-BB85-CB742B224D09}</Project>
-      <Name>StoryTimeCore</Name>
+    <ProjectReference Include="..\Puppeteer\Puppeteer.csproj">
+      <Project>{DD4F2F02-05CE-49D1-B65C-3BEC38DD3369}</Project>
+      <Name>Puppeteer</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

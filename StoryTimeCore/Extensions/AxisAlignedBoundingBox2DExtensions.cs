@@ -13,15 +13,15 @@ namespace StoryTimeCore.Extensions
         {
             float combinedTop, combinedBottom, combinedLeft, combinedRight;
 
-            combinedTop = rec1.Top.SmallerOrEqualThan(rec2.Top);
-            combinedBottom = rec1.Bottom.BiggerOrEqualThan(rec2.Bottom);
+            combinedTop = rec1.Top.BiggerOrEqualThan(rec2.Top);
+            combinedBottom = rec1.Bottom.SmallerOrEqualThan(rec2.Bottom);
             combinedLeft = rec1.Left.SmallerOrEqualThan(rec2.Left);
             combinedRight = rec1.Right.BiggerOrEqualThan(rec2.Right);
 
             return new AxisAlignedBoundingBox2D(
-                combinedLeft, 
-                combinedTop, 
-                combinedBottom - combinedTop, 
+                combinedLeft,
+                combinedBottom,
+                combinedTop - combinedBottom, 
                 combinedRight - combinedLeft
             ); 
         }
@@ -70,6 +70,16 @@ namespace StoryTimeCore.Extensions
                 scaledBottomLeft.Y,
                 height,
                 width);
+        }
+
+        public static BoundingBox2D GetBoundingBox2D(
+            this AxisAlignedBoundingBox2D rec)
+        {
+            return new BoundingBox2D(
+                rec.BottomLeft,
+                rec.TopLeft,
+                rec.TopRight,
+                rec.BottomRight);
         }
     }
 }

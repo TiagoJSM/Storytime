@@ -8,7 +8,9 @@ namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
 {
     public interface IPuppeteerWorkingMode
     {
+        void OnEnterMode();
+        void OnLeaveMode();
+        
         void Click(Vector2 positon);
-        void Reset();
     }
 }

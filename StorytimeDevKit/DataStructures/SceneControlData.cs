@@ -29,14 +29,14 @@ namespace StoryTimeDevKit.DataStructures
 
             TranslateBindingEngine =
                     new BindingEngine<TranslateSceneWidget, TransformActorViewModel>(TranslateSceneWidget, TransformActorModel)
-                        .Bind(tw => tw.Position, a => a.Position)
+                        .Bind(tw => tw.Position, a => a.Position, BindingType.TwoWays)
                         .Bind(tw => tw.Active, a => a.TranslateWidgetMode)
                         .Bind(tw => tw.Visible, a => a.TranslateWidgetMode);
 
             RotateBindingEngine =
                     new BindingEngine<RotateSceneWidget, TransformActorViewModel>(RotateSceneWidget, TransformActorModel)
-                        .Bind(tw => tw.Position, a => a.Position)
-                        .Bind(tw => tw.Rotation, a => a.Rotation)
+                        .Bind(tw => tw.Position, a => a.Position, BindingType.TwoWays)
+                        .Bind(tw => tw.Rotation, a => a.Rotation, BindingType.TwoWays)
                         .Bind(tw => tw.Active, a => a.RotateWidgetMode)
                         .Bind(tw => tw.Visible, a => a.RotateWidgetMode);
 

@@ -26,8 +26,8 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
             {
                 return new Circle()
                 {
-                    Center = _asset.BoundingBox.Center + Position,
-                    Radius = _asset.BoundingBox.Width / 2
+                    Center = _asset.AABoundingBox.Center + Position,
+                    Radius = _asset.AABoundingBox.Width / 2
                 };
             }
         }
@@ -69,6 +69,7 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
             float currentAngle = currentPosition.AngleWithCenterIn(Position);
             float rotation = currentAngle - _lastAngle;
             _lastAngle = currentAngle;
+            Rotation = Rotation + rotation;
             if (OnRotation != null)
                 OnRotation(rotation);
         }

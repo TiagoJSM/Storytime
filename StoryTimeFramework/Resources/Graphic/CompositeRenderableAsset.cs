@@ -31,9 +31,9 @@ namespace StoryTimeFramework.Resources.Graphic
                 if (_assets == null || _assets.Length == 0)
                     return new AxisAlignedBoundingBox2D();
 
-                AxisAlignedBoundingBox2D box = _assets[0].BoundingBox;
+                AxisAlignedBoundingBox2D box = _assets[0].AABoundingBox;
                 for (int idx = 1; idx < _assets.Length; idx++)
-                    box = box.Combine(_assets[idx].BoundingBox);
+                    box = box.Combine(_assets[idx].AABoundingBox);
                 return box;     
             }
         }

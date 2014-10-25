@@ -41,10 +41,10 @@ namespace StoryTimeFramework.WorldManagement
                 ZOrder = zOrder;
             }
 
-            public AxisAlignedBoundingBox2D BoundingBox { get { return _actor.BoundingBox; } }
+            public AxisAlignedBoundingBox2D AABoundingBox { get { return _actor.AABoundingBox; } }
+            public BoundingBox2D BoundingBox { get { return _actor.BoundingBox; } }
             public BaseActor Actor { get { return _actor; } }
             public int ZOrder { get; set; }
-
         }
 
         // The list of the many World Entities in the scene.
@@ -117,6 +117,8 @@ namespace StoryTimeFramework.WorldManagement
                 ba.RenderableAsset.Render(renderer);
                 renderer.RotationTransformation -= ba.Body.Rotation;
                 renderer.TranslationTransformation -= ba.Body.Position;
+
+                //renderer.RenderBoundingBox(ba.BoundingBox, Color.Red);
             }
             //TODO: should reset renderer here!
             _gui.Render(renderer);
@@ -157,9 +159,21 @@ namespace StoryTimeFramework.WorldManagement
             }
         }
 
+        public List<BaseActor> AxisAlignedIntersect(Vector2 point)
+        {
+            List<BaseActor> actors = _actorsTree.Intersect(point);
+            return ActorsInOrder(actors);
+        }
+
         public List<BaseActor> Intersect(Vector2 point)
         {
             List<BaseActor> actors = _actorsTree.Intersect(point);
+            IEnumerable<BaseActor> filteredActors = actors.Where(a => a.BoundingBox.Contains(point));
+            return ActorsInOrder(filteredActors);
+        }
+
+        private List<BaseActor> ActorsInOrder(IEnumerable<BaseActor> actors)
+        {
             List<OrderedActor> orderActors = new List<OrderedActor>();
             foreach (BaseActor actor in actors)
             {

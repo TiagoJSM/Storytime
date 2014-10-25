@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using StoryTimeCore.Resources.Graphic;
 using Microsoft.Xna.Framework;
+using StoryTimeCore.DataStructures;
 
 namespace StoryTimeCore.Contexts.Interfaces
 {
@@ -18,7 +19,9 @@ namespace StoryTimeCore.Contexts.Interfaces
         float RotationTransformation { get; set; }
         Vector2 TranslationTransformation { get; set; }
         void Render(ITexture2D texture, float x, float y, Vector2 origin = default(Vector2));
-        void Render(ITexture2D texture, float x, float y, float width, float height, float rotation, Vector2 origin = default(Vector2));
+        void Render(ITexture2D texture, float x, float y, float width, float height, float rotation, Vector2 origin = default(Vector2), Vector2 renderingOffset = default(Vector2));
+        void RenderRectangle(Rectangle rec, Color color, float thickness = 1.0f);
+        void RenderBoundingBox(BoundingBox2D box, Color color, float thickness = 1.0f);
     }
 
     /// <summary>

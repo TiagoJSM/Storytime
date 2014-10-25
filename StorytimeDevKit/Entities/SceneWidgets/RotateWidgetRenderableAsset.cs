@@ -6,6 +6,7 @@ using StoryTimeCore.Resources.Graphic;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeFramework.Resources.Graphic;
+using Microsoft.Xna.Framework;
 
 namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
 {
@@ -18,6 +19,7 @@ namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
         {
             _texture = context.LoadTexture2D("RotationWidget");
             _boundingBox = new AxisAlignedBoundingBox2D(0, 0, _texture.Height, _texture.Width);
+            RenderingOffset = - _boundingBox.Center;
             Origin = _boundingBox.Center;
         }
 

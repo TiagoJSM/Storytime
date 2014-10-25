@@ -12,8 +12,9 @@ namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
     {
         BoneActor SelectedBone { get; set; }
 
-        BoneActor AddBoneActor(Vector2 boneStartPosition);
-        BoneActor AddBoneActor(Vector2 boneStartPosition, Vector2 boneEndPosition);
+        BoneActor AddBone(Vector2 boneStartPosition);
+        BoneActor AddBone(Vector2 boneStartPosition, Vector2 boneEndPosition);
         BoneActor GetIntersectedBone(Vector2 position);
+        void EnableTransformationUI(bool enable);
     }
 }

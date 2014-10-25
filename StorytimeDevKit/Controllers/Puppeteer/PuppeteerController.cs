@@ -22,6 +22,8 @@ using StoryTimeDevKit.SceneWidgets.Transformation;
 using Ninject;
 using StoryTimeDevKit.Models.MainWindow;
 using StoryTimeDevKit.Entities.SceneWidgets;
+using StoryTimeDevKit.Commands.ReversibleCommands;
+using Puppeteer.Armature;
 
 namespace StoryTimeDevKit.Controllers.Puppeteer
 {
@@ -31,7 +33,9 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             ISkeletonViewerController,
             IPuppeteerWorkingModeContext
     {
-        private SkeletonViewModel _skeleton;
+        private SkeletonViewModel _skeletonViewModel;
+        private Skeleton _skeleton;
+        private BoneMapper _boneMapper;
 
         private IPuppeteerEditorControl _puppeteerEditorControl;
         private ISkeletonTreeViewControl _skeletonTreeViewControl;
@@ -94,8 +98,6 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                 {
                     _sceneControlData.TransformActorModel.Actor = _selectedBone;
                     TransformModeModel.HasActor = true;
-                    //if (TransformModeModel.WidgetMode == WidgetMode.None)
-                    //    TransformModeModel.WidgetMode = WidgetMode.Translate;
                 }
                 else
                 {
@@ -133,20 +135,24 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                     { PuppeteerWorkingMode.SelectionMode, new SelectionMode(this) },
                     { PuppeteerWorkingMode.AddBoneMode, new AddBoneMode(this) }
                 };
+
+            _skeleton = new Skeleton();
+            _boneMapper = new BoneMapper();
         }
 
-        public BoneActor AddBoneActor(Vector2 boneStartPosition)
+        public BoneActor AddBone(Vector2 boneStartPosition)
         {
             BoneActor bone = new BoneActor();
             bone.Body = Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f);
             bone.Body.Position = boneStartPosition;
             Scene.AddActor(bone);
+            _boneMapper.Add(bone);
             return bone;
         }
 
-        public BoneActor AddBoneActor(Vector2 boneStartPosition, Vector2 boneEndPosition)
+        public BoneActor AddBone(Vector2 boneStartPosition, Vector2 boneEndPosition)
         {
-            BoneActor bone = AddBoneActor(boneStartPosition);
+            BoneActor bone = AddBone(boneStartPosition);
             bone.BoneEnd = boneEndPosition;
             return bone;
         }
@@ -156,12 +162,20 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             return Scene.Intersect(position).OfType<BoneActor>().FirstOrDefault();
         }
 
+        public void EnableTransformationUI(bool enable)
+        {
+            _sceneControlData.TransformActorModel.Enabled = enable;
+        }
+
         private void AssignPuppeteerEditorControlEvents()
         {
             _puppeteerEditorControl.OnLoaded += PuppeteerOnLoadedHandler;
             _puppeteerEditorControl.OnUnloaded += PuppeteerOnUnloadedHandler;
             _puppeteerEditorControl.OnWorkingModeChanges += OnWorkingModeChangesHandler;
             _puppeteerEditorControl.OnMouseClick += OnMouseClickHandler;
+            _puppeteerEditorControl.OnMouseDown += OnMouseDownHandler;
+            _puppeteerEditorControl.OnMouseUp += OnMouseUpHandler;
+            _puppeteerEditorControl.OnMouseMove += OnMouseMoveHandler;
         }
 
         private void UnassignPuppeteerEditorControlEvents()
@@ -195,9 +209,17 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
         private void OnWorkingModeChangesHandler(PuppeteerWorkingMode mode)
         {
+            if (mode == PuppeteerWorkingMode.Test)
+            {
+                if (SelectedBone != null)
+                    SelectedBone.Body.Rotation = 90;
+                return;
+            }
+            if (_activeWorkingMode != null)
+                _activeWorkingMode.OnLeaveMode();
             _activeWorkingMode = _workingModes[mode];
-            _activeWorkingMode.Reset();
-            _sceneControlData.TransformActorModel.Enabled = mode == PuppeteerWorkingMode.SelectionMode;
+            if (_activeWorkingMode != null)
+                _activeWorkingMode.OnEnterMode();
         }
 
         private void SkeletonViewerOnLoadedHandler(ISkeletonTreeViewControl control)
@@ -209,51 +231,52 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             UnassignSkeletonTreeViewControlEvents();
         }
 
-        private void OnMouseClickHandler(Vector2 position)
+        private void OnMouseClickHandler(Scene scene, Vector2 position)
         {
             if (_activeWorkingMode == null) return;
             _activeWorkingMode.Click(position);
         }
 
-        private void MoveActor(BaseActor actor, Vector2 fromPosition, Vector2 toPosition)
+        private void OnMouseMoveHandler(Scene scene, Vector2 position)
         {
-
+            scene.GUI.MouseMove(position);
         }
 
-        private void RotateActor(BaseActor actor, float previousRotation, float rotation)
+        private void OnMouseDownHandler(Scene scene, Vector2 position)
         {
+            scene.GUI.MouseDown(position);
+        }
 
+        private void OnMouseUpHandler(Scene scene, Vector2 position)
+        {
+            scene.GUI.MouseUp(position);
         }
 
         private void ConfigureSceneUI()
         {
             TranslateSceneWidget translateWidg = new TranslateSceneWidget();
             Scene.GUI.Children.Add(translateWidg);
-            translateWidg.OnTranslate += OnTranslateHandler;
             translateWidg.OnTranslationComplete += OnTranslationCompleteHandler;
 
             RotateSceneWidget rotateWidg = new RotateSceneWidget();
             Scene.GUI.Children.Add(rotateWidg);
-            rotateWidg.OnRotation += OnRotationHandler;
             rotateWidg.OnStopRotation += OnStopRotationHandler;
 
             _sceneControlData = new SceneControlData(translateWidg, rotateWidg, TransformModeModel);
         }
 
-        private void OnTranslateHandler(Vector2 translation)
-        {
-        }
-
         private void OnTranslationCompleteHandler(Vector2 fromPosition, Vector2 toPosition)
         {
-        }
-
-        private void OnRotationHandler(float rotation)
-        {
+            if (!_sceneControlData.TransformActorModel.HasActor) return;
+            IReversibleCommand command = new MoveActorCommand(_sceneControlData.TransformActorModel.Actor, fromPosition, toPosition);
+            Commands.Push(command);
         }
 
         private void OnStopRotationHandler(float originalRotation, float finalRotation)
         {
+            if (!_sceneControlData.TransformActorModel.HasActor) return;
+            IReversibleCommand command = new RotateActorCommand(_sceneControlData.TransformActorModel.Actor, originalRotation, finalRotation);
+            Commands.Push(command);
         }
     }
 }

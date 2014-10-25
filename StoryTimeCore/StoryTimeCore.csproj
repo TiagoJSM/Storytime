@@ -59,7 +59,10 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataStructures\BoundingBox2D.cs" />
     <Compile Include="DataStructures\Circle.cs" />
+    <Compile Include="Extensions\BoundingBox2DExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\RectangleExtensions.cs" />
     <Compile Include="Extensions\Vector2Extensions.cs" />
     <Compile Include="Manageables\ISynchronizable.cs" />

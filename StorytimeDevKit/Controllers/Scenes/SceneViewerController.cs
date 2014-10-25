@@ -160,14 +160,14 @@ namespace StoryTimeDevKit.Controllers.Scenes
             AddActor(sceneTabModel, actorModel, position);
         }
 
-        private void OnMouseMoveHandler(SceneTabViewModel model, Vector2 position)
+        private void OnMouseMoveHandler(Scene scene, Vector2 position)
         {
-            model.Scene.GUI.MouseMove(position);
+            scene.GUI.MouseMove(position);
         }
 
-        private void OnMouseClickHandler(SceneTabViewModel model, Vector2 position)
+        private void OnMouseClickHandler(Scene scene, Vector2 position)
         {
-            BaseActor newIntersectedActor = model.Scene.Intersect(position).FirstOrDefault();
+            BaseActor newIntersectedActor = scene.AxisAlignedIntersect(position).FirstOrDefault();
             if (newIntersectedActor == null) return;
 
             SceneControlData controlData = CurrentSceneControlData;
@@ -178,40 +178,30 @@ namespace StoryTimeDevKit.Controllers.Scenes
                 TransformModeModel.WidgetMode = WidgetMode.Translate;
         }
 
-        private void OnMouseDownHandler(SceneTabViewModel model, Vector2 position)
+        private void OnMouseDownHandler(Scene scene, Vector2 position)
         {
-            model.Scene.GUI.MouseDown(position);
+            scene.GUI.MouseDown(position);
         }
 
-        private void OnMouseUpHandler(SceneTabViewModel model, Vector2 position)
+        private void OnMouseUpHandler(Scene scene, Vector2 position)
         {
-            model.Scene.GUI.MouseUp(position);
+            scene.GUI.MouseUp(position);
         }
 
         private void OnSceneAddedHandler(SceneTabViewModel model)
         {
             TranslateSceneWidget translateWidg = new TranslateSceneWidget();
             model.Scene.GUI.Children.Add(translateWidg);
-            translateWidg.OnTranslate += OnTranslateHandler;
             translateWidg.OnTranslationComplete += OnTranslationCompleteHandler;
 
             RotateSceneWidget rotateWidg = new RotateSceneWidget();
             model.Scene.GUI.Children.Add(rotateWidg);
-            rotateWidg.OnRotation += OnRotationHandler;
             rotateWidg.OnStopRotation += OnStopRotationHandler;
 
             SceneControlData controlData = new SceneControlData(translateWidg, rotateWidg, TransformModeModel);
 
             AddStackFor(model.Scene);
             _scenesControlData.Add(model.Scene, controlData);
-        }
-
-        private void OnTranslateHandler(Vector2 translation)
-        {
-            SceneControlData controlData = CurrentSceneControlData;
-
-            if (!controlData.TransformActorModel.HasActor) return;
-            controlData.TransformActorModel.Actor.Body.Position += translation;
         }
 
         private void OnTranslationCompleteHandler(Vector2 startPosition, Vector2 currentPosition)
@@ -221,14 +211,6 @@ namespace StoryTimeDevKit.Controllers.Scenes
             if (!controlData.TransformActorModel.HasActor) return;
             IReversibleCommand command = new MoveActorCommand(controlData.TransformActorModel.Actor, startPosition, currentPosition);
             SelectedStack.Push(command);
-        }
-
-        private void OnRotationHandler(float rotation)
-        {
-            SceneControlData controlData = CurrentSceneControlData;
-
-            if (!controlData.TransformActorModel.HasActor) return;
-            controlData.TransformActorModel.Actor.Body.Rotation += rotation;
         }
 
         private void OnStopRotationHandler(float originalRotation, float finalRotation)
