@@ -5,8 +5,8 @@ using System.Text;
 
 namespace StoryTimeDevKit.Configurations
 {
-    public static class FileExtensions
+    public static class PuppeteerDefaults
     {
-        public static string SceneSavedModel { get { return ".ssm"; } }
+        public static DateTime StartDate { get { return new DateTime(1); } }
     }
 }

@@ -14,7 +14,7 @@
                   VerticalAlignment="Stretch" 
                   VerticalContentAlignment="Stretch">
             <TreeView AllowDrop="True" 
-                      ItemsSource="{Binding RootBones}" 
+                      ItemsSource="{Binding Children}" 
                       BorderThickness="1" 
                       HorizontalContentAlignment="Stretch" 
                       Name="SkeletonTV" 

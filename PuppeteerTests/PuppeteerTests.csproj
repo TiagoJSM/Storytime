@@ -50,12 +50,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="BoneTransformationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Puppeteer\Puppeteer.csproj">
       <Project>{DD4F2F02-05CE-49D1-B65C-3BEC38DD3369}</Project>
       <Name>Puppeteer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestHelpers\TestHelpers.csproj">
+      <Project>{271FFA2A-958F-4260-B7F7-DB059BCCBA0C}</Project>
+      <Name>TestHelpers</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

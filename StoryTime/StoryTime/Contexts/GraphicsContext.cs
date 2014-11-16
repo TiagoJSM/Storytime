@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
 using C3.XNA;
 using StoryTimeCore.DataStructures;
+using System.IO;
 
 namespace StoryTime.Contexts
 {
@@ -250,6 +251,18 @@ namespace StoryTime.Contexts
             if (tex != null) return tex;
             Texture2D t2d = _cm.Load<Texture2D>(relativePath);
             return _gContentManager.StoreTexture(t2d);
+        }
+
+        public ITexture2D CreateTexture2D(string fullPath)
+        {
+            XNATexture2D tex = _gContentManager.GetTextureByName(fullPath);
+            if (tex != null) return tex;
+            Texture2D texture;
+            using (Stream stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read))
+            {
+                texture = Texture2D.FromStream(_gd, stream);
+            }
+            return _gContentManager.StoreTexture(texture);
         }
 
         public ITexture2D CreateTexture2D(Color[] data, int width, int height, string name)

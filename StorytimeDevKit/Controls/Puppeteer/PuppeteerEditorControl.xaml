@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="355" 
-             d:DesignWidth="523" 
+             d:DesignHeight="514" 
+             d:DesignWidth="703" 
              xmlns:my="clr-namespace:StoryTimeDevKit.Controls.XNA"
              xmlns:TransformableWidgetNS="clr-namespace:StoryTimeDevKit.Entities.SceneWidgets"
              xmlns:RadioButtonsConvNS="clr-namespace:StoryTimeDevKit.Converters.ToolbarRadioButtons"
@@ -28,13 +28,13 @@
 
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250*"/>
-            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="546*"/>
+            <ColumnDefinition Width="157*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
-            <RowDefinition Height="315*" />
-            <RowDefinition Height="80*" />
+            <RowDefinition Height="344*" />
+            <RowDefinition Height="130*" />
         </Grid.RowDefinitions>
         <GridSplitter Width="4"
                   Grid.Column="0"
@@ -48,24 +48,23 @@
                   Grid.ColumnSpan="2"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="top"/>
-        <my:XnaControl Grid.Row="1" Grid.Column="0" x:Name="PuppeteerEditor" Margin="0,0,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        <Button Content="Button" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="88,30,0,0" Name="button1" VerticalAlignment="Top" Width="75" />
+        <my:XnaControl Grid.Row="1" Grid.Column="0" x:Name="PuppeteerEditor" Margin="0,0,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AllowDrop="True"/>
         <ToolBar HorizontalAlignment="Left" Name="toolBar1" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Height="Auto">
             <RadioButton 
-                Name="SelectionMode"
+                Name="SelectBoneMode"
                 GroupName="WorkingModes"
-                Command="{Binding RelativeSource={  
-                            RelativeSource FindAncestor, 
-					        AncestorType={x:Type Window}}, 
-					    Path=OpenImageViewer}" Checked="RadioButton_Selection_Checked" Unchecked="SelectionMode_Unchecked">
-                <Image Width ="25" Height="25" Source="/Images/Puppeteer/ToolBar/SelectionIcon.png"/>
+                Checked="RadioButton_SelectBone_Checked">
+                <Image Width ="25" Height="25" Source="/Images/Puppeteer/ToolBar/SelectBoneIcon.png"/>
+            </RadioButton>
+            <RadioButton 
+                Name="SelectAssetMode"
+                GroupName="WorkingModes"
+                Checked="RadioButton_SelectAsset_Checked">
+                <Image Width ="25" Height="25" Source="/Images/Puppeteer/ToolBar/SelectAssetIcon.png"/>
             </RadioButton>
             <RadioButton 
                 GroupName="WorkingModes"
-                Command="{Binding RelativeSource={  
-                            RelativeSource FindAncestor, 
-					        AncestorType={x:Type Window}}, 
-					    Path=OpenImageViewer}" Checked="RadioButton_AddBone_Checked">
+                Checked="RadioButton_AddBone_Checked">
                 <Image Width ="25" Height="25" Source="/Images/Puppeteer/ToolBar/BoneIcon.png"/>
             </RadioButton>
             
@@ -118,5 +117,6 @@
             <Separator />
         </ToolBar>
         <my1:SkeletonTreeViewControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <my1:PuppeteerControlTabs Grid.Column="0" Grid.Row="2" Margin="0,0,6,0" />
     </Grid>
 </TemplateControls:BaseSceneUserControl>

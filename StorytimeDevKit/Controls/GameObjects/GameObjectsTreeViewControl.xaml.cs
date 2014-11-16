@@ -254,8 +254,8 @@ namespace StoryTimeDevKit.Controls.GameObjects
             parent.Children.Add(
                 new SceneViewModel(
                     parent, 
-                    this, 
-                    string.Concat(model.SceneName, FileExtensions.SceneSavedModel), 
+                    this,
+                    string.Concat(model.SceneName, FilesExtensions.SceneSavedModel), 
                     path
                 )
             );

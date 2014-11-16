@@ -46,14 +46,22 @@
   <ItemGroup>
     <Compile Include="Armature\Bone.cs" />
     <Compile Include="Armature\Skeleton.cs" />
+    <Compile Include="Extensions\ArmatureRenderableAssetExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\ArmatureRenderableAsset.cs" />
+    <Compile Include="Resources\BoneAttachedRenderableAsset.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StoryTimeCore\StoryTimeCore.csproj">
       <Project>{768B1451-6637-4ADE-BB85-CB742B224D09}</Project>
       <Name>StoryTimeCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StoryTimeFramework\StoryTimeFramework.csproj">
+      <Project>{B3BC2FF1-6B9D-48A6-B392-A1C2FB98CB86}</Project>
+      <Name>StoryTimeFramework</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

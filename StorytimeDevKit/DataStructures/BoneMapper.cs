@@ -18,7 +18,7 @@ namespace StoryTimeDevKit.DataStructures
             _boneDictionary = new Dictionary<BoneActor, Bone>();
         }
 
-        public void Add(BoneActor actor)
+        public Bone Add(BoneActor actor)
         {
             Bone parent = null;
             if (actor.Parent != null)
@@ -34,10 +34,25 @@ namespace StoryTimeDevKit.DataStructures
 
             SetBoneData(actor, bone);
 
-            actor.OnPositionChange += OnPositionChangeHandler;
+            //actor.OnPositionChange += OnPositionChangeHandler;
             actor.OnParentChange += OnParentChangeHandler;
 
             _boneDictionary.Add(actor, bone);
+            return bone;
+        }
+
+        public Bone GetFromActor(BoneActor actor)
+        {
+            Bone bone;
+            _boneDictionary.TryGetValue(actor, out bone);
+            return bone;
+        }
+
+        public void SynchronizeBoneChain(Bone bone)
+        {
+            BoneActor actor = _boneDictionary.GetKeyFromValue(bone);
+            SetActorData(actor, bone);
+            PropagateBoneChanges(bone);
         }
 
         private void OnPositionChangeHandler(BoneActor actor)
@@ -80,13 +95,14 @@ namespace StoryTimeDevKit.DataStructures
             {
                 BoneActor actor = _boneDictionary.GetKeyFromValue(child);
                 SetActorData(actor, child);
+                PropagateBoneChanges(child);
             }
         }
 
         private void SetActorData(BoneActor actor, Bone bone)
         {
             actor.Body.Position = bone.RelativePosition;
-            actor.Body.Rotation = bone.Rotation;
+            actor.BoneEnd = bone.RelativeEnd;
         }
     }
 }

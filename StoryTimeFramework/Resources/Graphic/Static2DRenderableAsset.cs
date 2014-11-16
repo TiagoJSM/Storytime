@@ -42,8 +42,6 @@ namespace StoryTimeFramework.Resources.Graphic
         
         public override void Render(IRenderer renderer)
         {
-            //if (!IsVisible) return;
-
             AxisAlignedBoundingBox2D boundings = BoundingBoxWithoutOrigin;
             Render(renderer, Texture2D, boundings);
         }

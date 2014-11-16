@@ -10,5 +10,6 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
     public interface ISkeletonViewerController : IController<ISkeletonTreeViewControl>
     {
         ISkeletonTreeViewControl SkeletonTreeViewControl { get; set; }
+        SkeletonViewModel SkeletonViewModel { get; }
     }
 }

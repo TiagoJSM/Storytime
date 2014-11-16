@@ -27,8 +27,14 @@ namespace StoryTimeDevKit.Models.Puppeteer
         }
 
         public BoneViewModel(INodeAddedCallback nodeAddCB)
-            :base(nodeAddCB, false)
+            :this(null, nodeAddCB)
         {
+        }
+
+        public BoneViewModel(TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB)
+            : base(parent, nodeAddCB, false)
+        {
+            Name = "Bone";
         }
     }
 }

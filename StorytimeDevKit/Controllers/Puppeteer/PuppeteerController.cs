@@ -24,6 +24,9 @@ using StoryTimeDevKit.Models.MainWindow;
 using StoryTimeDevKit.Entities.SceneWidgets;
 using StoryTimeDevKit.Commands.ReversibleCommands;
 using Puppeteer.Armature;
+using StoryTimeDevKit.Controls;
+using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
+using Puppeteer.Resources;
 
 namespace StoryTimeDevKit.Controllers.Puppeteer
 {
@@ -35,17 +38,15 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
     {
         private SkeletonViewModel _skeletonViewModel;
         private Skeleton _skeleton;
-        private BoneMapper _boneMapper;
 
         private IPuppeteerEditorControl _puppeteerEditorControl;
         private ISkeletonTreeViewControl _skeletonTreeViewControl;
-        private IPuppeteerWorkingMode _activeWorkingMode;
-        private SceneControlData _sceneControlData;
+        private PuppeteerWorkingMode _activeWorkingMode;
+        private PuppeteerEditorControlData _puppeteerEdControlData;
 
         private GameWorld _world;
         private IGraphicsContext GraphicsContext { get { return _world.GraphicsContext; } }
-        private Dictionary<PuppeteerWorkingMode, IPuppeteerWorkingMode> _workingModes;
-        private BoneActor _selectedBone;
+        private Dictionary<PuppeteerWorkingModeType, PuppeteerWorkingMode> _workingModes;
 
         public Scene Scene { get { return _world.ActiveScene; } }
 
@@ -83,25 +84,23 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                     AssignPuppeteerEditorControlEvents();
             }
         }
-        public BoneActor SelectedBone 
+        public object Selected 
         {
             get
             {
-                return _selectedBone;
+                return _puppeteerEdControlData.Selected;
             }
             set
             {
-                if (_selectedBone == value) return;
-                _selectedBone = value;
+                if (_puppeteerEdControlData.Selected == value) return;
+                _puppeteerEdControlData.Selected = value;
 
-                if (_selectedBone != null)
+                if (_puppeteerEdControlData.Selected != null)
                 {
-                    _sceneControlData.TransformActorModel.Actor = _selectedBone;
                     TransformModeModel.HasActor = true;
                 }
                 else
                 {
-                    _sceneControlData.TransformActorModel.Actor = null;
                     TransformModeModel.HasActor = false;
                 }
             }
@@ -123,6 +122,10 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                     AssignSkeletonTreeViewControlEvents();
             }
         }
+        public SkeletonViewModel SkeletonViewModel
+        {
+            get { return _puppeteerEdControlData.SkeletonViewModel; }
+        }
 
         [Inject]
         public TransformModeViewModel TransformModeModel { get; set; }
@@ -130,41 +133,36 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         public PuppeteerController()
         {
             _workingModes =
-                new Dictionary<PuppeteerWorkingMode, IPuppeteerWorkingMode>()
+                new Dictionary<PuppeteerWorkingModeType, PuppeteerWorkingMode>()
                 {
-                    { PuppeteerWorkingMode.SelectionMode, new SelectionMode(this) },
-                    { PuppeteerWorkingMode.AddBoneMode, new AddBoneMode(this) }
+                    { PuppeteerWorkingModeType.BoneSelectionMode, new BoneSelectionMode(this) },
+                    { PuppeteerWorkingModeType.AssetSelectionMode, new AssetSelectionMode(this) },
+                    { PuppeteerWorkingModeType.AddBoneMode, new AddBoneMode(this) }
                 };
 
             _skeleton = new Skeleton();
-            _boneMapper = new BoneMapper();
         }
 
         public BoneActor AddBone(Vector2 boneStartPosition)
         {
-            BoneActor bone = new BoneActor();
-            bone.Body = Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f);
-            bone.Body.Position = boneStartPosition;
-            Scene.AddActor(bone);
-            _boneMapper.Add(bone);
-            return bone;
+            BoneActor boneActor = Selected as BoneActor;
+            return _puppeteerEdControlData.AddBone(boneStartPosition, boneActor);
         }
 
         public BoneActor AddBone(Vector2 boneStartPosition, Vector2 boneEndPosition)
         {
-            BoneActor bone = AddBone(boneStartPosition);
-            bone.BoneEnd = boneEndPosition;
-            return bone;
+            BoneActor boneActor = Selected as BoneActor;
+            return _puppeteerEdControlData.AddBone(boneStartPosition, boneEndPosition, boneActor);
         }
 
-        public BoneActor GetIntersectedBone(Vector2 position)
+        public BaseActor GetIntersectedActor(Vector2 position)
         {
-            return Scene.Intersect(position).OfType<BoneActor>().FirstOrDefault();
+            return Scene.Intersect(position).OfType<BaseActor>().FirstOrDefault();
         }
 
         public void EnableTransformationUI(bool enable)
         {
-            _sceneControlData.TransformActorModel.Enabled = enable;
+            _puppeteerEdControlData.EnableUI = enable;
         }
 
         private void AssignPuppeteerEditorControlEvents()
@@ -176,6 +174,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             _puppeteerEditorControl.OnMouseDown += OnMouseDownHandler;
             _puppeteerEditorControl.OnMouseUp += OnMouseUpHandler;
             _puppeteerEditorControl.OnMouseMove += OnMouseMoveHandler;
+            _puppeteerEditorControl.OnAssetListItemViewModelDrop += OnAssetListItemViewModelDropHandler;
         }
 
         private void UnassignPuppeteerEditorControlEvents()
@@ -184,6 +183,10 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             _puppeteerEditorControl.OnUnloaded -= PuppeteerOnUnloadedHandler;
             _puppeteerEditorControl.OnWorkingModeChanges -= OnWorkingModeChangesHandler;
             _puppeteerEditorControl.OnMouseClick -= OnMouseClickHandler;
+            _puppeteerEditorControl.OnMouseDown -= OnMouseDownHandler;
+            _puppeteerEditorControl.OnMouseUp -= OnMouseUpHandler;
+            _puppeteerEditorControl.OnMouseMove -= OnMouseMoveHandler;
+            _puppeteerEditorControl.OnAssetListItemViewModelDrop -= OnAssetListItemViewModelDropHandler;
         }
 
         private void AssignSkeletonTreeViewControlEvents()
@@ -207,14 +210,8 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             UnassignPuppeteerEditorControlEvents();
         }
 
-        private void OnWorkingModeChangesHandler(PuppeteerWorkingMode mode)
+        private void OnWorkingModeChangesHandler(PuppeteerWorkingModeType mode)
         {
-            if (mode == PuppeteerWorkingMode.Test)
-            {
-                if (SelectedBone != null)
-                    SelectedBone.Body.Rotation = 90;
-                return;
-            }
             if (_activeWorkingMode != null)
                 _activeWorkingMode.OnLeaveMode();
             _activeWorkingMode = _workingModes[mode];
@@ -239,17 +236,26 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
         private void OnMouseMoveHandler(Scene scene, Vector2 position)
         {
-            scene.GUI.MouseMove(position);
+            if (_activeWorkingMode != null)
+            {
+                _activeWorkingMode.MouseMove(position);
+            }
         }
 
         private void OnMouseDownHandler(Scene scene, Vector2 position)
         {
-            scene.GUI.MouseDown(position);
+            if (_activeWorkingMode != null)
+            {
+                _activeWorkingMode.MouseDown(position);
+            }
         }
 
         private void OnMouseUpHandler(Scene scene, Vector2 position)
         {
-            scene.GUI.MouseUp(position);
+            if (_activeWorkingMode != null)
+            {
+                _activeWorkingMode.MouseUp(position);
+            }
         }
 
         private void ConfigureSceneUI()
@@ -262,21 +268,35 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             Scene.GUI.Children.Add(rotateWidg);
             rotateWidg.OnStopRotation += OnStopRotationHandler;
 
-            _sceneControlData = new SceneControlData(translateWidg, rotateWidg, TransformModeModel);
+            _puppeteerEdControlData = 
+                new PuppeteerEditorControlData(
+                    translateWidg, rotateWidg, 
+                    TransformModeModel, Scene);
         }
 
         private void OnTranslationCompleteHandler(Vector2 fromPosition, Vector2 toPosition)
         {
-            if (!_sceneControlData.TransformActorModel.HasActor) return;
-            IReversibleCommand command = new MoveActorCommand(_sceneControlData.TransformActorModel.Actor, fromPosition, toPosition);
-            Commands.Push(command);
+            if (_puppeteerEdControlData.Selected == null) return;
+            //IReversibleCommand command = new MoveActorCommand(_puppeteerEdControlData._transformSceneObjectModel.Actor, fromPosition, toPosition);
+            //Commands.Push(command);
         }
 
         private void OnStopRotationHandler(float originalRotation, float finalRotation)
         {
-            if (!_sceneControlData.TransformActorModel.HasActor) return;
-            IReversibleCommand command = new RotateActorCommand(_sceneControlData.TransformActorModel.Actor, originalRotation, finalRotation);
-            Commands.Push(command);
+            if (_puppeteerEdControlData.Selected == null) return;
+            //IReversibleCommand command = new RotateActorCommand(_puppeteerEdControlData._transformSceneObjectModel.Actor, originalRotation, finalRotation);
+            //Commands.Push(command);
+        }
+
+        private void OnAssetListItemViewModelDropHandler(AssetListItemViewModel viewModel, Vector2 dropPosition)
+        {
+            ITexture2D texture = Scene.GraphicsContext.CreateTexture2D(viewModel.FullPath);
+            BoneAttachedRenderableAsset asset = new BoneAttachedRenderableAsset() 
+            { 
+                Texture = texture,
+                RenderingOffset = dropPosition
+            };
+            _puppeteerEdControlData.AddRenderableAsset(asset);
         }
     }
 }

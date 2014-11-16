@@ -18,7 +18,6 @@ namespace StoryTimeDevKit.Entities.Actors
 
     public class BoneActor : BaseActor
     {
-        private List<BoneActor> _children;
         private BoneActor _parent;
         private Vector2 _parentBoneEndReference;
         private float _parentRotationReference;
@@ -57,24 +56,19 @@ namespace StoryTimeDevKit.Entities.Actors
             set
             {
                 if (_parent == value) return;
-                /*if(_parent != null)
-                    _parent.OnPositionChange -= OnParentPositionChangeHandler;*/
                 _parent = value;
                 if (_parent != null)
                 {
                     _parentBoneEndReference = _parent.BoneEnd;
                     _parentRotationReference = _parent.Body.Rotation;
-                    //_parent.OnPositionChange += OnParentPositionChangeHandler;
                 }
                 if (OnParentChange != null)
                     OnParentChange(this);
             }
         }
-        public IEnumerable<BoneActor> Children { get { return _children; } }
 
         public BoneActor()
         {
-            _children = new List<BoneActor>();
             OnCreated += OnCreatedHandler;
             OnBoundingBoxChanges += OnBoundingBoxChangesHandler;
         }
@@ -83,27 +77,9 @@ namespace StoryTimeDevKit.Entities.Actors
         {
         }
 
-        public void AddChildren(BoneActor bone)
-        {
-            bone.Parent = this;
-            _children.Add(bone);
-        }
-
         private void OnCreatedHandler()
         {
             RenderableAsset = new BoneRenderableAsset(Scene.GraphicsContext);
-        }
-        private void OnParentPositionChangeHandler(BoneActor boneActor)
-        {
-            Vector2 translationFromReference = Body.Position - _parentBoneEndReference;
-            float rotation = boneActor.Body.Rotation - _parentRotationReference;
-            _parentBoneEndReference = boneActor.BoneEnd;
-            _parentRotationReference = boneActor.Body.Rotation;
-            Body.Position = (boneActor.BoneEnd + translationFromReference);
-            Body.Rotation = Body.Rotation + rotation;
-            // TODO: fix bug
-            //RenderableAsset.Origin = -(Body.Position - _parent.BoneEnd) + (new Vector2(this.RenderableAsset.BoundingBoxWithoutOrigin.Width / 2, 0.0f));
-
         }
 
         private void OnBoundingBoxChangesHandler(BaseActor actor)

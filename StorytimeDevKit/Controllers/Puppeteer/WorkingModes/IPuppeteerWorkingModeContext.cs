@@ -5,16 +5,19 @@ using System.Text;
 using StoryTimeDevKit.Entities.Actors;
 using StoryTimeFramework.WorldManagement;
 using Microsoft.Xna.Framework;
+using StoryTimeFramework.Entities.Actors;
+using Puppeteer.Resources;
 
 namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
 {
     public interface IPuppeteerWorkingModeContext
     {
-        BoneActor SelectedBone { get; set; }
+        object Selected { get; set; }
+        Scene Scene { get; }
 
         BoneActor AddBone(Vector2 boneStartPosition);
         BoneActor AddBone(Vector2 boneStartPosition, Vector2 boneEndPosition);
-        BoneActor GetIntersectedBone(Vector2 position);
+        BaseActor GetIntersectedActor(Vector2 position);
         void EnableTransformationUI(bool enable);
     }
 }

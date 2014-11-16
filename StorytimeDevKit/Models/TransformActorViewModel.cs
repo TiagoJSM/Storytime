@@ -129,11 +129,6 @@ namespace StoryTimeDevKit.Models
             _enabled = true;
         }
 
-        public TransformActorViewModel(BaseActor ba)
-        {
-            Actor = ba;
-        }
-
         private void OnPositionChangesHandler(IBody body)
         {
             OnPropertyChanged("Position");

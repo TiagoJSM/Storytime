@@ -24,7 +24,7 @@ namespace StoryTimeFramework.Entities.Actors
     /// </summary>
     public abstract class BaseActor : WorldEntity, ITimeUpdatable, IBoundingBoxable
     {
-        private IRenderableAsset _renderableActor;
+        private IRenderableAsset _renderableAsset;
         private IBody _body;
 
         public event Action<BaseActor> OnBoundingBoxChanges;
@@ -58,17 +58,17 @@ namespace StoryTimeFramework.Entities.Actors
         {
             get
             {
-                return _renderableActor;
+                return _renderableAsset;
             }
             set
             {
-                if (value == _renderableActor)
+                if (value == _renderableAsset)
                     return;
-                if (_renderableActor != null)
-                    _renderableActor.OnBoundingBoxChanges -= RenderableActorBoundingBoxChangesHandler;
+                if (_renderableAsset != null)
+                    _renderableAsset.OnBoundingBoxChanges -= RenderableActorBoundingBoxChangesHandler;
                 if(value != null)
                     value.OnBoundingBoxChanges += RenderableActorBoundingBoxChangesHandler;
-                _renderableActor = value;
+                _renderableAsset = value;
             }
         }
         public abstract void TimeElapse(WorldTime WTime);

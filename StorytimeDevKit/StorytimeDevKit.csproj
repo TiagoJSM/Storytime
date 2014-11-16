@@ -95,27 +95,51 @@
     <Compile Include="Commands\ReversibleCommands\RotateActorCommand.cs" />
     <Compile Include="Commands\ReversibleCommands\SelectActorCommand.cs" />
     <Compile Include="Configurations\ApplicationProperties.cs" />
+    <Compile Include="Configurations\PuppeteerDefaults.cs" />
     <Compile Include="Controllers\IMultiStackedCommandsController.cs" />
     <Compile Include="Controllers\IStackedCommandsController.cs" />
     <Compile Include="Controllers\Puppeteer\IPuppeteerController.cs" />
     <Compile Include="Controllers\Puppeteer\ISkeletonViewerController.cs" />
     <Compile Include="Controllers\Puppeteer\PuppeteerController.cs" />
     <Compile Include="Controllers\Puppeteer\WorkingModes\AddBoneMode.cs" />
-    <Compile Include="Controllers\Puppeteer\WorkingModes\IPuppeteerWorkingMode.cs" />
+    <Compile Include="Controllers\Puppeteer\WorkingModes\AssetSelectionMode.cs" />
+    <Compile Include="Controllers\Puppeteer\WorkingModes\BoneSelectionMode.cs" />
+    <Compile Include="Controllers\Puppeteer\WorkingModes\PuppeteerWorkingMode.cs" />
     <Compile Include="Controllers\Puppeteer\WorkingModes\IPuppeteerWorkingModeContext.cs" />
-    <Compile Include="Controllers\Puppeteer\WorkingModes\SelectionMode.cs" />
+    <Compile Include="Controllers\Puppeteer\WorkingModes\BaseSelectionMode.cs" />
     <Compile Include="Controllers\TemplateControllers\MultiStackedCommandsController.cs" />
     <Compile Include="Controllers\TemplateControllers\StackedCommandsController.cs" />
     <Compile Include="Controls\IMouseInteractiveControl.cs" />
     <Compile Include="Controls\IMouseInteractivePanel.cs" />
     <Compile Include="Controls\INodeAddedCallback.cs" />
+    <Compile Include="Controls\Puppeteer\AnimationTimeLineControl.xaml.cs">
+      <DependentUpon>AnimationTimeLineControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Puppeteer\AssetExplorerControl.xaml.cs">
+      <DependentUpon>AssetExplorerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataStructures\Factories\ISceneObjectFactory.cs" />
+    <Compile Include="DataStructures\Factories\PuppeteerSceneObjectFactory.cs" />
+    <Compile Include="DataStructures\Factories\TypeConfigurableSceneObjectFactory.cs" />
+    <Compile Include="Entities\Actors\ArmatureActor.cs" />
+    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Extensions\FileExtensions.cs" />
+    <Compile Include="Models\Puppeteer\AssetListItem.cs" />
+    <Compile Include="Controls\Puppeteer\IAnimationTimeLine.cs" />
+    <Compile Include="Controls\Puppeteer\IAssetExplorerControl.cs" />
     <Compile Include="Controls\Puppeteer\IPuppeteerEditorControl.cs" />
     <Compile Include="Controls\Puppeteer\ISkeletonTreeViewControl.cs" />
+    <Compile Include="Controls\Puppeteer\PuppeteerControlTabs.xaml.cs">
+      <DependentUpon>PuppeteerControlTabs.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Puppeteer\PuppeteerEditorControl.xaml.cs">
       <DependentUpon>PuppeteerEditorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Dialogs\PuppeteerEditorDialog.xaml.cs">
       <DependentUpon>PuppeteerEditorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Puppeteer\SingleTimeLineControl.xaml.cs">
+      <DependentUpon>SingleTimeLineControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Puppeteer\SkeletonTreeViewControl.xaml.cs">
       <DependentUpon>SkeletonTreeViewControl.xaml</DependentUpon>
@@ -123,7 +147,9 @@
     <Compile Include="Controls\Templates\BaseSceneUserControl.cs" />
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToWidgetModeValueConverter.cs" />
     <Compile Include="DataStructures\BoneMapper.cs" />
+    <Compile Include="DataStructures\PuppeteerEditorControlData.cs" />
     <Compile Include="DataStructures\SceneControlData.cs" />
+    <Compile Include="DataStructures\SkeletonMapper.cs" />
     <Compile Include="Delegates\SceneViewerDelegates.cs" />
     <Compile Include="Delegates\TransformDelegates.cs" />
     <Compile Include="Entities\Actors\BoneActor.cs" />
@@ -131,7 +157,11 @@
     <Compile Include="Entities\SceneWidgets\TranslateWidgetRenderableAsset.cs" />
     <Compile Include="Extensions\SceneExtensions.cs" />
     <Compile Include="Models\MainWindow\TransformModeViewModel.cs" />
+    <Compile Include="Models\Puppeteer\AnimationDataItem.cs" />
     <Compile Include="Models\Puppeteer\BoneViewModel.cs" />
+    <Compile Include="Models\SceneObjects\BoneActorSceneObject.cs" />
+    <Compile Include="Models\SceneObjects\BoneAttachedAssetSceneObject.cs" />
+    <Compile Include="Models\SceneObjects\ISceneObject.cs" />
     <Compile Include="Models\Puppeteer\SkeletonViewModel.cs" />
     <Compile Include="Entities\SceneWidgets\MoveWidgetRenderableAsset.cs" />
     <Compile Include="Commands\ReversibleCommands\AddActorCommand.cs" />
@@ -140,7 +170,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\UICommands\RelayCommand.cs" />
-    <Compile Include="Configurations\FileExtensions.cs" />
+    <Compile Include="Configurations\FilesExtensions.cs" />
     <Compile Include="Configurations\RelativePaths.cs" />
     <Compile Include="Configurations\RootConfigFiles.cs" />
     <Compile Include="Controllers\GameObjects\GameObjectsController.cs" />
@@ -200,6 +230,7 @@
     <Compile Include="Models\GameObjectsTreeViewModels\TreeViewItemViewModel.cs" />
     <Compile Include="Models\ImageViewer\TexturePathViewModel.cs" />
     <Compile Include="Models\ImageViewer\TextureViewModel.cs" />
+    <Compile Include="Models\Puppeteer\SceneObjectViewModel.cs" />
     <Compile Include="Models\SavedData\SavedSceneModel.cs" />
     <Compile Include="Models\SceneViewer\SceneViewModel.cs" />
     <Compile Include="Models\TransformActorViewModel.cs" />
@@ -218,6 +249,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GenericTexts.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Puppeteer\AssetExplorerResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssetExplorerResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\SceneViewer\LocalizedTexts.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -231,6 +267,18 @@
     <Compile Include="Utils\ApplicationUtils.cs" />
     <Compile Include="Utils\DependencyInjectorHelper.cs" />
     <Compile Include="Utils\XMLSerializerUtils.cs" />
+    <Page Include="Controls\Puppeteer\AnimationTimeLineControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Puppeteer\AssetExplorerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Puppeteer\PuppeteerControlTabs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Puppeteer\PuppeteerEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -263,6 +311,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Puppeteer\SingleTimeLineControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Puppeteer\SkeletonTreeViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -291,6 +343,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -322,6 +378,10 @@
     <EmbeddedResource Include="Resources\GenericTexts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GenericTexts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Puppeteer\AssetExplorerResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AssetExplorerResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\SceneViewer\LocalizedTexts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -362,6 +422,10 @@
     <ProjectReference Include="..\StoryTime\StoryTime\StoryTime.csproj">
       <Project>{0F0F1AAA-7FBE-4952-A7D0-4509D2221959}</Project>
       <Name>StoryTime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeLineTool\TimeLineTool.csproj">
+      <Project>{7439A26A-46E1-42A0-9D58-2E38289675F6}</Project>
+      <Name>TimeLineTool</Name>
     </ProjectReference>
     <ProjectReference Include="..\XNAControl\XNAControl.csproj">
       <Project>{D98D6FF4-6F72-4E54-B84E-3E8592B7A181}</Project>
@@ -413,6 +477,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\GameObjectsControl\BlueClosedFolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Puppeteer\ToolBar\SelectAssetIcon.png" />
+    <Resource Include="Images\Puppeteer\ToolBar\SelectBoneIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Delegates\Puppeteer\" />

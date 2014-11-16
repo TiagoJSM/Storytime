@@ -7,6 +7,7 @@ using StoryTimeCore.Manageables;
 using StoryTimeCore.General;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.DataStructures;
+using StoryTimeCore.Delegates;
 
 namespace StoryTimeCore.Resources.Graphic
 {
@@ -16,7 +17,10 @@ namespace StoryTimeCore.Resources.Graphic
     /// </summary>
     public interface IRenderableAsset : IRenderable, ITimeUpdatable, IBoundingBoxable
     {
-        event Action<IRenderableAsset> OnBoundingBoxChanges;
+        event OnBoundingBoxChanges OnBoundingBoxChanges;
+        event OnRotationChanges OnRotationChanges;
+        event OnPositionChanges OnPositionChanges;
+
         bool IsVisible { get; set; }
         Vector2 Origin { get; set; }
         Vector2 RenderingOffset { get; set; }

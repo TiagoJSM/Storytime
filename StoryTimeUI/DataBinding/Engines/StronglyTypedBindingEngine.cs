@@ -9,14 +9,9 @@ namespace StoryTimeUI.DataBinding.Engines
 {
     public class BindingEngine<TDestination, TSource> : BindingEngine
     {
-        private readonly TDestination _destination;
-        private readonly TSource _source;
-
         public BindingEngine(TDestination destination, TSource source)
             :base(destination, source)
         {
-            _destination = destination;
-            _source = source;
         }
 
         public BindingEngine<TDestination, TSource> Bind<TData>(

@@ -22,7 +22,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
     /// <summary>
     /// Interaction logic for SkeletonTreeView.xaml
     /// </summary>
-    public partial class SkeletonTreeViewControl : UserControl, INodeAddedCallback, ISkeletonTreeViewControl
+    public partial class SkeletonTreeViewControl : UserControl, ISkeletonTreeViewControl
     {
         private ISkeletonViewerController _skeletonController;
 
@@ -33,11 +33,6 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         {
             InitializeComponent();
             Loaded += LoadedHandler;
-        }
-
-        public void NodeAddedCallback(Models.GameObjectsTreeViewModels.TreeViewItemViewModel parent, IEnumerable<Models.GameObjectsTreeViewModels.TreeViewItemViewModel> newModels)
-        {
-            
         }
 
         public void LoadedHandler(object sender, RoutedEventArgs e)
@@ -51,6 +46,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                             .Get<ISkeletonViewerController>();
 
             _skeletonController.SkeletonTreeViewControl = this;
+            base.DataContext = _skeletonController.SkeletonViewModel;
 
             if (OnLoaded != null)
                 OnLoaded(this);

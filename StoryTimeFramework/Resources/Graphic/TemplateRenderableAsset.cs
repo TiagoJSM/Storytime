@@ -8,6 +8,7 @@ using StoryTimeCore.Input.Time;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
 using StoryTimeCore.Resources.Graphic;
+using StoryTimeCore.Delegates;
 
 namespace StoryTimeFramework.Resources.Graphic
 {
@@ -17,7 +18,10 @@ namespace StoryTimeFramework.Resources.Graphic
         private float _rotation;
         private Vector2 _scale;
         private Vector2 _renderingOffset;
-        public event Action<IRenderableAsset> OnBoundingBoxChanges;
+
+        public event OnBoundingBoxChanges OnBoundingBoxChanges;
+        public event OnRotationChanges OnRotationChanges;
+        public event OnPositionChanges OnPositionChanges;
 
         public virtual bool IsVisible { get; set; }
 
@@ -47,6 +51,7 @@ namespace StoryTimeFramework.Resources.Graphic
                 if (_rotation != value)
                 {
                     _rotation = value;
+                    if (OnRotationChanges != null) OnRotationChanges(this);
                     if (OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
                 }
             }
@@ -77,6 +82,7 @@ namespace StoryTimeFramework.Resources.Graphic
                 if (_renderingOffset != value)
                 {
                     _renderingOffset = value;
+                    if (OnPositionChanges != null) OnPositionChanges(this);
                     if (OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
                 }
             }

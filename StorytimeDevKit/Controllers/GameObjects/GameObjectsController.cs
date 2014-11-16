@@ -121,7 +121,7 @@ namespace StoryTimeDevKit.Controllers.GameObjects
 
         private void AddScenesAndFolders(TreeViewItemViewModel parent, DirectoryInfo currentDirectory)
         {
-            FileInfo[] fis = currentDirectory.GetFilesByExtension(FileExtensions.SceneSavedModel);
+            FileInfo[] fis = currentDirectory.GetFilesByExtension(FilesExtensions.SceneSavedModel);
             foreach (FileInfo fi in fis)
             {
                 SceneViewModel svm = new SceneViewModel(parent, _nodeAddCB, fi.Name, fi.FullName);

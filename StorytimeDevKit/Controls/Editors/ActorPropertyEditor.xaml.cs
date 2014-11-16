@@ -81,8 +81,6 @@ namespace StoryTimeDevKit.Controls.Editors
                 get; set;
             }
 
-            public event Action<IRenderableAsset> OnBoundingBoxChanges;
-
             public void Render(StoryTimeCore.Contexts.Interfaces.IRenderer renderer)
             {
                 
@@ -104,11 +102,11 @@ namespace StoryTimeDevKit.Controls.Editors
             {
                 get
                 {
-                    throw new NotImplementedException();
+                    return new Microsoft.Xna.Framework.Vector2();
                 }
                 set
                 {
-                    throw new NotImplementedException();
+                    
                 }
             }
 
@@ -117,11 +115,11 @@ namespace StoryTimeDevKit.Controls.Editors
             {
                 get
                 {
-                    throw new NotImplementedException();
+                    return 0;
                 }
                 set
                 {
-                    throw new NotImplementedException();
+                    
                 }
             }
 
@@ -130,11 +128,11 @@ namespace StoryTimeDevKit.Controls.Editors
             {
                 get
                 {
-                    throw new NotImplementedException();
+                    return new Microsoft.Xna.Framework.Vector2();
                 }
                 set
                 {
-                    throw new NotImplementedException();
+                    
                 }
             }
 
@@ -142,13 +140,13 @@ namespace StoryTimeDevKit.Controls.Editors
 
             public StoryTimeCore.DataStructures.AxisAlignedBoundingBox2D BoundingBoxWithoutOrigin
             {
-                get { throw new NotImplementedException(); }
+                get { return new StoryTimeCore.DataStructures.AxisAlignedBoundingBox2D(); }
             }
 
 
             public StoryTimeCore.DataStructures.BoundingBox2D BoundingBox
             {
-                get { throw new NotImplementedException(); }
+                get { return new StoryTimeCore.DataStructures.BoundingBox2D(); }
             }
 
 
@@ -156,13 +154,20 @@ namespace StoryTimeDevKit.Controls.Editors
             {
                 get
                 {
-                    throw new NotImplementedException();
+                    return new Microsoft.Xna.Framework.Vector2();
                 }
                 set
                 {
-                    throw new NotImplementedException();
+                    
                 }
             }
+
+            public event StoryTimeCore.Delegates.OnBoundingBoxChanges OnBoundingBoxChanges;
+
+            public event StoryTimeCore.Delegates.OnRotationChanges OnRotationChanges;
+
+            public event StoryTimeCore.Delegates.OnPositionChanges OnPositionChanges;
+
         }
 
         private T _t;

@@ -24,6 +24,7 @@ using StoryTimeDevKit.Extensions;
 using StoryTimeDevKit.Models.MainWindow;
 using StoryTimeDevKit.Controls.Templates;
 using StoryTimeFramework.WorldManagement;
+using StoryTimeDevKit.Models.Puppeteer;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
@@ -38,16 +39,23 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
         public event Action<IPuppeteerEditorControl> OnLoaded;
         public event Action<IPuppeteerEditorControl> OnUnloaded;
-        public event Action<PuppeteerWorkingMode> OnWorkingModeChanges;
+        public event Action<PuppeteerWorkingModeType> OnWorkingModeChanges;
+        public event OnAssetListItemViewModelDrop OnAssetListItemViewModelDrop;
 
         public PuppeteerEditorControl()
         {
             InitializeComponent();
             AssignPanelEventHandling(PuppeteerEditor);
+            PuppeteerEditor.OnDropData += OnDropDataHandler;
             Loaded += LoadedHandler;
         }
 
-        public void LoadedHandler(object sender, RoutedEventArgs e)
+        protected override Scene GetScene()
+        {
+            return _game.GameWorld.ActiveScene;
+        }
+
+        private void LoadedHandler(object sender, RoutedEventArgs e)
         {
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
@@ -64,7 +72,8 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
             if (OnLoaded != null)
                 OnLoaded(this);
-            SelectionMode.IsChecked = true;
+
+            SelectBoneMode.IsChecked = true;
 
             transformModeModel =
                 DependencyInjectorHelper
@@ -76,37 +85,50 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             ScaleButton.DataContext = transformModeModel;
         }
 
-        protected override Scene GetScene()
-        {
-            return _game.GameWorld.ActiveScene;
-        }
-
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             if (OnUnloaded != null)
                 OnUnloaded(this);
         }
 
-        private void RadioButton_Selection_Checked(object sender, RoutedEventArgs e)
+        private void RadioButton_SelectBone_Checked(object sender, RoutedEventArgs e)
         {
             if (OnWorkingModeChanges != null)
-                OnWorkingModeChanges(PuppeteerWorkingMode.SelectionMode);
-            TranslateButton.IsEnabled = true;
-            RotateButton.IsEnabled = true;
-            ScaleButton.IsEnabled = true;
+                OnWorkingModeChanges(PuppeteerWorkingModeType.BoneSelectionMode);
+            TransformationButtonEnabled(true);
         }
 
-        private void SelectionMode_Unchecked(object sender, RoutedEventArgs e)
+        private void RadioButton_SelectAsset_Checked(object sender, RoutedEventArgs e)
         {
-            TranslateButton.IsEnabled = false;
-            RotateButton.IsEnabled = false;
-            ScaleButton.IsEnabled = false;
+            if (OnWorkingModeChanges != null)
+                OnWorkingModeChanges(PuppeteerWorkingModeType.AssetSelectionMode);
+            TransformationButtonEnabled(true);
+        }
+
+        private void TransformationButtonEnabled(bool enabled)
+        {
+            TranslateButton.IsEnabled = enabled;
+            RotateButton.IsEnabled = enabled;
+            ScaleButton.IsEnabled = enabled;
         }
 
         private void RadioButton_AddBone_Checked(object sender, RoutedEventArgs e)
         {
+            TransformationButtonEnabled(false);
             if (OnWorkingModeChanges != null)
-                OnWorkingModeChanges(PuppeteerWorkingMode.AddBoneMode);
+                OnWorkingModeChanges(PuppeteerWorkingModeType.AddBoneMode);
+        }
+
+        private void OnDropDataHandler(object data, System.Drawing.Point positionGameWorld, System.Drawing.Point gamePanelDimensions)
+        {
+            AssetListItemViewModel model = data as AssetListItemViewModel;
+            Scene scene = GetScene();
+            if (scene == null) return;
+
+            Vector2 dropPosition = scene.GetPointInGameWorld(positionGameWorld, gamePanelDimensions);
+
+            if (OnAssetListItemViewModelDrop != null && model != null)
+                OnAssetListItemViewModelDrop(model, dropPosition);
         }
     }
 }

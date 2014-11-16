@@ -26,6 +26,26 @@ namespace StoryTimeCore.Extensions
             ); 
         }
 
+        public static AxisAlignedBoundingBox2D Combine(this IEnumerable<AxisAlignedBoundingBox2D> boxes)
+        {
+            if (!boxes.Any()) return new AxisAlignedBoundingBox2D();
+            
+            AxisAlignedBoundingBox2D? result = null;
+
+            foreach (AxisAlignedBoundingBox2D box in boxes)
+            {
+                if (result == null)
+                {
+                    result = box;
+                    continue;
+                }
+
+                result = result.Value.Combine(box);
+            }
+
+            return result.Value;
+        }
+
         public static AxisAlignedBoundingBox2D GetRotated(
             this AxisAlignedBoundingBox2D rec, float rotation)
         {

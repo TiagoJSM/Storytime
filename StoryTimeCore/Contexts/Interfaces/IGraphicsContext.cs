@@ -32,6 +32,7 @@ namespace StoryTimeCore.Contexts.Interfaces
     {
         IRenderer GetRenderer();
         ITexture2D LoadTexture2D(string relativePath);
+        ITexture2D CreateTexture2D(string fullPath);
         ITexture2D CreateTexture2D(Color[] data, int width, int height, string name);
         void Clear(Color color);
         void SetSceneDimensions(int width, int height);

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
+using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
+using StoryTimeDevKit.Controls;
 
 namespace StoryTimeDevKit.Models.Puppeteer
 {
-    public class SkeletonViewModel : BaseViewModel
+    public class SkeletonViewModel : TreeViewItemViewModel
     {
-        public ObservableCollection<BoneViewModel> RootBones { get; set; }
-
-        public SkeletonViewModel()
+        public SkeletonViewModel(INodeAddedCallback nodeAddCB)
+            : base(null, nodeAddCB, false)
         {
-            RootBones = new ObservableCollection<BoneViewModel>();
         }
     }
 }

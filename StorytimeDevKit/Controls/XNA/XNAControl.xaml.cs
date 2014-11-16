@@ -57,12 +57,16 @@ using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 
 namespace StoryTimeDevKit.Controls.XNA
 {
+    public delegate void OnDropActor(ActorViewModel model, System.Drawing.Point positionGameWorld, System.Drawing.Point gamePanelDimensions);
+    public delegate void OnDropData(object data, System.Drawing.Point positionGameWorld, System.Drawing.Point gamePanelDimensions);
+
     /// <summary>
     /// Interaktionslogik für UserControl1.xaml
     /// </summary>
     public partial class XnaControl : UserControl, IMouseInteractivePanel
     {
-        public event Action<ActorViewModel, System.Drawing.Point, System.Drawing.Point> OnDropActor;
+        public event OnDropActor OnDropActor;
+        public event OnDropData OnDropData;
         public event OnPanelMouseUp OnMouseUp;
         public event OnPanelMouseDown OnMouseDown;
         public event OnPanelMouseClick OnMouseClick;
@@ -106,6 +110,8 @@ namespace StoryTimeDevKit.Controls.XNA
 
             if (o is ActorViewModel && OnDropActor != null)
                 OnDropActor(o as ActorViewModel, pGameWorld, gamePanelDimensions);
+            if (OnDropData != null)
+                OnDropData(o, pGameWorld, gamePanelDimensions);
         }
 
         private void GamePanel_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)

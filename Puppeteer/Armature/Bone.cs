@@ -47,8 +47,13 @@ namespace Puppeteer.Armature
         {
             get 
             {
-                Vector3 translation = Transformation.Translation;
-                return new Vector2(translation.X, translation.Y);
+                if (Parent == null)
+                {
+                    return Translation;
+                }
+                Vector3 translation = new Vector3(Translation.X, Translation.Y, 0.0f);
+                Vector3 relativePosition = Vector3.Transform(translation, Parent.RelativeEndTransformation);
+                return new Vector2(relativePosition.X, relativePosition.Y);
             }
             set
             {
@@ -58,7 +63,11 @@ namespace Puppeteer.Armature
                 }
                 else
                 {
-                    Translation = value - Parent.RelativeEnd;
+                    //TODO: translation should have root from bone end of parent, not from parent origin
+                    Vector3 positionVector = new Vector3(value.X, value.Y, 0.0f);
+                    Matrix inverted = Matrix.Invert( Parent.RelativeEndTransformation);
+                    Vector3 transform = Vector3.Transform(positionVector, inverted);
+                    Translation = new Vector2(transform.X, transform.Y);
                 }
                 SetDirty();
             }
@@ -76,7 +85,10 @@ namespace Puppeteer.Armature
                 if (relativeEnd == value) return;
                 Vector2 relativePosition = RelativePosition;
                 Length = Vector2.Distance(relativePosition, value);
-                Rotation = value.AngleWithCenterIn(relativePosition) - 90.0f;
+                Rotation = 0;
+                float rotationInRelativeEnd = value.AngleWithCenterIn(relativePosition) - 90.0f;
+                float actualRotation = RelativeEnd.AngleWithCenterIn(relativePosition) - 90.0f;
+                Rotation = rotationInRelativeEnd - actualRotation;
             }
         }
         public float Length
@@ -128,6 +140,12 @@ namespace Puppeteer.Armature
                 SetDirty();
             }
         }
+
+        public Matrix RelativeEndTransformation
+        {
+            get { return LenghtMatrix * Transformation; }
+        }
+
         public Matrix Transformation
         {
             get 

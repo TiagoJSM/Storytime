@@ -13,4 +13,7 @@ namespace StoryTimeDevKit.Delegates
 
     public delegate void OnTranslated(BaseActor actor, Vector2 startDragPosition, Vector2 currentPosition);
     public delegate void OnRotated(BaseActor actor, float bodyStartRotation, float bodyRotation);
+
+    public delegate void OnPositionChanges(Vector2 position);
+    public delegate void OnRotationChanges(float rotation);
 }

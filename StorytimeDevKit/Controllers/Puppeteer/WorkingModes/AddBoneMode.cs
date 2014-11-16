@@ -7,7 +7,7 @@ using StoryTimeDevKit.Entities.Actors;
 
 namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
 {
-    public class AddBoneMode : IPuppeteerWorkingMode
+    public class AddBoneMode : PuppeteerWorkingMode
     {
         private IPuppeteerWorkingModeContext _context;
 
@@ -16,28 +16,28 @@ namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
             _context = context;
         }
 
-        public void OnEnterMode()
+        public override void OnEnterMode()
         {
         }
 
-        public void OnLeaveMode()
+        public override void OnLeaveMode()
         {
         }
 
-        public void Click(Vector2 position)
+        public override void Click(Vector2 position)
         {
             BoneActor bone;
-            if (_context.SelectedBone == null)
+            BoneActor selectedBone = _context.Selected as BoneActor;
+            if (selectedBone == null)
             {
                 bone = _context.AddBone(position);
             }
             else
             {
-                bone = _context.AddBone(_context.SelectedBone.BoneEnd, position);
-                _context.SelectedBone.AddChildren(bone);
+                bone = _context.AddBone(selectedBone.BoneEnd, position);
             }
 
-            _context.SelectedBone = bone;
+            _context.Selected = bone;
         }
     }
 }
