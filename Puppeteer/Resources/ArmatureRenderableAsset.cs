@@ -35,7 +35,7 @@ namespace Puppeteer.Resources
             RaiseOnBoundingBoxChanges();
         }
 
-        protected override AxisAlignedBoundingBox2D RawBoundingBox
+        protected override AxisAlignedBoundingBox2D RawAABoundingBox
         {
             get 
             {

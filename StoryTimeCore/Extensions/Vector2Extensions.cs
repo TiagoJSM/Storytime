@@ -44,5 +44,10 @@ namespace StoryTimeCore.Extensions
             float angle = (float)Math.Atan2(point.Y - center.Y, point.X - center.X) * 180 / MathHelper.Pi;
             return angle;
         }
+
+        public static Vector3 ToVector3(this Vector2 vec2)
+        {
+            return new Vector3(vec2.X, vec2.Y, 0);
+        }
     }
 }

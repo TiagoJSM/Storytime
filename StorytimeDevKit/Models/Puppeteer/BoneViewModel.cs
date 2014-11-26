@@ -5,6 +5,8 @@ using System.Text;
 using System.Collections.ObjectModel;
 using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 using StoryTimeDevKit.Controls;
+using System.Windows.Input;
+using StoryTimeDevKit.Commands.UICommands;
 
 namespace StoryTimeDevKit.Models.Puppeteer
 {
@@ -26,15 +28,18 @@ namespace StoryTimeDevKit.Models.Puppeteer
             }
         }
 
-        public BoneViewModel(INodeAddedCallback nodeAddCB)
-            :this(null, nodeAddCB)
+        public ICommand AttachToBoneCommand { get; private set; }
+
+        public BoneViewModel(INodeAddedCallback nodeAddCB, ICommand attachToBoneCommand)
+            : this(null, nodeAddCB, attachToBoneCommand)
         {
         }
 
-        public BoneViewModel(TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB)
+        public BoneViewModel(TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB, ICommand attachToBoneCommand)
             : base(parent, nodeAddCB, false)
         {
             Name = "Bone";
+            AttachToBoneCommand = attachToBoneCommand;
         }
     }
 }

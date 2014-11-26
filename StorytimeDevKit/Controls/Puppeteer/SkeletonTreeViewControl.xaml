@@ -26,7 +26,17 @@
                         ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal" Tag="{Binding Tag}">
                             <!--<Image Width="20" Height="20" Source="{Binding ImagePath}" Margin="0,2,2,0"/>-->
-                            <TextBlock FontSize="14" Text="{Binding Name}" />
+                            <TextBlock FontSize="14" Text="{Binding Name}">
+                                <TextBlock.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem 
+                                        Header="Attach to bone" 
+                                        Command="{Binding Path=AttachToBoneCommand}"
+                                        CommandParameter="{Binding}" >
+                                    </MenuItem>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
+                            </TextBlock>
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>

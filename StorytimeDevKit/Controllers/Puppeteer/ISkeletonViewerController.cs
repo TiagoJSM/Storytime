@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using StoryTimeDevKit.Models.Puppeteer;
 using StoryTimeDevKit.Controls.Puppeteer;
+using Puppeteer.Resources;
 
 namespace StoryTimeDevKit.Controllers.Puppeteer
 {

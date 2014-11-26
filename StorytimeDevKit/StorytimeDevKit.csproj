@@ -94,6 +94,8 @@
     <Compile Include="Commands\ReversibleCommands\MoveActorCommand.cs" />
     <Compile Include="Commands\ReversibleCommands\RotateActorCommand.cs" />
     <Compile Include="Commands\ReversibleCommands\SelectActorCommand.cs" />
+    <Compile Include="Commands\UICommands\BaseCommand.cs" />
+    <Compile Include="Commands\UICommands\Puppeteer\AttachToBoneCommand.cs" />
     <Compile Include="Configurations\ApplicationProperties.cs" />
     <Compile Include="Configurations\PuppeteerDefaults.cs" />
     <Compile Include="Controllers\IMultiStackedCommandsController.cs" />

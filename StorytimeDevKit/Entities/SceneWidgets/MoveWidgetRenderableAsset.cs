@@ -48,7 +48,7 @@ namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
             Render(renderer, _horizontalArrow, _horizontalArrowBox);
         }
 
-        protected override AxisAlignedBoundingBox2D RawBoundingBox
+        protected override AxisAlignedBoundingBox2D RawAABoundingBox
         {
             get
             {

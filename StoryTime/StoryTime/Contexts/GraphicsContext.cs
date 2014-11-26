@@ -32,7 +32,11 @@ namespace StoryTime.Contexts
                 float scaleHeight = (float)_xnaGD._gdm.PreferredBackBufferHeight / (float)_xnaGD._sceneHeight;
                 Matrix m = Matrix.CreateScale(scaleWidth, -scaleHeight, 1);
                 m *= Matrix.CreateTranslation(0.0f, _xnaGD._sceneHeight, 0.0f);
-                
+
+                RasterizerState rs = new RasterizerState();
+                rs.CullMode = CullMode.None;
+                _xnaGD._gd.RasterizerState = rs;
+
                 _xnaGD._spriteBatch.Begin(
                     SpriteSortMode.Deferred,
                     BlendState.AlphaBlend,
@@ -216,6 +220,10 @@ namespace StoryTime.Contexts
         private int _sceneWidth;
         private int _sceneHeight;
 
+        private BasicEffect _basicEffect;
+        private Matrix _viewMatrix;
+        private Matrix _projectionMatrix;
+
         public GraphicsDevice GraphicsDevice { get { return _gd; } }
         public GraphicsDeviceManager GraphicsDeviceManager { get { return _gdm; } }
         public SpriteBatch SpriteBatch { get { return _spriteBatch; } }
@@ -231,13 +239,13 @@ namespace StoryTime.Contexts
             _cm = cm;
             _gContentManager = new GraphicsContentManager();
             _renderer = new XNARenderer(this);
-            
-            _sceneWidth = 720;
-            _sceneHeight = 480;
+
+            SetSceneDimensions(720, 480);
 
             _gdm.PreferredBackBufferWidth = 1280;
             _gdm.PreferredBackBufferHeight = 720;
-            _gdm.ApplyChanges();
+
+            _basicEffect = new BasicEffect(_gd);
         }
 
         public IRenderer GetRenderer()
@@ -284,6 +292,11 @@ namespace StoryTime.Contexts
         {
             _sceneWidth = width;
             _sceneHeight = height;
+
+            _viewMatrix = Matrix.CreateOrthographic(_sceneWidth, _sceneHeight, -10, 10);
+            _projectionMatrix = 
+                Matrix.CreatePerspectiveFieldOfView(
+                    MathHelper.ToRadians(45), (float)SceneWidth / (float)SceneHeight, 0.1f, 10000);
         }
 
         public void SetBackBufferDimensions(int width, int height) 

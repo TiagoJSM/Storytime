@@ -36,14 +36,14 @@ namespace Puppeteer.Armature
                 {
                     _parent._children.Add(this);
                     float lenght = Length;
-                    RelativePosition = _parent.RelativeEnd;
+                    AbsolutePosition = _parent.AbsoluteEnd;
                     Length = lenght;
                 }
                 SetDirty();
             }
         }
 
-        public Vector2 RelativePosition
+        public Vector2 AbsolutePosition
         {
             get 
             {
@@ -72,7 +72,7 @@ namespace Puppeteer.Armature
                 SetDirty();
             }
         }
-        public Vector2 RelativeEnd 
+        public Vector2 AbsoluteEnd 
         {
             get
             {
@@ -81,13 +81,13 @@ namespace Puppeteer.Armature
             }
             set
             {
-                Vector2 relativeEnd = RelativeEnd;
+                Vector2 relativeEnd = AbsoluteEnd;
                 if (relativeEnd == value) return;
-                Vector2 relativePosition = RelativePosition;
+                Vector2 relativePosition = AbsolutePosition;
                 Length = Vector2.Distance(relativePosition, value);
                 Rotation = 0;
                 float rotationInRelativeEnd = value.AngleWithCenterIn(relativePosition) - 90.0f;
-                float actualRotation = RelativeEnd.AngleWithCenterIn(relativePosition) - 90.0f;
+                float actualRotation = AbsoluteEnd.AngleWithCenterIn(relativePosition) - 90.0f;
                 Rotation = rotationInRelativeEnd - actualRotation;
             }
         }
@@ -138,6 +138,14 @@ namespace Puppeteer.Armature
                     return;
                 _rotation = value;
                 SetDirty();
+            }
+        }
+        
+        public float TotalRotation
+        {
+            get
+            {
+                return (float)Math.Asin(Transformation.M12);
             }
         }
 
@@ -209,7 +217,5 @@ namespace Puppeteer.Armature
             foreach (Bone child in _children)
                 child.SetDirty();
         }
-
-
     }
 }

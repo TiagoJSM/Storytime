@@ -56,7 +56,7 @@ namespace StoryTimeDevKit.Models.SceneObjects
 
         public void Translate(Vector2 translation)
         {
-            _bone.RelativePosition = _bone.RelativePosition + translation;
+            _bone.AbsolutePosition = _bone.AbsolutePosition + translation;
             SynchronizeBones();
             if (OnPositionChanges != null)
                 OnPositionChanges(_boneActor.Body.Position);

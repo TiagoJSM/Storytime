@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using StoryTimeCore.Extensions;
 
 namespace StoryTimeCore.DataStructures
 {
@@ -98,6 +99,14 @@ namespace StoryTimeCore.DataStructures
                 i = i + 1;
             }
             return inFlag;
+        }
+
+        public void Transform(Matrix matrix)
+        {
+            _points[0] = Vector3.Transform(Point1.ToVector3(), matrix).ToVector2();
+            _points[1] = Vector3.Transform(Point2.ToVector3(), matrix).ToVector2();
+            _points[2] = Vector3.Transform(Point3.ToVector3(), matrix).ToVector2();
+            _points[3] = Vector3.Transform(Point4.ToVector3(), matrix).ToVector2();
         }
     }
 }

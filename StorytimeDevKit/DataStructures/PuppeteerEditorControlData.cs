@@ -17,6 +17,7 @@ using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 using StoryTimeCore.Resources.Graphic;
 using StoryTimeDevKit.DataStructures.Factories;
 using Puppeteer.Resources;
+using StoryTimeDevKit.Commands.UICommands.Puppeteer;
 
 namespace StoryTimeDevKit.DataStructures
 {
@@ -50,6 +51,14 @@ namespace StoryTimeDevKit.DataStructures
                 if (_sceneObjectModel.SceneObject == value) return;
                 _sceneObjectModel.SceneObject = _factory.CreateSceneObject(value);
             }
+        }
+
+        public BoneAttachedRenderableAsset SelectedBoneRenderableAsset 
+        { 
+            get 
+            { 
+                return _sceneObjectModel.SceneObject.Object as BoneAttachedRenderableAsset; 
+            } 
         }
 
         public bool EnableUI
@@ -96,7 +105,7 @@ namespace StoryTimeDevKit.DataStructures
             _rotateWidget.OnRotation += OnRotateHandler;
 
             _scene = sene;
-            _skeletonMapper = new SkeletonMapper(this);
+            _skeletonMapper = new SkeletonMapper(this, new AttachToBoneCommand(this));
             _armatureActor = new ArmatureActor();
             _armatureActor.Body = _scene.PhysicalWorld.CreateRectangularBody(1, 1, 1);
             _scene.AddActor(_armatureActor);
@@ -126,8 +135,8 @@ namespace StoryTimeDevKit.DataStructures
         {
             BoneActor actor = AddBone(boneStartPosition, parent);
             Bone bone = _boneMapper.GetFromActor(actor);
-            bone.RelativeEnd = boneEndPosition;
-            bone.RelativeEnd = bone.RelativeEnd;
+            bone.AbsoluteEnd = boneEndPosition;
+            bone.AbsoluteEnd = bone.AbsoluteEnd;
             _boneMapper.SynchronizeBoneChain(bone);
             return actor;
         }
@@ -139,6 +148,12 @@ namespace StoryTimeDevKit.DataStructures
         public void AddRenderableAsset(BoneAttachedRenderableAsset asset)
         {
             _armatureActor.ArmatureRenderableAsset.Add(asset);
+        }
+
+        public Bone GetBoneFrom(BoneViewModel model)
+        {
+            BoneActor actor = _skeletonMapper.GetBoneActorFrom(model);
+            return _boneMapper.GetFromActor(actor);
         }
 
         private void OnWidgetModeChanges(WidgetMode mode)

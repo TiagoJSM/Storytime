@@ -41,7 +41,7 @@ namespace StoryTimeDevKit.Entities.SceneWidgets
             Render(renderer, _texture, _boundingBox);
         }
 
-        protected override AxisAlignedBoundingBox2D RawBoundingBox
+        protected override AxisAlignedBoundingBox2D RawAABoundingBox
         {
             get { return _boundingBox; }
         }

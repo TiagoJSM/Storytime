@@ -138,7 +138,7 @@ namespace StoryTimeDevKit.Controls.Editors
 
 
 
-            public StoryTimeCore.DataStructures.AxisAlignedBoundingBox2D BoundingBoxWithoutOrigin
+            public StoryTimeCore.DataStructures.AxisAlignedBoundingBox2D AABoundingBoxWithoutOrigin
             {
                 get { return new StoryTimeCore.DataStructures.AxisAlignedBoundingBox2D(); }
             }
@@ -168,6 +168,19 @@ namespace StoryTimeDevKit.Controls.Editors
 
             public event StoryTimeCore.Delegates.OnPositionChanges OnPositionChanges;
 
+
+
+            public Microsoft.Xna.Framework.Vector2 AbsoluteOrigin
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+                set
+                {
+                    throw new NotImplementedException();
+                }
+            }
         }
 
         private T _t;

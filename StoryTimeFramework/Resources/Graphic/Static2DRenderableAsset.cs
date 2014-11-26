@@ -42,11 +42,11 @@ namespace StoryTimeFramework.Resources.Graphic
         
         public override void Render(IRenderer renderer)
         {
-            AxisAlignedBoundingBox2D boundings = BoundingBoxWithoutOrigin;
+            AxisAlignedBoundingBox2D boundings = AABoundingBoxWithoutOrigin;
             Render(renderer, Texture2D, boundings);
         }
 
-        protected override AxisAlignedBoundingBox2D RawBoundingBox
+        protected override AxisAlignedBoundingBox2D RawAABoundingBox
         {
             get { return _boundingBox; }
         }

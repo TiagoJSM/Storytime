@@ -84,8 +84,8 @@ namespace StoryTimeDevKit.DataStructures
 
         private void SetBoneData(BoneActor actor, Bone bone)
         {
-            bone.RelativePosition = actor.Body.Position;
-            bone.RelativeEnd = actor.BoneEnd;
+            bone.AbsolutePosition = actor.Body.Position;
+            bone.AbsoluteEnd = actor.BoneEnd;
         }
 
         private void PropagateBoneChanges(Bone bone)
@@ -101,8 +101,8 @@ namespace StoryTimeDevKit.DataStructures
 
         private void SetActorData(BoneActor actor, Bone bone)
         {
-            actor.Body.Position = bone.RelativePosition;
-            actor.BoneEnd = bone.RelativeEnd;
+            actor.Body.Position = bone.AbsolutePosition;
+            actor.BoneEnd = bone.AbsoluteEnd;
         }
     }
 }

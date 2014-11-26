@@ -16,6 +16,7 @@ using System.ComponentModel;
 using StoryTimeDevKit.Controllers.Puppeteer;
 using StoryTimeDevKit.Utils;
 using Ninject;
+using StoryTimeDevKit.Commands.UICommands;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
@@ -42,8 +43,8 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
             _skeletonController =
                 DependencyInjectorHelper
-                            .PuppeteerKernel
-                            .Get<ISkeletonViewerController>();
+                    .PuppeteerKernel
+                    .Get<ISkeletonViewerController>();
 
             _skeletonController.SkeletonTreeViewControl = this;
             base.DataContext = _skeletonController.SkeletonViewModel;

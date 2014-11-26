@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace StoryTimeDevKit.Commands.UICommands
 {
-    public class RelayCommand : ICommand
+    public class RelayCommand : BaseCommand
     {
         Action<object> _a;
         Func<object, bool> _f;
@@ -22,18 +22,12 @@ namespace StoryTimeDevKit.Commands.UICommands
             _f = f;
         }
 
-        public bool CanExecute(object parameter)
+        public override bool CanExecute(object parameter)
         {
             return _f(parameter);
         }
 
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
-
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             _a(parameter);
         }

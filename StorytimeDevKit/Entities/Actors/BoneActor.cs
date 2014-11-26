@@ -37,7 +37,7 @@ namespace StoryTimeDevKit.Entities.Actors
             {
                 AxisAlignedBoundingBox2D originalBounds = 
                     RenderableAsset
-                    .BoundingBoxWithoutOrigin
+                    .AABoundingBoxWithoutOrigin
                     .GetScaled(RenderableAsset.Scale.Inverse(), Vector2.Zero);
 
                 float distance = Vector2.Distance(Body.Position, value);

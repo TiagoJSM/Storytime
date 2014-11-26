@@ -22,20 +22,20 @@ namespace PuppeteerTests
             Bone boneChild = new Bone(boneRoot);
             Bone leafChild = new Bone(boneChild);
 
-            boneRoot.RelativePosition = new Vector2(100);
+            boneRoot.AbsolutePosition = new Vector2(100);
             boneRoot.Length = 128;
 
-            AssetHelpers.AreEqual(new Vector2(100, 228), boneRoot.RelativeEnd, 0.00001f);
+            AssetHelpers.AreEqual(new Vector2(100, 228), boneRoot.AbsoluteEnd, 0.00001f);
 
-            boneChild.RelativePosition = boneRoot.RelativeEnd;
-            boneChild.RelativeEnd = new Vector2(250, 378);
+            boneChild.AbsolutePosition = boneRoot.AbsoluteEnd;
+            boneChild.AbsoluteEnd = new Vector2(250, 378);
 
-            AssetHelpers.AreEqual(new Vector2(250, 378), boneChild.RelativeEnd, 0.00001f);
+            AssetHelpers.AreEqual(new Vector2(250, 378), boneChild.AbsoluteEnd, 0.00001f);
 
-            leafChild.RelativePosition = boneChild.RelativeEnd;
-            leafChild.RelativeEnd = new Vector2(400, 528);
+            leafChild.AbsolutePosition = boneChild.AbsoluteEnd;
+            leafChild.AbsoluteEnd = new Vector2(400, 528);
 
-            AssetHelpers.AreEqual(new Vector2(400, 528), leafChild.RelativeEnd, 0.00001f);
+            AssetHelpers.AreEqual(new Vector2(400, 528), leafChild.AbsoluteEnd, 0.00001f);
         }
 
         [TestMethod]
@@ -45,20 +45,20 @@ namespace PuppeteerTests
             Bone boneChild = new Bone(boneRoot);
             Bone leafChild = new Bone(boneChild);
 
-            boneRoot.RelativePosition = new Vector2(100);
+            boneRoot.AbsolutePosition = new Vector2(100);
             boneRoot.Length = 128;
 
-            boneChild.RelativePosition = boneRoot.RelativeEnd;
-            boneChild.RelativeEnd = new Vector2(250, 378);
+            boneChild.AbsolutePosition = boneRoot.AbsoluteEnd;
+            boneChild.AbsoluteEnd = new Vector2(250, 378);
 
-            leafChild.RelativePosition = boneChild.RelativeEnd;
-            leafChild.RelativeEnd = new Vector2(400, 528);
+            leafChild.AbsolutePosition = boneChild.AbsoluteEnd;
+            leafChild.AbsoluteEnd = new Vector2(400, 528);
 
-            boneRoot.RelativePosition = new Vector2(150);
+            boneRoot.AbsolutePosition = new Vector2(150);
 
-            AssetHelpers.AreEqual(new Vector2(150, 278), boneRoot.RelativeEnd, 0.00001f);
-            AssetHelpers.AreEqual(new Vector2(300, 428), boneChild.RelativeEnd, 0.00001f);
-            AssetHelpers.AreEqual(new Vector2(450, 578), leafChild.RelativeEnd, 0.00001f);
+            AssetHelpers.AreEqual(new Vector2(150, 278), boneRoot.AbsoluteEnd, 0.00001f);
+            AssetHelpers.AreEqual(new Vector2(300, 428), boneChild.AbsoluteEnd, 0.00001f);
+            AssetHelpers.AreEqual(new Vector2(450, 578), leafChild.AbsoluteEnd, 0.00001f);
         }
 
         [TestMethod]
@@ -68,20 +68,20 @@ namespace PuppeteerTests
             Bone boneChild = new Bone(boneRoot);
             Bone leafChild = new Bone(boneChild);
 
-            boneRoot.RelativePosition = new Vector2(0);
+            boneRoot.AbsolutePosition = new Vector2(0);
             boneRoot.Length = 100;
 
-            boneChild.RelativePosition = boneRoot.RelativeEnd;
-            boneChild.RelativeEnd = new Vector2(0, 200);
+            boneChild.AbsolutePosition = boneRoot.AbsoluteEnd;
+            boneChild.AbsoluteEnd = new Vector2(0, 200);
 
-            leafChild.RelativePosition = boneChild.RelativeEnd;
-            leafChild.RelativeEnd = new Vector2(0, 400);
+            leafChild.AbsolutePosition = boneChild.AbsoluteEnd;
+            leafChild.AbsoluteEnd = new Vector2(0, 400);
 
-            boneRoot.RelativeEnd = new Vector2(100, 0);
+            boneRoot.AbsoluteEnd = new Vector2(100, 0);
 
-            AssetHelpers.AreEqual(new Vector2(100, 0), boneRoot.RelativeEnd, 0.0001f);
-            AssetHelpers.AreEqual(new Vector2(200, 0), boneChild.RelativeEnd, 0.0001f);
-            AssetHelpers.AreEqual(new Vector2(400, 0), leafChild.RelativeEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(100, 0), boneRoot.AbsoluteEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(200, 0), boneChild.AbsoluteEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(400, 0), leafChild.AbsoluteEnd, 0.0001f);
         }
 
         [TestMethod]
@@ -91,20 +91,20 @@ namespace PuppeteerTests
             Bone boneChild = new Bone(boneRoot);
             Bone leafChild = new Bone(boneChild);
 
-            boneRoot.RelativePosition = new Vector2(0);
+            boneRoot.AbsolutePosition = new Vector2(0);
             boneRoot.Length = 100;
 
-            boneChild.RelativePosition = boneRoot.RelativeEnd;
-            boneChild.RelativeEnd = new Vector2(100, 0);
+            boneChild.AbsolutePosition = boneRoot.AbsoluteEnd;
+            boneChild.AbsoluteEnd = new Vector2(100, 0);
 
-            leafChild.RelativePosition = boneChild.RelativeEnd;
-            leafChild.RelativeEnd = new Vector2(200, 0);
+            leafChild.AbsolutePosition = boneChild.AbsoluteEnd;
+            leafChild.AbsoluteEnd = new Vector2(200, 0);
 
-            boneRoot.RelativeEnd = new Vector2(100, 0);
+            boneRoot.AbsoluteEnd = new Vector2(100, 0);
 
-            AssetHelpers.AreEqual(new Vector2(100, 0), boneRoot.RelativeEnd, 0.0001f);
-            AssetHelpers.AreEqual(new Vector2(0, -100), boneChild.RelativeEnd, 0.0001f);
-            AssetHelpers.AreEqual(new Vector2(0, -200), leafChild.RelativeEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(100, 0), boneRoot.AbsoluteEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(0, -100), boneChild.AbsoluteEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(0, -200), leafChild.AbsoluteEnd, 0.0001f);
         }
 
         [TestMethod]
@@ -114,20 +114,20 @@ namespace PuppeteerTests
             Bone boneChild = new Bone(boneRoot);
             Bone leafChild = new Bone(boneChild);
 
-            boneRoot.RelativePosition = new Vector2(0);
+            boneRoot.AbsolutePosition = new Vector2(0);
             boneRoot.Length = 100;
 
-            boneChild.RelativePosition = new Vector2(100);
-            boneChild.RelativeEnd = new Vector2(200, 100);
+            boneChild.AbsolutePosition = new Vector2(100);
+            boneChild.AbsoluteEnd = new Vector2(200, 100);
 
-            leafChild.RelativePosition = boneChild.RelativeEnd;
-            leafChild.RelativeEnd = new Vector2(300, 100);
+            leafChild.AbsolutePosition = boneChild.AbsoluteEnd;
+            leafChild.AbsoluteEnd = new Vector2(300, 100);
 
-            boneRoot.RelativeEnd = new Vector2(100, 0);
+            boneRoot.AbsoluteEnd = new Vector2(100, 0);
 
-            AssetHelpers.AreEqual(new Vector2(100, 0), boneRoot.RelativeEnd, 0.0001f);
-            AssetHelpers.AreEqual(new Vector2(100, -200), boneChild.RelativeEnd, 0.0001f);
-            AssetHelpers.AreEqual(new Vector2(100, -300), leafChild.RelativeEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(100, 0), boneRoot.AbsoluteEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(100, -200), boneChild.AbsoluteEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(100, -300), leafChild.AbsoluteEnd, 0.0001f);
         }
 
         [TestMethod]
@@ -137,26 +137,26 @@ namespace PuppeteerTests
             Bone boneChild = new Bone(boneRoot);
             Bone leafChild = new Bone(boneChild);
 
-            boneRoot.RelativePosition = new Vector2(0);
+            boneRoot.AbsolutePosition = new Vector2(0);
             boneRoot.Length = 100;
 
-            boneChild.RelativePosition = new Vector2(100);
-            boneChild.RelativeEnd = new Vector2(200, 100);
+            boneChild.AbsolutePosition = new Vector2(100);
+            boneChild.AbsoluteEnd = new Vector2(200, 100);
 
-            leafChild.RelativePosition = boneChild.RelativeEnd;
-            leafChild.RelativeEnd = new Vector2(300, 100);
+            leafChild.AbsolutePosition = boneChild.AbsoluteEnd;
+            leafChild.AbsoluteEnd = new Vector2(300, 100);
 
-            boneRoot.RelativeEnd = new Vector2(100, 0);
+            boneRoot.AbsoluteEnd = new Vector2(100, 0);
 
-            AssetHelpers.AreEqual(new Vector2(100, 0), boneRoot.RelativeEnd, 0.0001f);
-            AssetHelpers.AreEqual(new Vector2(100, -200), boneChild.RelativeEnd, 0.0001f);
-            AssetHelpers.AreEqual(new Vector2(100, -300), leafChild.RelativeEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(100, 0), boneRoot.AbsoluteEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(100, -200), boneChild.AbsoluteEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(100, -300), leafChild.AbsoluteEnd, 0.0001f);
 
-            boneRoot.RelativeEnd = new Vector2(0, 100);
+            boneRoot.AbsoluteEnd = new Vector2(0, 100);
 
-            AssetHelpers.AreEqual(new Vector2(0, 100), boneRoot.RelativeEnd, 0.0001f);
-            AssetHelpers.AreEqual(new Vector2(200, 100), boneChild.RelativeEnd, 0.0001f);
-            AssetHelpers.AreEqual(new Vector2(300, 100), leafChild.RelativeEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(0, 100), boneRoot.AbsoluteEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(200, 100), boneChild.AbsoluteEnd, 0.0001f);
+            AssetHelpers.AreEqual(new Vector2(300, 100), leafChild.AbsoluteEnd, 0.0001f);
         }
     }
 }

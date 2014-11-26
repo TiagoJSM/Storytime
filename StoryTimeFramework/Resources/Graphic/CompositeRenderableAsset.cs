@@ -24,7 +24,7 @@ namespace StoryTimeFramework.Resources.Graphic
                 asset.Render(renderer);
         }
 
-        protected override AxisAlignedBoundingBox2D RawBoundingBox
+        protected override AxisAlignedBoundingBox2D RawAABoundingBox
         {
             get 
             {

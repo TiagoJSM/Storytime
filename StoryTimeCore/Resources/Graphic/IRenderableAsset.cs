@@ -26,6 +26,6 @@ namespace StoryTimeCore.Resources.Graphic
         Vector2 RenderingOffset { get; set; }
         float Rotation { get; set; }
         Vector2 Scale { get; set; }
-        AxisAlignedBoundingBox2D BoundingBoxWithoutOrigin { get; }
+        AxisAlignedBoundingBox2D AABoundingBoxWithoutOrigin { get; }
     }
 }

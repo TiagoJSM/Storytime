@@ -293,7 +293,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             ITexture2D texture = Scene.GraphicsContext.CreateTexture2D(viewModel.FullPath);
             BoneAttachedRenderableAsset asset = new BoneAttachedRenderableAsset() 
             { 
-                Texture = texture,
+                Texture2D = texture,
                 RenderingOffset = dropPosition
             };
             _puppeteerEdControlData.AddRenderableAsset(asset);
