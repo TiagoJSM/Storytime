@@ -136,7 +136,6 @@ namespace StoryTimeDevKit.DataStructures
             BoneActor actor = AddBone(boneStartPosition, parent);
             Bone bone = _boneMapper.GetFromActor(actor);
             bone.AbsoluteEnd = boneEndPosition;
-            bone.AbsoluteEnd = bone.AbsoluteEnd;
             _boneMapper.SynchronizeBoneChain(bone);
             return actor;
         }

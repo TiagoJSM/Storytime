@@ -140,14 +140,6 @@ namespace Puppeteer.Armature
                 SetDirty();
             }
         }
-        
-        public float TotalRotation
-        {
-            get
-            {
-                return (float)Math.Asin(Transformation.M12);
-            }
-        }
 
         public Matrix RelativeEndTransformation
         {

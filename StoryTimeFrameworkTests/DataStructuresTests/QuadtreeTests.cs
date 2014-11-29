@@ -5,7 +5,6 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeFramework.DataStructures;
-using StoryTimeFramework.Entities.Interfaces;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.General;
 

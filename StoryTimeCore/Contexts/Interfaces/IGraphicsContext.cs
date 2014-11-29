@@ -5,6 +5,7 @@ using System.Text;
 using StoryTimeCore.Resources.Graphic;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.DataStructures;
+using StoryTimeCore.Entities;
 
 namespace StoryTimeCore.Contexts.Interfaces
 {
@@ -20,6 +21,7 @@ namespace StoryTimeCore.Contexts.Interfaces
         Vector2 TranslationTransformation { get; set; }
         void Render(ITexture2D texture, float x, float y, Vector2 origin = default(Vector2));
         void Render(ITexture2D texture, float x, float y, float width, float height, float rotation, Vector2 origin = default(Vector2), Vector2 renderingOffset = default(Vector2));
+        void Render(ITexture2D texture, Matrix transformation, AxisAlignedBoundingBox2D boundingBox);
         void RenderRectangle(Rectangle rec, Color color, float thickness = 1.0f);
         void RenderBoundingBox(BoundingBox2D box, Color color, float thickness = 1.0f);
     }
@@ -30,11 +32,13 @@ namespace StoryTimeCore.Contexts.Interfaces
     /// </summary>
     public interface IGraphicsContext
     {
+        Matrix ViewMatrix { get; }
+        Matrix ProjectionMatrix { get; }
         IRenderer GetRenderer();
         ITexture2D LoadTexture2D(string relativePath);
         ITexture2D CreateTexture2D(string fullPath);
         ITexture2D CreateTexture2D(Color[] data, int width, int height, string name);
         void Clear(Color color);
-        void SetSceneDimensions(int width, int height);
+        void SetCamera(ICamera camera);
     }
 }

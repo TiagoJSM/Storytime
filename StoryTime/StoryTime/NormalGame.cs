@@ -80,13 +80,15 @@ namespace StoryTime
             _asset = new Static2DRenderableAsset();
             //_asset.SetBoundingBox(new StoryTimeCore.DataStructures.Rectanglef(0, 0.0f, 720, 1280));
             _asset.Texture2D = bitmap;
-            GraphicsContext.SetSceneDimensions(1280, 720);
+            
+            Scene s = new Scene();
+
+            GraphicsContext.SetCamera(s.Camera);
             _actor = new Actor()
             {
                 RenderableAsset = _asset
             };
 
-            Scene s = new Scene();
             s.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
             s.AddActor(_actor);
             _gameWorld = new GameWorld(GraphicsContext);

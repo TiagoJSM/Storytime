@@ -5,7 +5,6 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeFramework.GenericExceptions;
-using StoryTimeFramework.Entities.Interfaces;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.General;
 

@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
 using StoryTimeCore.Resources.Graphic;
 using StoryTimeCore.Delegates;
+using StoryTimeCore.Utils;
 
 namespace StoryTimeFramework.Resources.Graphic
 {
@@ -98,17 +99,7 @@ namespace StoryTimeFramework.Resources.Graphic
         {
             if (!IsVisible) return;
 
-            renderer
-                .Render(
-                    texture,
-                    boundingBox.X,
-                    boundingBox.Y,
-                    boundingBox.Width,
-                    boundingBox.Height,
-                    Rotation,
-                    _origin,
-                    _renderingOffset
-                );
+            renderer.Render(texture, MatrixUtils.CreateRenderableAssetTransformation(this), boundingBox);
         }
 
         public abstract void Render(IRenderer renderer);

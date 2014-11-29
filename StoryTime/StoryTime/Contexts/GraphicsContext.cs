@@ -12,6 +12,7 @@ using StoryTimeCore.Extensions;
 using C3.XNA;
 using StoryTimeCore.DataStructures;
 using System.IO;
+using StoryTimeCore.Entities;
 
 namespace StoryTime.Contexts
 {
@@ -20,22 +21,25 @@ namespace StoryTime.Contexts
         private class XNARenderer : IRenderer
         {
             XNAGraphicsContext _xnaGD;
+            VertexPositionTexture[] _vertices;
 
             public XNARenderer(XNAGraphicsContext xnaGD)
             {
                 _xnaGD = xnaGD;
+                InitializeVertices();
             }
 
             public void PreRender()
             {
-                float scaleWidth = (float)_xnaGD._gdm.PreferredBackBufferWidth / (float)_xnaGD._sceneWidth;
-                float scaleHeight = (float)_xnaGD._gdm.PreferredBackBufferHeight / (float)_xnaGD._sceneHeight;
+                float scaleWidth = (float)_xnaGD._gdm.PreferredBackBufferWidth / (float)_xnaGD._cameraWidth;
+                float scaleHeight = (float)_xnaGD._gdm.PreferredBackBufferHeight / (float)_xnaGD._cameraHeight;
                 Matrix m = Matrix.CreateScale(scaleWidth, -scaleHeight, 1);
-                m *= Matrix.CreateTranslation(0.0f, _xnaGD._sceneHeight, 0.0f);
+                m *= Matrix.CreateTranslation(0.0f, _xnaGD._cameraHeight, 0.0f);
 
                 RasterizerState rs = new RasterizerState();
                 rs.CullMode = CullMode.None;
                 _xnaGD._gd.RasterizerState = rs;
+                _xnaGD._basicEffect.TextureEnabled = true;
 
                 _xnaGD._spriteBatch.Begin(
                     SpriteSortMode.Deferred,
@@ -88,6 +92,21 @@ namespace StoryTime.Contexts
                 );
             }
 
+            public void Render(ITexture2D texture, Matrix transformation, AxisAlignedBoundingBox2D boundingBox)
+            {
+                Texture2D tex = _xnaGD._gContentManager.GetTexture(texture);
+                _xnaGD._basicEffect.Texture = tex;
+                _xnaGD._basicEffect.World = transformation * RendererTransformation();
+                _xnaGD._basicEffect.View = _xnaGD.ViewMatrix;
+                _xnaGD._basicEffect.Projection = _xnaGD.ProjectionMatrix;
+
+                foreach (EffectPass pass in _xnaGD._basicEffect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+                    _xnaGD._gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, GetVerticesFor(boundingBox), 0, 2);
+                }
+            }
+
             public void RenderRectangle(Rectangle rec, Color color, float thickness = 1.0f)
             {
                 _xnaGD._spriteBatch.DrawRectangle(rec, color, thickness);
@@ -99,6 +118,47 @@ namespace StoryTime.Contexts
                 _xnaGD._spriteBatch.DrawLine(box.Point2, box.Point3, color, thickness);
                 _xnaGD._spriteBatch.DrawLine(box.Point3, box.Point4, color, thickness);
                 _xnaGD._spriteBatch.DrawLine(box.Point4, box.Point1, color, thickness);
+            }
+
+            private void InitializeVertices()
+            {
+                _vertices = new VertexPositionTexture[4];
+
+                _vertices[0].Position = new Vector3(0, 1, 20);
+                _vertices[0].TextureCoordinate = new Vector2(0, 0);
+
+                _vertices[1].Position = new Vector3(0, 0, 20);
+                _vertices[1].TextureCoordinate = new Vector2(0, 1);
+
+                _vertices[2].Position = new Vector3(1, 1, 20);
+                _vertices[2].TextureCoordinate = new Vector2(1, 0);
+
+                _vertices[3].Position = new Vector3(1, 0, 20);
+                _vertices[3].TextureCoordinate = new Vector2(1, 1);
+            }
+
+            private Matrix RendererTransformation()
+            {
+                return 
+                    Matrix.CreateRotationZ(MathHelper.ToRadians(RotationTransformation)) * 
+                    Matrix.CreateTranslation(new Vector3(TranslationTransformation, 0));
+            }
+
+            private VertexPositionTexture[] GetVerticesFor(AxisAlignedBoundingBox2D boundingBox)
+            {
+                _vertices[0].Position.X = boundingBox.X;
+                _vertices[0].Position.Y = boundingBox.Height;
+
+                _vertices[1].Position.X = boundingBox.X;
+                _vertices[1].Position.Y = boundingBox.Y;
+
+                _vertices[2].Position.X = boundingBox.Width;
+                _vertices[2].Position.Y = boundingBox.Height;
+
+                _vertices[3].Position.X = boundingBox.Width;
+                _vertices[3].Position.Y = boundingBox.Y;
+
+                return _vertices;
             }
         }
 
@@ -217,19 +277,19 @@ namespace StoryTime.Contexts
         private XNARenderer _renderer;
         private GraphicsContentManager _gContentManager;
 
-        private int _sceneWidth;
-        private int _sceneHeight;
+        private int _cameraWidth;
+        private int _cameraHeight;
 
         private BasicEffect _basicEffect;
-        private Matrix _viewMatrix;
-        private Matrix _projectionMatrix;
 
         public GraphicsDevice GraphicsDevice { get { return _gd; } }
         public GraphicsDeviceManager GraphicsDeviceManager { get { return _gdm; } }
         public SpriteBatch SpriteBatch { get { return _spriteBatch; } }
         public ContentManager ContentManager { get { return _cm; } }
-        public int SceneWidth { get { return _sceneWidth; } }
-        public int SceneHeight { get { return _sceneHeight; } }
+        public int SceneWidth { get { return _cameraWidth; } }
+        public int SceneHeight { get { return _cameraHeight; } }
+        public Matrix ViewMatrix { get; private set; }
+        public Matrix ProjectionMatrix { get; private set; }
 
         public XNAGraphicsContext(GraphicsDeviceManager gdm, ContentManager cm)
         {
@@ -240,7 +300,8 @@ namespace StoryTime.Contexts
             _gContentManager = new GraphicsContentManager();
             _renderer = new XNARenderer(this);
 
-            SetSceneDimensions(720, 480);
+            _cameraWidth = 720;
+            _cameraHeight = 480;
 
             _gdm.PreferredBackBufferWidth = 1280;
             _gdm.PreferredBackBufferHeight = 720;
@@ -288,15 +349,22 @@ namespace StoryTime.Contexts
             _gd.Clear(color);
         }
 
-        public void SetSceneDimensions(int width, int height)
+        /*public void SetSceneDimensions(int width, int height)
         {
-            _sceneWidth = width;
-            _sceneHeight = height;
+            _cameraWidth = width;
+            _cameraHeight = height;
 
-            _viewMatrix = Matrix.CreateOrthographic(_sceneWidth, _sceneHeight, -10, 10);
-            _projectionMatrix = 
-                Matrix.CreatePerspectiveFieldOfView(
-                    MathHelper.ToRadians(45), (float)SceneWidth / (float)SceneHeight, 0.1f, 10000);
+            Vie = Matrix.Identity;//Matrix.CreateLookAt(new Vector3(0, 0, -100), Vector3.Zero, Vector3.Up);
+            _projectionMatrix = Matrix.CreateOrthographic(_cameraWidth, _cameraHeight, -100000, 100000);
+        }*/
+
+        public void SetCamera(ICamera camera)
+        {
+            _cameraWidth = camera.Viewport.Width;
+            _cameraHeight = camera.Viewport.Height;
+
+            ViewMatrix = camera.ViewMatrix;//Matrix.Identity;
+            ProjectionMatrix = camera.ProjectionMatrix; //Matrix.CreateOrthographic(_cameraWidth, _cameraHeight, -100000, 100000);
         }
 
         public void SetBackBufferDimensions(int width, int height) 

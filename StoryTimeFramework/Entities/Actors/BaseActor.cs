@@ -9,7 +9,6 @@ using StoryTimeCore.Input.Time;
 using StoryTimeFramework.Resources.Graphic;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeFramework.DataStructures;
-using StoryTimeFramework.Entities.Interfaces;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.CustomAttributes.Editor;
 using FarseerPhysics.Dynamics;

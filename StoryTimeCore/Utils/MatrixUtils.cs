@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
+using StoryTimeCore.Resources.Graphic;
 
 namespace StoryTimeCore.Utils
 {
@@ -16,6 +17,16 @@ namespace StoryTimeCore.Utils
                 Matrix.CreateScale(scale.ToVector3()) *
                 Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)) *
                 Matrix.CreateTranslation(position.ToVector3());
+        }
+
+        public static Matrix CreateRenderableAssetTransformation(IRenderableAsset asset)
+        {
+            return
+                Matrix.CreateTranslation(-new Vector3(asset.Origin, 0))
+                * Matrix.CreateScale(new Vector3(asset.Scale, 1))
+                * Matrix.CreateRotationZ(MathHelper.ToRadians(asset.Rotation))
+                * Matrix.CreateTranslation(new Vector3(asset.Origin, 0))
+                * Matrix.CreateTranslation(new Vector3(asset.RenderingOffset, 0));
         }
     }
 }

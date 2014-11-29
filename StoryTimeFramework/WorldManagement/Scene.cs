@@ -7,7 +7,6 @@ using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeCore.Exceptions;
 using StoryTimeFramework.DataStructures;
 using StoryTimeFramework.Entities.Actors;
-using StoryTimeFramework.Entities.Interfaces;
 using Microsoft.Xna.Framework.Graphics;
 using StoryTimeCore.Input.Time;
 using StoryTimeFramework.WorldManagement.Manageables;
@@ -21,6 +20,7 @@ using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Physics;
 using StoryTimeUI;
+using StoryTimeCore.Entities;
 
 namespace StoryTimeFramework.WorldManagement
 {
@@ -106,7 +106,7 @@ namespace StoryTimeFramework.WorldManagement
             if (_activeCamera == null) return;
             //set viewport
             Viewport vp = _activeCamera.Viewport;
-            graphicsContext.SetSceneDimensions(vp.Width, vp.Height);
+            graphicsContext.SetCamera(_activeCamera);
             AxisAlignedBoundingBox2D renderingViewport = new AxisAlignedBoundingBox2D(vp.X, vp.Y, vp.Height, vp.Width);
             IEnumerable<BaseActor> enumActors = GetRenderablesIn(renderingViewport);
             IRenderer renderer = graphicsContext.GetRenderer();
