@@ -18,6 +18,9 @@ namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
 
         public override void OnEnterMode()
         {
+            BoneActor selectedBone = _context.Selected as BoneActor;
+            if (selectedBone == null)
+                _context.Selected = null;
         }
 
         public override void OnLeaveMode()

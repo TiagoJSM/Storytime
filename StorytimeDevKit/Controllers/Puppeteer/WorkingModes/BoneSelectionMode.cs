@@ -15,6 +15,12 @@ namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
         { 
         }
 
+        public override void OnEnterMode()
+        {
+            Context.Selected = null;
+            base.OnEnterMode();
+        }
+
         protected override void HandleActorIntersection(BaseActor actor, Vector2 position)
         {
             BoneActor bone = actor as BoneActor;

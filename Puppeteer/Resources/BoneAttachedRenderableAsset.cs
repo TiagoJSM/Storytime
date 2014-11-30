@@ -17,7 +17,8 @@ namespace Puppeteer.Resources
         private AxisAlignedBoundingBox2D _box;
         private ITexture2D _texture;
         private Bone _bone;
-        private Vector2 _difference;
+        private Matrix _assetDefinedTransformation;
+        private Matrix _boneReferenceTransformation;
 
         public ITexture2D Texture2D
         {
@@ -47,36 +48,32 @@ namespace Puppeteer.Resources
             {
                 if (_bone == value) return;
                 _bone = value;
-                _difference = RenderingOffset - Bone.AbsolutePosition;
-                RenderingOffset = Vector2.Zero;// RenderingOffset - Bone.AbsolutePosition;
+                Matrix totalTransformation = base.Transformation * Bone.Transformation;
+                _assetDefinedTransformation = totalTransformation * Matrix.Invert(Bone.Transformation);
+                _boneReferenceTransformation = Bone.Transformation;
+                Rotation = 0;
+                Scale = new Vector2(1);
+                RenderingOffset = Vector2.Zero;
             }
         }
 
         public override void Render(IRenderer renderer)
         {
-            Vector2 boneTranslation = Vector2.Zero;
-            if (Bone != null)
-            {
-                Vector2 position;
-                float rotation;
-                Vector2 scale;
-
-                Matrix transformation = 
-                    MatrixUtils.CreateLocalTransformation(_difference, Rotation, Scale) * 
-                    Bone.Transformation;
-
-                transformation.DecomposeMatrix(out position, out rotation, out scale);
-                boneTranslation = position;
-                Rotation = rotation;
-                Scale = scale;
-            }
-            
-            //Rotation = Bone.Rotation;
-            //should take into account original values before attaching a bone
-            //Origin = AABoundingBox.BottomLeft - Bone.RelativePosition;
             AxisAlignedBoundingBox2D boundings = RawAABoundingBox;
-            boundings.Translate(boneTranslation);
             Render(renderer, _texture, boundings);
+        }
+
+        protected override Matrix Transformation
+        {
+            get
+            {
+                if (Bone != null)
+                {
+                    Matrix extra = Matrix.Invert(_boneReferenceTransformation) * Bone.Transformation;
+                    return _assetDefinedTransformation * extra * base.Transformation;
+                }
+                return base.Transformation;
+            }
         }
 
         protected override AxisAlignedBoundingBox2D RawAABoundingBox { get { return _box; } }

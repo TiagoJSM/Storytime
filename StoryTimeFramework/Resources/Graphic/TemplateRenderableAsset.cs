@@ -99,7 +99,7 @@ namespace StoryTimeFramework.Resources.Graphic
         {
             if (!IsVisible) return;
 
-            renderer.Render(texture, MatrixUtils.CreateRenderableAssetTransformation(this), boundingBox);
+            renderer.Render(texture, Transformation, boundingBox);
         }
 
         public abstract void Render(IRenderer renderer);
@@ -143,6 +143,14 @@ namespace StoryTimeFramework.Resources.Graphic
         protected void RaiseOnBoundingBoxChanges()
         {
             if(OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
+        }
+
+        protected virtual Matrix Transformation
+        {
+            get
+            {
+                return MatrixUtils.CreateRenderableAssetTransformation(this);
+            }
         }
 
         protected abstract AxisAlignedBoundingBox2D RawAABoundingBox { get; }

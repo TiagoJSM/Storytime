@@ -49,6 +49,11 @@ namespace StoryTimeDevKit.DataStructures
             set
             {
                 if (_sceneObjectModel.SceneObject == value) return;
+                if (value == null)
+                {
+                    _sceneObjectModel.SceneObject = null;
+                    return;
+                }
                 _sceneObjectModel.SceneObject = _factory.CreateSceneObject(value);
             }
         }
@@ -56,7 +61,8 @@ namespace StoryTimeDevKit.DataStructures
         public BoneAttachedRenderableAsset SelectedBoneRenderableAsset 
         { 
             get 
-            { 
+            {
+                if (_sceneObjectModel.SceneObject == null) return null;
                 return _sceneObjectModel.SceneObject.Object as BoneAttachedRenderableAsset; 
             } 
         }
