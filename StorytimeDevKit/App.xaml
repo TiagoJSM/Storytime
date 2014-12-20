@@ -45,5 +45,6 @@
             <Setter Property="Background" Value="DimGray"/>
             <Setter Property="BorderThickness" Value="2"/>
         </Style>
+        
     </Application.Resources>
 </Application>

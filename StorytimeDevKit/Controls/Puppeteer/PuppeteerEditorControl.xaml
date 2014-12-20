@@ -16,7 +16,8 @@
 
     <UserControl.Resources>
         <RadioButtonsConvNS:BooleanToWidgetModeValueConverter x:Key="BooleanToWidgetModeValueConverter"/>
-        <Style x:Key="ToolBarButtonStyle" TargetType="ButtonBase">
+
+        <Style x:Key="DisabledOpacity" TargetType="{x:Type ButtonBase}">
             <Setter Property="IsEnabled" Value="True" />
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
@@ -77,7 +78,7 @@
 					        AncestorType={x:Type Window}}, 
 					    Path=TransformMode}"
                 CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Translate}"
-                Style="{StaticResource ToolBarButtonStyle}"
+                Style="{StaticResource DisabledOpacity}"
                 IsChecked="{Binding 
                     Path=WidgetMode, 
                     Converter={StaticResource BooleanToWidgetModeValueConverter}, 
@@ -92,7 +93,7 @@
 					        AncestorType={x:Type Window}}, 
 					    Path=TransformMode}"
                 CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Rotate}"
-                Style="{StaticResource ToolBarButtonStyle}"
+                Style="{StaticResource DisabledOpacity}"
                 IsChecked="{Binding 
                     Path=WidgetMode, 
                     Converter={StaticResource BooleanToWidgetModeValueConverter}, 
@@ -107,7 +108,7 @@
 					        AncestorType={x:Type Window}}, 
 					    Path=TransformMode}"
                 CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Scale}"
-                Style="{StaticResource ToolBarButtonStyle}"
+                Style="{StaticResource DisabledOpacity}"
                 IsChecked="{Binding 
                     Path=WidgetMode, 
                     Converter={StaticResource BooleanToWidgetModeValueConverter}, 

@@ -10,15 +10,26 @@ using Puppeteer.Resources;
 
 namespace StoryTimeDevKit.DataStructures.Factories
 {
+    public interface IPuppeteerSceneOjectActionContext
+    {
+        void SynchronizeBoneChain(Bone bone);
+        void AddAnimationFrameFor(BoneActor actor);
+        Bone GetFromActor(BoneActor actor);
+    }
+
     public class PuppeteerSceneObjectFactory : TypeConfigurableSceneObjectFactory
     {
-        private BoneMapper _boneMapper;
+        private SceneBonesMapper _boneMapper;
+        private AnimationTimeLineMapper _animationMapper;
 
-        public PuppeteerSceneObjectFactory(BoneMapper boneMapper)
+        private IPuppeteerSceneOjectActionContext _context;
+
+        public PuppeteerSceneObjectFactory(IPuppeteerSceneOjectActionContext context)
             : base()
         {
-            _boneMapper = boneMapper;
-            SceneObjectMapper.Add(typeof(BoneActor), o => new BoneActorSceneObject((BoneActor)o, _boneMapper));
+            _context = context;
+
+            SceneObjectMapper.Add(typeof(BoneActor), o => new BoneActorSceneObject((BoneActor)o, _context));
             SceneObjectMapper.Add(typeof(BoneAttachedRenderableAsset), o => new BoneAttachedAssetSceneObject((BoneAttachedRenderableAsset)o));
         }
     }

@@ -6,37 +6,43 @@
              xmlns:tt="clr-namespace:TimeLineTool;assembly=TimeLineTool"
              mc:Ignorable="d" 
              d:DesignHeight="115" d:DesignWidth="510"
-             Name="AnimationTimeLine">
-    <Grid>
-        <Slider 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Stretch" 
-                TickPlacement="BottomRight" 
-                TickFrequency="20" 
-                Margin="10,0,0,86" 
-                Maximum="200"
-                Width="200"/>
-                        <!--You can bind to many properties including Items.  So long as the collection bound contains
-                            implementations of the ITimelineDataItem, the control will manage it perfectly.
-                                    
-                            If you implement the ITimelineManager class, then you can use that manager to disable or enable the timelines.
-                                    
-                            If your timelines are within an items control then SynchedWithSiblings is a property that will keep all sibling timelines the same width
-                        --> 
-            <ListBox ItemsSource="{Binding RelativeSource={  RelativeSource FindAncestor, 
+             Name="AnimationTimeLine" 
+             xmlns:my="clr-namespace:StoryTimeDevKit.Controls.Puppeteer">
+    <Grid Name="Grid">
+        <ListView 
+            Name="TimeLines"
+            
+            LayoutUpdated="TimeLines_LayoutUpdated"
+            ItemsSource="{Binding RelativeSource={  RelativeSource FindAncestor, 
 					                                    AncestorType={x:Type UserControl}}, 
-					                                    Path=TimeLines}"  
-                Name="ImagesPanel" 
-                Height="{Binding 
-                            RelativeSource={RelativeSource 
-                                                Mode=FindAncestor, 
-                                                AncestorType={x:Type ScrollViewer}}, 
-                            Path=ActualHeight}" Margin="0,30,0,0">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Vertical" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-            </ListBox>
+					                                    Path=Controls}">
+            <ListView.View>
+                <GridView AllowsColumnReorder="False">
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding Bone.Name}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumnHeader 
+                            Click="GridViewColumnHeader_Click" >
+                                <my:HorizontalRuler 
+                                    x:Name="Ruler" 
+                                    Height="30" 
+                                    Width="4000" 
+                                    MaxWidth="4000" />
+                        </GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding Control}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Line Name="line" Visibility="Hidden" Stroke="Red" StrokeThickness="3" />
     </Grid>
 </UserControl>

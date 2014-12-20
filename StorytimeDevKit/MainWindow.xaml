@@ -15,7 +15,8 @@
 
     <Window.Resources>
         <RadioButtonsConvNS:BooleanToWidgetModeValueConverter x:Key="BooleanToWidgetModeValueConverter"/>
-        <Style x:Key="ToolBarButtonStyle" TargetType="ButtonBase">
+
+        <Style x:Key="DisabledOpacity" TargetType="{x:Type ButtonBase}">
             <Setter Property="IsEnabled" Value="True" />
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
@@ -64,8 +65,7 @@
                 Command="{Binding RelativeSource={  
                             RelativeSource FindAncestor, 
 					        AncestorType={x:Type Window}}, 
-					    Path=SaveScene}"
-                Style="{StaticResource ToolBarButtonStyle}">
+					    Path=SaveScene}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/save.png"/>
                 </Button>
             <Button 
@@ -80,16 +80,14 @@
                 Command="{Binding RelativeSource={  
                             RelativeSource FindAncestor, 
 					        AncestorType={x:Type Window}}, 
-					    Path=Undo}"
-                Style="{StaticResource ToolBarButtonStyle}">
+					    Path=Undo}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/undo.png"/>
             </Button>
             <Button 
                 Command="{Binding RelativeSource={  
                             RelativeSource FindAncestor, 
 					        AncestorType={x:Type Window}}, 
-					    Path=Redo}"
-                Style="{StaticResource ToolBarButtonStyle}">
+					    Path=Redo}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/redo.png"/>
             </Button>
             <Separator />
@@ -104,8 +102,7 @@
                 Command="{Binding RelativeSource={  
                             RelativeSource FindAncestor, 
 					        AncestorType={x:Type Window}}, 
-					    Path=Puppeteer}"
-                Style="{StaticResource ToolBarButtonStyle}">
+					    Path=Puppeteer}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/puppet.png"/>
             </Button>
             <Separator />
@@ -116,7 +113,7 @@
 					        AncestorType={x:Type Window}}, 
 					    Path=TransformMode}"
                 CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Translate}"
-                Style="{StaticResource ToolBarButtonStyle}"
+                Style="{StaticResource DisabledOpacity}"
                 IsChecked="{Binding 
                     Path=WidgetMode, 
                     Converter={StaticResource BooleanToWidgetModeValueConverter}, 
@@ -131,7 +128,7 @@
 					        AncestorType={x:Type Window}}, 
 					    Path=TransformMode}"
                 CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Rotate}"
-                Style="{StaticResource ToolBarButtonStyle}"
+                Style="{StaticResource DisabledOpacity}"
                 IsChecked="{Binding 
                     Path=WidgetMode, 
                     Converter={StaticResource BooleanToWidgetModeValueConverter}, 
@@ -146,7 +143,7 @@
 					        AncestorType={x:Type Window}}, 
 					    Path=TransformMode}"
                 CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.Scale}"
-                Style="{StaticResource ToolBarButtonStyle}"
+                Style="{StaticResource DisabledOpacity}"
                 IsChecked="{Binding 
                     Path=WidgetMode, 
                     Converter={StaticResource BooleanToWidgetModeValueConverter}, 

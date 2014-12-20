@@ -30,6 +30,9 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         public event Action<ISkeletonTreeViewControl> OnLoaded;
         public event Action<ISkeletonTreeViewControl> OnUnloaded;
 
+        public ICommand SwitchEditMode { get; private set; }
+        public ICommand SelectedItemChangedCommand { get; private set; }
+
         public SkeletonTreeViewControl()
         {
             InitializeComponent();
@@ -49,6 +52,30 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             _skeletonController.SkeletonTreeViewControl = this;
             base.DataContext = _skeletonController.SkeletonViewModel;
 
+            SwitchEditMode = new RelayCommand(
+                (o) =>
+                {
+                    BoneViewModel bone = (o as BoneViewModel);
+                    bone.EditMode = !bone.EditMode;
+                },
+                (o) =>
+                {
+                    return (o as BoneViewModel) != null;
+                }
+            );
+
+            SelectedItemChangedCommand = new RelayCommand(
+                (o) =>
+                {
+                    BoneViewModel bone = (o as BoneViewModel);
+                    _skeletonController.SelectBone(bone);
+                },
+                (o) =>
+                {
+                    return (o as BoneViewModel) != null;
+                }
+            );
+
             if (OnLoaded != null)
                 OnLoaded(this);
         }
@@ -57,6 +84,29 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         {
             if (OnUnloaded != null)
                 OnUnloaded(this);
+        }
+
+        private void etb_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+
+            if (!tb.IsVisible) return;
+
+            //for some reason the textbox has to be rebound when is set to visible again
+            var binding = BindingOperations.GetBindingExpressionBase(tb, TextBox.TextProperty);
+            binding.UpdateTarget();
+
+            tb.Focus();
+        }
+
+        private void etb_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+
+            if (string.IsNullOrWhiteSpace(tb.Text)) return;
+            if (_skeletonController.GetBoneViewModelByName(tb.Text) != null) return;
+
+            tb.GetBindingExpression(TextBox.TextProperty).UpdateSource();
         }
     }
 }

@@ -4,8 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:my1="clr-namespace:StoryTimeDevKit.Controls.Puppeteer"
+             xmlns:models="clr-namespace:StoryTimeDevKit.Models.Puppeteer"
              mc:Ignorable="d" 
              d:DesignHeight="179" d:DesignWidth="619">
+    <UserControl.Resources>
+        <models:AnimationTimeLineControlsViewModel x:Key="timeLineControlsModel" />
+
+        <Style x:Key="DisabledOpacity" TargetType="{x:Type ToggleButton}">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.25"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <TabControl Grid.Row="2" HorizontalAlignment="Stretch" Name="tabControl1" VerticalAlignment="Stretch" Foreground="#FF190000">
             <TabItem Header="Assets" Name="Assets">
@@ -15,7 +27,39 @@
             </TabItem>
             <TabItem Header="Timeline" Name="Timeline">
                 <Grid>
-                    <my1:AnimationTimeLineControl Width="Auto" Height="Auto" BorderThickness="0" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    
+                    <ToggleButton 
+                        Name="RecordButton"
+                        Width ="30" Height="30"
+                        IsChecked="{Binding 
+                                        Source={StaticResource timeLineControlsModel},
+                                        Path = Record,
+                                        Mode=TwoWay}" 
+                        Style="{StaticResource DisabledOpacity}" 
+                        Margin="6,2,571,8"
+                         Grid.Row="0">
+                        <Image Width ="20" Height="20" Source="/Images/Puppeteer/AnimationTimeLine/record.png"/>
+                    </ToggleButton>
+                    <ToggleButton 
+                        Name="PlayStopButton"
+                        Width ="30" Height="30"
+                        IsChecked="{Binding 
+                                        Source={StaticResource timeLineControlsModel},
+                                        Path = Play,
+                                        Mode=OneTime}"
+                        IsEnabled ="{Binding 
+                                        Source={StaticResource timeLineControlsModel},
+                                        Path = PlayEnabled}" 
+                        Style="{StaticResource DisabledOpacity}" 
+                        Margin="42,2,536,8"
+                        Grid.Row="0">
+                        <Image Width ="20" Height="20" Source="/Images/Puppeteer/AnimationTimeLine/play.png"/>
+                    </ToggleButton>
+                    <my1:AnimationTimeLineControl Width="Auto" Height="114" BorderThickness="0" Grid.Row="1" />
                 </Grid>
             </TabItem>
         </TabControl>

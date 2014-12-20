@@ -12,5 +12,8 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
     {
         ISkeletonTreeViewControl SkeletonTreeViewControl { get; set; }
         SkeletonViewModel SkeletonViewModel { get; }
+
+        BoneViewModel GetBoneViewModelByName(string name);
+        void SelectBone(BoneViewModel model);
     }
 }

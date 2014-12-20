@@ -27,6 +27,8 @@ using Puppeteer.Armature;
 using StoryTimeDevKit.Controls;
 using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 using Puppeteer.Resources;
+using System.Collections.ObjectModel;
+using TimeLineTool;
 
 namespace StoryTimeDevKit.Controllers.Puppeteer
 {
@@ -34,13 +36,14 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         :   StackedCommandsController<IPuppeteerEditorControl>, 
             IPuppeteerController, 
             ISkeletonViewerController,
-            IPuppeteerWorkingModeContext
+            IPuppeteerWorkingModeContext,
+            IAnimationTimeLineController
     {
-        private SkeletonViewModel _skeletonViewModel;
         private Skeleton _skeleton;
 
         private IPuppeteerEditorControl _puppeteerEditorControl;
         private ISkeletonTreeViewControl _skeletonTreeViewControl;
+        private IAnimationTimeLineControl _timeLineControl;
         private PuppeteerWorkingMode _activeWorkingMode;
         private PuppeteerEditorControlData _puppeteerEdControlData;
 
@@ -130,6 +133,23 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         [Inject]
         public TransformModeViewModel TransformModeModel { get; set; }
 
+        public IAnimationTimeLineControl TimeLineControl
+        {
+            get
+            {
+                return _timeLineControl;
+            }
+            set
+            {
+                if (_timeLineControl == value) return;
+                if (_timeLineControl != null)
+                    UnassignAnimationTimeLineControlEvents();
+                _timeLineControl = value;
+                if (value != null)
+                    AssignAnimationTimeLineControlEvents();
+            }
+        }
+
         public PuppeteerController()
         {
             _workingModes =
@@ -146,13 +166,17 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         public BoneActor AddBone(Vector2 boneStartPosition)
         {
             BoneActor boneActor = Selected as BoneActor;
-            return _puppeteerEdControlData.AddBone(boneStartPosition, boneActor);
+            BoneActor child = _puppeteerEdControlData.AddBone(boneStartPosition, boneActor);
+            HandleNewBoneAdded(child);
+            return child;
         }
 
         public BoneActor AddBone(Vector2 boneStartPosition, Vector2 boneEndPosition)
         {
             BoneActor boneActor = Selected as BoneActor;
-            return _puppeteerEdControlData.AddBone(boneStartPosition, boneEndPosition, boneActor);
+            BoneActor child = _puppeteerEdControlData.AddBone(boneStartPosition, boneEndPosition, boneActor);
+            HandleNewBoneAdded(child);
+            return child;
         }
 
         public BaseActor GetIntersectedActor(Vector2 position)
@@ -163,6 +187,17 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         public void EnableTransformationUI(bool enable)
         {
             _puppeteerEdControlData.EnableUI = enable;
+        }
+
+        public BoneViewModel GetBoneViewModelByName(string name)
+        {
+            return _puppeteerEdControlData.GetBoneViewModelByName(name);
+        }
+
+        public void SelectBone(BoneViewModel model)
+        {
+            BoneActor actor = _puppeteerEdControlData.GetBoneActorFrom(model);
+            Selected = actor;
         }
 
         private void AssignPuppeteerEditorControlEvents()
@@ -199,6 +234,16 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         {
             _skeletonTreeViewControl.OnLoaded -= SkeletonViewerOnLoadedHandler;
             _skeletonTreeViewControl.OnUnloaded -= SkeletonViewerOnUnloadedHandler;
+        }
+
+        private void AssignAnimationTimeLineControlEvents()
+        {
+            _timeLineControl.OnTimeMarkerChange += OnTimeMarkerChangeHandler;
+        }
+
+        private void UnassignAnimationTimeLineControlEvents()
+        {
+            _timeLineControl.OnTimeMarkerChange -= OnTimeMarkerChangeHandler;
         }
 
         private void PuppeteerOnLoadedHandler(IPuppeteerEditorControl control)
@@ -297,6 +342,18 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                 RenderingOffset = dropPosition
             };
             _puppeteerEdControlData.AddRenderableAsset(asset);
+        }
+
+        private void OnTimeMarkerChangeHandler(double seconds)
+        {
+            _puppeteerEdControlData.Seconds = seconds;
+        }
+
+        private void HandleNewBoneAdded(BoneActor actor)
+        {
+            _timeLineControl.AddTimeLine(
+                _puppeteerEdControlData.GetBoneViewModelFromActor(actor),
+                _puppeteerEdControlData.GetTimeLineFor(actor));
         }
     }
 }

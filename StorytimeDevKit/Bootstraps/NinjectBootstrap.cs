@@ -23,7 +23,7 @@ namespace StoryTimeDevKit.Bootstraps
 
         internal static void PuppeteerConfigure(IKernel kernel)
         {
-            kernel.Bind<IPuppeteerController, ISkeletonViewerController>().To<PuppeteerController>().InSingletonScope();
+            kernel.Bind<IPuppeteerController, ISkeletonViewerController, IAnimationTimeLineController>().To<PuppeteerController>().InSingletonScope();
             kernel.Bind<TransformModeViewModel>().To<TransformModeViewModel>().InSingletonScope();
         }
     }

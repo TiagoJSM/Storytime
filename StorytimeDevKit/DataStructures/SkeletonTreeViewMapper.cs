@@ -10,8 +10,10 @@ using StoryTimeCore.Extensions;
 
 namespace StoryTimeDevKit.DataStructures
 {
-    public class SkeletonMapper
+    public class SkeletonTreeViewMapper
     {
+        private const string DefaultName = "Bone";
+
         private Dictionary<BoneActor, BoneViewModel> _actorDictionary;
         private INodeAddedCallback _callback;
         private SkeletonViewModel _skeletonVM;
@@ -19,7 +21,7 @@ namespace StoryTimeDevKit.DataStructures
 
         public SkeletonViewModel SkeletonViewModel { get { return _skeletonVM; } }
 
-        public SkeletonMapper(INodeAddedCallback callback, ICommand attachToBoneCommand)
+        public SkeletonTreeViewMapper(INodeAddedCallback callback, ICommand attachToBoneCommand)
         {
             _actorDictionary = new Dictionary<BoneActor, BoneViewModel>();
             _callback = callback;
@@ -35,7 +37,7 @@ namespace StoryTimeDevKit.DataStructures
                 parentVM = _actorDictionary[actor.Parent];
             }
 
-            BoneViewModel boneVM = new BoneViewModel(parentVM, _callback, _attachToBoneCommand);
+            BoneViewModel boneVM = new BoneViewModel(parentVM, _callback, _attachToBoneCommand, GenerateName());
             _actorDictionary.Add(actor, boneVM);
             if(parentVM != null)
                 parentVM.Children.Add(boneVM);
@@ -46,6 +48,30 @@ namespace StoryTimeDevKit.DataStructures
         public BoneActor GetBoneActorFrom(BoneViewModel model)
         {
             return _actorDictionary.GetKeyFromValue(model);
+        }
+
+        public BoneViewModel GetBoneViewModelByName(string name)
+        {
+            return _actorDictionary.Values.FirstOrDefault(b => b.Name == name);
+        }
+
+        public BoneViewModel GetBoneViewModelFromActor(BoneActor actor)
+        {
+            if (_actorDictionary.ContainsKey(actor))
+            {
+                return _actorDictionary[actor];
+            }
+            return null;
+        }
+
+        private string GenerateName()
+        {
+            for (int idx = 1; ; idx++)
+            {
+                string name = DefaultName + idx;
+                if (GetBoneViewModelByName(name) == null)
+                    return name;
+            }
         }
     }
 }

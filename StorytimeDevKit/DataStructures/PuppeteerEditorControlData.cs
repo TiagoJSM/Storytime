@@ -18,26 +18,32 @@ using StoryTimeCore.Resources.Graphic;
 using StoryTimeDevKit.DataStructures.Factories;
 using Puppeteer.Resources;
 using StoryTimeDevKit.Commands.UICommands.Puppeteer;
+using StoryTimeDevKit.DataStructures.BindingEngines;
+using System.Collections.ObjectModel;
+using TimeLineTool;
 
 namespace StoryTimeDevKit.DataStructures
 {
-    public class PuppeteerEditorControlData : INodeAddedCallback
+    public class PuppeteerEditorControlData : INodeAddedCallback, IPuppeteerSceneOjectActionContext
     {
         private TransformModeViewModel _transformModeModel;
-        private BoneMapper _boneMapper;
-        private SkeletonMapper _skeletonMapper;
+        
+        private SceneBonesMapper _sceneBoneMapper;
+        private SkeletonTreeViewMapper _skeletonTreeViewMapper;
+        private AnimationTimeLineMapper _animationTimeLineMapper;
+        
         private Scene _scene;
         private ArmatureActor _armatureActor;
 
         private TranslateSceneWidget _translateWidget;
         private RotateSceneWidget _rotateWidget;
-        private BindingEngine<TranslateSceneWidget, SceneObjectViewModel> _translateBindingEngine;
-        private BindingEngine<RotateSceneWidget, SceneObjectViewModel> _rotateBindingEngine;
+        private TranslateSceneObjectBindingEngine _translateBindingEngine;
+        private RotateSceneObjectBindingEngine _rotateBindingEngine;
         private SceneObjectViewModel _sceneObjectModel;
 
         private PuppeteerSceneObjectFactory _factory;
         
-        public SkeletonViewModel SkeletonViewModel { get { return _skeletonMapper.SkeletonViewModel; } }
+        public SkeletonViewModel SkeletonViewModel { get { return _skeletonTreeViewMapper.SkeletonViewModel; } }
 
         public object Selected
         {
@@ -66,6 +72,7 @@ namespace StoryTimeDevKit.DataStructures
                 return _sceneObjectModel.SceneObject.Object as BoneAttachedRenderableAsset; 
             } 
         }
+        public double? Seconds { get; set; }
 
         public bool EnableUI
         {
@@ -84,24 +91,14 @@ namespace StoryTimeDevKit.DataStructures
             TransformModeViewModel transformModeModel, Scene sene)
         {
             _sceneObjectModel = new SceneObjectViewModel();
-            _boneMapper = new BoneMapper();
+            _sceneBoneMapper = new SceneBonesMapper();
+            _animationTimeLineMapper = new AnimationTimeLineMapper();
+
             _translateWidget = translateWidg;
             _rotateWidget = rotateWidg;
 
-            _translateBindingEngine =
-                    new BindingEngine<TranslateSceneWidget, SceneObjectViewModel>(
-                        _translateWidget, _sceneObjectModel)
-                            .Bind(tw => tw.Position, a => a.Position)
-                            .Bind(tw => tw.Active, a => a.TranslateWidgetMode)
-                            .Bind(tw => tw.Visible, a => a.TranslateWidgetMode);
-
-            _rotateBindingEngine =
-                    new BindingEngine<RotateSceneWidget, SceneObjectViewModel>(
-                        _rotateWidget, _sceneObjectModel)
-                            .Bind(tw => tw.Position, a => a.Position)
-                            .Bind(tw => tw.Rotation, a => a.Rotation)
-                            .Bind(tw => tw.Active, a => a.RotateWidgetMode)
-                            .Bind(tw => tw.Visible, a => a.RotateWidgetMode);
+            _translateBindingEngine = new TranslateSceneObjectBindingEngine(_translateWidget, _sceneObjectModel);
+            _rotateBindingEngine = new RotateSceneObjectBindingEngine(_rotateWidget, _sceneObjectModel);
 
             _transformModeModel = transformModeModel;
             _transformModeModel.OnWidgetModeChanges += OnWidgetModeChanges;
@@ -111,13 +108,12 @@ namespace StoryTimeDevKit.DataStructures
             _rotateWidget.OnRotation += OnRotateHandler;
 
             _scene = sene;
-            _skeletonMapper = new SkeletonMapper(this, new AttachToBoneCommand(this));
+            _skeletonTreeViewMapper = new SkeletonTreeViewMapper(this, new AttachToBoneCommand(this));
             _armatureActor = new ArmatureActor();
             _armatureActor.Body = _scene.PhysicalWorld.CreateRectangularBody(1, 1, 1);
             _scene.AddActor(_armatureActor);
 
-            _factory = 
-                new PuppeteerSceneObjectFactory(_boneMapper);
+            _factory = new PuppeteerSceneObjectFactory(this);
         }
 
         public void UnassignEvents()
@@ -132,17 +128,18 @@ namespace StoryTimeDevKit.DataStructures
             actor.Body = _scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f);
             actor.Body.Position = boneStartPosition;
             _scene.AddActor(actor);
-            _boneMapper.Add(actor);
-            _skeletonMapper.AddBone(actor);
+            _sceneBoneMapper.Add(actor);
+            _skeletonTreeViewMapper.AddBone(actor);
+            _animationTimeLineMapper.AddTimeLineFor(actor);
             return actor;
         }
 
         public BoneActor AddBone(Vector2 boneStartPosition, Vector2 boneEndPosition, BoneActor parent)
         {
             BoneActor actor = AddBone(boneStartPosition, parent);
-            Bone bone = _boneMapper.GetFromActor(actor);
+            Bone bone = _sceneBoneMapper.GetFromActor(actor);
             bone.AbsoluteEnd = boneEndPosition;
-            _boneMapper.SynchronizeBoneChain(bone);
+            _sceneBoneMapper.SynchronizeBoneChain(bone);
             return actor;
         }
 
@@ -157,8 +154,44 @@ namespace StoryTimeDevKit.DataStructures
 
         public Bone GetBoneFrom(BoneViewModel model)
         {
-            BoneActor actor = _skeletonMapper.GetBoneActorFrom(model);
-            return _boneMapper.GetFromActor(actor);
+            BoneActor actor = _skeletonTreeViewMapper.GetBoneActorFrom(model);
+            return _sceneBoneMapper.GetFromActor(actor);
+        }
+
+        public BoneActor GetBoneActorFrom(BoneViewModel model)
+        {
+            return _skeletonTreeViewMapper.GetBoneActorFrom(model);
+        }
+
+        public BoneViewModel GetBoneViewModelByName(string name)
+        {
+            return _skeletonTreeViewMapper.GetBoneViewModelByName(name);
+        }
+
+        public BoneViewModel GetBoneViewModelFromActor(BoneActor actor)
+        {
+            return _skeletonTreeViewMapper.GetBoneViewModelFromActor(actor);
+        }
+
+        public ObservableCollection<ITimeLineDataItem> GetTimeLineFor(BoneActor actor)
+        {
+            return _animationTimeLineMapper.GetCollectionBoundToActor(actor);
+        }
+
+        public void SynchronizeBoneChain(Bone bone)
+        {
+            _sceneBoneMapper.SynchronizeBoneChain(bone);
+        }
+
+        public void AddAnimationFrameFor(BoneActor actor)
+        {
+            if (Seconds == null) return;
+            _animationTimeLineMapper.AddAnimationFrame(actor, GetFromActor(actor), Seconds.Value);
+        }
+
+        public Bone GetFromActor(BoneActor actor)
+        {
+            return _sceneBoneMapper.GetFromActor(actor);
         }
 
         private void OnWidgetModeChanges(WidgetMode mode)

@@ -13,6 +13,7 @@ namespace StoryTimeDevKit.Models.Puppeteer
     public class BoneViewModel : TreeViewItemViewModel
     {
         private string _name;
+        private bool _editMode;
 
         public string Name
         {
@@ -28,17 +29,32 @@ namespace StoryTimeDevKit.Models.Puppeteer
             }
         }
 
+        public bool EditMode
+        {
+            get
+            {
+                return _editMode;
+            }
+            set
+            {
+                if (_editMode == value) return;
+                _editMode = value;
+                OnPropertyChanged("EditMode");
+            }
+        }
+
         public ICommand AttachToBoneCommand { get; private set; }
 
-        public BoneViewModel(INodeAddedCallback nodeAddCB, ICommand attachToBoneCommand)
-            : this(null, nodeAddCB, attachToBoneCommand)
+        public BoneViewModel(INodeAddedCallback nodeAddCB, ICommand attachToBoneCommand, string name)
+            : this(null, nodeAddCB, attachToBoneCommand, name)
         {
         }
 
-        public BoneViewModel(TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB, ICommand attachToBoneCommand)
+        public BoneViewModel(
+            TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB, ICommand attachToBoneCommand, string name)
             : base(parent, nodeAddCB, false)
         {
-            Name = "Bone";
+            Name = name;
             AttachToBoneCommand = attachToBoneCommand;
         }
     }

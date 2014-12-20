@@ -8,13 +8,14 @@ using StoryTimeDevKit.Entities.Actors;
 using StoryTimeCore.Physics;
 using StoryTimeDevKit.DataStructures;
 using Puppeteer.Armature;
+using StoryTimeDevKit.DataStructures.Factories;
 
 namespace StoryTimeDevKit.Models.SceneObjects
 {
     public class BoneActorSceneObject : ISceneObject
     {
         private BoneActor _boneActor;
-        private BoneMapper _boneMapper;
+        private IPuppeteerSceneOjectActionContext _context;
         private Bone _bone;
 
         public event OnPositionChanges OnPositionChanges;
@@ -41,23 +42,28 @@ namespace StoryTimeDevKit.Models.SceneObjects
             }
         }
 
-        public BoneActorSceneObject(BoneActor boneActor, BoneMapper boneMapper)
+        public BoneActorSceneObject(BoneActor boneActor, IPuppeteerSceneOjectActionContext context)
         {
             _boneActor = boneActor;
-            _boneMapper = boneMapper;
-            _bone = _boneMapper.GetFromActor(_boneActor);
+            _context = context;
+            _bone = _context.GetFromActor(_boneActor);
         }
 
         private void SynchronizeBones()
         {
-            _boneMapper.SynchronizeBoneChain(_bone);
+            _context.SynchronizeBoneChain(_bone);
         }
 
+        private void AddAnimationFrame()
+        {
+            _context.AddAnimationFrameFor(_boneActor);
+        }
 
         public void Translate(Vector2 translation)
         {
             _bone.AbsolutePosition = _bone.AbsolutePosition + translation;
             SynchronizeBones();
+            AddAnimationFrame(); 
             if (OnPositionChanges != null)
                 OnPositionChanges(_boneActor.Body.Position);
         }

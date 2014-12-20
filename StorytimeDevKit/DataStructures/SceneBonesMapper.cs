@@ -9,11 +9,11 @@ using StoryTimeCore.Extensions;
 
 namespace StoryTimeDevKit.DataStructures
 {
-    public class BoneMapper
+    public class SceneBonesMapper
     {
         private Dictionary<BoneActor, Bone> _boneDictionary;
 
-        public BoneMapper()
+        public SceneBonesMapper()
         {
             _boneDictionary = new Dictionary<BoneActor, Bone>();
         }
