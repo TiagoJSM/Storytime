@@ -75,10 +75,8 @@ namespace StoryTimeDevKit.Controllers.Scenes
                 throw new InvalidArgumentOnControllerMethodException(
                     this, "AddActor", "actor.ActorType", typeof(Type), LocalizedTexts.AddingActorError);
 
-            BaseActor ba = Activator.CreateInstance(actor.ActorType) as BaseActor;
-            PopulateActorWithDefaultValuesIfNeeded(ba, position, s.Scene);
-
-            IReversibleCommand command = new AddActorCommand(s.Scene, ba);
+            IReversibleCommand command = 
+                new AddActorCommand(s.Scene, actor.ActorType, position, PopulateActorWithDefaultValuesIfNeeded);
             SelectedStack.Push(command);
         }
 
@@ -119,7 +117,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
             SelectedStack.Push(command);
         }
 
-        private void PopulateActorWithDefaultValuesIfNeeded(BaseActor ba, Vector2 position, Scene s)
+        private void PopulateActorWithDefaultValuesIfNeeded(BaseActor ba, Vector2 position)
         {
             if (ba.RenderableAsset == null)
             {
@@ -128,7 +126,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
                 asset.Texture2D = bitmap;
                 ba.RenderableAsset = asset;
                 string name = "one";
-                ba.Body = s.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
+                ba.Body = ba.Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
                 ba.Body.Position = position;
             }
         }

@@ -84,13 +84,10 @@ namespace StoryTime
             Scene s = new Scene();
 
             GraphicsContext.SetCamera(s.Camera);
-            _actor = new Actor()
-            {
-                RenderableAsset = _asset
-            };
 
             s.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
-            s.AddActor(_actor);
+            _actor = s.AddActor<Actor>();
+            _actor.RenderableAsset = _asset;
             _gameWorld = new GameWorld(GraphicsContext);
             _gameWorld.AddScene(s);
             //rectangle = new Texture2D(GraphicsDevice, 2, 2);

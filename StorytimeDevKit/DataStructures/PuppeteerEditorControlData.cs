@@ -109,9 +109,7 @@ namespace StoryTimeDevKit.DataStructures
 
             _scene = sene;
             _skeletonTreeViewMapper = new SkeletonTreeViewMapper(this, new AttachToBoneCommand(this));
-            _armatureActor = new ArmatureActor();
-            _armatureActor.Body = _scene.PhysicalWorld.CreateRectangularBody(1, 1, 1);
-            _scene.AddActor(_armatureActor);
+            _scene.AddActor<ArmatureActor>();
 
             _factory = new PuppeteerSceneObjectFactory(this);
         }
@@ -123,11 +121,10 @@ namespace StoryTimeDevKit.DataStructures
 
         public BoneActor AddBone(Vector2 boneStartPosition, BoneActor parent)
         {
-            BoneActor actor = new BoneActor();
+            BoneActor actor = _scene.AddActor<BoneActor>();
             actor.Parent = parent;
-            actor.Body = _scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f);
             actor.Body.Position = boneStartPosition;
-            _scene.AddActor(actor);
+            
             _sceneBoneMapper.Add(actor);
             _skeletonTreeViewMapper.AddBone(actor);
             _animationTimeLineMapper.AddTimeLineFor(actor);

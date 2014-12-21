@@ -133,17 +133,24 @@ namespace StoryTimeFramework.WorldManagement
             }
         }
 
-        public void AddActor(BaseActor ba)
+        public TActor AddActor<TActor>() where TActor : BaseActor
         {
-            if (_baseActors.Contains(ba)) return;
+            return AddActor(typeof(TActor)) as TActor;
+        }
 
-            ba.Scene = this;
-            ba.Initialize();
+        public BaseActor AddActor(Type actorType)
+        {
+            BaseActor actor = Activator.CreateInstance(actorType) as BaseActor;
 
-            _baseActors.Add(ba);
-            OrderedActor oa = new OrderedActor(ba, _nextIndex);
+            actor.Scene = this;
+            actor.Initialize();
+
+            _baseActors.Add(actor);
+            OrderedActor oa = new OrderedActor(actor, _nextIndex);
             _nextIndex++;
             AddOrderedAsset(oa);
+
+            return actor;
         }
 
         public void RemoveActor(BaseActor ba)
@@ -235,7 +242,6 @@ namespace StoryTimeFramework.WorldManagement
                 oa.ZOrder = _nextIndex;
                 _nextIndex++;
             }
-
         }
     }
 }

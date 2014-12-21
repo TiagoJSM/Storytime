@@ -79,6 +79,7 @@ namespace StoryTimeDevKit.Entities.Actors
 
         private void OnCreatedHandler()
         {
+            Body = Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f);
             RenderableAsset = new BoneRenderableAsset(Scene.GraphicsContext);
         }
 

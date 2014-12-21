@@ -5,28 +5,35 @@ using System.Text;
 using StoryTimeFramework.WorldManagement;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeDevKit.Controllers;
+using Microsoft.Xna.Framework;
 
 namespace StoryTimeDevKit.Commands.ReversibleCommands
 {
     public class AddActorCommand : IReversibleCommand
     {
         private Scene _scene;
-        private BaseActor _ba;
+        private Type _actorType;
+        Action<BaseActor, Vector2> _initializer;
+        private BaseActor _actor;
+        private Vector2 _position;
 
-        public AddActorCommand(Scene scene, BaseActor ba)
+        public AddActorCommand(Scene scene, Type actorType, Vector2 position, Action<BaseActor, Vector2> initializer)
         {
             _scene = scene;
-            _ba = ba;
+            _actorType = actorType;
+            _initializer = initializer;
+            _position = position;
         }
 
         public void Run()
         {
-            _scene.AddActor(_ba);
+            _actor = _scene.AddActor(_actorType);
+            _initializer(_actor, _position);
         }
 
         public void Rollback()
         {
-            _scene.RemoveActor(_ba);
+            _scene.RemoveActor(_actor);
         }
     }
 }
