@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
 using StoryTimeCore.DataStructures;
 using StoryTimeDevKit.Entities.SceneWidgets.Interfaces.Puppeteer;
+using Puppeteer.Armature;
 
 namespace StoryTimeDevKit.Entities.Actors
 {
@@ -66,6 +67,7 @@ namespace StoryTimeDevKit.Entities.Actors
                     OnParentChange(this);
             }
         }
+        public Bone AssignedBone { get; set; }
 
         public BoneActor()
         {

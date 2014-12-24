@@ -46,7 +46,7 @@ namespace StoryTimeDevKit.Models.SceneObjects
         {
             _boneActor = boneActor;
             _context = context;
-            _bone = _context.GetFromActor(_boneActor);
+            _bone = _boneActor.AssignedBone;
         }
 
         private void SynchronizeBones()

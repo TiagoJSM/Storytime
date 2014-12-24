@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
+namespace StoryTimeDevKit.Controllers
 {
-    public class PuppeteerWorkingMode
+    public class WorkingMode
     {
         public virtual void OnEnterMode() { }
         public virtual void OnLeaveMode() { }

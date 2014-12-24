@@ -6,14 +6,15 @@ using StoryTimeDevKit.DataStructures;
 using System.Windows.Input;
 using StoryTimeDevKit.Models.Puppeteer;
 using Puppeteer.Armature;
+using StoryTimeDevKit.Controllers.Puppeteer;
 
 namespace StoryTimeDevKit.Commands.UICommands.Puppeteer
 {
     public class AttachToBoneCommand : BaseCommand
     {
-        PuppeteerEditorControlData _controlData;
+        PuppeteerController _controlData;
 
-        public AttachToBoneCommand(PuppeteerEditorControlData controlData)
+        public AttachToBoneCommand(PuppeteerController controlData)
         {
             _controlData = controlData;
         }

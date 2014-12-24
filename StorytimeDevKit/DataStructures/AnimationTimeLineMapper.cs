@@ -27,7 +27,7 @@ namespace StoryTimeDevKit.DataStructures
             _mapper.Add(actor, new ObservableCollection<ITimeLineDataItem>());
         }
 
-        public void AddAnimationFrame(BoneActor actor, Bone bone, double animationEndTimeInSeconds)
+        public void AddAnimationFrame(BoneActor actor, double animationEndTimeInSeconds)
         {
             ITimeLineDataItem frameAtTime = GetFrameAt(actor, animationEndTimeInSeconds);
             if (frameAtTime != null) return;

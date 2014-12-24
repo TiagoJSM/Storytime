@@ -14,7 +14,6 @@ namespace StoryTimeDevKit.DataStructures.Factories
     {
         void SynchronizeBoneChain(Bone bone);
         void AddAnimationFrameFor(BoneActor actor);
-        Bone GetFromActor(BoneActor actor);
     }
 
     public class PuppeteerSceneObjectFactory : TypeConfigurableSceneObjectFactory

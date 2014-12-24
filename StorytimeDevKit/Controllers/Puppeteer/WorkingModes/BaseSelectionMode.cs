@@ -7,7 +7,7 @@ using StoryTimeFramework.Entities.Actors;
 
 namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
 {
-    public abstract class BaseSelectionMode : PuppeteerWorkingMode
+    public abstract class BaseSelectionMode : WorkingMode
     {
         private bool _intersectedWidget;
 

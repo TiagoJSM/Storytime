@@ -7,7 +7,7 @@ using StoryTimeDevKit.Entities.Actors;
 
 namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
 {
-    public class AddBoneMode : PuppeteerWorkingMode
+    public class AddBoneMode : WorkingMode
     {
         private IPuppeteerWorkingModeContext _context;
 

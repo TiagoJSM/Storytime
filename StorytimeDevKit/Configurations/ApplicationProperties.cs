@@ -11,5 +11,6 @@ namespace StoryTimeDevKit.Configurations
         public static string PuppeteerDependencyInjectorKey { get { return "PuppeteerDependencyInjectorKey"; } }
         public static string ISceneViewerGameWorldArgName { get { return "world"; } }
         public static string IGameObjectsControllerArgName { get { return "nodeAddCB"; } }
+        public static string IPuppeteerControllerGameWorldArgName { get { return "gameWorld"; } }
     }
 }

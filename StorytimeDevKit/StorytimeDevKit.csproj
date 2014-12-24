@@ -112,9 +112,10 @@
     <Compile Include="Controllers\Puppeteer\WorkingModes\AddBoneMode.cs" />
     <Compile Include="Controllers\Puppeteer\WorkingModes\AssetSelectionMode.cs" />
     <Compile Include="Controllers\Puppeteer\WorkingModes\BoneSelectionMode.cs" />
-    <Compile Include="Controllers\Puppeteer\WorkingModes\PuppeteerWorkingMode.cs" />
+    <Compile Include="Controllers\Puppeteer\WorkingMode.cs" />
     <Compile Include="Controllers\Puppeteer\WorkingModes\IPuppeteerWorkingModeContext.cs" />
     <Compile Include="Controllers\Puppeteer\WorkingModes\BaseSelectionMode.cs" />
+    <Compile Include="Controllers\TemplateControllers\EditableSceneController.cs" />
     <Compile Include="Controllers\TemplateControllers\MultiStackedCommandsController.cs" />
     <Compile Include="Controllers\TemplateControllers\StackedCommandsController.cs" />
     <Compile Include="Controls\IMouseInteractiveControl.cs" />
@@ -163,7 +164,6 @@
     <Compile Include="Controls\Templates\BaseSceneUserControl.cs" />
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToWidgetModeValueConverter.cs" />
     <Compile Include="DataStructures\SceneBonesMapper.cs" />
-    <Compile Include="DataStructures\PuppeteerEditorControlData.cs" />
     <Compile Include="DataStructures\SceneControlData.cs" />
     <Compile Include="DataStructures\SkeletonTreeViewMapper.cs" />
     <Compile Include="Delegates\SceneViewerDelegates.cs" />

@@ -189,6 +189,7 @@ namespace Puppeteer.Armature
             :this()
         {
             Parent = parent;
+            Parent.AddChildren(this);
         }
 
         public void AddChildren(Bone children)

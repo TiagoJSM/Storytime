@@ -10,6 +10,6 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
     public interface IPuppeteerController : IStackedCommandsController<IPuppeteerEditorControl>
     {
         IPuppeteerEditorControl PuppeteerControl { get; set; }
-        GameWorld GameWorld { get; set; }
+        GameWorld GameWorld { get; }
     }
 }

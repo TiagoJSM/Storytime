@@ -11,60 +11,51 @@ namespace StoryTimeDevKit.DataStructures
 {
     public class SceneBonesMapper
     {
-        private Dictionary<BoneActor, Bone> _boneDictionary;
+        private Dictionary<Bone, BoneActor> _boneDictionary;
 
         public SceneBonesMapper()
         {
-            _boneDictionary = new Dictionary<BoneActor, Bone>();
+            _boneDictionary = new Dictionary<Bone, BoneActor>();
         }
 
         public Bone Add(BoneActor actor)
         {
-            Bone parent = null;
+            Bone bone = null;
             if (actor.Parent != null)
             {
-                _boneDictionary.TryGetValue(actor.Parent, out parent);
+                Bone parent = actor.Parent.AssignedBone;
+                bone = new Bone(parent);
             }
-
-            Bone bone = new Bone(parent);
-            if (parent != null)
+            else 
             {
-                parent.AddChildren(bone);
+                bone = new Bone();
             }
 
-            SetBoneData(actor, bone);
+            actor.AssignedBone = bone;
+            SetBoneData(actor);
 
-            //actor.OnPositionChange += OnPositionChangeHandler;
             actor.OnParentChange += OnParentChangeHandler;
 
-            _boneDictionary.Add(actor, bone);
-            return bone;
-        }
-
-        public Bone GetFromActor(BoneActor actor)
-        {
-            Bone bone;
-            _boneDictionary.TryGetValue(actor, out bone);
+            _boneDictionary.Add(bone, actor);
             return bone;
         }
 
         public void SynchronizeBoneChain(Bone bone)
         {
-            BoneActor actor = _boneDictionary.GetKeyFromValue(bone);
-            SetActorData(actor, bone);
+            BoneActor actor = _boneDictionary[bone];
+            SetActorData(actor);
             PropagateBoneChanges(bone);
         }
 
         private void OnPositionChangeHandler(BoneActor actor)
         {
-            Bone bone = _boneDictionary[actor];
-            SetBoneData(actor, bone);
-            PropagateBoneChanges(bone);
+            SetBoneData(actor);
+            PropagateBoneChanges(actor.AssignedBone);
         }
 
         private void OnParentChangeHandler(BoneActor actor)
         {
-            Bone bone = _boneDictionary[actor];
+            Bone bone = actor.AssignedBone;
             if (actor.Parent == null)
             {
                 if (bone.Parent != null)
@@ -74,7 +65,7 @@ namespace StoryTimeDevKit.DataStructures
                 return;
             }
 
-            Bone parentBone = _boneDictionary[actor.Parent];
+            Bone parentBone = actor.Parent.AssignedBone;
             if (bone.Parent != null)
             {
                 bone.Parent.RemoveChildren(bone);
@@ -82,10 +73,10 @@ namespace StoryTimeDevKit.DataStructures
             parentBone.AddChildren(bone);
         }
 
-        private void SetBoneData(BoneActor actor, Bone bone)
+        private void SetBoneData(BoneActor actor)
         {
-            bone.AbsolutePosition = actor.Body.Position;
-            bone.AbsoluteEnd = actor.BoneEnd;
+            actor.AssignedBone.AbsolutePosition = actor.Body.Position;
+            actor.AssignedBone.AbsoluteEnd = actor.BoneEnd;
         }
 
         private void PropagateBoneChanges(Bone bone)
@@ -93,16 +84,16 @@ namespace StoryTimeDevKit.DataStructures
             IEnumerable<Bone> children = bone.Children;
             foreach (Bone child in children)
             {
-                BoneActor actor = _boneDictionary.GetKeyFromValue(child);
-                SetActorData(actor, child);
+                BoneActor actor = _boneDictionary[child];
+                SetActorData(actor);
                 PropagateBoneChanges(child);
             }
         }
 
-        private void SetActorData(BoneActor actor, Bone bone)
+        private void SetActorData(BoneActor actor)
         {
-            actor.Body.Position = bone.AbsolutePosition;
-            actor.BoneEnd = bone.AbsoluteEnd;
+            actor.Body.Position = actor.AssignedBone.AbsolutePosition;
+            actor.BoneEnd = actor.AssignedBone.AbsoluteEnd;
         }
     }
 }

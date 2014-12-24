@@ -62,11 +62,16 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
             _game = new MyGame(PuppeteerEditor.Handle);
 
+            ConstructorArgument controlArg =
+                new ConstructorArgument(
+                    ApplicationProperties.IPuppeteerControllerGameWorldArgName,
+                    _game.GameWorld);
+
             _puppeteerController =
                 DependencyInjectorHelper
                             .PuppeteerKernel
-                            .Get<IPuppeteerController>();
-            _puppeteerController.GameWorld = _game.GameWorld;
+                            .Get<IPuppeteerController>(controlArg);
+            //_puppeteerController.GameWorld = _game.GameWorld;
 
             _puppeteerController.PuppeteerControl = this;
 
