@@ -37,11 +37,19 @@ namespace StoryTimeDevKit.Models.SceneObjects
                 OnPositionChanges(_boneAttachedAsset.RenderingOffset);
         }
 
+        public void EndTranslation()
+        {
+        }
+
         public void Rotate(float rotation)
         {
             _boneAttachedAsset.Rotation = _boneAttachedAsset.Rotation + rotation;
             if (OnRotationChanges != null)
                 OnRotationChanges(_boneAttachedAsset.Rotation);
+        }
+
+        public void EndRotation()
+        {
         }
 
         public BoneAttachedAssetSceneObject(BoneAttachedRenderableAsset boneAttachedAsset)

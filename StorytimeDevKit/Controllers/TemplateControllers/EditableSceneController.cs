@@ -134,6 +134,7 @@ namespace StoryTimeDevKit.Controllers.TemplateControllers
             _rotateBindingEngine = new RotateSceneObjectBindingEngine(RotateWidget, SceneObjectViewModel);
 
             TranslateWidget.OnTranslate += OnTranslateHandler;
+            TranslateWidget.OnTranslationComplete += OnTranslationComplete;
             RotateWidget.OnRotation += OnRotateHandler;
         }
 
@@ -145,6 +146,11 @@ namespace StoryTimeDevKit.Controllers.TemplateControllers
         private void OnTranslateHandler(Vector2 translation)
         {
             SceneObjectViewModel.SceneObject.Translate(translation);
+        }
+
+        private void OnTranslationComplete(Vector2 fromPosition, Vector2 toPosition)
+        {
+            SceneObjectViewModel.SceneObject.EndTranslation();
         }
 
         private void OnRotateHandler(float rotation)

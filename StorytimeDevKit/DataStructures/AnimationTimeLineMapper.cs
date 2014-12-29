@@ -15,65 +15,65 @@ namespace StoryTimeDevKit.DataStructures
 {
     public class AnimationTimeLineMapper
     {
-        private Dictionary<BoneActor, ObservableCollection<ITimeLineDataItem>> _mapper;
+        private Dictionary<BoneActor, ObservableCollection<TimeFrame>> _mapper;
 
         public AnimationTimeLineMapper()
         {
-            _mapper = new Dictionary<BoneActor, ObservableCollection<ITimeLineDataItem>>();
+            _mapper = new Dictionary<BoneActor, ObservableCollection<TimeFrame>>();
         }
 
         public void AddTimeLineFor(BoneActor actor)
         {
-            _mapper.Add(actor, new ObservableCollection<ITimeLineDataItem>());
+            _mapper.Add(actor, new ObservableCollection<TimeFrame>());
         }
 
         public void AddAnimationFrame(BoneActor actor, double animationEndTimeInSeconds)
         {
-            ITimeLineDataItem frameAtTime = GetFrameAt(actor, animationEndTimeInSeconds);
+            TimeFrame frameAtTime = GetFrameAt(actor, animationEndTimeInSeconds);
             if (frameAtTime != null) return;
 
-            ObservableCollection<ITimeLineDataItem> dataCollection = GetCollectionBoundToActor(actor);
-            AnimationDataItem frame = GetLastAnimationFrame(dataCollection);
+            ObservableCollection<TimeFrame> dataCollection = GetCollectionBoundToActor(actor);
+            TimeFrame frame = GetLastTimeFrame(dataCollection);
 
-            AnimationDataItem item = null;
+            TimeFrame item = null;
             if (frame == null)
             {
-                item = new AnimationDataItem()
+                item = new TimeFrame()
                     {
-                        StartTime = PuppeteerDefaults.StartDate,
-                        EndTime = PuppeteerDefaults.StartDate.AddHours(animationEndTimeInSeconds)
+                        StartTime = new TimeSpan(),
+                        EndTime = TimeSpan.FromSeconds(animationEndTimeInSeconds)
                     };
             }
             else
             {
-                item = new AnimationDataItem()
+                item = new TimeFrame()
                 {
-                    StartTime = frame.StartTime,
-                    EndTime = PuppeteerDefaults.StartDate.AddHours(animationEndTimeInSeconds)
+                    StartTime = frame.EndTime,
+                    EndTime = frame.EndTime.Add(TimeSpan.FromSeconds(animationEndTimeInSeconds))
                 };
             }
             dataCollection.Add(item);
         }
 
-        public ObservableCollection<ITimeLineDataItem> GetCollectionBoundToActor(BoneActor actor)
+        public ObservableCollection<TimeFrame> GetCollectionBoundToActor(BoneActor actor)
         {
             if (_mapper.ContainsKey(actor))
                 return _mapper[actor];
             return null;
         }
 
-        public ITimeLineDataItem GetFrameAt(BoneActor actor, double seconds)
+        public TimeFrame GetFrameAt(BoneActor actor, double seconds)
         {
-            ObservableCollection<ITimeLineDataItem> items = GetCollectionBoundToActor(actor);
+            ObservableCollection<TimeFrame> items = GetCollectionBoundToActor(actor);
             if (items == null) return null;
-            DateTime convertedSeconds = PuppeteerDefaults.StartDate.AddHours(seconds);
-            return items.FirstOrDefault(i => i.IsIntervalIntesected(convertedSeconds));
+            TimeSpan convertedSeconds = TimeSpan.FromSeconds(seconds);
+            return items.FirstOrDefault(i => i.IsIntervalIntesected(convertedSeconds, true));
         }
 
-        private AnimationDataItem GetLastAnimationFrame(ObservableCollection<ITimeLineDataItem> items)
+        private TimeFrame GetLastTimeFrame(ObservableCollection<TimeFrame> items)
         {
             if (!items.Any()) return null;
-            return items.MaxBy(i => i.EndTime) as AnimationDataItem;
+            return items.MaxBy(i => i.EndTime) as TimeFrame;
         }
     }
 }

@@ -63,9 +63,13 @@ namespace StoryTimeDevKit.Models.SceneObjects
         {
             _bone.AbsolutePosition = _bone.AbsolutePosition + translation;
             SynchronizeBones();
-            AddAnimationFrame(); 
             if (OnPositionChanges != null)
                 OnPositionChanges(_boneActor.Body.Position);
+        }
+
+        public void EndTranslation()
+        {
+            AddAnimationFrame(); 
         }
 
         public void Rotate(float rotation)
@@ -74,6 +78,10 @@ namespace StoryTimeDevKit.Models.SceneObjects
             SynchronizeBones();
             if (OnRotationChanges != null)
                 OnRotationChanges(_boneActor.Body.Rotation);
+        }
+
+        public void EndRotation()
+        {
         }
     }
 }

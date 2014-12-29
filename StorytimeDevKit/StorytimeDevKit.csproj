@@ -102,7 +102,6 @@
     <Compile Include="Commands\UICommands\BaseCommand.cs" />
     <Compile Include="Commands\UICommands\Puppeteer\AttachToBoneCommand.cs" />
     <Compile Include="Configurations\ApplicationProperties.cs" />
-    <Compile Include="Configurations\PuppeteerDefaults.cs" />
     <Compile Include="Controllers\IMultiStackedCommandsController.cs" />
     <Compile Include="Controllers\IStackedCommandsController.cs" />
     <Compile Include="Controllers\Puppeteer\IAnimationTimeLineController.cs" />
@@ -173,9 +172,10 @@
     <Compile Include="Entities\SceneWidgets\TranslateWidgetRenderableAsset.cs" />
     <Compile Include="Extensions\SceneExtensions.cs" />
     <Compile Include="Models\MainWindow\TransformModeViewModel.cs" />
-    <Compile Include="Models\Puppeteer\AnimationDataItem.cs" />
     <Compile Include="Models\Puppeteer\BoneViewModel.cs" />
+    <Compile Include="Models\Puppeteer\TimeFrame.cs" />
     <Compile Include="Models\Puppeteer\TimelineTuple.cs" />
+    <Compile Include="Models\Puppeteer\TimeMarkerViewModel.cs" />
     <Compile Include="Models\SceneObjects\BoneActorSceneObject.cs" />
     <Compile Include="Models\SceneObjects\BoneAttachedAssetSceneObject.cs" />
     <Compile Include="Models\SceneObjects\ISceneObject.cs" />
@@ -511,6 +511,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Puppeteer\AnimationTimeLine\play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Puppeteer\AnimationTimeLine\green-triangle.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

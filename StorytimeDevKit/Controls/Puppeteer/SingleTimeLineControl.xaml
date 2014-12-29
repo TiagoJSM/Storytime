@@ -5,7 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:tt="clr-namespace:TimeLineTool;assembly=TimeLineTool"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             Height="30">
     <UserControl.Resources>
         <Color R="255"
                G="255"
@@ -14,7 +17,7 @@
                x:Key="BgColor" />
         <SolidColorBrush Color="{StaticResource BgColor}"
                          x:Key="BgBrush" />
-        <Style TargetType="{x:Type tt:TimeLineItemControl}">
+        <!--<Style TargetType="{x:Type tt:TimeLineItemControl}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type tt:TimeLineItemControl}">
@@ -64,25 +67,65 @@
                     Height="10"
                     Background="{StaticResource BgBrush}">
                 <StackPanel Orientation="Vertical">
-                    <!--<TextBlock Text="{Binding Path=Name}" />
-                    <TextBlock Text="{Binding Path=StartTime}" />
-                    <TextBlock Text="{Binding Path=EndTime}" />-->
                 </StackPanel>
             </Border>
-        </DataTemplate>
+        </DataTemplate>-->
     </UserControl.Resources>
-    <Grid>
-        <tt:TimeLineControl 
+    <Grid Name="Grid">
+        <ItemsControl Name="list" >
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="{Binding Width}">
+                        <Button>
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Rectangle 
+                                        Fill="Red" 
+                                        Height="7"/>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Thumb 
+                            Width="16" 
+                            Height="20" 
+                            Canvas.ZIndex="99" 
+                            DragDelta="Thumb_DragDelta" 
+                            HorizontalAlignment="Right" 
+                            Margin="0,0,-8,0">
+                            <Thumb.Template>
+                                <ControlTemplate>
+                                    <Image Source="/Images/Puppeteer/AnimationTimeLine/green-triangle.png"/>
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <Setter Property="Canvas.Left" Value="{Binding StartX}" />
+                    <Setter Property="Canvas.Top" Value="{Binding StartY}" />
+                    <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+
+        <!--<tt:TimeLineControl 
             Height="20"
             ItemTemplate="{StaticResource UsedTemplateProperty}"
             HorizontalAlignment="Left"
             x:Name="TimeLine"
-            UnitSize="40"
+            UnitSize="20"
             MinimumUnitWidth="20"
             Background="Transparent"
             DrawTimeGrid="True"
             MinWidth="4000"
             MaxWidth="4000"
-            SynchedWithSiblings="True"/>
+            SynchedWithSiblings="True"/>-->
     </Grid>
 </UserControl>

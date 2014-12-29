@@ -21,7 +21,7 @@
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ContentControl Content="{Binding Bone.Name}" />
+                                <ContentControl Height="40" Content="{Binding Bone.Name}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -43,6 +43,13 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Line Name="line" Visibility="Hidden" Stroke="Red" StrokeThickness="3" />
+        <Line 
+            Name="line" 
+            Visibility="{Binding Visible}" 
+            Stroke="Red" 
+            StrokeThickness="3"
+            X1="{Binding LineXPosition}"
+            X2="{Binding LineXPosition}"
+            Y2="{Binding ElementName=TimeLines, Path=ActualHeight}"/>
     </Grid>
 </UserControl>

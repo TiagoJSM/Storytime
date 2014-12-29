@@ -316,6 +316,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             _timeLineControl.AddTimeLine(
                 _skeletonTreeViewMapper.GetBoneViewModelFromActor(actor),
                 _animationTimeLineMapper.GetCollectionBoundToActor(actor));
+            _timeLineControl.AddFrame(null, 0, Vector2.Zero);
         }
 
         public void SynchronizeBoneChain(Bone bone)

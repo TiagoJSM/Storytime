@@ -21,6 +21,7 @@ using StoryTimeDevKit.Utils;
 using StoryTimeDevKit.Controllers.Puppeteer;
 using Ninject;
 using System.Collections.Specialized;
+using System.Windows.Threading;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
@@ -32,49 +33,46 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         private double maxWith = 4000;
 
         private IAnimationTimeLineController _timelineController;
-        private double? _lineRulerRelativeX;
+
+        private TimeMarkerViewModel _timeMarkerModel;
 
         public ObservableCollection<TimeLineTuple> Controls { get; private set; }
-        public event Action<double> OnTimeMarkerChange;
 
-        private double? Seconds
-        {
-            get
-            {
-                if(_lineRulerRelativeX == null) return null;
-                return _lineRulerRelativeX.Value / Ruler.PixelsPerUnit;
-            }
-        }
+        private DispatcherTimer _timeMarkerTimer;
+
+        public event Action<double> OnTimeMarkerChange;
 
         public AnimationTimeLineControl()
         {
             InitializeComponent();
 
-            Controls = new ObservableCollection<TimeLineTuple>() 
-            { 
-                //new TimeLineTuple() { Control = new HorizontalRuler(){ Height = 30, Width = maxWith, MaxWidth = maxWith } }
-                //new TimeLineTuple() { Name = "Bone1", Control = new SingleTimeLineControl() { Width = maxWith, MaxWidth = maxWith } },
-                //new TimeLineTuple() { Name = "Bone2", Control = new SingleTimeLineControl() { Width = maxWith, MaxWidth = maxWith } }
-            };
-
+            Controls = new ObservableCollection<TimeLineTuple>();
             Controls.CollectionChanged += ControlsCollectionChangeHandler;
+            _timeMarkerTimer = new DispatcherTimer();
+            _timeMarkerTimer.Interval = TimeSpan.FromSeconds(0.1);
+            _timeMarkerTimer.Tick += timeMarkerTimer_TickHandler;
+            
+            _timeMarkerModel = new TimeMarkerViewModel(Ruler.PixelsPerUnit);
+            line.DataContext = _timeMarkerModel;
 
+            TimeLines.LayoutUpdated += TimeLines_LayoutUpdated;
             Loaded += LoadedHandler;
         }
 
-        public void AddTimeLine(BoneViewModel bone, ObservableCollection<ITimeLineDataItem> items)
+        public void AddTimeLine(BoneViewModel bone, ObservableCollection<TimeFrame> items)
         {
             Controls.Add(
                 new TimeLineTuple()
                 {
                     Bone = bone,
-                    Control = new SingleTimeLineControl() { Width = maxWith, MaxWidth = maxWith, DataItems = items }
+                    Control = new SingleTimeLineControl() { Width = maxWith, MaxWidth = maxWith, TimeFrames = items }
                 });
+            
         }
 
         public void AddFrame(BoneViewModel bone, float rotation, Vector2 position)
         {
-            throw new NotImplementedException();
+           //this.InvalidateVisual();
         }
 
         private void LoadedHandler(object sender, RoutedEventArgs e)
@@ -111,31 +109,21 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
-            _lineRulerRelativeX = Mouse.GetPosition(Ruler).X;
+            _timeMarkerModel.X = Mouse.GetPosition(Ruler).X;
+            _timeMarkerModel.Visible = Visibility.Visible;
+
             if (OnTimeMarkerChange != null)
-                OnTimeMarkerChange(Seconds.Value);
-            SetTimeLineCoordinates();
-        }
-
-        private void SetTimeLineCoordinates()
-        {
-            if (_lineRulerRelativeX == null) return;
-            if (double.IsNaN(TimeLines.ActualHeight)) return;
-
-            double timelineX = Ruler.TranslatePoint(new System.Windows.Point(0, 0), this).X;
-
-            double rulerX = _lineRulerRelativeX.Value + timelineX;
-
-            line.Visibility = Visibility.Visible;
-            line.X1 = rulerX;
-            line.Y1 = 0;
-            line.X2 = rulerX;
-            line.Y2 = TimeLines.ActualHeight;
+                OnTimeMarkerChange(_timeMarkerModel.Seconds);
         }
 
         private void TimeLines_LayoutUpdated(object sender, EventArgs e)
         {
-            SetTimeLineCoordinates();
+            _timeMarkerModel.XOrigin = Ruler.TranslatePoint(new System.Windows.Point(0, 0), this).X;
+        }
+
+        void timeMarkerTimer_TickHandler(object sender, EventArgs e)
+        {
+            _timeMarkerModel.Seconds += _timeMarkerTimer.Interval.TotalSeconds;
         }
     }
 }

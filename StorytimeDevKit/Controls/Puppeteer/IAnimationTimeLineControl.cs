@@ -14,7 +14,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
     {
         event Action<double> OnTimeMarkerChange;
 
-        void AddTimeLine(BoneViewModel bone, ObservableCollection<ITimeLineDataItem> items);
+        void AddTimeLine(BoneViewModel bone, ObservableCollection<TimeFrame> items);
         void AddFrame(BoneViewModel bone, float rotation, Vector2 position);
     }
 }
