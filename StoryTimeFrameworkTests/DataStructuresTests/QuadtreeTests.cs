@@ -37,14 +37,14 @@ namespace StoryTimeFrameworkTests.DataStructuresTests
         [TestMethod]
         public void DataIsQueriableAsDesired()
         {
-            Quadtree<BoundableDummy> qtree = new Quadtree<BoundableDummy>();
-            BoundableDummy dummy = new BoundableDummy(
+            var qtree = new Quadtree<BoundableDummy>();
+            var dummy = new BoundableDummy(
                 new AxisAlignedBoundingBox2D(10.0f, 10.0f, 20.0f)
                 );
 
             qtree.Add(dummy);
-            AxisAlignedBoundingBox2D searchBox = new AxisAlignedBoundingBox2D(0, 0, 50.0f);
-            int hitCount = 0;
+            var searchBox = new AxisAlignedBoundingBox2D(0, 0, 50.0f);
+            var hitCount = 0;
             Action<BoundableDummy> hitAction = (BoundableDummy) => hitCount++;
 
             qtree.Query(searchBox, hitAction);
@@ -54,14 +54,14 @@ namespace StoryTimeFrameworkTests.DataStructuresTests
         [TestMethod]
         public void DataIsNotQueriableAsDesired()
         {
-            Quadtree<BoundableDummy> qtree = new Quadtree<BoundableDummy>();
-            BoundableDummy dummy = new BoundableDummy(
+            var qtree = new Quadtree<BoundableDummy>();
+            var dummy = new BoundableDummy(
                 new AxisAlignedBoundingBox2D(10.0f, 10.0f, 20.0f)
                 );
 
             qtree.Add(dummy);
-            AxisAlignedBoundingBox2D searchBox = new AxisAlignedBoundingBox2D(100.0f, 100.0f, 50.0f);
-            int hitCount = 0;
+            var searchBox = new AxisAlignedBoundingBox2D(100.0f, 100.0f, 50.0f);
+            var hitCount = 0;
             Action<BoundableDummy> hitAction = (BoundableDummy) => hitCount++;
 
             qtree.Query(searchBox, hitAction);
@@ -71,18 +71,18 @@ namespace StoryTimeFrameworkTests.DataStructuresTests
         [TestMethod]
         public void QueryQuadtreeWithTwoDummiesAndObtainOnlyOne()
         {
-            Quadtree<BoundableDummy> qtree = new Quadtree<BoundableDummy>();
-            BoundableDummy dummy1 = new BoundableDummy(
+            var qtree = new Quadtree<BoundableDummy>();
+            var dummy1 = new BoundableDummy(
                 new AxisAlignedBoundingBox2D(10.0f, 10.0f, 20.0f)
                 );
-            BoundableDummy dummy2 = new BoundableDummy(
+            var dummy2 = new BoundableDummy(
                 new AxisAlignedBoundingBox2D(100.0f, 100.0f, 20.0f)
                 );
 
             qtree.Add(dummy1);
             qtree.Add(dummy2);
-            AxisAlignedBoundingBox2D searchBox = new AxisAlignedBoundingBox2D(10.0f, 10.0f, 50.0f);
-            List<BoundableDummy> hitDummies = new List<BoundableDummy>();
+            var searchBox = new AxisAlignedBoundingBox2D(10.0f, 10.0f, 50.0f);
+            var hitDummies = new List<BoundableDummy>();
             Action<BoundableDummy> hitAction = (bd) => hitDummies.Add(bd);
 
             qtree.Query(searchBox, hitAction);
@@ -93,18 +93,18 @@ namespace StoryTimeFrameworkTests.DataStructuresTests
         [TestMethod]
         public void QueryQuadtreeWithTwoDummiesAndObtainNone()
         {
-            Quadtree<BoundableDummy> qtree = new Quadtree<BoundableDummy>();
-            BoundableDummy dummy1 = new BoundableDummy(
+            var qtree = new Quadtree<BoundableDummy>();
+            var dummy1 = new BoundableDummy(
                 new AxisAlignedBoundingBox2D(10.0f, 10.0f, 20.0f)
                 );
-            BoundableDummy dummy2 = new BoundableDummy(
+            var dummy2 = new BoundableDummy(
                 new AxisAlignedBoundingBox2D(100.0f, 100.0f, 20.0f)
                 );
 
             qtree.Add(dummy1);
             qtree.Add(dummy2);
-            AxisAlignedBoundingBox2D searchBox = new AxisAlignedBoundingBox2D(50.0f, 50.0f, 5.0f);
-            List<BoundableDummy> hitDummies = new List<BoundableDummy>();
+            var searchBox = new AxisAlignedBoundingBox2D(50.0f, 50.0f, 5.0f);
+            var hitDummies = new List<BoundableDummy>();
             Action<BoundableDummy> hitAction = (bd) => hitDummies.Add(bd);
 
             qtree.Query(searchBox, hitAction);
@@ -114,14 +114,14 @@ namespace StoryTimeFrameworkTests.DataStructuresTests
         [TestMethod]
         public void QueryQuadtreeWithThreeDummiesAndObtainAll()
         {
-            Quadtree<BoundableDummy> qtree = new Quadtree<BoundableDummy>();
-            BoundableDummy dummy1 = new BoundableDummy(
+            var qtree = new Quadtree<BoundableDummy>();
+            var dummy1 = new BoundableDummy(
                 new AxisAlignedBoundingBox2D(10.0f, 10.0f, 20.0f)
                 );
-            BoundableDummy dummy2 = new BoundableDummy(
+            var dummy2 = new BoundableDummy(
                 new AxisAlignedBoundingBox2D(100.0f, 100.0f, 20.0f)
                 );
-            BoundableDummy dummy3 = new BoundableDummy(
+            var dummy3 = new BoundableDummy(
                 new AxisAlignedBoundingBox2D(10.0f, 60.0f, 20.0f)
                 );
 
@@ -129,7 +129,7 @@ namespace StoryTimeFrameworkTests.DataStructuresTests
             qtree.Add(dummy2);
             qtree.Add(dummy3);
             
-            List<BoundableDummy> hitDummies = new List<BoundableDummy>();
+            var hitDummies = new List<BoundableDummy>();
             Action<BoundableDummy> hitAction = (bd) => hitDummies.Add(bd);
 
             qtree.Query(hitAction);

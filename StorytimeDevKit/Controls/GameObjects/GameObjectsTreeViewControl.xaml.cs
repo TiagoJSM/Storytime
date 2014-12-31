@@ -57,7 +57,7 @@ namespace StoryTimeDevKit.Controls.GameObjects
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            ConstructorArgument controlArg =
+            var controlArg =
                 new ConstructorArgument(
                     ApplicationProperties.IGameObjectsControllerArgName,
                     this);
@@ -100,7 +100,7 @@ namespace StoryTimeDevKit.Controls.GameObjects
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
-                    Point currentPosition = e.GetPosition(GameObjects);
+                    var currentPosition = e.GetPosition(GameObjects);
 
                     if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 10.0) ||
                         (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10.0))
@@ -108,7 +108,7 @@ namespace StoryTimeDevKit.Controls.GameObjects
                         draggedItem = (TreeViewItemViewModel)GameObjects.SelectedItem;
                         if (draggedItem != null)
                         {
-                            DragDropEffects finalDropEffect =
+                            var finalDropEffect =
                                 DragDrop.DoDragDrop(
                                     GameObjects,
                                     GameObjects.SelectedValue,
@@ -187,13 +187,13 @@ namespace StoryTimeDevKit.Controls.GameObjects
 
         private void GameObjectsCategory_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
-            StackPanel s = sender as StackPanel;
+            var s = sender as StackPanel;
             if(s.Tag == null)
             {
                 e.Handled = true;
                 return;
             }
-            bool contains = GameObjects.Resources.Contains(s.Tag);
+            var contains = GameObjects.Resources.Contains(s.Tag);
             if(contains)
                 s.ContextMenu = GameObjects.Resources[s.Tag] as System.Windows.Controls.ContextMenu;
         }
@@ -217,17 +217,17 @@ namespace StoryTimeDevKit.Controls.GameObjects
 
         private void AddSceneTo(object obj)
         {
-            TreeViewItemViewModel parent = obj as TreeViewItemViewModel;
-            CreateSceneDialog dialog = new CreateSceneDialog();
+            var parent = obj as TreeViewItemViewModel;
+            var dialog = new CreateSceneDialog();
             if (dialog.ShowDialog().Equals(false))
                 return;
 
-            CreateSceneViewModel model = dialog.Model;
+            var model = dialog.Model;
             
             bool sceneFileExists;
             if (parent is FolderViewModel)
             {
-                FolderViewModel folder = parent as FolderViewModel;
+                var folder = parent as FolderViewModel;
                 sceneFileExists = _controller.SceneFileExistsInFolder(folder, model.SceneName);
             }
             else
@@ -235,7 +235,7 @@ namespace StoryTimeDevKit.Controls.GameObjects
 
             if (sceneFileExists)
             {
-                MessageBoxResult result = 
+                var result = 
                     MessageBox.Show(
                         string.Format(LocalizedTexts.SceneAlreadyExists, model.SceneName),
                         GenericTexts.Confirmation, 

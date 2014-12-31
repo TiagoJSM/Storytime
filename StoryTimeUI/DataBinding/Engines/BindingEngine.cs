@@ -35,11 +35,11 @@ namespace StoryTimeUI.DataBinding.Engines
             _destinationPropertyMapping = new Dictionary<string,  List<PropertyBinder>>();
 
             //listen for INotifyPropertyChanged event on the source
-            INotifyPropertyChanged sourceNotifiable = source as INotifyPropertyChanged;
+            var sourceNotifiable = source as INotifyPropertyChanged;
             if(sourceNotifiable != null)
                 sourceNotifiable.PropertyChanged += SourcePropertyChanged;
 
-            INotifyPropertyChanged destinationNotifiable = destination as INotifyPropertyChanged;
+            var destinationNotifiable = destination as INotifyPropertyChanged;
             if (destinationNotifiable != null)
                 destinationNotifiable.PropertyChanged += DestinationPropertyChanged;
         }
@@ -49,8 +49,8 @@ namespace StoryTimeUI.DataBinding.Engines
             string sourceProperty,
             BindingType bindingType = BindingType.OneWayToDestination)
         {
-            PropertyInfo destinationPropInfo = _destination.GetType().GetProperty(destinationProperty);
-            PropertyInfo sourcePropInfo = _source.GetType().GetProperty(sourceProperty);
+            var destinationPropInfo = _destination.GetType().GetProperty(destinationProperty);
+            var sourcePropInfo = _source.GetType().GetProperty(sourceProperty);
 
             if (destinationPropInfo == null || sourcePropInfo == null) return this;
             if (destinationPropInfo.PropertyType != sourcePropInfo.PropertyType) return this;
@@ -86,8 +86,8 @@ namespace StoryTimeUI.DataBinding.Engines
         {
             if (_sourcePropertyMapping.ContainsKey(propertyName))
             {
-                List<PropertyBinder> binders = _sourcePropertyMapping[propertyName];
-                foreach(PropertyBinder binder in binders)
+                var binders = _sourcePropertyMapping[propertyName];
+                foreach(var binder in binders)
                     binder.Bind();
             }
         }
@@ -96,8 +96,8 @@ namespace StoryTimeUI.DataBinding.Engines
         {
             if (_destinationPropertyMapping.ContainsKey(propertyName))
             {
-                List<PropertyBinder> binders = _destinationPropertyMapping[propertyName];
-                foreach(PropertyBinder binder in binders)
+                var binders = _destinationPropertyMapping[propertyName];
+                foreach(var binder in binders)
                     binder.Bind();
             }
         }

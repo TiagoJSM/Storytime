@@ -14,7 +14,7 @@ namespace StoryTimeFramework.Entities.Actors
         {
             get
             {
-                Vector3 origin = new Vector3(-Viewport.Width/2, -Viewport.Height/2, 0);
+                var origin = new Vector3(-Viewport.Width/2, -Viewport.Height/2, 0);
                 return Matrix.CreateTranslation(origin + new Vector3(Viewport.X, Viewport.Y, 0));
             }
         }

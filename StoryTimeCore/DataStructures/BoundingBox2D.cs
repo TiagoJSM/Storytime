@@ -44,10 +44,10 @@ namespace StoryTimeCore.DataStructures
         {
             get
             {
-                float minX = _points.Min(p => p.X);
-                float maxX = _points.Max(p => p.X);
-                float minY = _points.Min(p => p.Y);
-                float maxY = _points.Max(p => p.Y);
+                var minX = _points.Min(p => p.X);
+                var maxX = _points.Max(p => p.X);
+                var minY = _points.Min(p => p.Y);
+                var maxY = _points.Max(p => p.Y);
 
                 return new Vector2((maxX + minX) / 2, (maxY + minY) / 2);
             }
@@ -65,22 +65,22 @@ namespace StoryTimeCore.DataStructures
 
         public void Translate(Vector2 translation)
         {
-            for (int idx = 0; idx < _points.Length; idx++)
+            for (var idx = 0; idx < _points.Length; idx++)
                 _points[idx] += translation;
         }
 
         public bool Contains(Vector2 point)
         {
-            int j = 0;
-            int i = 1;
-            bool inFlag = false;
+            var j = 0;
+            var i = 1;
+            var inFlag = false;
             while(i <= _points.Length)
             {
-                int iAux = i;
+                var iAux = i;
                 if (iAux == _points.Length)
                     iAux = 0;
-                Vector2 pointJ = _points[j];
-                Vector2 pointI = _points[iAux];
+                var pointJ = _points[j];
+                var pointI = _points[iAux];
 
                 if( 
                     (

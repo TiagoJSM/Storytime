@@ -257,11 +257,11 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
         private void Thumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
-            FrameworkElement thumb = e.Source as FrameworkElement;
-            DataPoint point = thumb.DataContext as DataPoint;
-            double newX = point.EndX + e.HorizontalChange;
+            var thumb = e.Source as FrameworkElement;
+            var point = thumb.DataContext as DataPoint;
+            var newX = point.EndX + e.HorizontalChange;
             
-            DataPoint next = GetDataPointAfter(point);
+            var next = GetDataPointAfter(point);
             if (next != null)
             {
                 if (newX >= next.LogicalX)
@@ -270,7 +270,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                 }
             }
 
-            DataPoint previous = GetDataPointBefore(point);
+            var previous = GetDataPointBefore(point);
             if (previous != null)
             {
                 if (newX <= previous.LogicalX)
@@ -312,11 +312,11 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                 {
                     _points.Add(new DataPoint(null, null, this));
                 }
-                IEnumerable<TimeFrame> frames = e.NewItems.Cast<TimeFrame>();
-                foreach(TimeFrame frame in frames)
+                var frames = e.NewItems.Cast<TimeFrame>();
+                foreach(var frame in frames)
                 {
-                    double logicalX = GetDataPointXFromFrame(frame);
-                    DataPoint previous = GetDataPointBefore(logicalX);
+                    var logicalX = GetDataPointXFromFrame(frame);
+                    var previous = GetDataPointBefore(logicalX);
                     _points.Add(new DataPoint(previous, frame, this));
                 }
             }
@@ -329,7 +329,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
         private void OrderDataPoints()
         {
-            int index = 0;
+            var index = 0;
             _points.OrderByDescending(dp => dp.LogicalX).ForEach(dp => dp.ZIndex = index++);
         }
 

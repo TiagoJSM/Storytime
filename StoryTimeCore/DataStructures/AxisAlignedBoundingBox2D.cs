@@ -44,8 +44,8 @@ namespace StoryTimeCore.DataStructures
         {
             get
             {
-                float CenterX = X + Width / 2;
-                float CenterY = Y + Height / 2;
+                var CenterX = X + Width / 2;
+                var CenterY = Y + Height / 2;
                 return new Vector2(CenterX, CenterY);
             }
         }
@@ -72,11 +72,11 @@ namespace StoryTimeCore.DataStructures
 
         public bool Contains(AxisAlignedBoundingBox2D rec)
         {
-            Vector2 TopLeftCorner = new Vector2(rec.Left, rec.Top);
+            var TopLeftCorner = new Vector2(rec.Left, rec.Top);
             if (!Contains(TopLeftCorner))
                 return false;
 
-            Vector2 BottomRightCorner = new Vector2(rec.Right, rec.Bottom);
+            var BottomRightCorner = new Vector2(rec.Right, rec.Bottom);
             if (!Contains(BottomRightCorner))
                 return false;
              
@@ -111,7 +111,7 @@ namespace StoryTimeCore.DataStructures
 
         public override bool Equals(object obj)
         {
-            bool sameType = obj is AxisAlignedBoundingBox2D;
+            var sameType = obj is AxisAlignedBoundingBox2D;
             if (!sameType)
                 return false;
             return Equals((AxisAlignedBoundingBox2D)obj);

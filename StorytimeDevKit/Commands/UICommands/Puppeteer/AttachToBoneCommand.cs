@@ -26,8 +26,8 @@ namespace StoryTimeDevKit.Commands.UICommands.Puppeteer
 
         public override void Execute(object parameter)
         {
-            BoneViewModel model = parameter as BoneViewModel;
-            Bone bone = _controlData.GetBoneFrom(model);
+            var model = parameter as BoneViewModel;
+            var bone = _controlData.GetBoneFrom(model);
             _controlData.SelectedBoneRenderableAsset.Bone = bone;
         }
     }

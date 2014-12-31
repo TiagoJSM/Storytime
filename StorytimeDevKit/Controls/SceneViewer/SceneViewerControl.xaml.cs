@@ -74,7 +74,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             _game = new MyGame(xna.Handle);
             _context = _game.GraphicsContext;
 
-            ConstructorArgument gameWorldArg = 
+            var gameWorldArg = 
                 new ConstructorArgument(
                     ApplicationProperties.ISceneViewerGameWorldArgName,
                     _game.GameWorld);
@@ -87,10 +87,10 @@ namespace StoryTimeDevKit.Controls.SceneViewer
         public void AddScene(SceneViewModel s)
         {
             //build scene according to model
-            Scene scene = new Scene();
+            var scene = new Scene();
             scene.SceneName = s.SceneName;
             scene.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
-            SceneTabViewModel sceneVM = new SceneTabViewModel(scene);
+            var sceneVM = new SceneTabViewModel(scene);
             Tabs.Add(sceneVM);
 
             _game.GameWorld.AddScene(scene);
@@ -104,7 +104,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
 
         public void SaveSelectedScene()
         {
-            SceneTabViewModel model = SelectedScene;
+            var model = SelectedScene;
             if(model == null) return;
             _controller.SaveScene(model);
         }
@@ -141,7 +141,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
 
         protected override Scene GetScene()
         {
-            SceneTabViewModel sceneVM = SelectedScene;
+            var sceneVM = SelectedScene;
             if (sceneVM == null) return null;
             return sceneVM.Scene;
         }
@@ -159,10 +159,10 @@ namespace StoryTimeDevKit.Controls.SceneViewer
             System.Drawing.Point gamePanelDimensions
         )
         {
-            SceneTabViewModel sceneVM = SelectedScene;
+            var sceneVM = SelectedScene;
             if(sceneVM == null) return;
 
-            Vector2 position = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
+            var position = sceneVM.Scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
 
             if (OnDropActor != null)
                 OnDropActor(model, sceneVM, position);

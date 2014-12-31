@@ -37,7 +37,7 @@ namespace StoryTimeDevKit.Commands.ReversibleCommands
         {
             if (!HasUndoneItems())
                 return;
-            int range = 0;
+            var range = 0;
             if (_commandIndex != null)
                 range = _commandIndex.Value + 1;
             _commands = _commands.GetRange(0, range);

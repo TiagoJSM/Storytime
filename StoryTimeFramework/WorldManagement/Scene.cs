@@ -13,7 +13,7 @@ using StoryTimeFramework.WorldManagement.Manageables;
 using StoryTimeFramework.Entities.Controllers;
 using System.Reflection;
 using StoryTimeCore.DataStructures;
-using StoryTimeSceneGraph;
+//using StoryTimeSceneGraph;
 using StoryTimeCore.Resources.Graphic;
 using StoryTimeCore.General;
 using FarseerPhysics.Dynamics;
@@ -105,12 +105,12 @@ namespace StoryTimeFramework.WorldManagement
             //clear graphics device
             if (_activeCamera == null) return;
             //set viewport
-            Viewport vp = _activeCamera.Viewport;
+            var vp = _activeCamera.Viewport;
             graphicsContext.SetCamera(_activeCamera);
-            AxisAlignedBoundingBox2D renderingViewport = new AxisAlignedBoundingBox2D(vp.X, vp.Y, vp.Height, vp.Width);
-            IEnumerable<BaseActor> enumActors = GetRenderablesIn(renderingViewport);
-            IRenderer renderer = graphicsContext.GetRenderer();
-            foreach (BaseActor ba in enumActors)
+            var renderingViewport = new AxisAlignedBoundingBox2D(vp.X, vp.Y, vp.Height, vp.Width);
+            var enumActors = GetRenderablesIn(renderingViewport);
+            var renderer = graphicsContext.GetRenderer();
+            foreach (var ba in enumActors)
             {
                 renderer.TranslationTransformation += ba.Body.Position;
                 renderer.RotationTransformation += ba.Body.Rotation;
@@ -127,7 +127,7 @@ namespace StoryTimeFramework.WorldManagement
         public void Update(WorldTime WTime)
         {
             _currentTime = WTime;
-            foreach (BaseActor ba in _baseActors)
+            foreach (var ba in _baseActors)
             {
                 ba.TimeElapse(_currentTime);
             }
@@ -140,13 +140,13 @@ namespace StoryTimeFramework.WorldManagement
 
         public BaseActor AddActor(Type actorType)
         {
-            BaseActor actor = Activator.CreateInstance(actorType) as BaseActor;
+            var actor = Activator.CreateInstance(actorType) as BaseActor;
 
             actor.Scene = this;
             actor.Initialize();
 
             _baseActors.Add(actor);
-            OrderedActor oa = new OrderedActor(actor, _nextIndex);
+            var oa = new OrderedActor(actor, _nextIndex);
             _nextIndex++;
             AddOrderedAsset(oa);
 
@@ -168,21 +168,21 @@ namespace StoryTimeFramework.WorldManagement
 
         public List<BaseActor> AxisAlignedIntersect(Vector2 point)
         {
-            List<BaseActor> actors = _actorsTree.Intersect(point);
+            var actors = _actorsTree.Intersect(point);
             return ActorsInOrder(actors);
         }
 
         public List<BaseActor> Intersect(Vector2 point)
         {
-            List<BaseActor> actors = _actorsTree.Intersect(point);
-            IEnumerable<BaseActor> filteredActors = actors.Where(a => a.BoundingBox.Contains(point));
+            var actors = _actorsTree.Intersect(point);
+            var filteredActors = actors.Where(a => a.BoundingBox.Contains(point));
             return ActorsInOrder(filteredActors);
         }
 
         private List<BaseActor> ActorsInOrder(IEnumerable<BaseActor> actors)
         {
-            List<OrderedActor> orderActors = new List<OrderedActor>();
-            foreach (BaseActor actor in actors)
+            var orderActors = new List<OrderedActor>();
+            foreach (var actor in actors)
             {
                 orderActors.Add(_actorsDictionary[actor]);
             }
@@ -202,7 +202,7 @@ namespace StoryTimeFramework.WorldManagement
 
         private void RemoveOrderedActor(OrderedActor orderedAsset)
         {
-            bool removed = _actorsTree.Remove(orderedAsset.Actor);
+            var removed = _actorsTree.Remove(orderedAsset.Actor);
             if (removed)
             {
                 _actorsDictionary.Remove(orderedAsset.Actor);
@@ -212,7 +212,7 @@ namespace StoryTimeFramework.WorldManagement
 
         private IEnumerable<BaseActor> GetRenderablesIn(AxisAlignedBoundingBox2D renderingViewport)
         {
-            List<BaseActor> actors = new List<BaseActor>();
+            var actors = new List<BaseActor>();
             Action<BaseActor> renderHitAction = (actor) => actors.Add(actor);
             _actorsTree.Query(renderingViewport, renderHitAction);
             IEnumerable<BaseActor> enumActors = actors.OrderBy(actor => ZIndexOrder(actor));
@@ -237,7 +237,7 @@ namespace StoryTimeFramework.WorldManagement
         private void ReOrderActors()
         {
             _nextIndex = 0;
-            foreach (OrderedActor oa in _actorsDictionary.Values)
+            foreach (var oa in _actorsDictionary.Values)
             {
                 oa.ZOrder = _nextIndex;
                 _nextIndex++;

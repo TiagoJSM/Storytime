@@ -32,7 +32,7 @@ namespace StoryTimeDevKit
         {
             if (e.Exception is ApplicationBaseException)
             {
-                ApplicationBaseException ex = e.Exception as ApplicationBaseException;
+                var ex = e.Exception as ApplicationBaseException;
                 MessageBox.Show(ex.UserText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 e.Handled = true;
             }

@@ -9,10 +9,10 @@ namespace StoryTimeDevKit.Extensions
     {
         public static int? LastIndexOf<TSearch, TData>(this IList<TData> list) where TSearch : TData
         {
-            Type t = typeof(TSearch);
-            int count = list.Count;
+            var t = typeof(TSearch);
+            var count = list.Count;
 
-            for (int idx = count - 1; idx > 0; idx--)
+            for (var idx = count - 1; idx > 0; idx--)
             {
                 if (list[idx].GetType() == t)
                     return idx;

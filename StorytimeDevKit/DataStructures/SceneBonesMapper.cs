@@ -23,7 +23,7 @@ namespace StoryTimeDevKit.DataStructures
             Bone bone = null;
             if (actor.Parent != null)
             {
-                Bone parent = actor.Parent.AssignedBone;
+                var parent = actor.Parent.AssignedBone;
                 bone = new Bone(parent);
             }
             else 
@@ -42,7 +42,7 @@ namespace StoryTimeDevKit.DataStructures
 
         public void SynchronizeBoneChain(Bone bone)
         {
-            BoneActor actor = _boneDictionary[bone];
+            var actor = _boneDictionary[bone];
             SetActorData(actor);
             PropagateBoneChanges(bone);
         }
@@ -55,7 +55,7 @@ namespace StoryTimeDevKit.DataStructures
 
         private void OnParentChangeHandler(BoneActor actor)
         {
-            Bone bone = actor.AssignedBone;
+            var bone = actor.AssignedBone;
             if (actor.Parent == null)
             {
                 if (bone.Parent != null)
@@ -65,7 +65,7 @@ namespace StoryTimeDevKit.DataStructures
                 return;
             }
 
-            Bone parentBone = actor.Parent.AssignedBone;
+            var parentBone = actor.Parent.AssignedBone;
             if (bone.Parent != null)
             {
                 bone.Parent.RemoveChildren(bone);
@@ -81,10 +81,10 @@ namespace StoryTimeDevKit.DataStructures
 
         private void PropagateBoneChanges(Bone bone)
         {
-            IEnumerable<Bone> children = bone.Children;
-            foreach (Bone child in children)
+            var children = bone.Children;
+            foreach (var child in children)
             {
-                BoneActor actor = _boneDictionary[child];
+                var actor = _boneDictionary[child];
                 SetActorData(actor);
                 PropagateBoneChanges(child);
             }

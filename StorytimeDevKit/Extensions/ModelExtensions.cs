@@ -13,16 +13,16 @@ namespace StoryTimeDevKit.Extensions
     {
         public static SavedSceneModel ToSaveModel(this Scene scene)
         {
-            SavedSceneModel model = new SavedSceneModel();
-            List<SavedSceneActor> sceneActors = new List<SavedSceneActor>();
+            var model = new SavedSceneModel();
+            var sceneActors = new List<SavedSceneActor>();
             //IEnumerable<ActorWidgetAdapter> widgetActors = scene.Actors.OfType<ActorWidgetAdapter>();
             //foreach (ActorWidgetAdapter widget in widgetActors)
-            IEnumerable<BaseActor> actors = scene.Actors;
-            foreach (BaseActor ba in actors)
+            var actors = scene.Actors;
+            foreach (var ba in actors)
             {
                 //BaseActor ba = widget.BaseActor;
-                Type t = ba.GetType();
-                SavedSceneActor sceneActor = new SavedSceneActor()
+                var t = ba.GetType();
+                var sceneActor = new SavedSceneActor()
                 {
                      Module = t.Module.Name,
                      ActorType = t.FullName

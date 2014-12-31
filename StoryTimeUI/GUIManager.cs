@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using Microsoft.Xna.Framework;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeUI.Interfaces;
-using Microsoft.Xna.Framework;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 
 namespace StoryTimeUI
 {
     public class GUIManager : IParent
     {
-        private ObservableCollection<BaseWidget> _widgets;
-        private IGraphicsContext _context;
+        private readonly IGraphicsContext _context;
+        private readonly ObservableCollection<BaseWidget> _widgets;
         private BaseWidget _intersected;
 
         private bool _isDragging;
-        private Vector2 _startDrag;
         private Vector2 _lastDrag;
-
-        public Vector2 Position { get; set; }
+        private Vector2 _startDrag;
 
         public GUIManager(IGraphicsContext context)
         {
@@ -29,17 +23,22 @@ namespace StoryTimeUI
             _widgets.CollectionChanged += CollectionChangedHandler;
         }
 
+        public Vector2 Position { get; set; }
+
+        public ObservableCollection<BaseWidget> Children
+        {
+            get { return _widgets; }
+        }
+
         public void Render(IRenderer renderer)
         {
-            foreach (BaseWidget widget in _widgets)
+            foreach (var widget in _widgets)
                 widget.Render(renderer);
         }
 
-        public ObservableCollection<BaseWidget> Children { get { return _widgets; } }
-
         public BaseWidget Intersect(Vector2 point)
         {
-            IParent intersected = GetIntersectedLeafChildren(this, point);
+            var intersected = GetIntersectedLeafChildren(this, point);
             if (intersected == this) return null;
             return intersected as BaseWidget;
         }
@@ -72,7 +71,7 @@ namespace StoryTimeUI
                 _intersected.StartDrag(_startDrag);
                 _isDragging = true;
             }
-            Vector2 dragged = point - _lastDrag;
+            var dragged = point - _lastDrag;
             _lastDrag = point;
             _intersected.Drag(dragged, point);
         }
@@ -80,8 +79,8 @@ namespace StoryTimeUI
         private IParent GetIntersectedLeafChildren(IParent parent, Vector2 point)
         {
             IParent intersected = null;
-            ObservableCollection<BaseWidget> children = parent.Children;
-            for (int idx = children.Count - 1; idx >= 0; idx--)
+            var children = parent.Children;
+            for (var idx = children.Count - 1; idx >= 0; idx--)
             {
                 if (!children[idx].Active) continue;
 
@@ -99,9 +98,9 @@ namespace StoryTimeUI
         {
             if (e.NewItems != null)
             {
-                foreach (object newItem in e.NewItems)
+                foreach (var newItem in e.NewItems)
                 {
-                    BaseWidget widget = newItem as BaseWidget;
+                    var widget = newItem as BaseWidget;
                     widget.Parent = this;
                     widget.GraphicsContext = _context;
                     widget.Initialize();

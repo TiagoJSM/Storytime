@@ -6,7 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <GroupBox Header="Objects in Scene" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Name="groupBox1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
-        </GroupBox>
+        <GroupBox Header="Objects in Scene" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Name="groupBox1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" />
     </Grid>
 </UserControl>

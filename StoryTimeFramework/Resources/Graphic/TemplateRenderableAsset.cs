@@ -108,7 +108,7 @@ namespace StoryTimeFramework.Resources.Graphic
         {
             get
             {
-                AxisAlignedBoundingBox2D computedBox = RawAABoundingBox;
+                var computedBox = RawAABoundingBox;
                 computedBox.Translate(RenderingOffset);
                 return computedBox.GetScaled(_scale, Vector2.Zero).GetRotated(_rotation);
             }
@@ -117,7 +117,7 @@ namespace StoryTimeFramework.Resources.Graphic
         {
             get 
             {
-                BoundingBox2D computedBox = RawAABoundingBox.GetBoundingBox2D();
+                var computedBox = RawAABoundingBox.GetBoundingBox2D();
                 computedBox.Translate(RenderingOffset);
                 return computedBox.GetScaled(_scale, Vector2.Zero).GetRotated(_rotation);
             }
@@ -126,7 +126,7 @@ namespace StoryTimeFramework.Resources.Graphic
         {
             get
             {
-                AxisAlignedBoundingBox2D computedBox = RawAABoundingBox;
+                var computedBox = RawAABoundingBox;
                 return computedBox.GetScaled(_scale, Vector2.Zero).GetRotated(_rotation, Vector2.Zero);
             }
         }
@@ -135,7 +135,7 @@ namespace StoryTimeFramework.Resources.Graphic
         {
             get
             {
-                BoundingBox2D computedBox = RawAABoundingBox.GetBoundingBox2D();
+                var computedBox = RawAABoundingBox.GetBoundingBox2D();
                 return computedBox.GetScaled(_scale, Vector2.Zero).GetRotated(_rotation, Vector2.Zero);
             }
         }

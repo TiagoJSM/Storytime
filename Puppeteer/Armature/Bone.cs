@@ -35,7 +35,7 @@ namespace Puppeteer.Armature
                 if (_parent != null)
                 {
                     _parent._children.Add(this);
-                    float lenght = Length;
+                    var lenght = Length;
                     AbsolutePosition = _parent.AbsoluteEnd;
                     Length = lenght;
                 }
@@ -51,8 +51,8 @@ namespace Puppeteer.Armature
                 {
                     return Translation;
                 }
-                Vector3 translation = new Vector3(Translation.X, Translation.Y, 0.0f);
-                Vector3 relativePosition = Vector3.Transform(translation, Parent.RelativeEndTransformation);
+                var translation = new Vector3(Translation.X, Translation.Y, 0.0f);
+                var relativePosition = Vector3.Transform(translation, Parent.RelativeEndTransformation);
                 return new Vector2(relativePosition.X, relativePosition.Y);
             }
             set
@@ -64,9 +64,9 @@ namespace Puppeteer.Armature
                 else
                 {
                     //TODO: translation should have root from bone end of parent, not from parent origin
-                    Vector3 positionVector = new Vector3(value.X, value.Y, 0.0f);
-                    Matrix inverted = Matrix.Invert( Parent.RelativeEndTransformation);
-                    Vector3 transform = Vector3.Transform(positionVector, inverted);
+                    var positionVector = new Vector3(value.X, value.Y, 0.0f);
+                    var inverted = Matrix.Invert( Parent.RelativeEndTransformation);
+                    var transform = Vector3.Transform(positionVector, inverted);
                     Translation = new Vector2(transform.X, transform.Y);
                 }
                 SetDirty();
@@ -76,18 +76,18 @@ namespace Puppeteer.Armature
         {
             get
             {
-                Vector3 relativeEnd = (LenghtMatrix * Transformation).Translation;
+                var relativeEnd = (LenghtMatrix * Transformation).Translation;
                 return new Vector2(relativeEnd.X, relativeEnd.Y);
             }
             set
             {
-                Vector2 relativeEnd = AbsoluteEnd;
+                var relativeEnd = AbsoluteEnd;
                 if (relativeEnd == value) return;
-                Vector2 relativePosition = AbsolutePosition;
+                var relativePosition = AbsolutePosition;
                 Length = Vector2.Distance(relativePosition, value);
                 Rotation = 0;
-                float rotationInRelativeEnd = value.AngleWithCenterIn(relativePosition) - 90.0f;
-                float actualRotation = AbsoluteEnd.AngleWithCenterIn(relativePosition) - 90.0f;
+                var rotationInRelativeEnd = value.AngleWithCenterIn(relativePosition) - 90.0f;
+                var actualRotation = AbsoluteEnd.AngleWithCenterIn(relativePosition) - 90.0f;
                 Rotation = rotationInRelativeEnd - actualRotation;
             }
         }
@@ -153,14 +153,14 @@ namespace Puppeteer.Armature
                 if (!_transformationMatrixIsDirty)
                     return _transformation;
 
-                Matrix rotation = Matrix.CreateRotationZ(MathHelper.ToRadians(Rotation));
+                var rotation = Matrix.CreateRotationZ(MathHelper.ToRadians(Rotation));
                 float parentLength = 0;
                 if(Parent != null)
                 {
                     parentLength = Parent.Length;
                 }
                 
-                Matrix translation = 
+                var translation = 
                     Matrix
                         .CreateTranslation(Translation.X, Translation.Y + parentLength, 0);
                 _transformation = rotation * translation;
@@ -207,7 +207,7 @@ namespace Puppeteer.Armature
         public void SetDirty()
         {
             _transformationMatrixIsDirty = true;
-            foreach (Bone child in _children)
+            foreach (var child in _children)
                 child.SetDirty();
         }
     }

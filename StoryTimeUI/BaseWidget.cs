@@ -93,7 +93,7 @@ namespace StoryTimeUI
             
             if(RenderableAsset != null)
                 RenderableAsset.Render(renderer);
-            foreach (BaseWidget child in Children)
+            foreach (var child in Children)
                 child.Render(renderer);
 
             renderer.RotationTransformation -= Rotation;
@@ -156,9 +156,9 @@ namespace StoryTimeUI
         {
             if (e.NewItems != null)
             {
-                foreach (object newItem in e.NewItems)
+                foreach (var newItem in e.NewItems)
                 {
-                    BaseWidget widget = newItem as BaseWidget;
+                    var widget = newItem as BaseWidget;
                     widget.Parent = this;
                     widget.GraphicsContext = GraphicsContext;
                     widget.Initialize();

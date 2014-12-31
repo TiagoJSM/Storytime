@@ -14,24 +14,24 @@ namespace StoryTimeCoreTests.ExtensionsTests
         [TestMethod]
         public void AngleWithCenterInOriginAndPointInYAxis()
         {
-            Vector2 vec = new Vector2(0.0f, 3.0f);
-            float angle = vec.AngleWithCenterIn(Vector2.Zero);
+            var vec = new Vector2(0.0f, 3.0f);
+            var angle = vec.AngleWithCenterIn(Vector2.Zero);
             Assert.AreEqual(90.0f, angle);
         }
 
         [TestMethod]
         public void AngleWithCenterInOriginAndPointWithSameCoordinates()
         {
-            Vector2 vec = new Vector2(3.0f);
-            float angle = vec.AngleWithCenterIn(Vector2.Zero);
+            var vec = new Vector2(3.0f);
+            var angle = vec.AngleWithCenterIn(Vector2.Zero);
             Assert.AreEqual(45.0f, angle);
         }
 
         [TestMethod]
         public void AngleWithoutCenterInOriginAndPointWithSameCoordinates()
         {
-            Vector2 vec = new Vector2(3.0f);
-            float angle = vec.AngleWithCenterIn(new Vector2(1.0f));
+            var vec = new Vector2(3.0f);
+            var angle = vec.AngleWithCenterIn(new Vector2(1.0f));
             Assert.AreEqual(45.0f, angle);
         }
     }

@@ -55,7 +55,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             SwitchEditMode = new RelayCommand(
                 (o) =>
                 {
-                    BoneViewModel bone = (o as BoneViewModel);
+                    var bone = (o as BoneViewModel);
                     bone.EditMode = !bone.EditMode;
                 },
                 (o) =>
@@ -67,7 +67,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             SelectedItemChangedCommand = new RelayCommand(
                 (o) =>
                 {
-                    BoneViewModel bone = (o as BoneViewModel);
+                    var bone = (o as BoneViewModel);
                     _skeletonController.SelectBone(bone);
                 },
                 (o) =>
@@ -88,7 +88,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
         private void etb_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            TextBox tb = sender as TextBox;
+            var tb = sender as TextBox;
 
             if (!tb.IsVisible) return;
 
@@ -101,7 +101,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
         private void etb_LostFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = sender as TextBox;
+            var tb = sender as TextBox;
 
             if (string.IsNullOrWhiteSpace(tb.Text)) return;
             if (_skeletonController.GetBoneViewModelByName(tb.Text) != null) return;

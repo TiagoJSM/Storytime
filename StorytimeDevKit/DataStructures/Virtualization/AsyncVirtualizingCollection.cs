@@ -77,7 +77,7 @@ namespace DataVirtualization
         /// <param name="e">The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            NotifyCollectionChangedEventHandler h = CollectionChanged;
+            var h = CollectionChanged;
             if (h != null)
                 h(this, e);
         }
@@ -87,7 +87,7 @@ namespace DataVirtualization
         /// </summary>
         private void FireCollectionReset()
         {
-            NotifyCollectionChangedEventArgs e = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset);
+            var e = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset);
             OnCollectionChanged(e);
         }
 
@@ -106,7 +106,7 @@ namespace DataVirtualization
         /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            PropertyChangedEventHandler h = PropertyChanged;
+            var h = PropertyChanged;
             if (h != null)
                 h(this, e);
         }
@@ -117,7 +117,7 @@ namespace DataVirtualization
         /// <param name="propertyName">Name of the property.</param>
         private void FirePropertyChanged(string propertyName)
         {
-            PropertyChangedEventArgs e = new PropertyChangedEventArgs(propertyName);
+            var e = new PropertyChangedEventArgs(propertyName);
             OnPropertyChanged(e);
         }
 
@@ -169,7 +169,7 @@ namespace DataVirtualization
         /// <param name="args">None required.</param>
         private void LoadCountWork(object args)
         {
-            int count = FetchCount();
+            var count = FetchCount();
             SynchronizationContext.Send(LoadCountCompleted, count);
         }
 
@@ -200,8 +200,8 @@ namespace DataVirtualization
         /// <param name="args">Index of the page to load.</param>
         private void LoadPageWork(object args)
         {
-            int pageIndex = (int)args;
-            IList<T> page = FetchPage(pageIndex);
+            var pageIndex = (int)args;
+            var page = FetchPage(pageIndex);
             SynchronizationContext.Send(LoadPageCompleted, new object[]{ pageIndex, page });
         }
 
@@ -211,8 +211,8 @@ namespace DataVirtualization
         /// <param name="args">object[] { int pageIndex, IList(T) page }</param>
         private void LoadPageCompleted(object args)
         {
-            int pageIndex = (int)((object[]) args)[0];
-            IList<T> page = (IList<T>)((object[])args)[1];
+            var pageIndex = (int)((object[]) args)[0];
+            var page = (IList<T>)((object[])args)[1];
 
             PopulatePage(pageIndex, page);
             IsLoading = false;

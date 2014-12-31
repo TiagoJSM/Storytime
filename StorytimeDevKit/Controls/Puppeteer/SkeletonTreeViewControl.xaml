@@ -33,8 +33,7 @@
                                         <MenuItem 
                                             Header="Attach to bone" 
                                             Command="{Binding Path=AttachToBoneCommand}"
-                                            CommandParameter="{Binding}" >
-                                        </MenuItem>
+                                            CommandParameter="{Binding}" />
                                     </ContextMenu>
                                 </TextBlock.ContextMenu>
                                 <TextBlock.InputBindings>
@@ -56,8 +55,7 @@
                                 MinWidth="100"
                                 IsVisibleChanged="etb_IsVisibleChanged" LostFocus="etb_LostFocus">
                                 <TextBox.Text>
-                                    <Binding Path="Name" UpdateSourceTrigger="Explicit">
-                                    </Binding>
+                                    <Binding Path="Name" UpdateSourceTrigger="Explicit" />
                                 </TextBox.Text>
                                 <TextBox.InputBindings>
                                     <KeyBinding 

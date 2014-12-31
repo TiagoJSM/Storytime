@@ -13,7 +13,7 @@ namespace StoryTimeDevKit.DataStructures.Virtualization
         private FileInfo[] _fis;
         public TextureItemsProvider(string path)
         {
-            DirectoryInfo di = new DirectoryInfo(path);
+            var di = new DirectoryInfo(path);
             _fis = di.GetFiles("*.jpg", SearchOption.AllDirectories);
         }
 
@@ -28,9 +28,9 @@ namespace StoryTimeDevKit.DataStructures.Virtualization
                 count = FetchCount();
 
             IList<TextureViewModel> data = new List<TextureViewModel>();
-            for (int i = startIndex; i < startIndex + count; i++)
+            for (var i = startIndex; i < startIndex + count; i++)
             {
-                FileInfo fi = _fis[i];
+                var fi = _fis[i];
                 data.Add(new TextureViewModel(fi.Name, fi.FullName));
             }
             return data;

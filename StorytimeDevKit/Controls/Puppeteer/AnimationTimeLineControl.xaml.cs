@@ -95,7 +95,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
         private void AutoSizeGridViewColumns(ListView listView)
         {
-            GridView gridView = listView.View as GridView;
+            var gridView = listView.View as GridView;
             if (gridView != null)
             {
                 foreach (var column in gridView.Columns)

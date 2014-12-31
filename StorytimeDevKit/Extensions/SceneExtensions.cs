@@ -16,7 +16,7 @@ namespace StoryTimeDevKit.Extensions
         {
             float x = scene.Camera.Viewport.Width * pointInGamePanel.X / gamePanelDimensions.X;
             float y = scene.Camera.Viewport.Height * pointInGamePanel.Y / gamePanelDimensions.Y;
-            Vector2 position = new Vector2(x, y);
+            var position = new Vector2(x, y);
             return position;
         }
     }

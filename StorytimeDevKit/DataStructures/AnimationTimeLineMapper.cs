@@ -29,11 +29,11 @@ namespace StoryTimeDevKit.DataStructures
 
         public void AddAnimationFrame(BoneActor actor, double animationEndTimeInSeconds)
         {
-            TimeFrame frameAtTime = GetFrameAt(actor, animationEndTimeInSeconds);
+            var frameAtTime = GetFrameAt(actor, animationEndTimeInSeconds);
             if (frameAtTime != null) return;
 
-            ObservableCollection<TimeFrame> dataCollection = GetCollectionBoundToActor(actor);
-            TimeFrame frame = GetLastTimeFrame(dataCollection);
+            var dataCollection = GetCollectionBoundToActor(actor);
+            var frame = GetLastTimeFrame(dataCollection);
 
             TimeFrame item = null;
             if (frame == null)
@@ -64,9 +64,9 @@ namespace StoryTimeDevKit.DataStructures
 
         public TimeFrame GetFrameAt(BoneActor actor, double seconds)
         {
-            ObservableCollection<TimeFrame> items = GetCollectionBoundToActor(actor);
+            var items = GetCollectionBoundToActor(actor);
             if (items == null) return null;
-            TimeSpan convertedSeconds = TimeSpan.FromSeconds(seconds);
+            var convertedSeconds = TimeSpan.FromSeconds(seconds);
             return items.FirstOrDefault(i => i.IsIntervalIntesected(convertedSeconds, true));
         }
 

@@ -12,7 +12,7 @@ namespace StoryTimeDevKit.Utils
     {
         public static void SerializeToXML<TData>(TData data, string path) where TData : class
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(TData));
+            var serializer = new XmlSerializer(typeof(TData));
             TextWriter textWriter = new StreamWriter(path);
             serializer.Serialize(textWriter, data);
             textWriter.Close();
@@ -20,10 +20,10 @@ namespace StoryTimeDevKit.Utils
 
         public static TData DeserializeFromXML<TData>(string filePath) where TData : class
         {
-            XmlSerializer deserializer = new XmlSerializer(typeof(TData));
-            StreamReader stream = new StreamReader(filePath);
+            var deserializer = new XmlSerializer(typeof(TData));
+            var stream = new StreamReader(filePath);
             
-            using(XmlReader xml = XmlReader.Create(stream))
+            using(var xml = XmlReader.Create(stream))
             {
                 if (!deserializer.CanDeserialize(xml))
                 {
@@ -36,7 +36,7 @@ namespace StoryTimeDevKit.Utils
             stream.BaseStream.Seek(0, SeekOrigin.Begin);
             stream.BaseStream.Position = 0;
 
-            TData data = deserializer.Deserialize(stream) as TData;
+            var data = deserializer.Deserialize(stream) as TData;
             stream.Close();
             return data;
         }

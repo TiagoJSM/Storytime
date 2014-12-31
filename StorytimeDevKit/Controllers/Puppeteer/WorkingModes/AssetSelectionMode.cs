@@ -24,7 +24,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
 
         protected override void HandleActorIntersection(BaseActor actor, Vector2 position)
         {
-            ArmatureActor armature = actor as ArmatureActor;
+            var armature = actor as ArmatureActor;
             if (armature == null) return;
             Context.Selected = 
                 armature.ArmatureRenderableAsset.GetIntersectedBoneAttachedAssets(position).FirstOrDefault();

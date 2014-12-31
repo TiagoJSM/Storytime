@@ -18,7 +18,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
 
         public override void OnEnterMode()
         {
-            BoneActor selectedBone = _context.Selected as BoneActor;
+            var selectedBone = _context.Selected as BoneActor;
             if (selectedBone == null)
                 _context.Selected = null;
         }
@@ -30,7 +30,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
         public override void Click(Vector2 position)
         {
             BoneActor bone;
-            BoneActor selectedBone = _context.Selected as BoneActor;
+            var selectedBone = _context.Selected as BoneActor;
             if (selectedBone == null)
             {
                 bone = _context.AddBone(position);

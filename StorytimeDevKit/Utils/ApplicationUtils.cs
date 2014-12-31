@@ -21,13 +21,13 @@ namespace StoryTimeDevKit.Utils
 
         public static void SaveScene(SavedSceneModel scene)
         {
-            string scenePath = GetPathOf(scene);
+            var scenePath = GetPathOf(scene);
             XMLSerializerUtils.SerializeToXML(scene, scenePath);
         }
 
         public static void SaveSceneInFolder(SavedSceneModel scene, string folderPath)
         {
-            string scenePath = GetPathOfSceneInFolder(scene.SceneName, folderPath);
+            var scenePath = GetPathOfSceneInFolder(scene.SceneName, folderPath);
             XMLSerializerUtils.SerializeToXML(scene, scenePath);
         }
 

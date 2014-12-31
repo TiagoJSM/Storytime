@@ -23,8 +23,8 @@ namespace StoryTimeCore.Extensions
 
         public static float PowerOf(this float value, int power)
         {
-            float result = value;
-            for (int idx = 1; idx < power; idx++)
+            var result = value;
+            for (var idx = 1; idx < power; idx++)
                 result *= value;
             return result;
         }

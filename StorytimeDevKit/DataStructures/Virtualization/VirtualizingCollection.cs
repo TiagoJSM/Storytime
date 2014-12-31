@@ -145,8 +145,8 @@ namespace DataVirtualization
             get
             {
                 // determine which page and offset within page
-                int pageIndex = index / PageSize;
-                int pageOffset = index % PageSize;
+                var pageIndex = index / PageSize;
+                var pageOffset = index % PageSize;
 
                 // request primary page
                 RequestPage(pageIndex);
@@ -193,7 +193,7 @@ namespace DataVirtualization
         /// </returns>
         public IEnumerator<T> GetEnumerator()
         {
-            for (int i = 0; i < Count; i++)
+            for (var i = 0; i < Count; i++)
             {
                 yield return this[i];
             }
@@ -449,8 +449,8 @@ namespace DataVirtualization
         /// </summary>
         public void CleanUpPages()
         {
-            List<int> keys = new List<int>(_pageTouchTimes.Keys);
-            foreach (int key in keys)
+            var keys = new List<int>(_pageTouchTimes.Keys);
+            foreach (var key in keys)
             {
                 // page 0 is a special case, since WPF ItemsControl access the first item frequently
                 if ( key != 0 && (DateTime.Now - _pageTouchTimes[key]).TotalMilliseconds > PageTimeout )

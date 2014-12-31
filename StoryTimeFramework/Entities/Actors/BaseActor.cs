@@ -75,7 +75,7 @@ namespace StoryTimeFramework.Entities.Actors
         {
             get 
             {
-                Vector2 position = Vector2.Zero;
+                var position = Vector2.Zero;
                 float rotation = 0;
 
                 if (Body != null)
@@ -86,7 +86,7 @@ namespace StoryTimeFramework.Entities.Actors
                 if (RenderableAsset == null)
                     return new AxisAlignedBoundingBox2D(position);
 
-                AxisAlignedBoundingBox2D box = RenderableAsset.AABoundingBox;
+                var box = RenderableAsset.AABoundingBox;
                 box.Translate(position);
                 return
                     box
@@ -97,7 +97,7 @@ namespace StoryTimeFramework.Entities.Actors
         {
             get 
             {
-                Vector2 position = Vector2.Zero;
+                var position = Vector2.Zero;
                 float rotation = 0;
 
                 if (Body != null)
@@ -108,7 +108,7 @@ namespace StoryTimeFramework.Entities.Actors
                 if (RenderableAsset == null)
                     return new BoundingBox2D(position);
 
-                BoundingBox2D box = RenderableAsset.BoundingBox;
+                var box = RenderableAsset.BoundingBox;
                 box.Translate(position);
                 return
                     box

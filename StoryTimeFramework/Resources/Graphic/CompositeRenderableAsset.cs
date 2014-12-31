@@ -20,7 +20,7 @@ namespace StoryTimeFramework.Resources.Graphic
 
         public override void Render(IRenderer renderer)
         {
-            foreach (IRenderableAsset asset in _assets)
+            foreach (var asset in _assets)
                 asset.Render(renderer);
         }
 
@@ -31,8 +31,8 @@ namespace StoryTimeFramework.Resources.Graphic
                 if (_assets == null || _assets.Length == 0)
                     return new AxisAlignedBoundingBox2D();
 
-                AxisAlignedBoundingBox2D box = _assets[0].AABoundingBox;
-                for (int idx = 1; idx < _assets.Length; idx++)
+                var box = _assets[0].AABoundingBox;
+                for (var idx = 1; idx < _assets.Length; idx++)
                     box = box.Combine(_assets[idx].AABoundingBox);
                 return box;     
             }

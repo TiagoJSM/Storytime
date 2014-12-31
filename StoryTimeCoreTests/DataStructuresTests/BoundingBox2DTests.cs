@@ -15,13 +15,13 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void PointIsInsideBoundingBox()
         {
-            BoundingBox2D box = new BoundingBox2D(
+            var box = new BoundingBox2D(
                 Vector2.Zero,
                 new Vector2(0.0f, 10.0f),
                 new Vector2(10.0f, 10.0f),
                 new Vector2(10.0f, 0.0f));
 
-            Vector2 point = new Vector2(5.0f, 5.0f);
+            var point = new Vector2(5.0f, 5.0f);
 
             Assert.AreEqual(true, box.Contains(point));
         }
@@ -29,13 +29,13 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void PointIsOutsideBoundingBox()
         {
-            BoundingBox2D box = new BoundingBox2D(
+            var box = new BoundingBox2D(
                 Vector2.Zero,
                 new Vector2(0.0f, 10.0f),
                 new Vector2(10.0f, 10.0f),
                 new Vector2(10.0f, 0.0f));
 
-            Vector2 point = new Vector2(15.0f, 5.0f);
+            var point = new Vector2(15.0f, 5.0f);
 
             Assert.AreEqual(false, box.Contains(point));
         }
@@ -43,13 +43,13 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void PointIsInBoundingBoxBorders()
         {
-            BoundingBox2D box = new BoundingBox2D(
+            var box = new BoundingBox2D(
                 Vector2.Zero,
                 new Vector2(0.0f, 10.0f),
                 new Vector2(10.0f, 10.0f),
                 new Vector2(10.0f, 0.0f));
 
-            Vector2 point = new Vector2(0.0f, 5.0f);
+            var point = new Vector2(0.0f, 5.0f);
 
             Assert.AreEqual(true, box.Contains(point));
         }
@@ -57,7 +57,7 @@ namespace StoryTimeCoreTests.DataStructuresTests
         [TestMethod]
         public void PointIsInRotatedBoundingBox()
         {
-            BoundingBox2D box = new BoundingBox2D(
+            var box = new BoundingBox2D(
                 Vector2.Zero,
                 new Vector2(0.0f, 10.0f),
                 new Vector2(10.0f, 10.0f),
@@ -65,7 +65,7 @@ namespace StoryTimeCoreTests.DataStructuresTests
 
             box = box.GetRotated(45.0f);
 
-            Vector2 point = new Vector2(0.5f, 5.0f);
+            var point = new Vector2(0.5f, 5.0f);
 
             Assert.AreEqual(true, box.Contains(point));
         }

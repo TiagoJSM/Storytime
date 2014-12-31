@@ -23,7 +23,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
 
         protected override void HandleActorIntersection(BaseActor actor, Vector2 position)
         {
-            BoneActor bone = actor as BoneActor;
+            var bone = actor as BoneActor;
             Context.Selected = bone;
         }
     }
