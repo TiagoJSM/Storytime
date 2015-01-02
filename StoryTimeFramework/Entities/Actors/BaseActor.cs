@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using StoryTimeCore.Physics;
 using StoryTimeCore.Resources.Graphic;
+using StoryTimeFramework.Entities.Components;
 using StoryTimeFramework.WorldManagement.Manageables;
 using StoryTimeCore.Input.Time;
 using StoryTimeFramework.Resources.Graphic;
@@ -21,12 +22,10 @@ namespace StoryTimeFramework.Entities.Actors
     /// <summary>
     /// The base class for scene actors, this class defines the drawable components for the scene.
     /// </summary>
-    public abstract class BaseActor : WorldEntity, ITimeUpdatable, IBoundingBoxable
+    public abstract class BaseActor : WorldEntity, ITimeUpdatable
     {
         private IRenderableAsset _renderableAsset;
         private IBody _body;
-
-        public event Action<BaseActor> OnBoundingBoxChanges;
 
         [Editable(EditorGroup = "Physics", EditorName = "Body")]
         public IBody Body 
@@ -70,8 +69,8 @@ namespace StoryTimeFramework.Entities.Actors
                 _renderableAsset = value;
             }
         }
-        public abstract void TimeElapse(WorldTime WTime);
-        public AxisAlignedBoundingBox2D AABoundingBox
+        
+        public override AxisAlignedBoundingBox2D AABoundingBox
         {
             get 
             {
@@ -93,7 +92,7 @@ namespace StoryTimeFramework.Entities.Actors
                     .GetRotated(rotation, position);
             }
         }
-        public BoundingBox2D BoundingBox
+        public override BoundingBox2D BoundingBox
         {
             get 
             {
@@ -116,28 +115,31 @@ namespace StoryTimeFramework.Entities.Actors
             }
         }
 
+        public ComponentCollection Components { get; private set; }
+
+        public BaseActor()
+        {
+            Components = new ComponentCollection(this);
+        }
+
         private void RenderableActorBoundingBoxChangesHandler(IRenderableAsset asset)
         {
-            if (OnBoundingBoxChanges != null)
-                OnBoundingBoxChanges(this);
+            RaiseBoundingBoxChanges();
         }
 
         private void BodyPositionChangesHandler(IBody body)
         {
-            if (OnBoundingBoxChanges != null)
-                OnBoundingBoxChanges(this);
+            RaiseBoundingBoxChanges();
         }
 
         private void BodyRotationChangesHandler(IBody body)
         {
-            if (OnBoundingBoxChanges != null)
-                OnBoundingBoxChanges(this);
+            RaiseBoundingBoxChanges();
         }
 
         private void BodyScaleChangesHandler(IBody body)
         {
-            if (OnBoundingBoxChanges != null)
-                OnBoundingBoxChanges(this);
+            RaiseBoundingBoxChanges();
         }
     }
 }

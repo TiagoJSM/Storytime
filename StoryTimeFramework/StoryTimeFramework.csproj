@@ -74,8 +74,12 @@
     <Compile Include="DataStructures\Quadtree.cs" />
     <Compile Include="Entities\Actors\Actor.cs" />
     <Compile Include="Entities\Actors\BaseActor.cs" />
+    <Compile Include="Entities\Actors\ParticleActor.cs" />
     <Compile Include="Entities\Cameras\Camera.cs" />
     <Compile Include="Entities\Actors\Character.cs" />
+    <Compile Include="Entities\Components\ComponentCollection.cs" />
+    <Compile Include="Entities\Components\Component.cs" />
+    <Compile Include="Entities\Components\ParticleEmitterComponent.cs" />
     <Compile Include="Entities\Controllers\BaseAIController.cs" />
     <Compile Include="Entities\Controllers\BaseController.cs" />
     <Compile Include="Entities\Controllers\BasePlayerController.cs" />
@@ -94,6 +98,10 @@
     <ProjectReference Include="..\Farseer Physics Engine 3.5\Farseer Physics XNA.csproj">
       <Project>{0A850700-1ABB-4288-A391-6726B90EBEB9}</Project>
       <Name>Farseer Physics XNA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParticleEngine\ParticleEngine\ParticleEngine.csproj">
+      <Project>{b6b81eac-0477-4215-9e72-8f456a421ec1}</Project>
+      <Name>ParticleEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\StoryTimeCore\StoryTimeCore.csproj">
       <Project>{768B1451-6637-4ADE-BB85-CB742B224D09}</Project>

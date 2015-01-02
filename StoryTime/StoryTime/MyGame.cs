@@ -103,7 +103,7 @@ namespace StoryTime
             };
 
             Scene s = new Scene();
-            s.AddActor(_actor);
+            s.AddWorldEntity(_actor);
             _gameWorld.AddScene(s);*/
             
             //rectangle = new Texture2D(GraphicsDevice, 2, 2);

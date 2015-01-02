@@ -3,34 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using StoryTimeCore.Input.Time;
+using StoryTimeCore.Physics;
 
 namespace ParticleEngine
 {
     public class Particle
     {
+        private IBody _body;
         private TimeSpan _timeToLive;
-        //public Color Color { get; set; }
+        
+        public Color Color { get; set; }
+        public Vector2 Direction { get; set; }
+        public double Velocity { get; set; }
+        public Vector2 Size { get; set; }
 
-        public TimeSpan TimeToLive
+        public Vector2 Position
         {
-            get { return _timeToLive; }
-            set
+            get { return _body.Position; }
+            set { _body.Position = value; }
+        }
+
+        public bool IsAlive
+        {
+            get
             {
-                if (_timeToLive.Ticks == value.Ticks) return;
-                _timeToLive = value;
-                if (TimeToLive.Ticks <= 0)
-                {
-                    //Kill();
-                }
+                if (ElapsedLifeTime.Ticks >= TimeToLive.Ticks)
+                    return false;
+                return true;
             }
         }
 
-        public ParticleAnimationBoard AnimationBoard { get; set; }
+        public TimeSpan TimeToLive { get; set; }
+        public TimeSpan ElapsedLifeTime { get; set; }
 
-        public void Update(double elapsed)
+        public Particle(IBody body)
         {
-            TimeToLive = TimeToLive.Subtract(TimeSpan.FromMilliseconds(elapsed));
-            if (TimeToLive.Ticks <= 0) return;
+            _body = body;
+            Color = new Color(1f, 1f, 1f);
         }
     }
 }

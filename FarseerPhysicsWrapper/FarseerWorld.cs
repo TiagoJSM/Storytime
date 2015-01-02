@@ -26,7 +26,14 @@ namespace FarseerPhysicsWrapper
 
         public IBody CreateRectangularBody(float width, float height, float density, object userData = null)
         {
-            return new FarseerBody(BodyFactory.CreateRectangle(_world, 160f, 160f, 1f, userData));
+            return new FarseerBody(BodyFactory.CreateRectangle(_world, width, height, density, userData));
+        }
+
+        public IBody CreateParticleBody(bool physicalSimulated, float width, float height, float density)
+        {
+            if (physicalSimulated)
+                return new FarseerBody(BodyFactory.CreateRectangle(_world, width, height, density));
+            throw new NotImplementedException();
         }
     }
 }

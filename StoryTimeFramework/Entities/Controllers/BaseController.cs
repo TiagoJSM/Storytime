@@ -16,7 +16,7 @@ namespace StoryTimeFramework.Entities.Controllers
         public Character Character { get; set; }
         protected event Action<WorldTime> OnTimeElapse;
 
-        public virtual void TimeElapse(WorldTime WTime)
+        public override void TimeElapse(WorldTime WTime)
         {
             OnTimeElapse(WTime);
         }

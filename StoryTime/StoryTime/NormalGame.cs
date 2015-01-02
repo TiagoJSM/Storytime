@@ -86,7 +86,7 @@ namespace StoryTime
             GraphicsContext.SetCamera(s.Camera);
 
             s.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
-            _actor = s.AddActor<Actor>();
+            _actor = s.AddWorldEntity<Actor>();
             _actor.RenderableAsset = _asset;
             _gameWorld = new GameWorld(GraphicsContext);
             _gameWorld.AddScene(s);

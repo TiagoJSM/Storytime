@@ -15,9 +15,9 @@ namespace StoryTimeDevKit.Extensions
         {
             var model = new SavedSceneModel();
             var sceneActors = new List<SavedSceneActor>();
-            //IEnumerable<ActorWidgetAdapter> widgetActors = scene.Actors.OfType<ActorWidgetAdapter>();
+            //IEnumerable<ActorWidgetAdapter> widgetActors = scene.WorldEntities.OfType<ActorWidgetAdapter>();
             //foreach (ActorWidgetAdapter widget in widgetActors)
-            var actors = scene.Actors;
+            var actors = scene.WorldEntities;
             foreach (var ba in actors)
             {
                 //BaseActor ba = widget.BaseActor;

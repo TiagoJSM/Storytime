@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using StoryTimeFramework.Entities;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeCore.Input.Time;
 using StoryTimeCore.Contexts.Interfaces;
@@ -85,7 +86,7 @@ namespace StoryTimeDevKit.Entities.Actors
             RenderableAsset = new BoneRenderableAsset(Scene.GraphicsContext);
         }
 
-        private void OnBoundingBoxChangesHandler(BaseActor actor)
+        private void OnBoundingBoxChangesHandler(WorldEntity entity)
         {
             if (OnPositionChange != null)
                 OnPositionChange(this);

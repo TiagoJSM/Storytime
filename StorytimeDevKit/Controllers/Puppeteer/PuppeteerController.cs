@@ -162,7 +162,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
             _skeleton = new Skeleton();
             _factory = new PuppeteerSceneObjectFactory(this);
-            _armatureActor = Scene.AddActor<ArmatureActor>();
+            _armatureActor = Scene.AddWorldEntity<ArmatureActor>();
             _sceneBoneMapper = new SceneBonesMapper();
             _animationTimeLineMapper = new AnimationTimeLineMapper();
             _skeletonTreeViewMapper = new SkeletonTreeViewMapper(this, new AttachToBoneCommand(this));
@@ -332,7 +332,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
         private BoneActor AddBone(Vector2 boneStartPosition, BoneActor parent)
         {
-            var actor = Scene.AddActor<BoneActor>();
+            var actor = Scene.AddWorldEntity<BoneActor>();
             actor.Parent = parent;
             actor.Body.Position = boneStartPosition;
 

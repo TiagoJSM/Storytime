@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryTime", "StoryTime\StoryTime\StoryTime.csproj", "{0F0F1AAA-7FBE-4952-A7D0-4509D2221959}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryTimeContent", "StoryTime\StoryTimeContent\StoryTimeContent.contentproj", "{900697CF-8EA3-4D8F-B4B1-AAA84D8DAB77}"
@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryTimeSceneGraph", "Stor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryTimeCoreTests", "StoryTimeCoreTests\StoryTimeCoreTests.csproj", "{243E5465-5B8E-48C6-939B-A4CB66136587}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryTimeDevKit", "StoryTimeDevKit\StoryTimeDevKit.csproj", "{7FEE429A-6FAA-4088-B1A1-EC51B6D27D8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorytimeDevKit", "StoryTimeDevKit\StoryTimeDevKit.csproj", "{7FEE429A-6FAA-4088-B1A1-EC51B6D27D8D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Farseer Physics XNA", "Farseer Physics Engine 3.5\Farseer Physics XNA.csproj", "{0A850700-1ABB-4288-A391-6726B90EBEB9}"
 EndProject
@@ -45,6 +45,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External Libraries", "External Libraries", "{48EC84CD-AC7A-48C2-BBAA-E09751C69021}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeLineTool", "TimeLineTool\TimeLineTool.csproj", "{7439A26A-46E1-42A0-9D58-2E38289675F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleEngine", "ParticleEngine\ParticleEngine\ParticleEngine.csproj", "{B6B81EAC-0477-4215-9E72-8F456A421EC1}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -311,6 +313,21 @@ Global
 		{7439A26A-46E1-42A0-9D58-2E38289675F6}.Release-Signed|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7439A26A-46E1-42A0-9D58-2E38289675F6}.Release-Signed|Mixed Platforms.Build.0 = Release|Any CPU
 		{7439A26A-46E1-42A0-9D58-2E38289675F6}.Release-Signed|x86.ActiveCfg = Release|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Release|x86.ActiveCfg = Release|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Release-Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Release-Signed|Any CPU.Build.0 = Release|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Release-Signed|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Release-Signed|Mixed Platforms.Build.0 = Release|Any CPU
+		{B6B81EAC-0477-4215-9E72-8F456A421EC1}.Release-Signed|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -321,8 +338,8 @@ Global
 		{0F1AFCAF-2BB5-495B-BC2D-FB0EA76F71AF} = {A6581504-0166-4601-909A-C748A946CF9A}
 		{2D915571-1249-49EB-BB71-15E7D508FC30} = {A6581504-0166-4601-909A-C748A946CF9A}
 		{271FFA2A-958F-4260-B7F7-DB059BCCBA0C} = {A6581504-0166-4601-909A-C748A946CF9A}
-		{0A850700-1ABB-4288-A391-6726B90EBEB9} = {48EC84CD-AC7A-48C2-BBAA-E09751C69021}
 		{D98D6FF4-6F72-4E54-B84E-3E8592B7A181} = {48EC84CD-AC7A-48C2-BBAA-E09751C69021}
+		{0A850700-1ABB-4288-A391-6726B90EBEB9} = {48EC84CD-AC7A-48C2-BBAA-E09751C69021}
 		{7439A26A-46E1-42A0-9D58-2E38289675F6} = {48EC84CD-AC7A-48C2-BBAA-E09751C69021}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

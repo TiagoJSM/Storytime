@@ -92,10 +92,12 @@
     <Compile Include="General\IBoundingBoxable.cs" />
     <Compile Include="Input\Time\WorldTime.cs" />
     <Compile Include="Manageables\ITimeUpdatable.cs" />
+    <Compile Include="Physics\IParticleBodyFactory.cs" />
     <Compile Include="Physics\IPhysicalWorld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Graphic\IRenderable.cs" />
     <Compile Include="Resources\Graphic\IRenderableAsset.cs" />
+    <Compile Include="Utils\MathematicalUtils.cs" />
     <Compile Include="Utils\MatrixUtils.cs" />
   </ItemGroup>
   <ItemGroup>

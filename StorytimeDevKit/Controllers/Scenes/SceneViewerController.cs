@@ -64,16 +64,16 @@ namespace StoryTimeDevKit.Controllers.Scenes
         {
             if(s == null) 
                 throw new InvalidArgumentOnControllerMethodException(
-                    this, "AddActor", "s", typeof(SceneTabViewModel), LocalizedTexts.AddingActorError); 
+                    this, "AddWorldEntity", "s", typeof(SceneTabViewModel), LocalizedTexts.AddingActorError); 
             if(s.Scene == null)
                 throw new InvalidArgumentOnControllerMethodException(
-                    this, "AddActor", "s.Scene", typeof(Scene), LocalizedTexts.AddingActorError); 
+                    this, "AddWorldEntity", "s.Scene", typeof(Scene), LocalizedTexts.AddingActorError); 
             if(actor == null)
                 throw new InvalidArgumentOnControllerMethodException(
-                    this, "AddActor", "actor", typeof(ActorViewModel), LocalizedTexts.AddingActorError); 
+                    this, "AddWorldEntity", "actor", typeof(ActorViewModel), LocalizedTexts.AddingActorError); 
             if(actor.ActorType == null)
                 throw new InvalidArgumentOnControllerMethodException(
-                    this, "AddActor", "actor.ActorType", typeof(Type), LocalizedTexts.AddingActorError);
+                    this, "AddWorldEntity", "actor.ActorType", typeof(Type), LocalizedTexts.AddingActorError);
 
             IReversibleCommand command = 
                 new AddActorCommand(s.Scene, actor.ActorType, position, PopulateActorWithDefaultValuesIfNeeded);
@@ -169,7 +169,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
             if (newIntersectedActor == null) return;
 
             var controlData = CurrentSceneControlData;
-            controlData.TransformActorModel.Actor = newIntersectedActor;
+            controlData.TransformActorModel.Actor = newIntersectedActor as BaseActor;
             
             TransformModeModel.HasActor = true;
             if (TransformModeModel.WidgetMode == WidgetMode.None)
