@@ -1,0 +1,63 @@
+﻿<templates:BaseSceneUserControl
+            x:Class="StoryTimeDevKit.Controls.ParticleEditor.ParticleEditorControl"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:templates="clr-namespace:StoryTimeDevKit.Controls.Templates"
+            xmlns:xna="clr-namespace:StoryTimeDevKit.Controls.XNA"
+            xmlns:TransformableWidgetNS="clr-namespace:StoryTimeDevKit.Entities.SceneWidgets"
+            xmlns:particleEditor="clr-namespace:StoryTimeDevKit.Controls.ParticleEditor"
+            xmlns:editors="clr-namespace:StoryTimeDevKit.Controls.Editors"
+            mc:Ignorable="d" 
+            d:DesignHeight="600" d:DesignWidth="900">
+    <Grid Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="370*"/>
+            <ColumnDefinition Width="157*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="344*" />
+            <RowDefinition Height="344*" />
+            <RowDefinition Height="130*" />
+        </Grid.RowDefinitions>
+        <GridSplitter Width="4"
+                  Grid.Column="0"
+                  Grid.Row="1"
+                  Grid.RowSpan="2"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Stretch"/>
+        <GridSplitter Height="4"
+                  Grid.Column="1"
+                  Grid.Row="2"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="top"/>
+        <GridSplitter Height="4"
+                  Grid.Column="0"
+                  Grid.Row="3"
+                  Grid.ColumnSpan="2"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="top"/>
+        <ToolBar 
+            HorizontalAlignment="Left"
+            Name="toolBar" 
+            VerticalAlignment="Top" 
+            Grid.ColumnSpan="2" 
+            Width="{Binding ElementName=MainGrid,Path=ActualWidth}" 
+            Height="Auto">
+        </ToolBar>
+        <xna:XnaControl 
+            Grid.Row="1" 
+            Grid.Column="0"
+            Grid.RowSpan="2"
+            x:Name="PuppeteerEditor" 
+            Margin="0,0,4,0" 
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch" 
+            AllowDrop="True"/>
+        <particleEditor:ParticleEmissorListView Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <editors:ActorPropertyEditor Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" Margin="0" x:Name="actorPropertyEditor1" VerticalAlignment="Stretch" />
+        <!--<my1:PuppeteerControlTabs Grid.Column="0" Grid.Row="2" Margin="0,0,6,0" />-->
+    </Grid>
+</templates:BaseSceneUserControl>
