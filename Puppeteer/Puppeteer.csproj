@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animation\BoneAnimationFrame.cs" />
     <Compile Include="Armature\Bone.cs" />
     <Compile Include="Armature\Skeleton.cs" />
     <Compile Include="Extensions\ArmatureRenderableAssetExtensions.cs" />

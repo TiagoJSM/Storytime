@@ -121,7 +121,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             _timeMarkerModel.XOrigin = Ruler.TranslatePoint(new System.Windows.Point(0, 0), this).X;
         }
 
-        void timeMarkerTimer_TickHandler(object sender, EventArgs e)
+        private void timeMarkerTimer_TickHandler(object sender, EventArgs e)
         {
             _timeMarkerModel.Seconds += _timeMarkerTimer.Interval.TotalSeconds;
         }

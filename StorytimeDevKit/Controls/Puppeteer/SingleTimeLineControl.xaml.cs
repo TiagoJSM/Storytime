@@ -229,31 +229,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             _points = new ObservableCollection<DataPoint>();
 
             list.ItemsSource = _points;
-
-            /*TimeFrames.Add(
-                new TimeFrame()
-                {
-                    StartTime = new TimeSpan(),
-                    EndTime = new TimeSpan(0, 0, 3)
-                });
-
-            TimeFrames.Add(
-                new TimeFrame()
-                {
-                    StartTime = new TimeSpan(0, 0, 3),
-                    EndTime = new TimeSpan(0, 0, 7)
-                });*/
         }
-
-        /*public AnimationDataItem GetDataItemAt(DateTime time)
-        {
-            foreach (ITimeLineDataItem item in DataItems)
-            {
-                if (item.IsIntervalIntesected(time))
-                    return item as AnimationDataItem;
-            }
-            return null;
-        }*/
 
         private void Thumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {

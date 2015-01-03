@@ -326,8 +326,10 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
         public void AddAnimationFrameFor(BoneActor actor)
         {
-            if (Seconds == null) return;
-            _animationTimeLineMapper.AddAnimationFrame(actor, Seconds.Value);
+            if (Seconds == null)
+                _animationTimeLineMapper.AddBoneInitialSate(actor);
+            else
+                _animationTimeLineMapper.AddAnimationFrame(actor, Seconds.Value);
         }
 
         private BoneActor AddBone(Vector2 boneStartPosition, BoneActor parent)

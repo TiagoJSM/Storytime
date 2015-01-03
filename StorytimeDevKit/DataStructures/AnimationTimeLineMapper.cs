@@ -15,41 +15,73 @@ namespace StoryTimeDevKit.DataStructures
 {
     public class AnimationTimeLineMapper
     {
-        private Dictionary<BoneActor, ObservableCollection<TimeFrame>> _mapper;
+        private Dictionary<BoneActor, BoneState> _boneInitialStateMapper;
+        private Dictionary<BoneActor, ObservableCollection<TimeFrame>> _timeFramesMapper;
 
         public AnimationTimeLineMapper()
         {
-            _mapper = new Dictionary<BoneActor, ObservableCollection<TimeFrame>>();
+            _timeFramesMapper = new Dictionary<BoneActor, ObservableCollection<TimeFrame>>();
+            _boneInitialStateMapper = new Dictionary<BoneActor, BoneState>();
         }
 
         public void AddTimeLineFor(BoneActor actor)
         {
-            _mapper.Add(actor, new ObservableCollection<TimeFrame>());
+            _timeFramesMapper.Add(actor, new ObservableCollection<TimeFrame>());
+            AddBoneInitialSate(actor);
+        }
+
+        public void AddBoneInitialSate(BoneActor actor)
+        {
+            BoneState state = null;
+            if (_boneInitialStateMapper.TryGetValue(actor, out state))
+            {
+                state.Translation = actor.AssignedBone.Translation;
+                state.Rotation = actor.AssignedBone.Rotation;
+            }
+            else
+            {
+                state = new BoneState() 
+                { 
+                    Translation = actor.AssignedBone.Translation,
+                    Rotation = actor.AssignedBone.Rotation
+                };
+                _boneInitialStateMapper.Add(actor, state);
+            }
         }
 
         public void AddAnimationFrame(BoneActor actor, double animationEndTimeInSeconds)
         {
-            TimeFrame frameAtTime = GetFrameAt(actor, animationEndTimeInSeconds);
+            var frameAtTime = GetFrameAt(actor, animationEndTimeInSeconds);
             if (frameAtTime != null) return;
 
             ObservableCollection<TimeFrame> dataCollection = GetCollectionBoundToActor(actor);
-            TimeFrame frame = GetLastTimeFrame(dataCollection);
+            var frame = GetLastTimeFrame(dataCollection);
 
-            TimeFrame item = null;
+            var currentState = new BoneState()
+                {
+                    Translation = actor.AssignedBone.Translation,
+                    Rotation = actor.AssignedBone.Rotation
+                };
+
+            BoneAnimationTimeFrame item = null;
             if (frame == null)
             {
-                item = new TimeFrame()
+                item = new BoneAnimationTimeFrame()
                     {
                         StartTime = new TimeSpan(),
-                        EndTime = TimeSpan.FromSeconds(animationEndTimeInSeconds)
+                        EndTime = TimeSpan.FromSeconds(animationEndTimeInSeconds),
+                        StartState = _boneInitialStateMapper[actor],
+                        EndState = currentState 
                     };
             }
             else
             {
-                item = new TimeFrame()
+                item = new BoneAnimationTimeFrame()
                 {
                     StartTime = frame.EndTime,
-                    EndTime = frame.EndTime.Add(TimeSpan.FromSeconds(animationEndTimeInSeconds))
+                    EndTime = TimeSpan.FromSeconds(animationEndTimeInSeconds),
+                    StartState = frame.EndState,
+                    EndState = currentState 
                 };
             }
             dataCollection.Add(item);
@@ -57,23 +89,23 @@ namespace StoryTimeDevKit.DataStructures
 
         public ObservableCollection<TimeFrame> GetCollectionBoundToActor(BoneActor actor)
         {
-            if (_mapper.ContainsKey(actor))
-                return _mapper[actor];
+            if (_timeFramesMapper.ContainsKey(actor))
+                return _timeFramesMapper[actor];
             return null;
         }
 
-        public TimeFrame GetFrameAt(BoneActor actor, double seconds)
+        public BoneAnimationTimeFrame GetFrameAt(BoneActor actor, double seconds)
         {
-            ObservableCollection<TimeFrame> items = GetCollectionBoundToActor(actor);
+            var items = GetCollectionBoundToActor(actor);
             if (items == null) return null;
-            TimeSpan convertedSeconds = TimeSpan.FromSeconds(seconds);
-            return items.FirstOrDefault(i => i.IsIntervalIntesected(convertedSeconds, true));
+            var convertedSeconds = TimeSpan.FromSeconds(seconds);
+            return items.FirstOrDefault(i => i.IsIntervalIntesected(convertedSeconds, true)) as BoneAnimationTimeFrame;
         }
 
-        private TimeFrame GetLastTimeFrame(ObservableCollection<TimeFrame> items)
+        private BoneAnimationTimeFrame GetLastTimeFrame(ObservableCollection<TimeFrame> items)
         {
             if (!items.Any()) return null;
-            return items.MaxBy(i => i.EndTime) as TimeFrame;
+            return items.MaxBy(i => i.EndTime) as BoneAnimationTimeFrame;
         }
     }
 }

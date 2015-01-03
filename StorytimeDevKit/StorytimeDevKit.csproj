@@ -172,6 +172,8 @@
     <Compile Include="Entities\SceneWidgets\TranslateWidgetRenderableAsset.cs" />
     <Compile Include="Extensions\SceneExtensions.cs" />
     <Compile Include="Models\MainWindow\TransformModeViewModel.cs" />
+    <Compile Include="Models\Puppeteer\BoneAnimationTimeFrame.cs" />
+    <Compile Include="Models\Puppeteer\BoneState.cs" />
     <Compile Include="Models\Puppeteer\BoneViewModel.cs" />
     <Compile Include="Models\Puppeteer\TimeFrame.cs" />
     <Compile Include="Models\Puppeteer\TimelineTuple.cs" />
