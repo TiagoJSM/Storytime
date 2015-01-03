@@ -34,7 +34,7 @@ namespace StoryTimeDevKit.Controllers.TemplateControllers
             {
                 _world = value;
 
-                Scene scene = new Scene();
+                var scene = new Scene();
                 scene.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
                 _world.AddScene(scene);
                 _world.SetActiveScene(scene);

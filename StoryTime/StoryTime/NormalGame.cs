@@ -75,18 +75,18 @@ namespace StoryTime
             Content.RootDirectory = "Content";
 
             GraphicsContext = new XNAGraphicsContext(this.Graphics, this.Content);
-            ITexture2D bitmap = GraphicsContext.LoadTexture2D("Bitmap1");
+            var bitmap = GraphicsContext.LoadTexture2D("Bitmap1");
 
             _asset = new Static2DRenderableAsset();
             //_asset.SetBoundingBox(new StoryTimeCore.DataStructures.Rectanglef(0, 0.0f, 720, 1280));
             _asset.Texture2D = bitmap;
             
-            Scene s = new Scene();
+            var s = new Scene();
 
             GraphicsContext.SetCamera(s.Camera);
 
             s.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
-            _actor = s.AddActor<Actor>();
+            _actor = s.AddWorldEntity<Actor>();
             _actor.RenderableAsset = _asset;
             _gameWorld = new GameWorld(GraphicsContext);
             _gameWorld.AddScene(s);
@@ -117,7 +117,7 @@ namespace StoryTime
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            KeyboardState keyState = Keyboard.GetState();
+            var keyState = Keyboard.GetState();
             //Keys[] k = keyState.GetPressedKeys
             // TODO: Add your update logic here
 
@@ -126,7 +126,7 @@ namespace StoryTime
             
             if (OnUpdate != null)
             {
-                WorldTime wt = new WorldTime(gameTime.TotalGameTime, gameTime.ElapsedGameTime);
+                var wt = new WorldTime(gameTime.TotalGameTime, gameTime.ElapsedGameTime);
                 OnUpdate(wt);
             }
         }
@@ -139,12 +139,12 @@ namespace StoryTime
         {
             GraphicsContext.Clear(Color.CornflowerBlue);
             
-            IRenderer render = GraphicsContext.GetRenderer();
+            var render = GraphicsContext.GetRenderer();
             render.PreRender();
             
             if (OnDraw != null)
             {
-                WorldTime wt = new WorldTime(gameTime.TotalGameTime, gameTime.ElapsedGameTime);
+                var wt = new WorldTime(gameTime.TotalGameTime, gameTime.ElapsedGameTime);
                 OnDraw(render, wt);
             }
             //_asset.Render(render);

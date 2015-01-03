@@ -84,8 +84,8 @@ namespace StoryTimeDevKit.Controls.XNA
 
         private System.Drawing.Point GetPointInGamePanel()
         {
-            System.Drawing.Point cursorScreenCoords = System.Windows.Forms.Cursor.Position;
-            System.Drawing.Point controlRelatedCoords = this.GamePanel.PointToClient(cursorScreenCoords);
+            var cursorScreenCoords = System.Windows.Forms.Cursor.Position;
+            var controlRelatedCoords = this.GamePanel.PointToClient(cursorScreenCoords);
 
             controlRelatedCoords.Y = GamePanel.Height - controlRelatedCoords.Y;
             return controlRelatedCoords;
@@ -93,7 +93,7 @@ namespace StoryTimeDevKit.Controls.XNA
 
         private System.Drawing.Point GetGamePanelDimensions()
         {
-            System.Drawing.Point gamePanelDimensions =
+            var gamePanelDimensions =
                 new System.Drawing.Point(GamePanel.Width, GamePanel.Height);
 
             return gamePanelDimensions;
@@ -101,11 +101,11 @@ namespace StoryTimeDevKit.Controls.XNA
 
         private void GamePanel_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            Type t = Type.GetType(e.Data.GetFormats()[0]);
-            object o = GetDataOfType(t, e);
+            var t = Type.GetType(e.Data.GetFormats()[0]);
+            var o = GetDataOfType(t, e);
             
-            System.Drawing.Point pGameWorld =  GetPointInGamePanel();
-            System.Drawing.Point gamePanelDimensions = 
+            var pGameWorld =  GetPointInGamePanel();
+            var gamePanelDimensions = 
                 new System.Drawing.Point(GamePanel.Width, GamePanel.Height);
 
             if (o is ActorViewModel && OnDropActor != null)
@@ -133,25 +133,25 @@ namespace StoryTimeDevKit.Controls.XNA
         //the data has to be obtained through introspection hacking
         private object GetDataOfType(Type t, System.Windows.Forms.DragEventArgs e)
         {
-            FieldInfo innerDataFI = e.Data.GetType().GetField("innerData", BindingFlags.NonPublic | BindingFlags.Instance);
+            var innerDataFI = e.Data.GetType().GetField("innerData", BindingFlags.NonPublic | BindingFlags.Instance);
 
-            object innerDataObject = innerDataFI.GetValue(e.Data);
+            var innerDataObject = innerDataFI.GetValue(e.Data);
 
             innerDataFI = innerDataObject.GetType().GetField("innerData", BindingFlags.NonPublic | BindingFlags.Instance);
 
-            System.Windows.DataObject dataObj = innerDataFI.GetValue(innerDataObject) as System.Windows.DataObject;
+            var dataObj = innerDataFI.GetValue(innerDataObject) as System.Windows.DataObject;
 
             innerDataFI = dataObj.GetType().GetField("_innerData", BindingFlags.NonPublic | BindingFlags.Instance);
             
-            Object item = dataObj.GetData(t); 
+            var item = dataObj.GetData(t); 
 
             return item;
         }
 
         private void GamePanel_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            System.Drawing.Point pGamePanel = GetPointInGamePanel();
-            System.Drawing.Point gamePanelDimensions = GetGamePanelDimensions();
+            var pGamePanel = GetPointInGamePanel();
+            var gamePanelDimensions = GetGamePanelDimensions();
 
             if (OnMouseUp != null)
                 OnMouseUp(pGamePanel, gamePanelDimensions);
@@ -159,8 +159,8 @@ namespace StoryTimeDevKit.Controls.XNA
 
         private void GamePanel_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            System.Drawing.Point pGamePanel = GetPointInGamePanel();
-            System.Drawing.Point gamePanelDimensions = GetGamePanelDimensions();
+            var pGamePanel = GetPointInGamePanel();
+            var gamePanelDimensions = GetGamePanelDimensions();
 
             if (OnMouseMove != null)
                 OnMouseMove(pGamePanel, gamePanelDimensions, e.Button);
@@ -168,8 +168,8 @@ namespace StoryTimeDevKit.Controls.XNA
 
         private void GamePanel_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            System.Drawing.Point pGamePanel = GetPointInGamePanel();
-            System.Drawing.Point gamePanelDimensions = GetGamePanelDimensions();
+            var pGamePanel = GetPointInGamePanel();
+            var gamePanelDimensions = GetGamePanelDimensions();
 
             if (OnMouseDown != null)
                 OnMouseDown(pGamePanel, gamePanelDimensions);
@@ -177,8 +177,8 @@ namespace StoryTimeDevKit.Controls.XNA
 
         private void GamePanel_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            System.Drawing.Point pGamePanel = GetPointInGamePanel();
-            System.Drawing.Point gamePanelDimensions = GetGamePanelDimensions();
+            var pGamePanel = GetPointInGamePanel();
+            var gamePanelDimensions = GetGamePanelDimensions();
 
             if (OnMouseClick != null)
                 OnMouseClick(pGamePanel, gamePanelDimensions);

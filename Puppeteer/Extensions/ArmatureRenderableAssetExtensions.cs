@@ -12,9 +12,9 @@ namespace Puppeteer.Extensions
         public static IEnumerable<BoneAttachedRenderableAsset> GetIntersectedBoneAttachedAssets(
             this ArmatureRenderableAsset armature, Vector2 point)
         {
-            List<BoneAttachedRenderableAsset> assets = new List<BoneAttachedRenderableAsset>();
+            var assets = new List<BoneAttachedRenderableAsset>();
 
-            foreach (BoneAttachedRenderableAsset asset in armature.BoneAttachedAssets)
+            foreach (var asset in armature.BoneAttachedAssets)
                 if (asset.BoundingBox.Contains(point))
                     assets.Add(asset);
 

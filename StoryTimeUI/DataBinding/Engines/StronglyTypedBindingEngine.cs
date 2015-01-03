@@ -19,11 +19,11 @@ namespace StoryTimeUI.DataBinding.Engines
             Expression<Func<TSource, TData>> sourceExpression,
             BindingType bindingType = BindingType.OneWayToDestination)
         {
-            MemberExpression destinationMember = GetMemberExpressionFrom(destinationExpression.Body);
-            MemberExpression sourceMember = GetMemberExpressionFrom(sourceExpression.Body);
+            var destinationMember = GetMemberExpressionFrom(destinationExpression.Body);
+            var sourceMember = GetMemberExpressionFrom(sourceExpression.Body);
 
-            PropertyInfo destinationPropInfo = destinationMember.Member as PropertyInfo;
-            PropertyInfo sourcePropInfo = sourceMember.Member as PropertyInfo;
+            var destinationPropInfo = destinationMember.Member as PropertyInfo;
+            var sourcePropInfo = sourceMember.Member as PropertyInfo;
 
             AssignBindersWith(destinationPropInfo, sourcePropInfo, bindingType);
 
@@ -32,7 +32,7 @@ namespace StoryTimeUI.DataBinding.Engines
 
         private MemberExpression GetMemberExpressionFrom(Expression expressionBody)
         {
-            MemberExpression body = expressionBody as MemberExpression;
+            var body = expressionBody as MemberExpression;
 
             if (body == null)
             {

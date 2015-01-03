@@ -64,16 +64,16 @@ namespace StoryTimeDevKit.Controllers.Scenes
         {
             if(s == null) 
                 throw new InvalidArgumentOnControllerMethodException(
-                    this, "AddActor", "s", typeof(SceneTabViewModel), LocalizedTexts.AddingActorError); 
+                    this, "AddWorldEntity", "s", typeof(SceneTabViewModel), LocalizedTexts.AddingActorError); 
             if(s.Scene == null)
                 throw new InvalidArgumentOnControllerMethodException(
-                    this, "AddActor", "s.Scene", typeof(Scene), LocalizedTexts.AddingActorError); 
+                    this, "AddWorldEntity", "s.Scene", typeof(Scene), LocalizedTexts.AddingActorError); 
             if(actor == null)
                 throw new InvalidArgumentOnControllerMethodException(
-                    this, "AddActor", "actor", typeof(ActorViewModel), LocalizedTexts.AddingActorError); 
+                    this, "AddWorldEntity", "actor", typeof(ActorViewModel), LocalizedTexts.AddingActorError); 
             if(actor.ActorType == null)
                 throw new InvalidArgumentOnControllerMethodException(
-                    this, "AddActor", "actor.ActorType", typeof(Type), LocalizedTexts.AddingActorError);
+                    this, "AddWorldEntity", "actor.ActorType", typeof(Type), LocalizedTexts.AddingActorError);
 
             IReversibleCommand command = 
                 new AddActorCommand(s.Scene, actor.ActorType, position, PopulateActorWithDefaultValuesIfNeeded);
@@ -88,7 +88,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
 
         public void SaveScene(SceneTabViewModel scene)
         {
-            SavedSceneModel sceneSave = scene.Scene.ToSaveModel();
+            var sceneSave = scene.Scene.ToSaveModel();
             ApplicationUtils.SaveScene(sceneSave);
         }
 
@@ -121,11 +121,11 @@ namespace StoryTimeDevKit.Controllers.Scenes
         {
             if (ba.RenderableAsset == null)
             {
-                ITexture2D bitmap = _world.GraphicsContext.LoadTexture2D("default");
-                Static2DRenderableAsset asset = new Static2DRenderableAsset();
+                var bitmap = _world.GraphicsContext.LoadTexture2D("default");
+                var asset = new Static2DRenderableAsset();
                 asset.Texture2D = bitmap;
                 ba.RenderableAsset = asset;
-                string name = "one";
+                var name = "one";
                 ba.Body = ba.Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
                 ba.Body.Position = position;
             }
@@ -165,11 +165,11 @@ namespace StoryTimeDevKit.Controllers.Scenes
 
         private void OnMouseClickHandler(Scene scene, Vector2 position)
         {
-            BaseActor newIntersectedActor = scene.AxisAlignedIntersect(position).FirstOrDefault();
+            var newIntersectedActor = scene.AxisAlignedIntersect(position).FirstOrDefault();
             if (newIntersectedActor == null) return;
 
-            SceneControlData controlData = CurrentSceneControlData;
-            controlData.TransformActorModel.Actor = newIntersectedActor;
+            var controlData = CurrentSceneControlData;
+            controlData.TransformActorModel.Actor = newIntersectedActor as BaseActor;
             
             TransformModeModel.HasActor = true;
             if (TransformModeModel.WidgetMode == WidgetMode.None)
@@ -188,15 +188,15 @@ namespace StoryTimeDevKit.Controllers.Scenes
 
         private void OnSceneAddedHandler(SceneTabViewModel model)
         {
-            TranslateSceneWidget translateWidg = new TranslateSceneWidget();
+            var translateWidg = new TranslateSceneWidget();
             model.Scene.GUI.Children.Add(translateWidg);
             translateWidg.OnTranslationComplete += OnTranslationCompleteHandler;
 
-            RotateSceneWidget rotateWidg = new RotateSceneWidget();
+            var rotateWidg = new RotateSceneWidget();
             model.Scene.GUI.Children.Add(rotateWidg);
             rotateWidg.OnStopRotation += OnStopRotationHandler;
 
-            SceneControlData controlData = new SceneControlData(translateWidg, rotateWidg, TransformModeModel);
+            var controlData = new SceneControlData(translateWidg, rotateWidg, TransformModeModel);
 
             AddStackFor(model.Scene);
             _scenesControlData.Add(model.Scene, controlData);
@@ -204,7 +204,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
 
         private void OnTranslationCompleteHandler(Vector2 startPosition, Vector2 currentPosition)
         {
-            SceneControlData controlData = CurrentSceneControlData;
+            var controlData = CurrentSceneControlData;
 
             if (!controlData.TransformActorModel.HasActor) return;
             IReversibleCommand command = new MoveActorCommand(controlData.TransformActorModel.Actor, startPosition, currentPosition);
@@ -213,7 +213,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
 
         private void OnStopRotationHandler(float originalRotation, float finalRotation)
         {
-            SceneControlData controlData = CurrentSceneControlData;
+            var controlData = CurrentSceneControlData;
 
             if (!controlData.TransformActorModel.HasActor) return;
             IReversibleCommand command = new RotateActorCommand(controlData.TransformActorModel.Actor, originalRotation, finalRotation);

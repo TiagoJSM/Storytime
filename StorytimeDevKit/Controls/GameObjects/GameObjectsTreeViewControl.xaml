@@ -67,8 +67,7 @@
                         ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal" Tag="{Binding Tag}" ContextMenuOpening="GameObjectsCategory_ContextMenuOpening">
                             <StackPanel.ContextMenu>
-                                <ContextMenu>
-                                </ContextMenu>
+                                <ContextMenu />
                             </StackPanel.ContextMenu>
                             <Image Width="20" Height="20" Source="{Binding ImagePath}" Margin="0,2,2,0"/>
                             <TextBlock FontSize="14" Text="{Binding GameObjectCategory}" />
@@ -79,8 +78,7 @@
                         ItemsSource="{Binding Children, Converter={StaticResource scenesConverter}}">
                         <StackPanel Orientation="Horizontal" Tag="{Binding Tag}" ContextMenuOpening="GameObjectsCategory_ContextMenuOpening">
                             <StackPanel.ContextMenu>
-                                <ContextMenu>
-                                </ContextMenu>
+                                <ContextMenu />
                             </StackPanel.ContextMenu>
                             <Image Width="20" Height="20" Source="{Binding ImagePath}" Margin="0,2,2,0"/>
                             <TextBlock FontSize="14" Text="{Binding GameObjectCategory}" />
@@ -127,8 +125,7 @@
                         ItemsSource="{Binding Children, Converter={StaticResource scenesConverter}}">
                         <StackPanel Orientation="Horizontal" Tag="{Binding Tag}" ContextMenuOpening="GameObjectsCategory_ContextMenuOpening">
                             <StackPanel.ContextMenu>
-                                <ContextMenu>
-                                </ContextMenu>
+                                <ContextMenu />
                             </StackPanel.ContextMenu>
                             <Image Width="20" Height="20" Name="FolderImage" Margin="0,2,2,0" />
                             <TextBlock FontSize="14" Text="{Binding FolderName}" />

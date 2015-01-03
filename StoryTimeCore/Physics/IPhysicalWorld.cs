@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace StoryTimeCore.Physics
 {
-    public interface IPhysicalWorld
+    public interface IPhysicalWorld : IParticleBodyFactory
     {
         Vector2 Gravity { get; set; }
 

@@ -26,7 +26,7 @@ namespace StoryTimeFramework.Resources.Graphic
             set
             {
                 _texture2D = value;
-                AxisAlignedBoundingBox2D bb = new AxisAlignedBoundingBox2D(0, 0, value.Height, value.Width);
+                var bb = new AxisAlignedBoundingBox2D(0, 0, value.Height, value.Width);
                 if (!_boundingBox.Equals(bb))
                 {
                     _boundingBox = bb;
@@ -42,7 +42,7 @@ namespace StoryTimeFramework.Resources.Graphic
         
         public override void Render(IRenderer renderer)
         {
-            AxisAlignedBoundingBox2D boundings = AABoundingBoxWithoutOrigin;
+            var boundings = AABoundingBoxWithoutOrigin;
             Render(renderer, Texture2D, RawAABoundingBox);
         }
 

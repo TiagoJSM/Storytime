@@ -25,7 +25,7 @@ namespace StoryTimeDevKit.Models
         public ActorPropertyEditorModel(BaseActor ba)
         {
             _ba = ba;
-            List<ActorEditablePropertyModel> editableProps =
+            var editableProps =
                 ba.GetType()
                 .GetProperties()
                 .Where(prop => prop.ContainsAttribute(typeof(EditableAttribute))) 
@@ -33,17 +33,17 @@ namespace StoryTimeDevKit.Models
                 .Select(prop => ConvertToActorEditableProperty(prop))
                 .ToList();
 
-            foreach (ActorEditablePropertyModel editableProp in editableProps)
+            foreach (var editableProp in editableProps)
                 AddProperty(editableProp);
         }
 
         private ActorEditablePropertyModel ConvertToActorEditableProperty(PropertyInfo prop)
         {
-            EditableAttribute editable = 
+            var editable = 
                 (EditableAttribute)(Attribute.GetCustomAttributes(prop, typeof(EditableAttribute), true).First());
 
-            string propGroup = editable.EditorGroup;
-            string propName = editable.EditorName;
+            var propGroup = editable.EditorGroup;
+            var propName = editable.EditorName;
 
             if (String.IsNullOrWhiteSpace(propGroup))
                 propGroup = ActorPropertyEditorDefaultValues.DefaultGroupName;
@@ -64,7 +64,7 @@ namespace StoryTimeDevKit.Models
         {
             var memberName = binder.Name;
             ActorEditablePropertyModel bucket;
-            bool gotValue = dynamicProperties.TryGetValue(memberName, out bucket);
+            var gotValue = dynamicProperties.TryGetValue(memberName, out bucket);
             result = bucket.Data;
             return gotValue;
         }
@@ -72,7 +72,7 @@ namespace StoryTimeDevKit.Models
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
             var memberName = binder.Name;
-            ActorEditablePropertyModel model = new ActorEditablePropertyModel() 
+            var model = new ActorEditablePropertyModel() 
             {
                 Data = value,
                 DataType = binder.ReturnType,

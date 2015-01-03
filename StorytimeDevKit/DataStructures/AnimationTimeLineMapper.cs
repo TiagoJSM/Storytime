@@ -54,7 +54,7 @@ namespace StoryTimeDevKit.DataStructures
             var frameAtTime = GetFrameAt(actor, animationEndTimeInSeconds);
             if (frameAtTime != null) return;
 
-            ObservableCollection<TimeFrame> dataCollection = GetCollectionBoundToActor(actor);
+            var dataCollection = GetCollectionBoundToActor(actor);
             var frame = GetLastTimeFrame(dataCollection);
 
             var currentState = new BoneState()

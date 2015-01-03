@@ -31,12 +31,12 @@ namespace StoryTime.Contexts
 
             public void PreRender()
             {
-                float scaleWidth = (float)_xnaGD._gdm.PreferredBackBufferWidth / (float)_xnaGD._cameraWidth;
-                float scaleHeight = (float)_xnaGD._gdm.PreferredBackBufferHeight / (float)_xnaGD._cameraHeight;
-                Matrix m = Matrix.CreateScale(scaleWidth, -scaleHeight, 1);
+                var scaleWidth = (float)_xnaGD._gdm.PreferredBackBufferWidth / (float)_xnaGD._cameraWidth;
+                var scaleHeight = (float)_xnaGD._gdm.PreferredBackBufferHeight / (float)_xnaGD._cameraHeight;
+                var m = Matrix.CreateScale(scaleWidth, -scaleHeight, 1);
                 m *= Matrix.CreateTranslation(0.0f, _xnaGD._cameraHeight, 0.0f);
 
-                RasterizerState rs = new RasterizerState();
+                var rs = new RasterizerState();
                 rs.CullMode = CullMode.None;
                 _xnaGD._gd.RasterizerState = rs;
                 _xnaGD._basicEffect.TextureEnabled = true;
@@ -67,13 +67,13 @@ namespace StoryTime.Contexts
 
             public void Render(ITexture2D texture, float x, float y, float width, float height, float rotation, Vector2 origin = default(Vector2), Vector2 renderingOffset = default(Vector2))
             {
-                Texture2D tex = _xnaGD._gContentManager.GetTexture(texture);
+                var tex = _xnaGD._gContentManager.GetTexture(texture);
                 x += TranslationTransformation.X;
                 y += TranslationTransformation.Y;
 
                 rotation += RotationTransformation;
 
-                Rectangle rec = new Rectangle(
+                var rec = new Rectangle(
                     (int)(x + origin.X + renderingOffset.X),
                     (int)(y + origin.Y + renderingOffset.Y), 
                     (int)width, 
@@ -94,13 +94,13 @@ namespace StoryTime.Contexts
 
             public void Render(ITexture2D texture, Matrix transformation, AxisAlignedBoundingBox2D boundingBox)
             {
-                Texture2D tex = _xnaGD._gContentManager.GetTexture(texture);
+                var tex = _xnaGD._gContentManager.GetTexture(texture);
                 _xnaGD._basicEffect.Texture = tex;
                 _xnaGD._basicEffect.World = transformation * RendererTransformation();
                 _xnaGD._basicEffect.View = _xnaGD.ViewMatrix;
                 _xnaGD._basicEffect.Projection = _xnaGD.ProjectionMatrix;
 
-                foreach (EffectPass pass in _xnaGD._basicEffect.CurrentTechnique.Passes)
+                foreach (var pass in _xnaGD._basicEffect.CurrentTechnique.Passes)
                 {
                     pass.Apply();
                     _xnaGD._gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, GetVerticesFor(boundingBox), 0, 2);
@@ -204,7 +204,7 @@ namespace StoryTime.Contexts
 
             public override bool Equals(object obj)
             {
-                XNATexture2D tex = obj as XNATexture2D;
+                var tex = obj as XNATexture2D;
                 if (tex == null)
                     return false;
                 if (this._id == tex.Id)
@@ -241,7 +241,7 @@ namespace StoryTime.Contexts
 
             public Texture2D GetTexture(ITexture2D xnaTex)
             {
-                KeyValuePair<XNATexture2D, Texture2D> pair =
+                var pair =
                     _textureContainer.Where((kvp) => kvp.Key.Id == xnaTex.Id)
                     .FirstOrDefault();
                 
@@ -252,8 +252,8 @@ namespace StoryTime.Contexts
 
             public XNATexture2D StoreTexture(Texture2D tex)
             {
-                int validTextureId = GetValidTextureId();
-                XNATexture2D xnaTex = new XNATexture2D(validTextureId, tex.Width, tex.Height, tex.Name);
+                var validTextureId = GetValidTextureId();
+                var xnaTex = new XNATexture2D(validTextureId, tex.Width, tex.Height, tex.Name);
                 _textureContainer.Add(xnaTex, tex);
                 return xnaTex;
             }
@@ -316,15 +316,15 @@ namespace StoryTime.Contexts
 
         public ITexture2D LoadTexture2D(string relativePath)
         {
-            XNATexture2D tex = _gContentManager.GetTextureByName(relativePath);
+            var tex = _gContentManager.GetTextureByName(relativePath);
             if (tex != null) return tex;
-            Texture2D t2d = _cm.Load<Texture2D>(relativePath);
+            var t2d = _cm.Load<Texture2D>(relativePath);
             return _gContentManager.StoreTexture(t2d);
         }
 
         public ITexture2D CreateTexture2D(string fullPath)
         {
-            XNATexture2D tex = _gContentManager.GetTextureByName(fullPath);
+            var tex = _gContentManager.GetTextureByName(fullPath);
             if (tex != null) return tex;
             Texture2D texture;
             using (Stream stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read))
@@ -336,9 +336,9 @@ namespace StoryTime.Contexts
 
         public ITexture2D CreateTexture2D(Color[] data, int width, int height, string name)
         {
-            XNATexture2D tex = _gContentManager.GetTextureByName(name);
+            var tex = _gContentManager.GetTextureByName(name);
             if (tex != null) return tex;
-            Texture2D t2d = new Texture2D(_gd, width, height);
+            var t2d = new Texture2D(_gd, width, height);
             t2d.SetData(data);
             t2d.Name = name;
             return _gContentManager.StoreTexture(t2d);

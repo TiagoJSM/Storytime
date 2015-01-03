@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using StoryTimeFramework.Entities;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeCore.Input.Time;
 using StoryTimeCore.Contexts.Interfaces;
@@ -30,20 +31,20 @@ namespace StoryTimeDevKit.Entities.Actors
         {
             get 
             {
-                Vector2 position = Body.Position;
+                var position = Body.Position;
                 position.Y += RenderableAsset.AABoundingBox.Height;
                 return position.Rotate(Body.Rotation, Body.Position);
             }
             set
             {
-                AxisAlignedBoundingBox2D originalBounds = 
+                var originalBounds = 
                     RenderableAsset
                     .AABoundingBoxWithoutOrigin
                     .GetScaled(RenderableAsset.Scale.Inverse(), Vector2.Zero);
 
-                float distance = Vector2.Distance(Body.Position, value);
-                float angle = value.AngleWithCenterIn(Body.Position) - 90.0f;
-                float yScale = distance / originalBounds.Height;
+                var distance = Vector2.Distance(Body.Position, value);
+                var angle = value.AngleWithCenterIn(Body.Position) - 90.0f;
+                var yScale = distance / originalBounds.Height;
                 Body.Rotation = angle;
                 RenderableAsset.Scale = new Vector2(1.0f, yScale);
             }
@@ -85,7 +86,7 @@ namespace StoryTimeDevKit.Entities.Actors
             RenderableAsset = new BoneRenderableAsset(Scene.GraphicsContext);
         }
 
-        private void OnBoundingBoxChangesHandler(BaseActor actor)
+        private void OnBoundingBoxChangesHandler(WorldEntity entity)
         {
             if (OnPositionChange != null)
                 OnPositionChange(this);

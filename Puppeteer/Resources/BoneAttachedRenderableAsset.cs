@@ -30,7 +30,7 @@ namespace Puppeteer.Resources
             {
                 if (_texture == value) return;
                 _texture = value;
-                AxisAlignedBoundingBox2D bb = new AxisAlignedBoundingBox2D(0, 0, _texture.Height, _texture.Width);
+                var bb = new AxisAlignedBoundingBox2D(0, 0, _texture.Height, _texture.Width);
                 if (!_box.Equals(bb))
                 {
                     _box = bb;
@@ -48,7 +48,7 @@ namespace Puppeteer.Resources
             {
                 if (_bone == value) return;
                 _bone = value;
-                Matrix totalTransformation = base.Transformation * Bone.Transformation;
+                var totalTransformation = base.Transformation * Bone.Transformation;
                 _assetDefinedTransformation = totalTransformation * Matrix.Invert(Bone.Transformation);
                 _boneReferenceTransformation = Bone.Transformation;
                 Rotation = 0;
@@ -59,7 +59,7 @@ namespace Puppeteer.Resources
 
         public override void Render(IRenderer renderer)
         {
-            AxisAlignedBoundingBox2D boundings = RawAABoundingBox;
+            var boundings = RawAABoundingBox;
             Render(renderer, _texture, boundings);
         }
 
@@ -69,7 +69,7 @@ namespace Puppeteer.Resources
             {
                 if (Bone != null)
                 {
-                    Matrix extra = Matrix.Invert(_boneReferenceTransformation) * Bone.Transformation;
+                    var extra = Matrix.Invert(_boneReferenceTransformation) * Bone.Transformation;
                     return _assetDefinedTransformation * extra * base.Transformation;
                 }
                 return base.Transformation;

@@ -58,20 +58,20 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
         protected override void OnRender(DrawingContext drawingContext)
         {
-            bool major = true;
+            var major = true;
             double interval = MajorUnitInterval;
-            double linesHeightDifference = majorLineHeight - minorLineHeight;
+            var linesHeightDifference = majorLineHeight - minorLineHeight;
 
             double maxTextHeight = 10;
 
-            for (int idx = 0; idx < this.ActualWidth / PixelsPerUnit; idx++)
+            for (var idx = 0; idx < this.ActualWidth / PixelsPerUnit; idx++)
             {
                 major = idx == 0 || idx % interval == 0;
-                double xPosition = idx * PixelsPerUnit;
+                var xPosition = idx * PixelsPerUnit;
 
                 if (major)
                 {
-                    FormattedText ft = new FormattedText(idx.ToString(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, _typeface, 8, Brushes.Black);
+                    var ft = new FormattedText(idx.ToString(), CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, _typeface, 8, Brushes.Black);
                     drawingContext.DrawText(ft, new Point(xPosition - ft.Width/2, 0));
 
                     drawingContext.DrawLine(

@@ -39,7 +39,7 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
 
             public override bool Intersects(Vector2 point)
             {
-                AxisAlignedBoundingBox2D bounds = _asset.AABoundingBox;
+                var bounds = _asset.AABoundingBox;
                 if (Parent != null)
                     bounds.Translate(Parent.Position);
                 return bounds.Contains(point);
@@ -81,7 +81,7 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
 
         public override bool Intersects(Vector2 point)
         {
-            foreach (BaseWidget child in Children)
+            foreach (var child in Children)
                 if (child.Intersects(point))
                     return true;
             return false;

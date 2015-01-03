@@ -13,7 +13,7 @@ using StoryTimeFramework.WorldManagement.Manageables;
 using StoryTimeFramework.Entities.Controllers;
 using System.Reflection;
 using StoryTimeCore.DataStructures;
-using StoryTimeSceneGraph;
+//using StoryTimeSceneGraph;
 using StoryTimeCore.Resources.Graphic;
 using StoryTimeCore.General;
 using FarseerPhysics.Dynamics;
@@ -26,32 +26,32 @@ namespace StoryTimeFramework.WorldManagement
 {
     public class Scene
     {
-        private class OrderedActor : IBoundingBoxable
+        private class OrderedWorldEntity : IBoundingBoxable
         {
-            private BaseActor _actor;
+            private WorldEntity _entity;
 
-            public OrderedActor(BaseActor actor)
+            public OrderedWorldEntity(WorldEntity entity)
             {
-                _actor = actor;
+                _entity = entity;
             }
 
-            public OrderedActor(BaseActor actor, int zOrder)
-                : this(actor)
+            public OrderedWorldEntity(WorldEntity entity, int zOrder)
+                : this(entity)
             {
                 ZOrder = zOrder;
             }
 
-            public AxisAlignedBoundingBox2D AABoundingBox { get { return _actor.AABoundingBox; } }
-            public BoundingBox2D BoundingBox { get { return _actor.BoundingBox; } }
-            public BaseActor Actor { get { return _actor; } }
+            public AxisAlignedBoundingBox2D AABoundingBox { get { return _entity.AABoundingBox; } }
+            public BoundingBox2D BoundingBox { get { return _entity.BoundingBox; } }
+            public WorldEntity WorldEntity { get { return _entity; } }
             public int ZOrder { get; set; }
         }
 
         // The list of the many World Entities in the scene.
-        private List<BaseActor> _baseActors;
-        private Quadtree<BaseActor> _actorsTree;
+        private List<WorldEntity> _worldEntities;
+        private Quadtree<WorldEntity> _quadTree;
         private ICamera _activeCamera;
-        private Dictionary<BaseActor, OrderedActor> _actorsDictionary;
+        private Dictionary<WorldEntity, OrderedWorldEntity> _actorsDictionary;
         private int _nextIndex;
         private bool _initialized;
         private IGraphicsContext _graphicsContext;
@@ -61,7 +61,7 @@ namespace StoryTimeFramework.WorldManagement
 
         public string SceneName { get; set; }
         public ICamera Camera { get { return _activeCamera; } }
-        public IEnumerable<BaseActor> Actors { get { return _baseActors; } }
+        public IEnumerable<WorldEntity> WorldEntities { get { return _worldEntities; } }
         public IPhysicalWorld PhysicalWorld { get; set; }
         public IGraphicsContext GraphicsContext
         {  
@@ -79,9 +79,9 @@ namespace StoryTimeFramework.WorldManagement
 
         public Scene()
         {
-            _baseActors = new List<BaseActor>();
-            _actorsTree = new Quadtree<BaseActor>();
-            _actorsDictionary = new Dictionary<BaseActor, OrderedActor>();
+            _worldEntities = new List<WorldEntity>();
+            _quadTree = new Quadtree<WorldEntity>();
+            _actorsDictionary = new Dictionary<WorldEntity, OrderedWorldEntity>();
             _nextIndex = 0;
             _activeCamera = new Camera() { Viewport = new Viewport(0, 0, 1280, 720) }; //1280
         }
@@ -105,12 +105,12 @@ namespace StoryTimeFramework.WorldManagement
             //clear graphics device
             if (_activeCamera == null) return;
             //set viewport
-            Viewport vp = _activeCamera.Viewport;
+            var vp = _activeCamera.Viewport;
             graphicsContext.SetCamera(_activeCamera);
-            AxisAlignedBoundingBox2D renderingViewport = new AxisAlignedBoundingBox2D(vp.X, vp.Y, vp.Height, vp.Width);
-            IEnumerable<BaseActor> enumActors = GetRenderablesIn(renderingViewport);
-            IRenderer renderer = graphicsContext.GetRenderer();
-            foreach (BaseActor ba in enumActors)
+            var renderingViewport = new AxisAlignedBoundingBox2D(vp.X, vp.Y, vp.Height, vp.Width);
+            var enumActors = GetRenderablesIn(renderingViewport);
+            var renderer = graphicsContext.GetRenderer();
+            foreach (var ba in enumActors)
             {
                 renderer.TranslationTransformation += ba.Body.Position;
                 renderer.RotationTransformation += ba.Body.Rotation;
@@ -127,96 +127,102 @@ namespace StoryTimeFramework.WorldManagement
         public void Update(WorldTime WTime)
         {
             _currentTime = WTime;
-            foreach (BaseActor ba in _baseActors)
+            foreach (var ba in _worldEntities)
             {
                 ba.TimeElapse(_currentTime);
             }
         }
 
-        public TActor AddActor<TActor>() where TActor : BaseActor
+        public TEntity AddWorldEntity<TEntity>(Action<WorldEntity> initializer = null) where TEntity : WorldEntity
         {
-            return AddActor(typeof(TActor)) as TActor;
+            return AddWorldEntity(typeof(TEntity), initializer) as TEntity;
         }
 
-        public BaseActor AddActor(Type actorType)
+        public WorldEntity AddWorldEntity(Type entityType, Action<WorldEntity> initializer = null)
         {
-            BaseActor actor = Activator.CreateInstance(actorType) as BaseActor;
+            var entity = Activator.CreateInstance(entityType) as WorldEntity;
 
-            actor.Scene = this;
-            actor.Initialize();
+            entity.Scene = this;
+            if (initializer != null)
+                initializer(entity);
+            entity.Initialize();
 
-            _baseActors.Add(actor);
-            OrderedActor oa = new OrderedActor(actor, _nextIndex);
+            _worldEntities.Add(entity);
+            var oa = new OrderedWorldEntity(entity, _nextIndex);
             _nextIndex++;
-            AddOrderedAsset(oa);
+            AddOrderedEntity(oa);
 
-            return actor;
+            return entity;
         }
 
-        public void RemoveActor(BaseActor ba)
+        public void RemoveActor(WorldEntity entity)
         {
-            if (!_baseActors.Contains(ba)) return;
+            if (!_worldEntities.Contains(entity)) return;
 
-            _baseActors.Remove(ba);
-            OrderedActor oa;
-            if (_actorsDictionary.TryGetValue(ba, out oa))
+            _worldEntities.Remove(entity);
+            OrderedWorldEntity orderedEntity;
+            if (_actorsDictionary.TryGetValue(entity, out orderedEntity))
             {
-                RemoveOrderedActor(oa);
-                ReOrderActors();
+                RemoveOrderedEntity(orderedEntity);
+                ReOrderEntities();
             }
         }
 
-        public List<BaseActor> AxisAlignedIntersect(Vector2 point)
+        public List<WorldEntity> AxisAlignedIntersect(Vector2 point)
         {
-            List<BaseActor> actors = _actorsTree.Intersect(point);
-            return ActorsInOrder(actors);
+            var entities = _quadTree.Intersect(point);
+            return EntitiesInOrder(entities).ToList();
         }
 
-        public List<BaseActor> Intersect(Vector2 point)
+        public List<WorldEntity> Intersect(Vector2 point)
         {
-            List<BaseActor> actors = _actorsTree.Intersect(point);
-            IEnumerable<BaseActor> filteredActors = actors.Where(a => a.BoundingBox.Contains(point));
-            return ActorsInOrder(filteredActors);
+            var actors = _quadTree.Intersect(point);
+            var filteredEntities = actors.Where(a => a.BoundingBox.Contains(point));
+            return EntitiesInOrder(filteredEntities);
         }
 
-        private List<BaseActor> ActorsInOrder(IEnumerable<BaseActor> actors)
+        private List<WorldEntity> EntitiesInOrder(IEnumerable<WorldEntity> entities)
         {
-            List<OrderedActor> orderActors = new List<OrderedActor>();
-            foreach (BaseActor actor in actors)
+            var orderedEntities = new List<OrderedWorldEntity>();
+            foreach (var entity in entities)
             {
-                orderActors.Add(_actorsDictionary[actor]);
+                orderedEntities.Add(_actorsDictionary[entity]);
             }
             return
-                orderActors
+                orderedEntities
                 .OrderByDescending((oActor) => oActor.ZOrder)
-                .Select((oActor) => oActor.Actor)
+                .Select((oActor) => oActor.WorldEntity)
                 .ToList();
         }
 
-        private void AddOrderedAsset(OrderedActor orderedAsset)
+        private void AddOrderedEntity(OrderedWorldEntity orderedAsset)
         {
-            _actorsDictionary.Add(orderedAsset.Actor, orderedAsset);
-            orderedAsset.Actor.OnBoundingBoxChanges += RenderableAssetBoundsChange;
-            _actorsTree.Add(orderedAsset.Actor);
+            _actorsDictionary.Add(orderedAsset.WorldEntity, orderedAsset);
+            orderedAsset.WorldEntity.OnBoundingBoxChanges += RenderableAssetBoundsChange;
+            _quadTree.Add(orderedAsset.WorldEntity);
         }
 
-        private void RemoveOrderedActor(OrderedActor orderedAsset)
+        private void RemoveOrderedEntity(OrderedWorldEntity orderedAsset)
         {
-            bool removed = _actorsTree.Remove(orderedAsset.Actor);
+            var removed = _quadTree.Remove(orderedAsset.WorldEntity);
             if (removed)
             {
-                _actorsDictionary.Remove(orderedAsset.Actor);
-                orderedAsset.Actor.OnBoundingBoxChanges -= RenderableAssetBoundsChange;
+                _actorsDictionary.Remove(orderedAsset.WorldEntity);
+                orderedAsset.WorldEntity.OnBoundingBoxChanges -= RenderableAssetBoundsChange;
             }
         }
 
         private IEnumerable<BaseActor> GetRenderablesIn(AxisAlignedBoundingBox2D renderingViewport)
         {
-            List<BaseActor> actors = new List<BaseActor>();
-            Action<BaseActor> renderHitAction = (actor) => actors.Add(actor);
-            _actorsTree.Query(renderingViewport, renderHitAction);
-            IEnumerable<BaseActor> enumActors = actors.OrderBy(actor => ZIndexOrder(actor));
-            return enumActors;
+            var actors = new List<BaseActor>();
+            Action<WorldEntity> renderHitAction = (entity) =>
+            {
+                if (entity is BaseActor)
+                    actors.Add(entity as BaseActor);
+            };
+            _quadTree.Query(renderingViewport, renderHitAction);
+            IEnumerable<BaseActor> orderedEntities = actors.OrderBy(actor => ZIndexOrder(actor));
+            return orderedEntities;
         }
 
         private int ZIndexOrder(BaseActor actor)
@@ -224,20 +230,20 @@ namespace StoryTimeFramework.WorldManagement
             return _actorsDictionary[actor].ZOrder;
         }
 
-        private void RenderableAssetBoundsChange(BaseActor actor)
+        private void RenderableAssetBoundsChange(WorldEntity entity)
         {
-            OrderedActor oa;
-            if (_actorsDictionary.TryGetValue(actor, out oa))
+            OrderedWorldEntity orderedEntity;
+            if (_actorsDictionary.TryGetValue(entity, out orderedEntity))
             {
-                RemoveOrderedActor(oa);
-                AddOrderedAsset(oa);
+                RemoveOrderedEntity(orderedEntity);
+                AddOrderedEntity(orderedEntity);
             }
         }
 
-        private void ReOrderActors()
+        private void ReOrderEntities()
         {
             _nextIndex = 0;
-            foreach (OrderedActor oa in _actorsDictionary.Values)
+            foreach (var oa in _actorsDictionary.Values)
             {
                 oa.ZOrder = _nextIndex;
                 _nextIndex++;

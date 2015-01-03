@@ -63,7 +63,7 @@ namespace StoryTimeFramework.DataStructures
         {
             get
             {
-                foreach (QuadtreeNode<TData> node in _childNodes)
+                foreach (var node in _childNodes)
                     if (node != null)
                         return false;
                 return true;
@@ -86,15 +86,15 @@ namespace StoryTimeFramework.DataStructures
 
         private void CreateChildrenAt(int position)
         {
-            AxisAlignedBoundingBox2D childNodeBounds = GetChildrenCoordinatesAt(position);
+            var childNodeBounds = GetChildrenCoordinatesAt(position);
             _childNodes[position] = new QuadtreeNode<TData>(childNodeBounds, Quadtree, this);
         }
 
         private AxisAlignedBoundingBox2D GetChildrenCoordinatesAt(int position)
         {
-            float childSize = _nodeCoordinates.Width / 2;
-            float X = _nodeCoordinates.X;
-            float Y = _nodeCoordinates.Y;
+            var childSize = _nodeCoordinates.Width / 2;
+            var X = _nodeCoordinates.X;
+            var Y = _nodeCoordinates.Y;
 
             switch (position)
             {
@@ -113,14 +113,14 @@ namespace StoryTimeFramework.DataStructures
                     break;
             }
 
-            AxisAlignedBoundingBox2D childNodeBounds = new AxisAlignedBoundingBox2D(X, Y, childSize);
+            var childNodeBounds = new AxisAlignedBoundingBox2D(X, Y, childSize);
             return childNodeBounds;
         }
 
 
         private bool CanCreateChildren()
         {
-            float childSize = _nodeCoordinates.Width / 2;
+            var childSize = _nodeCoordinates.Width / 2;
             if (childSize < _quadtree.NodeMinimumSideSize)
                 return false;
             return true;
@@ -141,12 +141,12 @@ namespace StoryTimeFramework.DataStructures
                 return this;
             }
 
-            for (int idx = 0; idx < _childNodes.Length; idx++)
+            for (var idx = 0; idx < _childNodes.Length; idx++)
             {
                 if (_childNodes[idx] == null)
                 {
-                    AxisAlignedBoundingBox2D nodeCoords = GetChildrenCoordinatesAt(idx);
-                    bool contains = nodeCoords.Contains(data.AABoundingBox);
+                    var nodeCoords = GetChildrenCoordinatesAt(idx);
+                    var contains = nodeCoords.Contains(data.AABoundingBox);
                     if (contains)
                     {
                         CreateChildrenAt(idx);
@@ -211,7 +211,7 @@ namespace StoryTimeFramework.DataStructures
                 return;
             }
 
-            IQuadtreeNode<TData> bucket = _childNode.Add(data);
+            var bucket = _childNode.Add(data);
             _dataHolding.Add(data, bucket);
         }
 
@@ -249,7 +249,7 @@ namespace StoryTimeFramework.DataStructures
 
         public List<TData> Intersect(Vector2 point)
         {
-            List<TData> dataSet = new List<TData>();
+            var dataSet = new List<TData>();
             QueryWithIntersector((rec) => rec.Contains(point), (data) => dataSet.Add(data));
             return dataSet;
         }
@@ -287,8 +287,8 @@ namespace StoryTimeFramework.DataStructures
                     );
             }
 
-            int numOfChilds = (int)NodesPosition.TotalNodes;
-            for(int idx = 0; idx < numOfChilds; idx++)
+            var numOfChilds = (int)NodesPosition.TotalNodes;
+            for(var idx = 0; idx < numOfChilds; idx++)
             {
                 QueryWithIntersectorAux(intersector, node.GetChildAt(idx), HitAction);
             }

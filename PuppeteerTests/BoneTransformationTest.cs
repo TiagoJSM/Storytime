@@ -18,9 +18,9 @@ namespace PuppeteerTests
         [TestMethod]
         public void RelativeEndIsConsistent()
         {
-            Bone boneRoot = new Bone();
-            Bone boneChild = new Bone(boneRoot);
-            Bone leafChild = new Bone(boneChild);
+            var boneRoot = new Bone();
+            var boneChild = new Bone(boneRoot);
+            var leafChild = new Bone(boneChild);
 
             boneRoot.AbsolutePosition = new Vector2(100);
             boneRoot.Length = 128;
@@ -41,9 +41,9 @@ namespace PuppeteerTests
         [TestMethod]
         public void MovingRootKeepsAllChildrenConsistent()
         {
-            Bone boneRoot = new Bone();
-            Bone boneChild = new Bone(boneRoot);
-            Bone leafChild = new Bone(boneChild);
+            var boneRoot = new Bone();
+            var boneChild = new Bone(boneRoot);
+            var leafChild = new Bone(boneChild);
 
             boneRoot.AbsolutePosition = new Vector2(100);
             boneRoot.Length = 128;
@@ -64,9 +64,9 @@ namespace PuppeteerTests
         [TestMethod]
         public void RotatingRootKeepsAllChildrenConsistent()
         {
-            Bone boneRoot = new Bone();
-            Bone boneChild = new Bone(boneRoot);
-            Bone leafChild = new Bone(boneChild);
+            var boneRoot = new Bone();
+            var boneChild = new Bone(boneRoot);
+            var leafChild = new Bone(boneChild);
 
             boneRoot.AbsolutePosition = new Vector2(0);
             boneRoot.Length = 100;
@@ -87,9 +87,9 @@ namespace PuppeteerTests
         [TestMethod]
         public void RotationsInBoneStructure()
         {
-            Bone boneRoot = new Bone();
-            Bone boneChild = new Bone(boneRoot);
-            Bone leafChild = new Bone(boneChild);
+            var boneRoot = new Bone();
+            var boneChild = new Bone(boneRoot);
+            var leafChild = new Bone(boneChild);
 
             boneRoot.AbsolutePosition = new Vector2(0);
             boneRoot.Length = 100;
@@ -110,9 +110,9 @@ namespace PuppeteerTests
         [TestMethod]
         public void RotationsInBoneStructureWithTranslatedChild()
         {
-            Bone boneRoot = new Bone();
-            Bone boneChild = new Bone(boneRoot);
-            Bone leafChild = new Bone(boneChild);
+            var boneRoot = new Bone();
+            var boneChild = new Bone(boneRoot);
+            var leafChild = new Bone(boneChild);
 
             boneRoot.AbsolutePosition = new Vector2(0);
             boneRoot.Length = 100;
@@ -133,9 +133,9 @@ namespace PuppeteerTests
         [TestMethod]
         public void RotationsInBoneStructureWithTranslatedChildAndRotateBack()
         {
-            Bone boneRoot = new Bone();
-            Bone boneChild = new Bone(boneRoot);
-            Bone leafChild = new Bone(boneChild);
+            var boneRoot = new Bone();
+            var boneChild = new Bone(boneRoot);
+            var leafChild = new Bone(boneChild);
 
             boneRoot.AbsolutePosition = new Vector2(0);
             boneRoot.Length = 100;

@@ -39,14 +39,14 @@ namespace StoryTimeDevKit.Controllers.GameObjects
 
         public GameObjectsRoot LoadGameObjectsTree()
         {
-            GameObjectsRoot root = new GameObjectsRoot();
+            var root = new GameObjectsRoot();
             root.GameObjectsCategories = LoadGameObjectsCategories();
             return root;
         }
 
         public string CreateScene(string sceneName)
         {
-            SavedSceneModel model = new SavedSceneModel()
+            var model = new SavedSceneModel()
             {
                 SceneActors = new SavedSceneActor[0],
                 SceneName = sceneName
@@ -58,7 +58,7 @@ namespace StoryTimeDevKit.Controllers.GameObjects
 
         public string CreateScene(FolderViewModel folder, string sceneName)
         {
-            SavedSceneModel model = new SavedSceneModel()
+            var model = new SavedSceneModel()
             {
                 SceneActors = new SavedSceneActor[0],
                 SceneName = sceneName
@@ -93,11 +93,11 @@ namespace StoryTimeDevKit.Controllers.GameObjects
 
         private void LoadActorsTree(GameObjectCategoryViewModel actorsCategory)
         {
-            Assembly assembly = Assembly.Load("StoryTimeFramework");
-            AssemblyViewModel folder = new AssemblyViewModel(actorsCategory, _nodeAddCB, "StoryTimeFramework");
+            var assembly = Assembly.Load("StoryTimeFramework");
+            var folder = new AssemblyViewModel(actorsCategory, _nodeAddCB, "StoryTimeFramework");
 
-            Type baseType = typeof(BaseActor);
-            List<ActorViewModel> actorTypes = assembly.GetTypes()
+            var baseType = typeof(BaseActor);
+            var actorTypes = assembly.GetTypes()
                 .Where(t => t != baseType && baseType.IsAssignableFrom(t))
                 .Select(t =>
                 {
@@ -115,23 +115,23 @@ namespace StoryTimeDevKit.Controllers.GameObjects
 
         private void LoadScenesTree(GameObjectCategoryViewModel scenes)
         {
-            DirectoryInfo di = new DirectoryInfo(RelativePaths.Scenes);
+            var di = new DirectoryInfo(RelativePaths.Scenes);
             AddScenesAndFolders(scenes, di);
         }
 
         private void AddScenesAndFolders(TreeViewItemViewModel parent, DirectoryInfo currentDirectory)
         {
-            FileInfo[] fis = currentDirectory.GetFilesByExtension(FilesExtensions.SceneSavedModel);
-            foreach (FileInfo fi in fis)
+            var fis = currentDirectory.GetFilesByExtension(FilesExtensions.SceneSavedModel);
+            foreach (var fi in fis)
             {
-                SceneViewModel svm = new SceneViewModel(parent, _nodeAddCB, fi.Name, fi.FullName);
+                var svm = new SceneViewModel(parent, _nodeAddCB, fi.Name, fi.FullName);
                 parent.Children.Add(svm);
             }
 
-            DirectoryInfo[] childDirectories = currentDirectory.GetDirectories();
-            foreach (DirectoryInfo di in childDirectories)
+            var childDirectories = currentDirectory.GetDirectories();
+            foreach (var di in childDirectories)
             {
-                FolderViewModel folder = new FolderViewModel(parent, _nodeAddCB, di.Name, di.FullName, "Scenes");
+                var folder = new FolderViewModel(parent, _nodeAddCB, di.Name, di.FullName, "Scenes");
                 parent.Children.Add(folder);
                 AddScenesAndFolders(folder, di);
             }
@@ -139,22 +139,22 @@ namespace StoryTimeDevKit.Controllers.GameObjects
 
         private void LoadTexturesTree(GameObjectCategoryViewModel texturesCategory)
         {
-            List<FileInfo> fis = new List<FileInfo>();
-            List<FolderViewModel> folders = new List<FolderViewModel>();
+            var fis = new List<FileInfo>();
+            var folders = new List<FolderViewModel>();
 
-            string [] textureDirectories =
+            var textureDirectories =
                 Directory
                 .GetDirectories(RelativePaths.Textures);
-            foreach (string path in textureDirectories)
+            foreach (var path in textureDirectories)
             {
-                DirectoryInfo di = new DirectoryInfo(path);
+                var di = new DirectoryInfo(path);
                 fis.AddRange(di.GetFiles("*.jpg", SearchOption.AllDirectories));
             }
 
-            foreach (FileInfo fi in fis)
+            foreach (var fi in fis)
             {
-                FolderViewModel folder = GetFolderFor(texturesCategory, folders, fi);
-                TextureViewModel texture = new TextureViewModel(folder, _nodeAddCB, fi.Name, fi.FullName);
+                var folder = GetFolderFor(texturesCategory, folders, fi);
+                var texture = new TextureViewModel(folder, _nodeAddCB, fi.Name, fi.FullName);
                 folder.Children.Add(texture);
             }
 
@@ -166,8 +166,8 @@ namespace StoryTimeDevKit.Controllers.GameObjects
             List<FolderViewModel> folders, 
             FileInfo fi)
         {
-            string folderName = fi.DirectoryName.Replace(fi.Directory.FullName, fi.Directory.Name);
-            FolderViewModel folder =
+            var folderName = fi.DirectoryName.Replace(fi.Directory.FullName, fi.Directory.Name);
+            var folder =
                 folders
                 .SingleOrDefault(f => f.FolderFullPath == fi.Directory.FullName);
             

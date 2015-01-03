@@ -51,9 +51,9 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         private void AssetsPanel_Drop(object sender, DragEventArgs e)
         {
             if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
-            string[] docPaths = (string[])e.Data.GetData(DataFormats.FileDrop);
+            var docPaths = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-            bool allAreImageFiles = docPaths.Select(d => new FileInfo(d)).All(fi => fi.IsFileImage());
+            var allAreImageFiles = docPaths.Select(d => new FileInfo(d)).All(fi => fi.IsFileImage());
 
             if (!allAreImageFiles)
             {
@@ -65,7 +65,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                 return;
             }
 
-            foreach(string docPath in docPaths)
+            foreach(var docPath in docPaths)
                 AssetListItems.Add(new AssetListItemViewModel(docPath));
         }
 
@@ -84,15 +84,15 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
-                    Point currentPosition = e.GetPosition(AssetsPanel);
+                    var currentPosition = e.GetPosition(AssetsPanel);
 
                     if ((Math.Abs(currentPosition.X - _startPoint.X) > 10.0) ||
                         (Math.Abs(currentPosition.Y - _startPoint.Y) > 10.0))
                     {
-                        AssetListItemViewModel draggedItem = AssetsPanel.SelectedItem as AssetListItemViewModel;
+                        var draggedItem = AssetsPanel.SelectedItem as AssetListItemViewModel;
                         if (draggedItem != null)
                         {
-                            DragDropEffects finalDropEffect =
+                            var finalDropEffect =
                                 DragDrop.DoDragDrop(
                                     AssetsPanel,
                                     AssetsPanel.SelectedItem,

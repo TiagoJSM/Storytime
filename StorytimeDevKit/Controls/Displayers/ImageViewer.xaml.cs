@@ -47,7 +47,7 @@ namespace StoryTimeDevKit.Controls.Displayers
 
         private void stackPanel1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            TexturePathViewModel texPath = ImagePaths.SelectedItem as TexturePathViewModel;
+            var texPath = ImagePaths.SelectedItem as TexturePathViewModel;
             this.Textures =
                 new AsyncVirtualizingCollection<TextureViewModel>(
                     new TextureItemsProvider(texPath.Path)

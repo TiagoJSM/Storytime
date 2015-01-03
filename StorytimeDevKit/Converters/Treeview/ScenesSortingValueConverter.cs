@@ -22,14 +22,14 @@ namespace StoryTimeDevKit.Converters.Treeview
                     return 1;
                 else if (x.GetType() == typeof(FolderViewModel) && y.GetType() == typeof(FolderViewModel))
                 {
-                    FolderViewModel folderX = x as FolderViewModel;
-                    FolderViewModel folderY = y as FolderViewModel;
+                    var folderX = x as FolderViewModel;
+                    var folderY = y as FolderViewModel;
                     return String.Compare(folderX.FolderName, folderY.FolderName);
                 }
                 else if (x.GetType() == typeof(SceneViewModel) && y.GetType() == typeof(SceneViewModel))
                 {
-                    SceneViewModel sceneX = x as SceneViewModel;
-                    SceneViewModel sceneY = y as SceneViewModel;
+                    var sceneX = x as SceneViewModel;
+                    var sceneY = y as SceneViewModel;
                     return String.Compare(sceneX.SceneName, sceneY.SceneName);
                 }
                 return 0;
@@ -38,8 +38,8 @@ namespace StoryTimeDevKit.Converters.Treeview
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            IList collection = value as IList;
-            ListCollectionView view = new ListCollectionView(collection);
+            var collection = value as IList;
+            var view = new ListCollectionView(collection);
             view.CustomSort = new SortByTypeComparer();
             return view;
         }

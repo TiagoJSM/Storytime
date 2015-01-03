@@ -33,7 +33,7 @@ namespace StoryTimeDevKit.Controls.Templates
             System.Drawing.Point pointInGamePanel,
             System.Drawing.Point gamePanelDimensions)
         {
-            Scene scene = GetScene();
+            var scene = GetScene();
             if (scene == null) return;
 
             _clickPosition = scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
@@ -44,10 +44,10 @@ namespace StoryTimeDevKit.Controls.Templates
 
         private void Panel_OnMouseDown(System.Drawing.Point pointInGamePanel, System.Drawing.Point gamePanelDimensions)
         {
-            Scene scene = GetScene();
+            var scene = GetScene();
             if (scene == null) return;
 
-            Vector2 clickPosition = scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
+            var clickPosition = scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
 
             if (OnMouseDown != null)
                 OnMouseDown(scene, clickPosition);
@@ -58,10 +58,10 @@ namespace StoryTimeDevKit.Controls.Templates
             System.Drawing.Point gamePanelDimensions,
             System.Windows.Forms.MouseButtons buttons)
         {
-            Scene scene = GetScene();
+            var scene = GetScene();
             if (scene == null) return;
 
-            Vector2 point = scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
+            var point = scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
 
             if (OnMouseMove != null)
                 OnMouseMove(scene, point);
@@ -69,10 +69,10 @@ namespace StoryTimeDevKit.Controls.Templates
 
         private void Panel_OnMouseUp(System.Drawing.Point pointInGamePanel, System.Drawing.Point gamePanelDimensions)
         {
-            Scene scene = GetScene();
+            var scene = GetScene();
             if (scene == null) return;
 
-            Vector2 mouseDownPosition = scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
+            var mouseDownPosition = scene.GetPointInGameWorld(pointInGamePanel, gamePanelDimensions);
 
             if (OnMouseUp != null)
                 OnMouseUp(scene, mouseDownPosition);

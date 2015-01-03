@@ -10,7 +10,7 @@ namespace StoryTime
         /// </summary>
         static void Main(string[] args)
         {
-            using (NormalGame game = new NormalGame())
+            using (var game = new NormalGame())
             {
                 game.Run();
             }

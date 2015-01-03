@@ -20,10 +20,10 @@ namespace StoryTimeDevKit.DataStructures.Factories
 
         public ISceneObject CreateSceneObject(object data)
         {
-            Type dataType = data.GetType();
+            var dataType = data.GetType();
             
             if(!SceneObjectMapper.ContainsKey(dataType)) return null;
-            ISceneObject sceneObject = SceneObjectMapper[dataType](data);
+            var sceneObject = SceneObjectMapper[dataType](data);
 
             if (_configurationsMapper.ContainsKey(dataType))
             {
@@ -35,7 +35,7 @@ namespace StoryTimeDevKit.DataStructures.Factories
 
         public TypeConfigurableSceneObjectFactory Bind<TData>(Action<ISceneObject> configuration)
         {
-            Type dataType = typeof(TData);
+            var dataType = typeof(TData);
             if (!_configurationsMapper.ContainsKey(dataType))
             {
                 _configurationsMapper.Remove(dataType);

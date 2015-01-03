@@ -162,7 +162,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
             _skeleton = new Skeleton();
             _factory = new PuppeteerSceneObjectFactory(this);
-            _armatureActor = Scene.AddActor<ArmatureActor>();
+            _armatureActor = Scene.AddWorldEntity<ArmatureActor>();
             _sceneBoneMapper = new SceneBonesMapper();
             _animationTimeLineMapper = new AnimationTimeLineMapper();
             _skeletonTreeViewMapper = new SkeletonTreeViewMapper(this, new AttachToBoneCommand(this));
@@ -171,16 +171,16 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
         public BoneActor AddBone(Vector2 boneStartPosition)
         {
-            BoneActor boneActor = Selected as BoneActor;
-            BoneActor child = AddBone(boneStartPosition, boneActor);
+            var boneActor = Selected as BoneActor;
+            var child = AddBone(boneStartPosition, boneActor);
             HandleNewBoneAdded(child);
             return child;
         }
 
         public BoneActor AddBone(Vector2 boneStartPosition, Vector2 boneEndPosition)
         {
-            BoneActor boneActor = Selected as BoneActor;
-            BoneActor child = AddBone(boneStartPosition, boneEndPosition, boneActor);
+            var boneActor = Selected as BoneActor;
+            var child = AddBone(boneStartPosition, boneEndPosition, boneActor);
             HandleNewBoneAdded(child);
             return child;
         }
@@ -202,13 +202,13 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
         public void SelectBone(BoneViewModel model)
         {
-            BoneActor actor = _skeletonTreeViewMapper.GetBoneActorFrom(model);
+            var actor = _skeletonTreeViewMapper.GetBoneActorFrom(model);
             Selected = actor;
         }
 
         public Bone GetBoneFrom(BoneViewModel model)
         {
-            BoneActor actor = _skeletonTreeViewMapper.GetBoneActorFrom(model);
+            var actor = _skeletonTreeViewMapper.GetBoneActorFrom(model);
             return actor.AssignedBone;
         }
 
@@ -297,8 +297,8 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
         private void OnAssetListItemViewModelDropHandler(AssetListItemViewModel viewModel, Vector2 dropPosition)
         {
-            ITexture2D texture = Scene.GraphicsContext.CreateTexture2D(viewModel.FullPath);
-            BoneAttachedRenderableAsset asset = new BoneAttachedRenderableAsset() 
+            var texture = Scene.GraphicsContext.CreateTexture2D(viewModel.FullPath);
+            var asset = new BoneAttachedRenderableAsset() 
             { 
                 Texture2D = texture,
                 RenderingOffset = dropPosition
@@ -334,7 +334,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
         private BoneActor AddBone(Vector2 boneStartPosition, BoneActor parent)
         {
-            BoneActor actor = Scene.AddActor<BoneActor>();
+            var actor = Scene.AddWorldEntity<BoneActor>();
             actor.Parent = parent;
             actor.Body.Position = boneStartPosition;
 
@@ -346,8 +346,8 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
         private BoneActor AddBone(Vector2 boneStartPosition, Vector2 boneEndPosition, BoneActor parent)
         {
-            BoneActor actor = AddBone(boneStartPosition, parent);
-            Bone bone = actor.AssignedBone;
+            var actor = AddBone(boneStartPosition, parent);
+            var bone = actor.AssignedBone;
             bone.AbsoluteEnd = boneEndPosition;
             _sceneBoneMapper.SynchronizeBoneChain(bone);
             return actor;

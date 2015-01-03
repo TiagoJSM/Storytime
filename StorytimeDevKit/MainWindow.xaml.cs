@@ -119,7 +119,7 @@ namespace StoryTimeDevKit
             InitializeComponent();
 
             SceneViewControl.OnActorAdded += OnActorAddedHandler;
-            TransformModeViewModel model = 
+            var model = 
                 DependencyInjectorHelper
                     .MainWindowKernel
                     .Get<TransformModeViewModel>();

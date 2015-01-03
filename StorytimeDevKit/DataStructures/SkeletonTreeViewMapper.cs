@@ -37,7 +37,7 @@ namespace StoryTimeDevKit.DataStructures
                 parentVM = _actorDictionary[actor.Parent];
             }
 
-            BoneViewModel boneVM = new BoneViewModel(parentVM, _callback, _attachToBoneCommand, GenerateName());
+            var boneVM = new BoneViewModel(parentVM, _callback, _attachToBoneCommand, GenerateName());
             _actorDictionary.Add(actor, boneVM);
             if(parentVM != null)
                 parentVM.Children.Add(boneVM);
@@ -66,9 +66,9 @@ namespace StoryTimeDevKit.DataStructures
 
         private string GenerateName()
         {
-            for (int idx = 1; ; idx++)
+            for (var idx = 1; ; idx++)
             {
-                string name = DefaultName + idx;
+                var name = DefaultName + idx;
                 if (GetBoneViewModelByName(name) == null)
                     return name;
             }

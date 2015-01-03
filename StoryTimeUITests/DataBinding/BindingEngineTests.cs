@@ -76,9 +76,9 @@ namespace StoryTimeUITests.DataBinding
         [TestMethod]
         public void BindingWithExpressionsOneWayToDestintionWorks()
         {
-            Source source = new Source();
-            Destination destination = new Destination();
-            BindingEngine<Destination, Source> engine =
+            var source = new Source();
+            var destination = new Destination();
+            var engine =
                 new BindingEngine<Destination, Source>(destination, source)
                 .Bind(d => d.DestinationData, s => s.Data);
             source.Data = 5;
@@ -88,9 +88,9 @@ namespace StoryTimeUITests.DataBinding
         [TestMethod]
         public void BindingWithExpressionsOneWayToSourceWorks()
         {
-            Source source = new Source();
-            Destination destination = new Destination();
-            BindingEngine<Destination, Source> engine =
+            var source = new Source();
+            var destination = new Destination();
+            var engine =
                 new BindingEngine<Destination, Source>(destination, source)
                 .Bind(d => d.DestinationData, s => s.Data, BindingType.OneWayToSource);
             destination.DestinationData = 5;
@@ -100,9 +100,9 @@ namespace StoryTimeUITests.DataBinding
         [TestMethod]
         public void BindingWithPropertyNameOneWayToSourceWorks()
         {
-            Source source = new Source();
-            Destination destination = new Destination();
-            BindingEngine engine = 
+            var source = new Source();
+            var destination = new Destination();
+            var engine = 
                 new BindingEngine(destination, source)
                 .Bind("DestinationData", "Data", BindingType.OneWayToSource);
             destination.DestinationData = 5;

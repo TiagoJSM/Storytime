@@ -27,7 +27,7 @@ namespace StoryTimeDevKit.Commands.ReversibleCommands
 
         public void Run()
         {
-            _actor = _scene.AddActor(_actorType);
+            _actor = _scene.AddWorldEntity(_actorType) as BaseActor;
             _initializer(_actor, _position);
         }
 

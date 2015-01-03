@@ -103,7 +103,7 @@ namespace StoryTime
             };
 
             Scene s = new Scene();
-            s.AddActor(_actor);
+            s.AddWorldEntity(_actor);
             _gameWorld.AddScene(s);*/
             
             //rectangle = new Texture2D(GraphicsDevice, 2, 2);
@@ -133,7 +133,7 @@ namespace StoryTime
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            KeyboardState keyState = Keyboard.GetState();
+            var keyState = Keyboard.GetState();
             //Keys[] k = keyState.GetPressedKeys
             // TODO: Add your update logic here
 
@@ -142,7 +142,7 @@ namespace StoryTime
             
             if (OnUpdate != null)
             {
-                WorldTime wt = new WorldTime(gameTime.TotalGameTime, gameTime.ElapsedGameTime);
+                var wt = new WorldTime(gameTime.TotalGameTime, gameTime.ElapsedGameTime);
                 OnUpdate(wt);
             }
         }
@@ -179,12 +179,12 @@ namespace StoryTime
         {
             GraphicsContext.Clear(Color.CornflowerBlue);
             
-            IRenderer render = GraphicsContext.GetRenderer();
+            var render = GraphicsContext.GetRenderer();
             render.PreRender();
             
             if (OnDraw != null)
             {
-                WorldTime wt = new WorldTime(gameTime.TotalGameTime, gameTime.ElapsedGameTime);
+                var wt = new WorldTime(gameTime.TotalGameTime, gameTime.ElapsedGameTime);
                 OnDraw(render, wt);
             }
             //_asset.Render(render);

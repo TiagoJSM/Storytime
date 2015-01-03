@@ -62,7 +62,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
             _game = new MyGame(PuppeteerEditor.Handle);
 
-            ConstructorArgument controlArg =
+            var controlArg =
                 new ConstructorArgument(
                     ApplicationProperties.IPuppeteerControllerGameWorldArgName,
                     _game.GameWorld);
@@ -126,11 +126,11 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
         private void OnDropDataHandler(object data, System.Drawing.Point positionGameWorld, System.Drawing.Point gamePanelDimensions)
         {
-            AssetListItemViewModel model = data as AssetListItemViewModel;
-            Scene scene = GetScene();
+            var model = data as AssetListItemViewModel;
+            var scene = GetScene();
             if (scene == null) return;
 
-            Vector2 dropPosition = scene.GetPointInGameWorld(positionGameWorld, gamePanelDimensions);
+            var dropPosition = scene.GetPointInGameWorld(positionGameWorld, gamePanelDimensions);
 
             if (OnAssetListItemViewModelDrop != null && model != null)
                 OnAssetListItemViewModelDrop(model, dropPosition);

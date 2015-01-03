@@ -63,7 +63,7 @@ namespace StoryTimeFramework.WorldManagement
 
         public void SetActiveScene(Scene s)
         {
-            int index = _scenes.IndexOf(s);
+            var index = _scenes.IndexOf(s);
             if (index == -1)
                 return;
             SetActiveScene(index);

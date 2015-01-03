@@ -32,7 +32,7 @@ namespace StoryTimeCore.Extensions
             
             AxisAlignedBoundingBox2D? result = null;
 
-            foreach (AxisAlignedBoundingBox2D box in boxes)
+            foreach (var box in boxes)
             {
                 if (result == null)
                 {
@@ -55,18 +55,18 @@ namespace StoryTimeCore.Extensions
         public static AxisAlignedBoundingBox2D GetRotated(
             this AxisAlignedBoundingBox2D rec, float rotation, Vector2 rotationOrigin)
         {
-            Vector2 rotatedBottomLeft = rec.BottomLeft.Rotate(rotation, rotationOrigin);
-            Vector2 rotatedBottomRight = rec.BottomRight.Rotate(rotation, rotationOrigin);
-            Vector2 rotatedTopLeft = rec.TopLeft.Rotate(rotation, rotationOrigin);
-            Vector2 rotatedTopRight = rec.TopRight.Rotate(rotation, rotationOrigin);
+            var rotatedBottomLeft = rec.BottomLeft.Rotate(rotation, rotationOrigin);
+            var rotatedBottomRight = rec.BottomRight.Rotate(rotation, rotationOrigin);
+            var rotatedTopLeft = rec.TopLeft.Rotate(rotation, rotationOrigin);
+            var rotatedTopRight = rec.TopRight.Rotate(rotation, rotationOrigin);
 
-            float[] xValues = new float[] { rotatedBottomLeft.X, rotatedBottomRight.X, rotatedTopLeft.X, rotatedTopRight.X };
-            float[] yValues = new float[] { rotatedBottomLeft.Y, rotatedBottomRight.Y, rotatedTopLeft.Y, rotatedTopRight.Y };
+            var xValues = new float[] { rotatedBottomLeft.X, rotatedBottomRight.X, rotatedTopLeft.X, rotatedTopRight.X };
+            var yValues = new float[] { rotatedBottomLeft.Y, rotatedBottomRight.Y, rotatedTopLeft.Y, rotatedTopRight.Y };
             
-            float smallestX = xValues.Min();
-            float biggestX = xValues.Max();
-            float smallestY = yValues.Min();
-            float biggestY = yValues.Max();
+            var smallestX = xValues.Min();
+            var biggestX = xValues.Max();
+            var smallestY = yValues.Min();
+            var biggestY = yValues.Max();
 
             return new AxisAlignedBoundingBox2D(smallestX, smallestY, biggestY - smallestY, biggestX - smallestX);
         }
@@ -80,10 +80,10 @@ namespace StoryTimeCore.Extensions
         public static AxisAlignedBoundingBox2D GetScaled(
             this AxisAlignedBoundingBox2D rec, Vector2 scale, Vector2 scaleOrigin)
         {
-            Vector2 scaledBottomLeft = rec.BottomLeft.GetScaled(scale, scaleOrigin);
-            Vector2 scaledTopRight = rec.TopRight.GetScaled(scale, scaleOrigin);
-            float height = scaledTopRight.Y - scaledBottomLeft.Y;
-            float width = scaledTopRight.X - scaledBottomLeft.X;
+            var scaledBottomLeft = rec.BottomLeft.GetScaled(scale, scaleOrigin);
+            var scaledTopRight = rec.TopRight.GetScaled(scale, scaleOrigin);
+            var height = scaledTopRight.Y - scaledBottomLeft.Y;
+            var width = scaledTopRight.X - scaledBottomLeft.X;
 
             return new AxisAlignedBoundingBox2D(
                 scaledBottomLeft.X, 
