@@ -82,6 +82,7 @@ namespace StoryTimeDevKit.Models.SceneObjects
 
         public void EndRotation()
         {
+            AddAnimationFrame();
         }
     }
 }

@@ -11,6 +11,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using StoryTimeDevKit.Controllers.Puppeteer;
+using System.ComponentModel;
+using StoryTimeDevKit.Utils;
+using Ninject;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
@@ -19,9 +23,36 @@ namespace StoryTimeDevKit.Controls.Puppeteer
     /// </summary>
     public partial class PuppeteerControlTabs : UserControl
     {
+        private IAnimationTimeLineController _timelineController;
+
         public PuppeteerControlTabs()
         {
             InitializeComponent();
+            Loaded += LoadedHandler;
+        }
+
+        private void LoadedHandler(object sender, RoutedEventArgs e)
+        {
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
+
+            _timelineController =
+                DependencyInjectorHelper
+                    .PuppeteerKernel
+                    .Get<IAnimationTimeLineController>();
+        }
+
+        private void PlayStopButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (PlayStopButton.IsChecked ?? false)
+            {
+                _timelineController.TimeLineControl.ResetAnimation();
+                _timelineController.TimeLineControl.PlayAnimation();
+            }
+            else
+            {
+                _timelineController.TimeLineControl.PauseAnimation();
+            }
         }
     }
 }

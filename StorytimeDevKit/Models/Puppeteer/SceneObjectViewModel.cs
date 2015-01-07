@@ -14,6 +14,7 @@ namespace StoryTimeDevKit.Models.Puppeteer
         private WidgetMode _widgetMode;
         private bool _translateWidgetMode;
         private bool _rotateWidgetMode;
+        private bool _freeMovementWidgetMode;
         private bool _enabled;
 
         public ISceneObject SceneObject 
@@ -111,6 +112,20 @@ namespace StoryTimeDevKit.Models.Puppeteer
             }
         }
 
+        public bool FreeMovementWidgetMode
+        {
+            get
+            {
+                return _freeMovementWidgetMode;
+            }
+            set
+            {
+                if (_freeMovementWidgetMode == value) return;
+                _freeMovementWidgetMode = value;
+                OnPropertyChanged("FreeMovementWidgetMode");
+            }
+        }
+
         public SceneObjectViewModel()
         {
             _enabled = true;
@@ -157,6 +172,7 @@ namespace StoryTimeDevKit.Models.Puppeteer
         {
             TranslateWidgetMode = WidgetMode == WidgetMode.Translate && HasSceneObject && Enabled;
             RotateWidgetMode = WidgetMode == WidgetMode.Rotate && HasSceneObject && Enabled;
+            FreeMovementWidgetMode = WidgetMode == WidgetMode.FreeMovement && HasSceneObject && Enabled;
         }
 
         private void OnPositionChanges()

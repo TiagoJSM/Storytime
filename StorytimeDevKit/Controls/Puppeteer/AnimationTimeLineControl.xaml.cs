@@ -49,10 +49,11 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             Controls = new ObservableCollection<TimeLineTuple>();
             Controls.CollectionChanged += ControlsCollectionChangeHandler;
             _timeMarkerTimer = new DispatcherTimer();
-            _timeMarkerTimer.Interval = TimeSpan.FromSeconds(0.1);
+            _timeMarkerTimer.Interval = TimeSpan.FromSeconds(1.0/30.0);
             _timeMarkerTimer.Tick += timeMarkerTimer_TickHandler;
             
             _timeMarkerModel = new TimeMarkerViewModel(Ruler.PixelsPerUnit);
+            _timeMarkerModel.OnSecondsChange += OnSecondsChangeHandler;
             line.DataContext = _timeMarkerModel;
 
             TimeLines.LayoutUpdated += TimeLines_LayoutUpdated;
@@ -73,6 +74,21 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         public void AddFrame(BoneViewModel bone, float rotation, Vector2 position)
         {
            //this.InvalidateVisual();
+        }
+
+        public void PlayAnimation()
+        {
+            _timeMarkerTimer.Start();
+        }
+
+        public void PauseAnimation()
+        {
+            _timeMarkerTimer.Stop();
+        }
+
+        public void ResetAnimation()
+        {
+            _timeMarkerModel.Seconds = 0;
         }
 
         private void LoadedHandler(object sender, RoutedEventArgs e)
@@ -111,9 +127,6 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         {
             _timeMarkerModel.X = Mouse.GetPosition(Ruler).X;
             _timeMarkerModel.Visible = Visibility.Visible;
-
-            if (OnTimeMarkerChange != null)
-                OnTimeMarkerChange(_timeMarkerModel.Seconds);
         }
 
         private void TimeLines_LayoutUpdated(object sender, EventArgs e)
@@ -124,6 +137,12 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         private void timeMarkerTimer_TickHandler(object sender, EventArgs e)
         {
             _timeMarkerModel.Seconds += _timeMarkerTimer.Interval.TotalSeconds;
+        }
+
+        private void OnSecondsChangeHandler(double seconds)
+        {
+            if (OnTimeMarkerChange != null)
+                OnTimeMarkerChange(seconds);
         }
     }
 }

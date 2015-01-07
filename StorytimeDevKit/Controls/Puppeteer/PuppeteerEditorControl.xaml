@@ -86,6 +86,21 @@
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/translateIcon.png"/>
             </RadioButton>
             <RadioButton 
+                Name="FreeMovementButton"
+                GroupName="TransformWidgets"
+                Command="{Binding RelativeSource={  
+                            RelativeSource FindAncestor, 
+					        AncestorType={x:Type Window}}, 
+					    Path=TransformMode}"
+                CommandParameter="{x:Static TransformableWidgetNS:WidgetMode.FreeMovement}"
+                Style="{StaticResource DisabledOpacity}"
+                IsChecked="{Binding 
+                    Path=WidgetMode, 
+                    Converter={StaticResource BooleanToWidgetModeValueConverter}, 
+                    ConverterParameter={x:Static TransformableWidgetNS:WidgetMode.FreeMovement}}">
+                <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/freeMovementIcon.png"/>
+            </RadioButton>
+            <RadioButton 
                 Name="RotateButton"
                 GroupName="TransformWidgets"
                 Command="{Binding RelativeSource={  

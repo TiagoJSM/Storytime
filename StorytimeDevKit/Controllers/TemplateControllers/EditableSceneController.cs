@@ -21,6 +21,7 @@ namespace StoryTimeDevKit.Controllers.TemplateControllers
         private GameWorld _world;
         private TranslateSceneObjectBindingEngine _translateBindingEngine;
         private RotateSceneObjectBindingEngine _rotateBindingEngine;
+        private FreeMovementSceneObjectBindingEngine _freeMovementBindingEngine;
         private WorkingMode _activeWorkingMode;
         private IMouseInteractiveControl _control;
         
@@ -46,6 +47,7 @@ namespace StoryTimeDevKit.Controllers.TemplateControllers
         public Scene Scene { get { return GameWorld.ActiveScene; } }
         public TranslateSceneWidget TranslateWidget { get; private set; }
         public RotateSceneWidget RotateWidget { get; private set; }
+        public FreeMovementSceneWidget FreeMovementWidget { get; private set; }
         public bool EnableUI
         {
             get
@@ -130,12 +132,19 @@ namespace StoryTimeDevKit.Controllers.TemplateControllers
             RotateWidget = new RotateSceneWidget();
             Scene.GUI.Children.Add(RotateWidget);
 
+            FreeMovementWidget = new FreeMovementSceneWidget();
+            Scene.GUI.Children.Add(FreeMovementWidget);
+
             _translateBindingEngine = new TranslateSceneObjectBindingEngine(TranslateWidget, SceneObjectViewModel);
             _rotateBindingEngine = new RotateSceneObjectBindingEngine(RotateWidget, SceneObjectViewModel);
+            _freeMovementBindingEngine = new FreeMovementSceneObjectBindingEngine(FreeMovementWidget, SceneObjectViewModel);
 
             TranslateWidget.OnTranslate += OnTranslateHandler;
             TranslateWidget.OnTranslationComplete += OnTranslationComplete;
+            FreeMovementWidget.OnTranslate += OnTranslateHandler;
+            FreeMovementWidget.OnTranslationComplete += OnTranslationComplete;
             RotateWidget.OnRotation += OnRotateHandler;
+            RotateWidget.OnStopRotation += OnStopRotationHandler;
         }
 
         private void OnWidgetModeChanges(WidgetMode mode)
@@ -151,6 +160,11 @@ namespace StoryTimeDevKit.Controllers.TemplateControllers
         private void OnTranslationComplete(Vector2 fromPosition, Vector2 toPosition)
         {
             SceneObjectViewModel.SceneObject.EndTranslation();
+        }
+
+        private void OnStopRotationHandler(float originalRotation, float finalRotation)
+        {
+            SceneObjectViewModel.SceneObject.EndRotation();
         }
 
         private void OnRotateHandler(float rotation)

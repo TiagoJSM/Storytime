@@ -9,6 +9,7 @@ namespace StoryTimeDevKit.Entities.SceneWidgets
     {
         None,
         Translate,
+        FreeMovement,
         Rotate,
         Scale
     }

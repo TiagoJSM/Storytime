@@ -12,10 +12,12 @@ namespace StoryTimeDevKit.DataStructures
     public class SceneBonesMapper
     {
         private Dictionary<Bone, BoneActor> _boneDictionary;
+        private Skeleton _skeleton;
 
-        public SceneBonesMapper()
+        public SceneBonesMapper(Skeleton skeleton)
         {
             _boneDictionary = new Dictionary<Bone, BoneActor>();
+            _skeleton = skeleton;
         }
 
         public Bone Add(BoneActor actor)
@@ -29,6 +31,7 @@ namespace StoryTimeDevKit.DataStructures
             else 
             {
                 bone = new Bone();
+                _skeleton.AddBone(bone);
             }
 
             actor.AssignedBone = bone;
@@ -45,6 +48,15 @@ namespace StoryTimeDevKit.DataStructures
             var actor = _boneDictionary[bone];
             SetActorData(actor);
             PropagateBoneChanges(bone);
+        }
+
+        public void SynchronizeFullBoneChain()
+        {
+            foreach (var bone in _skeleton)
+            {
+                var actor = _boneDictionary[bone];
+                SynchronizeBoneChain(actor.AssignedBone);
+            }
         }
 
         private void OnPositionChangeHandler(BoneActor actor)

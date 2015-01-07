@@ -13,6 +13,8 @@ namespace StoryTimeDevKit.Models.Puppeteer
         private double _x;
         private Visibility _visible;
 
+        public event Action<double> OnSecondsChange;
+
         public double Seconds
         {
             get
@@ -47,6 +49,9 @@ namespace StoryTimeDevKit.Models.Puppeteer
                 _x = value;
                 OnPropertyChanged("X");
                 OnPropertyChanged("LineXPosition");
+
+                if (OnSecondsChange != null)
+                    OnSecondsChange(Seconds);
             }
         }
 

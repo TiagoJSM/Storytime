@@ -49,6 +49,10 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         private ISkeletonTreeViewControl _skeletonTreeViewControl;
         private IAnimationTimeLineControl _timeLineControl;
 
+        private SceneBonesMapper _sceneBoneMapper;
+        private SkeletonTreeViewMapper _skeletonTreeViewMapper;
+        private AnimationTimeLineMapper _animationTimeLineMapper;
+
         private ISceneObjectFactory _factory;
 
         private Dictionary<PuppeteerWorkingModeType, WorkingMode> _workingModes;
@@ -136,10 +140,6 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             }
         }
 
-        private SceneBonesMapper _sceneBoneMapper;
-        private SkeletonTreeViewMapper _skeletonTreeViewMapper;
-        private AnimationTimeLineMapper _animationTimeLineMapper;
-
         protected override Dictionary<PuppeteerWorkingModeType, WorkingMode> WorkingModeMapping
         {
             get { return _workingModes; }
@@ -163,8 +163,8 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             _skeleton = new Skeleton();
             _factory = new PuppeteerSceneObjectFactory(this);
             _armatureActor = Scene.AddWorldEntity<ArmatureActor>();
-            _sceneBoneMapper = new SceneBonesMapper();
-            _animationTimeLineMapper = new AnimationTimeLineMapper();
+            _sceneBoneMapper = new SceneBonesMapper(_skeleton);
+            _animationTimeLineMapper = new AnimationTimeLineMapper(_skeleton);
             _skeletonTreeViewMapper = new SkeletonTreeViewMapper(this, new AttachToBoneCommand(this));
             ConfigureSceneUI();
         }
@@ -309,6 +309,8 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         private void OnTimeMarkerChangeHandler(double seconds)
         {
             Seconds = seconds;
+            _animationTimeLineMapper.Animation.SetTime(TimeSpan.FromSeconds(seconds));
+            _sceneBoneMapper.SynchronizeFullBoneChain();
         }
 
         private void HandleNewBoneAdded(BoneActor actor)

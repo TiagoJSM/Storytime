@@ -11,7 +11,7 @@ namespace StoryTimeCore.Utils
         public static float LinearInterpolation(float startValue, float endValue, TimeSpan totalTime, TimeSpan elapsedTime)
         {
             var valueDifference = endValue - startValue;
-            var timeFraction = elapsedTime.Ticks/totalTime.Ticks;
+            var timeFraction = (float)elapsedTime.Ticks / (float)totalTime.Ticks;
             return startValue + valueDifference*timeFraction;
         }
 

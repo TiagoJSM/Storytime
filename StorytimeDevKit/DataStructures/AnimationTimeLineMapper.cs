@@ -10,6 +10,7 @@ using Puppeteer.Armature;
 using MoreLinq;
 using StoryTimeDevKit.Configurations;
 using StoryTimeDevKit.Extensions;
+using Puppeteer.Animation;
 
 namespace StoryTimeDevKit.DataStructures
 {
@@ -18,10 +19,13 @@ namespace StoryTimeDevKit.DataStructures
         private Dictionary<BoneActor, BoneState> _boneInitialStateMapper;
         private Dictionary<BoneActor, ObservableCollection<TimeFrame>> _timeFramesMapper;
 
-        public AnimationTimeLineMapper()
+        public SkeletonAnimation Animation { get; private set; }
+
+        public AnimationTimeLineMapper(Skeleton skeleton)
         {
             _timeFramesMapper = new Dictionary<BoneActor, ObservableCollection<TimeFrame>>();
             _boneInitialStateMapper = new Dictionary<BoneActor, BoneState>();
+            Animation = new SkeletonAnimation(skeleton);
         }
 
         public void AddTimeLineFor(BoneActor actor)
@@ -84,6 +88,19 @@ namespace StoryTimeDevKit.DataStructures
                     EndState = currentState 
                 };
             }
+
+            Animation.AddAnimationFrame(
+                    actor.AssignedBone,
+                    new BoneAnimationFrame()
+                    {
+                        StartTime = item.StartTime,
+                        EndTime = item.EndTime,
+                        StartTranslation = item.StartState.Translation,
+                        StartRotation = item.StartState.Rotation,
+                        EndTranslation = item.EndState.Translation,
+                        EndRotation = item.EndState.Rotation
+                    });
+
             dataCollection.Add(item);
         }
 

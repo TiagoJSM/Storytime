@@ -86,6 +86,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                     .Get<TransformModeViewModel>();
 
             TranslateButton.DataContext = transformModeModel;
+            FreeMovementButton.DataContext = transformModeModel;
             RotateButton.DataContext = transformModeModel;
             ScaleButton.DataContext = transformModeModel;
         }
@@ -115,6 +116,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             TranslateButton.IsEnabled = enabled;
             RotateButton.IsEnabled = enabled;
             ScaleButton.IsEnabled = enabled;
+            FreeMovementButton.IsEnabled = enabled;
         }
 
         private void RadioButton_AddBone_Checked(object sender, RoutedEventArgs e)

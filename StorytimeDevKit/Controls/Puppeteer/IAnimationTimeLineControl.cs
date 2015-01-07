@@ -16,5 +16,8 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
         void AddTimeLine(BoneViewModel bone, ObservableCollection<TimeFrame> items);
         void AddFrame(BoneViewModel bone, float rotation, Vector2 position);
+        void PlayAnimation();
+        void PauseAnimation();
+        void ResetAnimation();
     }
 }

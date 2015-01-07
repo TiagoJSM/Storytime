@@ -151,12 +151,14 @@
       <DependentUpon>HorizontalRuler.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataStructures\AnimationTimeLineMapper.cs" />
+    <Compile Include="DataStructures\BindingEngines\FreeMovementSceneObjectBindingEngine.cs" />
     <Compile Include="DataStructures\BindingEngines\RotateSceneObjectBindingEngine.cs" />
     <Compile Include="DataStructures\BindingEngines\TranslateSceneObjectBindingEngine.cs" />
     <Compile Include="DataStructures\Factories\ISceneObjectFactory.cs" />
     <Compile Include="DataStructures\Factories\PuppeteerSceneObjectFactory.cs" />
     <Compile Include="DataStructures\Factories\TypeConfigurableSceneObjectFactory.cs" />
     <Compile Include="Entities\Actors\ArmatureActor.cs" />
+    <Compile Include="Entities\SceneWidgets\FreeMovementRenderableAsset.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />
     <Compile Include="Extensions\ITimeLineDataItemExtensions.cs" />
@@ -301,6 +303,7 @@
     </Compile>
     <Compile Include="Entities\SceneWidgets\Puppeteer\BoneRenderableAsset.cs" />
     <Compile Include="Entities\SceneWidgets\RotateWidgetRenderableAsset.cs" />
+    <Compile Include="SceneWidgets\Transformation\FreeMovementSceneWidget.cs" />
     <Compile Include="SceneWidgets\Transformation\RotateSceneWidget.cs" />
     <Compile Include="SceneWidgets\Transformation\TranslateSceneWidget.cs" />
     <Compile Include="Texts\ActorPropertyEditorDefaultValues.cs" />
@@ -567,6 +570,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MainWindow\ToolBar\freeMovementIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
