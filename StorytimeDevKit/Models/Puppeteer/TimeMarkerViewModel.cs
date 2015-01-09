@@ -20,7 +20,7 @@ namespace StoryTimeDevKit.Models.Puppeteer
         {
             get
             {
-                return _x / _pixelsPerUnit;
+                return LineXPosition / _pixelsPerUnit;
             }
             set
             {
