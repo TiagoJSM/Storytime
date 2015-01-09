@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using StoryTimeCore.Extensions;
 
 namespace StoryTimeDevKit.Models.Puppeteer
 {
@@ -33,7 +34,8 @@ namespace StoryTimeDevKit.Models.Puppeteer
         {
             get
             {
-                return _x + _xOrigin;
+                var realX = _x + _xOrigin; ;
+                return realX.NearestMultipleOf(SecondsPerStep * _pixelsPerUnit);
             }
         }
 
@@ -84,10 +86,13 @@ namespace StoryTimeDevKit.Models.Puppeteer
             }
         }
 
-        public TimeMarkerViewModel(double pixelsPerUnit)
+        public double SecondsPerStep { get; set; }
+
+        public TimeMarkerViewModel(double pixelsPerUnit, double secondsPerStep)
         {
             _pixelsPerUnit = pixelsPerUnit;
             _visible = Visibility.Hidden;
+            SecondsPerStep = secondsPerStep;
         }
     }
 }

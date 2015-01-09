@@ -59,7 +59,7 @@
                         Grid.Row="0" Click="PlayStopButton_Click">
                         <Image Width ="20" Height="20" Source="/Images/Puppeteer/AnimationTimeLine/play.png"/>
                     </ToggleButton>
-                    <my1:AnimationTimeLineControl Width="Auto" Height="114" BorderThickness="0" Grid.Row="1" />
+                    <my1:AnimationTimeLineControl Width="Auto" Height="114" BorderThickness="0" Grid.Row="1" SecondsPerStep="0.25" />
                 </Grid>
             </TabItem>
         </TabControl>

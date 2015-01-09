@@ -40,6 +40,15 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
         private DispatcherTimer _timeMarkerTimer;
 
+        public static readonly DependencyProperty SecondsPerStepProperty =
+            DependencyProperty.Register("SecondsPerStep", typeof(double), typeof(AnimationTimeLineControl));
+
+        public double SecondsPerStep
+        {
+            get { return (double)GetValue(SecondsPerStepProperty); }
+            set { SetValue(SecondsPerStepProperty, value); }
+        }
+
         public event Action<double> OnTimeMarkerChange;
 
         public AnimationTimeLineControl()
@@ -52,11 +61,12 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             _timeMarkerTimer.Interval = TimeSpan.FromSeconds(1.0/30.0);
             _timeMarkerTimer.Tick += timeMarkerTimer_TickHandler;
             
-            _timeMarkerModel = new TimeMarkerViewModel(Ruler.PixelsPerUnit);
+            _timeMarkerModel = new TimeMarkerViewModel(Ruler.PixelsPerUnit, 0.25);
             _timeMarkerModel.OnSecondsChange += OnSecondsChangeHandler;
             line.DataContext = _timeMarkerModel;
 
             TimeLines.LayoutUpdated += TimeLines_LayoutUpdated;
+            SecondsPerStep = 1.0;
             Loaded += LoadedHandler;
         }
 
