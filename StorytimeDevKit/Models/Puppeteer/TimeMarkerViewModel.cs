@@ -16,11 +16,19 @@ namespace StoryTimeDevKit.Models.Puppeteer
 
         public event Action<double> OnSecondsChange;
 
+        public double SteppedSeconds
+        {
+            get
+            {
+                return _x.NearestMultipleOf(SecondsPerStep * _pixelsPerUnit) / _pixelsPerUnit;
+            }
+        }
+
         public double Seconds
         {
             get
             {
-                return LineXPosition / _pixelsPerUnit;
+                return _x / _pixelsPerUnit;
             }
             set
             {
@@ -34,8 +42,8 @@ namespace StoryTimeDevKit.Models.Puppeteer
         {
             get
             {
-                var realX = _x + _xOrigin; ;
-                return realX.NearestMultipleOf(SecondsPerStep * _pixelsPerUnit);
+                var realXPosition = _x + _xOrigin;
+                return realXPosition.NearestMultipleOf(SecondsPerStep * _pixelsPerUnit);
             }
         }
 
@@ -53,7 +61,7 @@ namespace StoryTimeDevKit.Models.Puppeteer
                 OnPropertyChanged("LineXPosition");
 
                 if (OnSecondsChange != null)
-                    OnSecondsChange(Seconds);
+                    OnSecondsChange(SteppedSeconds);
             }
         }
 
