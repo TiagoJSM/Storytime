@@ -7,6 +7,7 @@ using StoryTimeDevKit.Models.GameObjectsTreeViewModels;
 using StoryTimeDevKit.Controls;
 using System.Windows.Input;
 using StoryTimeDevKit.Commands.UICommands;
+using StoryTimeDevKit.Entities.Actors;
 
 namespace StoryTimeDevKit.Models.Puppeteer
 {
@@ -44,6 +45,8 @@ namespace StoryTimeDevKit.Models.Puppeteer
         }
 
         public ICommand AttachToBoneCommand { get; private set; }
+
+        public BoneActor BoneActor { get; set; }
 
         public BoneViewModel(INodeAddedCallback nodeAddCB, ICommand attachToBoneCommand, string name)
             : this(null, nodeAddCB, attachToBoneCommand, name)

@@ -195,6 +195,7 @@
     <Compile Include="Entities\SceneWidgets\TranslateWidgetRenderableAsset.cs" />
     <Compile Include="Extensions\SceneExtensions.cs" />
     <Compile Include="Models\MainWindow\TransformModeViewModel.cs" />
+    <Compile Include="Models\Puppeteer\AssetViewModel.cs" />
     <Compile Include="Models\Puppeteer\BoneAnimationTimeFrameModel.cs" />
     <Compile Include="Models\Puppeteer\BoneState.cs" />
     <Compile Include="Models\Puppeteer\BoneViewModel.cs" />

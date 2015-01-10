@@ -38,16 +38,12 @@ namespace StoryTimeDevKit.DataStructures
             }
 
             var boneVM = new BoneViewModel(parentVM, _callback, _attachToBoneCommand, GenerateName());
+            boneVM.BoneActor = actor;
             _actorDictionary.Add(actor, boneVM);
             if(parentVM != null)
                 parentVM.Children.Add(boneVM);
             else
                 SkeletonViewModel.Children.Add(boneVM);
-        }
-
-        public BoneActor GetBoneActorFrom(BoneViewModel model)
-        {
-            return _actorDictionary.GetKeyFromValue(model);
         }
 
         public BoneViewModel GetBoneViewModelByName(string name)

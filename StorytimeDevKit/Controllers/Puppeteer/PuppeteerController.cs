@@ -131,12 +131,12 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             }
         }
         public double? Seconds { get; private set; }
-        public BoneAttachedRenderableAsset SelectedBoneRenderableAsset
+        public bool BoneAttachedRenderableAssetSelected
         {
             get
             {
-                if (SceneObjectViewModel.SceneObject == null) return null;
-                return SceneObjectViewModel.SceneObject.Object as BoneAttachedRenderableAsset;
+                if (SceneObjectViewModel.SceneObject == null) return false;
+                return SceneObjectViewModel.SceneObject.Object is BoneAttachedRenderableAsset;
             }
         }
 
@@ -202,14 +202,16 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
         public void SelectBone(BoneViewModel model)
         {
-            var actor = _skeletonTreeViewMapper.GetBoneActorFrom(model);
-            Selected = actor;
+            Selected = model.BoneActor;
         }
 
-        public Bone GetBoneFrom(BoneViewModel model)
+        public void AttachBoneToSelectedRenderableAsset(BoneViewModel model)
         {
-            var actor = _skeletonTreeViewMapper.GetBoneActorFrom(model);
-            return actor.AssignedBone;
+            if (!BoneAttachedRenderableAssetSelected) return;
+            var asset = SceneObjectViewModel.SceneObject.Object as BoneAttachedRenderableAsset;
+            asset.Bone = model.BoneActor.AssignedBone;
+            var assetViewModel = new AssetViewModel(model, this, model.Name + "_Asset");
+            model.Children.Add(assetViewModel);
         }
 
         private void AssignPuppeteerEditorControlEvents()

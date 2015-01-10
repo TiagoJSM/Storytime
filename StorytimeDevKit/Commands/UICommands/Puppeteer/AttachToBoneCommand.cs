@@ -21,14 +21,13 @@ namespace StoryTimeDevKit.Commands.UICommands.Puppeteer
 
         public override bool CanExecute(object parameter)
         {
-            return _controlData.SelectedBoneRenderableAsset != null;
+            return _controlData.BoneAttachedRenderableAssetSelected;
         }
 
         public override void Execute(object parameter)
         {
             var model = parameter as BoneViewModel;
-            var bone = _controlData.GetBoneFrom(model);
-            _controlData.SelectedBoneRenderableAsset.Bone = bone;
+            _controlData.AttachBoneToSelectedRenderableAsset(model);
         }
     }
 }
