@@ -5,7 +5,7 @@ using System.Text;
 using StoryTimeFramework.Entities.Actors;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Physics;
-using StoryTimeDevKit.Entities.SceneWidgets;
+using StoryTimeDevKit.Entities.Renderables;
 
 namespace StoryTimeDevKit.Models
 {

@@ -18,7 +18,7 @@ using StoryTimeDevKit.Configurations;
 using Ninject.Parameters;
 using StoryTimeDevKit.Utils;
 using FarseerPhysicsWrapper;
-using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
+using StoryTimeDevKit.Entities.Renderables;
 using StoryTimeDevKit.Models;
 using StoryTimeUI.DataBinding.Engines;
 using StoryTimeDevKit.Delegates;

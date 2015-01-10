@@ -5,7 +5,7 @@ using System.Text;
 using StoryTimeDevKit.Models.SavedData;
 using StoryTimeFramework.WorldManagement;
 using StoryTimeFramework.Entities.Actors;
-using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
+using StoryTimeDevKit.Entities.Renderables;
 
 namespace StoryTimeDevKit.Extensions
 {

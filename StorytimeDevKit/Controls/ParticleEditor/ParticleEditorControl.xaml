@@ -6,7 +6,6 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:templates="clr-namespace:StoryTimeDevKit.Controls.Templates"
             xmlns:xna="clr-namespace:StoryTimeDevKit.Controls.XNA"
-            xmlns:TransformableWidgetNS="clr-namespace:StoryTimeDevKit.Entities.SceneWidgets"
             xmlns:particleEditor="clr-namespace:StoryTimeDevKit.Controls.ParticleEditor"
             xmlns:editors="clr-namespace:StoryTimeDevKit.Controls.Editors"
             mc:Ignorable="d" 

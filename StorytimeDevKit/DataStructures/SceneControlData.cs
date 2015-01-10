@@ -6,7 +6,7 @@ using StoryTimeDevKit.SceneWidgets.Transformation;
 using StoryTimeUI.DataBinding.Engines;
 using StoryTimeDevKit.Models;
 using StoryTimeDevKit.Models.MainWindow;
-using StoryTimeDevKit.Entities.SceneWidgets;
+using StoryTimeDevKit.Entities.Renderables;
 
 namespace StoryTimeDevKit.DataStructures
 {

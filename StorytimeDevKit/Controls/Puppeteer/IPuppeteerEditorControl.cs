@@ -4,17 +4,11 @@ using System.Linq;
 using System.Text;
 using StoryTimeDevKit.Models.Puppeteer;
 using Microsoft.Xna.Framework;
+using StoryTimeDevKit.Enums;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
     public delegate void OnAssetListItemViewModelDrop(AssetListItemViewModel model, Vector2 dropPosition);
-
-    public enum PuppeteerWorkingModeType
-    {
-        BoneSelectionMode,
-        AssetSelectionMode,
-        AddBoneMode
-    }
 
     public interface IPuppeteerEditorControl : IMouseInteractiveControl
     {

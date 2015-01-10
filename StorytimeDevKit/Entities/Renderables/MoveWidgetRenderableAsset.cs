@@ -9,7 +9,7 @@ using StoryTimeCore.DataStructures;
 using StoryTimeCore.Extensions;
 using StoryTimeFramework.Resources.Graphic;
 
-namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
+namespace StoryTimeDevKit.Entities.Renderables
 {
     public class MoveWidgetRenderableAsset : TemplateRenderableAsset
     {

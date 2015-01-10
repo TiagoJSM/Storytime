@@ -7,7 +7,7 @@ using StoryTimeCore.DataStructures;
 using StoryTimeFramework.Resources.Graphic;
 using Microsoft.Xna.Framework;
 
-namespace StoryTimeDevKit.Entities.SceneWidgets
+namespace StoryTimeDevKit.Entities.Renderables
 {
     public enum TranslateArrowDirection
     {

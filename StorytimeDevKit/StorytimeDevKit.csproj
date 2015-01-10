@@ -150,6 +150,8 @@
     <Compile Include="Controls\Puppeteer\HorizontalRuler.xaml.cs">
       <DependentUpon>HorizontalRuler.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ToolbarRadioButtons\BooleanToEnumValueConverter.cs" />
+    <Compile Include="Converters\ToolbarRadioButtons\BooleanToPuppeteerWorkingModeTypeValueConverter.cs" />
     <Compile Include="DataStructures\AnimationTimeLineMapper.cs" />
     <Compile Include="DataStructures\BindingEngines\FreeMovementSceneObjectBindingEngine.cs" />
     <Compile Include="DataStructures\BindingEngines\RotateSceneObjectBindingEngine.cs" />
@@ -158,7 +160,9 @@
     <Compile Include="DataStructures\Factories\PuppeteerSceneObjectFactory.cs" />
     <Compile Include="DataStructures\Factories\TypeConfigurableSceneObjectFactory.cs" />
     <Compile Include="Entities\Actors\ArmatureActor.cs" />
-    <Compile Include="Entities\SceneWidgets\FreeMovementRenderableAsset.cs" />
+    <Compile Include="Entities\Renderables\FreeMovementRenderableAsset.cs" />
+    <Compile Include="Entities\Renderables\Puppeteer\EditorBoneAttachedRenderableAsset.cs" />
+    <Compile Include="Enums\PuppeteerWorkingModeType.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />
     <Compile Include="Extensions\ITimeLineDataItemExtensions.cs" />
@@ -191,8 +195,8 @@
     <Compile Include="Delegates\SceneViewerDelegates.cs" />
     <Compile Include="Delegates\TransformDelegates.cs" />
     <Compile Include="Entities\Actors\BoneActor.cs" />
-    <Compile Include="Entities\SceneWidgets\WidgetMode.cs" />
-    <Compile Include="Entities\SceneWidgets\TranslateWidgetRenderableAsset.cs" />
+    <Compile Include="Entities\Renderables\WidgetMode.cs" />
+    <Compile Include="Entities\Renderables\TranslateWidgetRenderableAsset.cs" />
     <Compile Include="Extensions\SceneExtensions.cs" />
     <Compile Include="Models\MainWindow\TransformModeViewModel.cs" />
     <Compile Include="Models\Puppeteer\AssetViewModel.cs" />
@@ -202,11 +206,12 @@
     <Compile Include="Models\Puppeteer\TimeFrame.cs" />
     <Compile Include="Models\Puppeteer\TimelineTuple.cs" />
     <Compile Include="Models\Puppeteer\TimeMarkerViewModel.cs" />
+    <Compile Include="Models\Puppeteer\PuppeteerWorkingModesModel.cs" />
     <Compile Include="Models\SceneObjects\BoneActorSceneObject.cs" />
     <Compile Include="Models\SceneObjects\BoneAttachedAssetSceneObject.cs" />
     <Compile Include="Models\SceneObjects\ISceneObject.cs" />
     <Compile Include="Models\Puppeteer\SkeletonViewModel.cs" />
-    <Compile Include="Entities\SceneWidgets\MoveWidgetRenderableAsset.cs" />
+    <Compile Include="Entities\Renderables\MoveWidgetRenderableAsset.cs" />
     <Compile Include="Commands\ReversibleCommands\AddActorCommand.cs" />
     <Compile Include="Commands\ReversibleCommands\CommandStack.cs" />
     <Compile Include="Commands\ReversibleCommands\IReversibleCommand.cs">
@@ -302,8 +307,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LocalizedTexts.resx</DependentUpon>
     </Compile>
-    <Compile Include="Entities\SceneWidgets\Puppeteer\BoneRenderableAsset.cs" />
-    <Compile Include="Entities\SceneWidgets\RotateWidgetRenderableAsset.cs" />
+    <Compile Include="Entities\Renderables\Puppeteer\BoneRenderableAsset.cs" />
+    <Compile Include="Entities\Renderables\RotateWidgetRenderableAsset.cs" />
     <Compile Include="SceneWidgets\Transformation\FreeMovementSceneWidget.cs" />
     <Compile Include="SceneWidgets\Transformation\RotateSceneWidget.cs" />
     <Compile Include="SceneWidgets\Transformation\TranslateSceneWidget.cs" />

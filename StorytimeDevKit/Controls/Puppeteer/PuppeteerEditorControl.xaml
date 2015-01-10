@@ -7,8 +7,9 @@
              d:DesignHeight="514" 
              d:DesignWidth="703" 
              xmlns:my="clr-namespace:StoryTimeDevKit.Controls.XNA"
-             xmlns:TransformableWidgetNS="clr-namespace:StoryTimeDevKit.Entities.SceneWidgets"
+             xmlns:TransformableWidgetNS="clr-namespace:StoryTimeDevKit.Entities.Renderables"
              xmlns:RadioButtonsConvNS="clr-namespace:StoryTimeDevKit.Converters.ToolbarRadioButtons"
+             xmlns:Enums="clr-namespace:StoryTimeDevKit.Enums"
              xmlns:my1="clr-namespace:StoryTimeDevKit.Controls.Puppeteer"
              xmlns:TemplateControls="clr-namespace:StoryTimeDevKit.Controls.Templates"
              Background="#FF46484A" 
@@ -16,6 +17,7 @@
 
     <UserControl.Resources>
         <RadioButtonsConvNS:BooleanToWidgetModeValueConverter x:Key="BooleanToWidgetModeValueConverter"/>
+        <RadioButtonsConvNS:BooleanToPuppeteerWorkingModeTypeValueConverter x:Key="BooleanToPuppeteerWorkingModeTypeValueConverter"/>
 
         <Style x:Key="DisabledOpacity" TargetType="{x:Type ButtonBase}">
             <Setter Property="IsEnabled" Value="True" />
@@ -54,18 +56,34 @@
             <RadioButton 
                 Name="SelectBoneMode"
                 GroupName="WorkingModes"
-                Checked="RadioButton_SelectBone_Checked">
+                Checked="RadioButton_SelectBone_Checked"
+                IsChecked="{Binding 
+                    Path=WorkingMode,
+                    Mode=TwoWay,
+                    Converter={StaticResource BooleanToPuppeteerWorkingModeTypeValueConverter}, 
+                    ConverterParameter={x:Static Enums:PuppeteerWorkingModeType.BoneSelectionMode}}">
                 <Image Width ="25" Height="25" Source="/Images/Puppeteer/ToolBar/SelectBoneIcon.png"/>
             </RadioButton>
             <RadioButton 
                 Name="SelectAssetMode"
                 GroupName="WorkingModes"
-                Checked="RadioButton_SelectAsset_Checked">
+                Checked="RadioButton_SelectAsset_Checked"
+                IsChecked="{Binding 
+                    Path=WorkingMode,
+                    Mode=TwoWay,
+                    Converter={StaticResource BooleanToPuppeteerWorkingModeTypeValueConverter}, 
+                    ConverterParameter={x:Static Enums:PuppeteerWorkingModeType.AssetSelectionMode}}">
                 <Image Width ="25" Height="25" Source="/Images/Puppeteer/ToolBar/SelectAssetIcon.png"/>
             </RadioButton>
             <RadioButton 
+                Name="AddBoneMode"
                 GroupName="WorkingModes"
-                Checked="RadioButton_AddBone_Checked">
+                Checked="RadioButton_AddBone_Checked"
+                IsChecked="{Binding 
+                    Path=WorkingMode,
+                    Mode=TwoWay,
+                    Converter={StaticResource BooleanToPuppeteerWorkingModeTypeValueConverter}, 
+                    ConverterParameter={x:Static Enums:PuppeteerWorkingModeType.AddBoneMode}}">
                 <Image Width ="25" Height="25" Source="/Images/Puppeteer/ToolBar/BoneIcon.png"/>
             </RadioButton>
             

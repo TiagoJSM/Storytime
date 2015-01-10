@@ -8,6 +8,7 @@ using StoryTimeDevKit.Controllers.GameObjects;
 using StoryTimeDevKit.Controllers.ImageViewer;
 using StoryTimeDevKit.Controllers.Puppeteer;
 using StoryTimeDevKit.Models.MainWindow;
+using StoryTimeDevKit.Models.Puppeteer;
 
 namespace StoryTimeDevKit.Bootstraps
 {
@@ -25,6 +26,7 @@ namespace StoryTimeDevKit.Bootstraps
         {
             kernel.Bind<IPuppeteerController, ISkeletonViewerController, IAnimationTimeLineController>().To<PuppeteerController>().InSingletonScope();
             kernel.Bind<TransformModeViewModel>().To<TransformModeViewModel>().InSingletonScope();
+            kernel.Bind<PuppeteerWorkingModesModel>().To<PuppeteerWorkingModesModel>().InSingletonScope();
         }
     }
 }

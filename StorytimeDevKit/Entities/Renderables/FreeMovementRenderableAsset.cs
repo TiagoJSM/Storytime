@@ -6,7 +6,7 @@ using StoryTimeFramework.Resources.Graphic;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeCore.DataStructures;
 
-namespace StoryTimeDevKit.Entities.SceneWidgets
+namespace StoryTimeDevKit.Entities.Renderables
 {
     public class FreeMovementRenderableAsset : TemplateRenderableAsset
     {

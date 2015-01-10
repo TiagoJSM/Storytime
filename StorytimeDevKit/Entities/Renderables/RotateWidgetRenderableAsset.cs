@@ -8,7 +8,7 @@ using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeFramework.Resources.Graphic;
 using Microsoft.Xna.Framework;
 
-namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces
+namespace StoryTimeDevKit.Entities.Renderables
 {
     public class RotateWidgetRenderableAsset : TemplateRenderableAsset
     {

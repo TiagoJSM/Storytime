@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using StoryTimeUI;
 using StoryTimeCore.Resources.Graphic;
-using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
+using StoryTimeDevKit.Entities.Renderables;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.Extensions;

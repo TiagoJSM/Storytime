@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using StoryTimeDevKit.Models.SceneObjects;
-using StoryTimeDevKit.Entities.SceneWidgets;
+using StoryTimeDevKit.Entities.Renderables;
 using Microsoft.Xna.Framework;
 
 namespace StoryTimeDevKit.Models.Puppeteer

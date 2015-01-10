@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
+using StoryTimeDevKit.Entities.Renderables;
 using StoryTimeFramework.Entities.Actors;
 
 namespace StoryTimeDevKit.Commands.ReversibleCommands

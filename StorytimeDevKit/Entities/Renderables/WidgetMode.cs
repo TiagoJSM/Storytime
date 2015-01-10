@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace StoryTimeDevKit.Entities.SceneWidgets
+namespace StoryTimeDevKit.Entities.Renderables
 {
     public enum WidgetMode
     {

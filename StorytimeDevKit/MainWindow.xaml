@@ -9,7 +9,7 @@
         VerticalAlignment="Top" 
         xmlns:my2="clr-namespace:StoryTimeDevKit.Controls.GameObjects" 
         xmlns:my4="clr-namespace:StoryTimeDevKit.Controls.Editors" 
-        xmlns:TransformableWidgetNS="clr-namespace:StoryTimeDevKit.Entities.SceneWidgets"
+        xmlns:TransformableWidgetNS="clr-namespace:StoryTimeDevKit.Entities.Renderables"
         xmlns:RadioButtonsConvNS="clr-namespace:StoryTimeDevKit.Converters.ToolbarRadioButtons"
         Left="100" Top="100" xmlns:my5="clr-namespace:StoryTimeDevKit.Controls.Displayers" Background="#FF46484A">
 

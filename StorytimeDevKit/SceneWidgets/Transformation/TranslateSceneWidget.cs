@@ -5,7 +5,7 @@ using System.Text;
 using StoryTimeUI;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Resources.Graphic;
-using StoryTimeDevKit.Entities.SceneWidgets;
+using StoryTimeDevKit.Entities.Renderables;
 using StoryTimeCore.DataStructures;
 using StoryTimeUI.Delegates;
 

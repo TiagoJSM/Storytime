@@ -14,5 +14,10 @@ namespace StoryTimeDevKit.Extensions
         {
             return _imageExtensions.Contains(fi.Extension, StringComparer.InvariantCultureIgnoreCase);
         }
+
+        public static string NameWithoutExtension(this FileInfo fileInfo)
+        {
+            return Path.GetFileNameWithoutExtension(fileInfo.Name);
+        }
     }
 }

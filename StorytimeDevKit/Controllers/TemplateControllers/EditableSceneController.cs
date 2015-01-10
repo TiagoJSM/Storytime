@@ -12,7 +12,7 @@ using StoryTimeDevKit.DataStructures.BindingEngines;
 using StoryTimeDevKit.Models.MainWindow;
 using StoryTimeDevKit.Controls;
 using StoryTimeCore.Contexts.Interfaces;
-using StoryTimeDevKit.Entities.SceneWidgets;
+using StoryTimeDevKit.Entities.Renderables;
 
 namespace StoryTimeDevKit.Controllers.TemplateControllers
 {

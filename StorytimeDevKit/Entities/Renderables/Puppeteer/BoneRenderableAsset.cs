@@ -8,7 +8,7 @@ using StoryTimeCore.DataStructures;
 using StoryTimeFramework.Resources.Graphic;
 using Microsoft.Xna.Framework;
 
-namespace StoryTimeDevKit.Entities.SceneWidgets.Interfaces.Puppeteer
+namespace StoryTimeDevKit.Entities.Renderables.Puppeteer
 {
     public class BoneRenderableAsset : Static2DRenderableAsset
     {

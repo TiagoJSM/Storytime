@@ -4,33 +4,33 @@ using System.Linq;
 using System.Text;
 using StoryTimeDevKit.Models;
 using StoryTimeCore.Resources.Graphic;
+using System.IO;
+using StoryTimeDevKit.Extensions;
 
 namespace StoryTimeDevKit.Models.Puppeteer
 {
     public class AssetListItemViewModel : BaseViewModel
     {
-        private string _fullPath;
-
-        public AssetListItemViewModel()
-        {
-        }
+        private FileInfo _fileInfo;
 
         public AssetListItemViewModel(string fullPath)
         {
-            _fullPath = fullPath;
+            _fileInfo = new FileInfo(fullPath);
         }
 
         public string FullPath 
         {
             get
             {
-                return _fullPath;
+                return _fileInfo.FullName;
             }
-            set
+        }
+
+        public string Name
+        {
+            get
             {
-                if (_fullPath == value) return;
-                _fullPath = value;
-                OnPropertyChanged("FullPath");
+                return _fileInfo.NameWithoutExtension();
             }
         }
 

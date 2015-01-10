@@ -25,6 +25,7 @@ using StoryTimeDevKit.Models.MainWindow;
 using StoryTimeDevKit.Controls.Templates;
 using StoryTimeFramework.WorldManagement;
 using StoryTimeDevKit.Models.Puppeteer;
+using StoryTimeDevKit.Enums;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
@@ -35,7 +36,8 @@ namespace StoryTimeDevKit.Controls.Puppeteer
     {
         private MyGame _game;
         private IPuppeteerController _puppeteerController;
-        private TransformModeViewModel transformModeModel;
+        private TransformModeViewModel _transformModeModel;
+        private PuppeteerWorkingModesModel _workingModesModel;
 
         public event Action<IPuppeteerEditorControl> OnLoaded;
         public event Action<IPuppeteerEditorControl> OnUnloaded;
@@ -80,15 +82,24 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
             SelectBoneMode.IsChecked = true;
 
-            transformModeModel =
+            _transformModeModel =
                 DependencyInjectorHelper
                     .PuppeteerKernel
                     .Get<TransformModeViewModel>();
 
-            TranslateButton.DataContext = transformModeModel;
-            FreeMovementButton.DataContext = transformModeModel;
-            RotateButton.DataContext = transformModeModel;
-            ScaleButton.DataContext = transformModeModel;
+            TranslateButton.DataContext = _transformModeModel;
+            FreeMovementButton.DataContext = _transformModeModel;
+            RotateButton.DataContext = _transformModeModel;
+            ScaleButton.DataContext = _transformModeModel;
+
+            _workingModesModel =
+                DependencyInjectorHelper
+                    .PuppeteerKernel
+                    .Get<PuppeteerWorkingModesModel>();
+
+            SelectBoneMode.DataContext = _workingModesModel;
+            SelectAssetMode.DataContext = _workingModesModel;
+            AddBoneMode.DataContext = _workingModesModel;
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

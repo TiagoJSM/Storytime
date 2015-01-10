@@ -10,7 +10,7 @@ using StoryTimeFramework.Resources.Graphic;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
 using StoryTimeCore.DataStructures;
-using StoryTimeDevKit.Entities.SceneWidgets.Interfaces.Puppeteer;
+using StoryTimeDevKit.Entities.Renderables.Puppeteer;
 using Puppeteer.Armature;
 
 namespace StoryTimeDevKit.Entities.Actors

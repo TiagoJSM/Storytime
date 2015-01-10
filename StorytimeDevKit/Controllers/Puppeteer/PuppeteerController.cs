@@ -15,13 +15,13 @@ using FarseerPhysicsWrapper;
 using FarseerPhysics.Factories;
 using StoryTimeFramework.Entities.Actors;
 using Microsoft.Xna.Framework;
-using StoryTimeDevKit.Entities.SceneWidgets.Interfaces;
+using StoryTimeDevKit.Entities.Renderables;
 using StoryTimeDevKit.Entities.Actors;
 using StoryTimeDevKit.DataStructures;
 using StoryTimeDevKit.SceneWidgets.Transformation;
 using Ninject;
 using StoryTimeDevKit.Models.MainWindow;
-using StoryTimeDevKit.Entities.SceneWidgets;
+using StoryTimeDevKit.Entities.Renderables;
 using StoryTimeDevKit.Commands.ReversibleCommands;
 using Puppeteer.Armature;
 using StoryTimeDevKit.Controls;
@@ -31,6 +31,8 @@ using System.Collections.ObjectModel;
 using TimeLineTool;
 using StoryTimeDevKit.DataStructures.Factories;
 using StoryTimeDevKit.Commands.UICommands.Puppeteer;
+using StoryTimeDevKit.Entities.Renderables.Puppeteer;
+using StoryTimeDevKit.Enums;
 
 namespace StoryTimeDevKit.Controllers.Puppeteer
 {
@@ -56,6 +58,8 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         private ISceneObjectFactory _factory;
 
         private Dictionary<PuppeteerWorkingModeType, WorkingMode> _workingModes;
+        private Dictionary<BoneAttachedRenderableAsset, AssetListItemViewModel> _assetMapping;
+        private PuppeteerWorkingModesModel _workingModesModel;
 
         public IPuppeteerEditorControl PuppeteerControl 
         {
@@ -149,7 +153,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             get { return _factory; }
         }
 
-        public PuppeteerController(GameWorld gameWorld, TransformModeViewModel transformModeModel)
+        public PuppeteerController(GameWorld gameWorld, TransformModeViewModel transformModeModel, PuppeteerWorkingModesModel workingModesModel)
             : base(gameWorld, transformModeModel)
         {
             _workingModes =
@@ -166,6 +170,8 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             _sceneBoneMapper = new SceneBonesMapper(_skeleton);
             _animationTimeLineMapper = new AnimationTimeLineMapper(_skeleton);
             _skeletonTreeViewMapper = new SkeletonTreeViewMapper(this, new AttachToBoneCommand(this));
+            _assetMapping = new Dictionary<BoneAttachedRenderableAsset, AssetListItemViewModel>();
+            _workingModesModel = workingModesModel;
             ConfigureSceneUI();
         }
 
@@ -203,6 +209,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         public void SelectBone(BoneViewModel model)
         {
             Selected = model.BoneActor;
+            _workingModesModel.WorkingMode = PuppeteerWorkingModeType.BoneSelectionMode;
         }
 
         public void AttachBoneToSelectedRenderableAsset(BoneViewModel model)
@@ -210,7 +217,8 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             if (!BoneAttachedRenderableAssetSelected) return;
             var asset = SceneObjectViewModel.SceneObject.Object as BoneAttachedRenderableAsset;
             asset.Bone = model.BoneActor.AssignedBone;
-            var assetViewModel = new AssetViewModel(model, this, model.Name + "_Asset");
+            var viewModel = _assetMapping[asset];
+            var assetViewModel = new AssetViewModel(model, this, viewModel.Name);
             model.Children.Add(assetViewModel);
         }
 
@@ -306,6 +314,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                 RenderingOffset = dropPosition
             };
             _armatureActor.ArmatureRenderableAsset.Add(asset);
+            _assetMapping.Add(asset, viewModel);
         }
 
         private void OnTimeMarkerChangeHandler(double seconds)
