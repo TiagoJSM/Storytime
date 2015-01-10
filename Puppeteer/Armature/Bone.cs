@@ -42,6 +42,8 @@ namespace Puppeteer.Armature
                 SetDirty();
             }
         }
+        public Joint BoneStartJoint { get; set; }
+        public Joint BoneEndJoint { get; set; }
 
         public Vector2 AbsolutePosition
         {
