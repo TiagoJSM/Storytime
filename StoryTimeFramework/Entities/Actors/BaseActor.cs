@@ -51,7 +51,7 @@ namespace StoryTimeFramework.Entities.Actors
                 _body = value;
             }
         }
-        [Editable(EditorGroup = "Renderable", EditorName = "Actor")]
+        [Editable(EditorGroup = "Renderable", EditorName = "Asset")]
         public IRenderableAsset RenderableAsset 
         {
             get

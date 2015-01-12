@@ -119,6 +119,9 @@
     <Compile Include="Configurations\ApplicationProperties.cs" />
     <Compile Include="Controllers\IMultiStackedCommandsController.cs" />
     <Compile Include="Controllers\IStackedCommandsController.cs" />
+    <Compile Include="Controllers\ParticleEditor\IParticleEditorController.cs" />
+    <Compile Include="Controllers\ParticleEditor\IParticleEmissorPropertyEditorController.cs" />
+    <Compile Include="Controllers\ParticleEditor\ParticleEditorController.cs" />
     <Compile Include="Controllers\Puppeteer\IAnimationTimeLineController.cs" />
     <Compile Include="Controllers\Puppeteer\IPuppeteerController.cs" />
     <Compile Include="Controllers\Puppeteer\ISkeletonViewerController.cs" />
@@ -132,6 +135,10 @@
     <Compile Include="Controllers\TemplateControllers\EditableSceneController.cs" />
     <Compile Include="Controllers\TemplateControllers\MultiStackedCommandsController.cs" />
     <Compile Include="Controllers\TemplateControllers\StackedCommandsController.cs" />
+    <Compile Include="Controls\Editors\IParticleEmissorPropertyEditor.cs" />
+    <Compile Include="Controls\Editors\ParticleEmissorPropertyEditor.xaml.cs">
+      <DependentUpon>ParticleEmissorPropertyEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\IMouseInteractiveControl.cs" />
     <Compile Include="Controls\IMouseInteractivePanel.cs" />
     <Compile Include="Controls\INodeAddedCallback.cs" />
@@ -262,8 +269,8 @@
     <Compile Include="Extensions\DirectoryInfoExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions.cs" />
-    <Compile Include="Models\ActorEditablePropertyModel.cs" />
-    <Compile Include="Models\ActorPropertyEditorModel.cs" />
+    <Compile Include="Models\EditablePropertyModel.cs" />
+    <Compile Include="Models\PropertyEditorModel.cs" />
     <Compile Include="Models\BaseViewModel.cs" />
     <Compile Include="Models\CreateSceneViewModel.cs" />
     <Compile Include="Models\GameObjectsTreeViewModels\ActorsCategoryViewModel.cs" />
@@ -316,6 +323,10 @@
     <Compile Include="Utils\ApplicationUtils.cs" />
     <Compile Include="Utils\DependencyInjectorHelper.cs" />
     <Compile Include="Utils\XMLSerializerUtils.cs" />
+    <Page Include="Controls\Editors\ParticleEmissorPropertyEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ParticleEditor\ParticleEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -463,6 +474,10 @@
     <ProjectReference Include="..\FarseerPhysicsWrapper\FarseerPhysicsWrapper.csproj">
       <Project>{85BD65F7-F869-474D-9FE8-2E87FAB35737}</Project>
       <Name>FarseerPhysicsWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParticleEngine\ParticleEngine\ParticleEngine.csproj">
+      <Project>{b6b81eac-0477-4215-9e72-8f456a421ec1}</Project>
+      <Name>ParticleEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\Puppeteer\Puppeteer.csproj">
       <Project>{DD4F2F02-05CE-49D1-B65C-3BEC38DD3369}</Project>

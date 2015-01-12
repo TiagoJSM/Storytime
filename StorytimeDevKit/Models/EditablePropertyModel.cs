@@ -5,7 +5,7 @@ using System.Text;
 
 namespace StoryTimeDevKit.Models
 {
-    public class ActorEditablePropertyModel
+    public class EditablePropertyModel
     {
         public string PropertyName { get; set; }
         public string PropertyGroup { get; set; }
