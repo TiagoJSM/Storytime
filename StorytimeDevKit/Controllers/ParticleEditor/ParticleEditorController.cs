@@ -26,7 +26,10 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
                     UnassignParticleEmissorPropertyEditorEventHandlers();
                 _particleEmissorPropertyEditor = value;
                 if (_particleEmissorPropertyEditor != null)
+                {
                     AssignParticleEmissorPropertyEditorEventHandlers();
+                    //_particleEmissorPropertyEditor.Selected = _emitter;
+                } 
             }
         }
 
