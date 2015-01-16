@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ninject;
+using ParticleEngine;
 using StoryTimeDevKit.Commands.UICommands;
 using StoryTimeDevKit.Controllers.ParticleEditor;
 using StoryTimeDevKit.Controllers.Puppeteer;
@@ -37,15 +38,14 @@ namespace StoryTimeDevKit.Controls.Editors
             set
             {
                 _selected = value;
-                _model.Data = _selected;
+                _model = new PropertyEditorModel(_selected);
+                propertyGrid.SelectedObject = _model;
             }
         }
 
         public ParticleEmissorPropertyEditor()
         {
             InitializeComponent();
-            _model = new PropertyEditorModel();
-            propertyGrid.SelectedObject = _model;
             Loaded += LoadedHandler;
         }
 

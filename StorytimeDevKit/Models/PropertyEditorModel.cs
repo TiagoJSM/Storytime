@@ -22,21 +22,6 @@ namespace StoryTimeDevKit.Models
             new Dictionary<string, EditablePropertyModel>();
         private object _data;
 
-        public object Data
-        {
-            get { return _data; }
-            set
-            {
-                if (_data == value) return;
-                _data = value;
-                AddEditablePropertiesFromData();
-            }
-        }
-
-        public PropertyEditorModel()
-        {
-        }
-
         public PropertyEditorModel(object data)
         {
             _data = data;
@@ -55,6 +40,7 @@ namespace StoryTimeDevKit.Models
 
             foreach (var editableProp in editableProps)
                 AddProperty(editableProp);
+            
         }
 
         private EditablePropertyModel ConvertToEditableProperty(PropertyInfo prop)

@@ -8,6 +8,7 @@ using ParticleEngine;
 using StoryTimeDevKit.Controls.Editors;
 using StoryTimeDevKit.Controls.ParticleEditor;
 using StoryTimeFramework.Entities.Actors;
+using StoryTimeFramework.Resources.Graphic;
 using StoryTimeFramework.WorldManagement;
 
 namespace StoryTimeDevKit.Controllers.ParticleEditor
@@ -65,6 +66,14 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             _gameWorld.AddScene(scene);
             _gameWorld.SetActiveScene(scene);
             _particleEmmiterActor = scene.AddWorldEntity<ParticleEmmiterActor>();
+           
+            //ToDo: delete these lines in the future
+            var bitmap = gameWorld.GraphicsContext.LoadTexture2D("default");
+            var asset = new Static2DRenderableAsset();
+            asset.Texture2D = bitmap;
+            _particleEmmiterActor.RenderableAsset = asset;
+            var name = "one";
+            _particleEmmiterActor.Body = _particleEmmiterActor.Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
         }
 
         private void UnassignParticleEmissorPropertyEditorEventHandlers()
