@@ -6,6 +6,8 @@ using FarseerPhysicsWrapper;
 using Microsoft.Xna.Framework;
 using ParticleEngine;
 using StoryTimeDevKit.Controls.Editors;
+using StoryTimeDevKit.Controls.ParticleEditor;
+using StoryTimeFramework.Entities.Actors;
 using StoryTimeFramework.WorldManagement;
 
 namespace StoryTimeDevKit.Controllers.ParticleEditor
@@ -13,8 +15,10 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
     public class ParticleEditorController : IParticleEditorController, IParticleEmissorPropertyEditorController
     {
         private IParticleEmissorPropertyEditor _particleEmissorPropertyEditor;
+        private IParticleEditorControl _particleEditorControl;
         private ParticleEmitter _emitter;
         private GameWorld _gameWorld;
+        private ParticleEmmiterActor _particleEmmiterActor;
 
         public IParticleEmissorPropertyEditor ParticleEmissorPropertyEditor
         {
@@ -33,6 +37,22 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             }
         }
 
+        public IParticleEditorControl ParticleEditorControl
+        {
+            get { return _particleEditorControl; }
+            set
+            {
+                if (_particleEditorControl == value) return;
+                if (_particleEditorControl != null)
+                    UnassignParticleEditorControlEventHandlers();
+                _particleEditorControl = value;
+                if (_particleEditorControl != null)
+                {
+                    AssignParticleEditorControlEventHandlers();
+                } 
+            }
+        }
+
         public ParticleEditorController(GameWorld gameWorld)
         {
             _gameWorld = gameWorld;
@@ -40,6 +60,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             scene.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
             _gameWorld.AddScene(scene);
             _gameWorld.SetActiveScene(scene);
+            _particleEmmiterActor = scene.AddWorldEntity<ParticleEmmiterActor>();
         }
 
         private void UnassignParticleEmissorPropertyEditorEventHandlers()
@@ -48,6 +69,16 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         }
 
         private void AssignParticleEmissorPropertyEditorEventHandlers()
+        {
+
+        }
+
+        private void AssignParticleEditorControlEventHandlers()
+        {
+
+        }
+
+        private void UnassignParticleEditorControlEventHandlers()
         {
 
         }

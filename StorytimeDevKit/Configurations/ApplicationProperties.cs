@@ -13,5 +13,6 @@ namespace StoryTimeDevKit.Configurations
         public static string ISceneViewerGameWorldArgName { get { return "world"; } }
         public static string IGameObjectsControllerArgName { get { return "nodeAddCB"; } }
         public static string IPuppeteerControllerGameWorldArgName { get { return "gameWorld"; } }
+        public static string IParticleEditorControllerGameWorldArgName { get { return "gameWorld"; } }
     }
 }

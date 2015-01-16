@@ -142,6 +142,7 @@
     <Compile Include="Controls\IMouseInteractiveControl.cs" />
     <Compile Include="Controls\IMouseInteractivePanel.cs" />
     <Compile Include="Controls\INodeAddedCallback.cs" />
+    <Compile Include="Controls\ParticleEditor\IParticleEditorControl.cs" />
     <Compile Include="Controls\ParticleEditor\ParticleEditorControl.xaml.cs">
       <DependentUpon>ParticleEditorControl.xaml</DependentUpon>
     </Compile>
