@@ -11,9 +11,9 @@ namespace ParticleEngine
 {
     public class Particle
     {
-        private IBody _body;
         private TimeSpan _timeToLive;
-        
+
+        public IBody Body { get; private set; }
         public Color Color { get; set; }
         public Vector2 Direction { get; set; }
         public double Velocity { get; set; }
@@ -21,8 +21,8 @@ namespace ParticleEngine
 
         public Vector2 Position
         {
-            get { return _body.Position; }
-            set { _body.Position = value; }
+            get { return Body.Position; }
+            set { Body.Position = value; }
         }
 
         public bool IsAlive
@@ -40,7 +40,7 @@ namespace ParticleEngine
 
         public Particle(IBody body)
         {
-            _body = body;
+            Body = body;
             Color = new Color(1f, 1f, 1f);
         }
     }

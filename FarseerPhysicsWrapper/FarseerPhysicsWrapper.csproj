@@ -44,7 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FarseerBody.cs" />
+    <Compile Include="Bodies\FakePhysicsSimulationBody.cs" />
+    <Compile Include="Bodies\FarseerBody.cs" />
     <Compile Include="FarseerWorld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

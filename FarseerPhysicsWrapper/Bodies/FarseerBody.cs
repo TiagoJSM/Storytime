@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using StoryTimeCore.Physics;
-using Microsoft.Xna.Framework;
 using FarseerPhysics.Dynamics;
+using Microsoft.Xna.Framework;
+using StoryTimeCore.Physics;
 
-namespace FarseerPhysicsWrapper
+namespace FarseerPhysicsWrapper.Bodies
 {
     public class FarseerBody : IBody
     {
@@ -71,6 +68,7 @@ namespace FarseerPhysicsWrapper
 
         public void Synchronize()
         {
+            Rotation = _body.Rotation;
             Position = _body.Position;
         }
     }

@@ -75,6 +75,7 @@
     <Compile Include="Entities\Actors\Actor.cs" />
     <Compile Include="Entities\Actors\BaseActor.cs" />
     <Compile Include="Entities\Actors\ParticleActor.cs" />
+    <Compile Include="Entities\Actors\ParticleEmmiterActor.cs" />
     <Compile Include="Entities\Cameras\Camera.cs" />
     <Compile Include="Entities\Actors\Character.cs" />
     <Compile Include="Entities\Components\ComponentCollection.cs" />

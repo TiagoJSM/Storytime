@@ -4,17 +4,19 @@ using System.Linq;
 using System.Text;
 using ParticleEngine;
 using StoryTimeCore.Input.Time;
+using StoryTimeFramework.Entities.Actors;
 
 namespace StoryTimeFramework.Entities.Components
 {
     public class ParticleEmitterComponent : Component
     {
         public ParticleEmitter ParticleEmitter { get; private set; }
+        public string ParticleTexture { get; set; }
 
         public ParticleEmitterComponent()
         {
             OnCreated += OnCreatedHandler;
-            
+            ParticleTexture = "Particle.png";
         }
 
         public override void TimeElapse(WorldTime WTime)
@@ -26,6 +28,16 @@ namespace StoryTimeFramework.Entities.Components
         private void OnCreatedHandler()
         {
             ParticleEmitter = new ParticleEmitter(Scene.PhysicalWorld);
+            ParticleEmitter.OnParticleSpawned += OnParticleSpawnedHandler;
+        }
+
+        private void OnParticleSpawnedHandler(Particle particle)
+        {
+            Scene.AddWorldEntity<ParticleActor>(pa =>
+            {
+                pa.Particle = particle;
+                pa.ParticleTexture = ParticleTexture;
+            });
         }
     }
 }

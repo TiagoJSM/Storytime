@@ -133,9 +133,12 @@ namespace StoryTimeFramework.WorldManagement
             }
         }
 
-        public TEntity AddWorldEntity<TEntity>(Action<WorldEntity> initializer = null) where TEntity : WorldEntity
+        public TEntity AddWorldEntity<TEntity>(Action<TEntity> initializer = null) where TEntity : WorldEntity
         {
-            return AddWorldEntity(typeof(TEntity), initializer) as TEntity;
+            var entity =  AddWorldEntity(typeof(TEntity), null) as TEntity;
+            if (initializer != null)
+                initializer(entity);
+            return entity;
         }
 
         public WorldEntity AddWorldEntity(Type entityType, Action<WorldEntity> initializer = null)
@@ -155,7 +158,7 @@ namespace StoryTimeFramework.WorldManagement
             return entity;
         }
 
-        public void RemoveActor(WorldEntity entity)
+        public void RemoveWorldEntity(WorldEntity entity)
         {
             if (!_worldEntities.Contains(entity)) return;
 

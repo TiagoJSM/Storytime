@@ -143,6 +143,7 @@ namespace StoryTime
             if (OnUpdate != null)
             {
                 var wt = new WorldTime(gameTime.TotalGameTime, gameTime.ElapsedGameTime);
+                GameWorld.Update(wt);
                 OnUpdate(wt);
             }
         }

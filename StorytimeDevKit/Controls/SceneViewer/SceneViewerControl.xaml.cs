@@ -72,6 +72,7 @@ namespace StoryTimeDevKit.Controls.SceneViewer
                 return;
 
             _game = new MyGame(xna.Handle);
+            _game.GameWorld.UpdateWorld = false;
             _context = _game.GraphicsContext;
 
             var gameWorldArg = 

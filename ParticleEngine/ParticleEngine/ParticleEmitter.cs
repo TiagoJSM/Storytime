@@ -14,7 +14,9 @@ namespace ParticleEngine
     {
         private double _totalElapsedSinceLastParticleInMillis;
         private double _emissionRateInMilliseconds;
-        private List<Particle> _spawnedParticles; 
+        private List<Particle> _spawnedParticles;
+
+        public event Action<Particle> OnParticleSpawned;
 
         public string ParticlePath { get; set; }
         public double EmissionRateInMilliseconds
@@ -72,13 +74,7 @@ namespace ParticleEngine
                     continue;
 
                 var particle = SpawnParticle();
-                OnParticleSpawned(particle);
             }
-        }
-
-        protected virtual void OnParticleSpawned(Particle particle)
-        {
-
         }
 
         private void UpdateParticles(TimeSpan elapsedSinceLastUpdate)
@@ -107,6 +103,8 @@ namespace ParticleEngine
                 TimeToLive = ParticlesTimeToLive
             };
             _spawnedParticles.Add(particle);
+            if (OnParticleSpawned != null)
+                OnParticleSpawned(particle);
             return particle;
         }
 

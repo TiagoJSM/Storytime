@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using StoryTimeCore.Input.Time;
 using StoryTimeFramework.WorldManagement;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeCore.Exceptions;
@@ -33,12 +34,14 @@ namespace StoryTimeFramework.WorldManagement
             } 
         }
         public IGraphicsContext GraphicsContext { get { return _graphicsContext; } }
+        public bool UpdateWorld { get; set; }
 
         public GameWorld(IGraphicsContext graphicsContext) 
         {
             _scenes = new List<Scene>();
             _activeSceneIndex = NO_ACTIVE_SCENE;
             _graphicsContext = graphicsContext;
+            UpdateWorld = true;
         }
 
         public Scene GetSceneAt(int index) { return _scenes[index]; }
@@ -54,6 +57,13 @@ namespace StoryTimeFramework.WorldManagement
             if(_activeSceneIndex != NO_ACTIVE_SCENE)
                 _scenes[_activeSceneIndex].Render(_graphicsContext);
             //TODO: should reset renderer here!
+        }
+
+        public void Update(WorldTime WTime)
+        {
+            if (!UpdateWorld) return;
+            if (ActiveScene == null) return;
+            ActiveScene.Update(WTime);
         }
 
         public void SetActiveScene(int index)

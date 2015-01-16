@@ -33,7 +33,7 @@ namespace StoryTimeDevKit.Commands.ReversibleCommands
 
         public void Rollback()
         {
-            _scene.RemoveActor(_actor);
+            _scene.RemoveWorldEntity(_actor);
         }
     }
 }
