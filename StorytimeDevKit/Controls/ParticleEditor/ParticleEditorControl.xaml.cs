@@ -54,8 +54,8 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
 
             _particleController =
                 DependencyInjectorHelper
-                            .ParticleEditorKernel
-                            .Get<IParticleEditorController>(controlArg);
+                    .ParticleEditorKernel
+                    .Get<IParticleEditorController>(controlArg);
 
             _particleController.ParticleEditorControl = this;
 

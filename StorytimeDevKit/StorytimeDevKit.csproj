@@ -135,6 +135,9 @@
     <Compile Include="Controllers\TemplateControllers\EditableSceneController.cs" />
     <Compile Include="Controllers\TemplateControllers\MultiStackedCommandsController.cs" />
     <Compile Include="Controllers\TemplateControllers\StackedCommandsController.cs" />
+    <Compile Include="Controls\Dialogs\ParticleEditorDialog.xaml.cs">
+      <DependentUpon>ParticleEditorDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Editors\IParticleEmissorPropertyEditor.cs" />
     <Compile Include="Controls\Editors\ParticleEmissorPropertyEditor.xaml.cs">
       <DependentUpon>ParticleEmissorPropertyEditor.xaml</DependentUpon>
@@ -324,6 +327,10 @@
     <Compile Include="Utils\ApplicationUtils.cs" />
     <Compile Include="Utils\DependencyInjectorHelper.cs" />
     <Compile Include="Utils\XMLSerializerUtils.cs" />
+    <Page Include="Controls\Dialogs\ParticleEditorDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Editors\ParticleEmissorPropertyEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -595,6 +602,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\MainWindow\ToolBar\freeMovementIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MainWindow\ToolBar\atoms.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

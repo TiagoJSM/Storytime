@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using StoryTimeCore.CustomAttributes.Editor;
 using StoryTimeCore.Input.Time;
 using StoryTimeCore.Physics;
 
@@ -19,6 +20,7 @@ namespace ParticleEngine
         public event Action<Particle> OnParticleSpawned;
 
         public string ParticlePath { get; set; }
+        [Editable(EditorName = "Emission rate in milliseconds")]
         public double EmissionRateInMilliseconds
         {
             get { return _emissionRateInMilliseconds; }

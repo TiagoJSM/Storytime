@@ -34,6 +34,7 @@ namespace StoryTimeDevKit
     {
         private ImageViewerDialog _imageViewer;
         private PuppeteerEditorDialog _puppeteerWindow;
+        private ParticleEditorDialog _particleEditorWindow;
         private WidgetMode _mode;
         //private ActorWidgetAdapterViewModel _widgetModeViewModel;
 
@@ -42,6 +43,7 @@ namespace StoryTimeDevKit
 
         public RelayCommand OpenImageViewer { get; private set; }
         public RelayCommand Puppeteer { get; private set; }
+        public RelayCommand ParticleEditor { get; private set; }
 
         public RelayCommand Undo { get; private set; }
         public RelayCommand Redo { get; private set; }
@@ -99,6 +101,20 @@ namespace StoryTimeDevKit
                 }
             );
 
+            ParticleEditor = new RelayCommand(
+                (o) =>
+                {
+                    _particleEditorWindow = new ParticleEditorDialog();
+                    _particleEditorWindow.Owner = this;
+                    _particleEditorWindow.Closed += ParticleEditor_Closed;
+                    _particleEditorWindow.Show();
+                },
+                (o) =>
+                {
+                    return _particleEditorWindow == null;
+                }
+            );
+
             /*TransformMode = new RelayCommand(
                 (o) =>
                 {
@@ -151,6 +167,11 @@ namespace StoryTimeDevKit
         private void PuppeteerDialog_Closed(object sender, EventArgs e)
         {
             _puppeteerWindow = null;
+        }
+
+        private void ParticleEditor_Closed(object sender, EventArgs e)
+        {
+ 	        _particleEditorWindow = null;
         }
 
         private void SceneViewControl_OnSelectedActorChange(BaseActor actor)

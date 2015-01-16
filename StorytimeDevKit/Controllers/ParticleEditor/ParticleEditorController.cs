@@ -16,9 +16,13 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
     {
         private IParticleEmissorPropertyEditor _particleEmissorPropertyEditor;
         private IParticleEditorControl _particleEditorControl;
-        private ParticleEmitter _emitter;
         private GameWorld _gameWorld;
         private ParticleEmmiterActor _particleEmmiterActor;
+
+        private ParticleEmitter ParticleEmmiter
+        {
+            get { return _particleEmmiterActor.ParticleEmitterComponent.ParticleEmitter; }
+        }
 
         public IParticleEmissorPropertyEditor ParticleEmissorPropertyEditor
         {
@@ -29,10 +33,10 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
                 if (_particleEmissorPropertyEditor != null)
                     UnassignParticleEmissorPropertyEditorEventHandlers();
                 _particleEmissorPropertyEditor = value;
+                _particleEmissorPropertyEditor.Selected = ParticleEmmiter;
                 if (_particleEmissorPropertyEditor != null)
                 {
                     AssignParticleEmissorPropertyEditorEventHandlers();
-                    //_particleEmissorPropertyEditor.Selected = _emitter;
                 } 
             }
         }
