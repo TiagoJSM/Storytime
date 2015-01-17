@@ -14,14 +14,14 @@ using Puppeteer.Animation;
 
 namespace StoryTimeDevKit.DataStructures
 {
-    public class AnimationTimeLineMapper
+    public class AnimationTimeLineDataSource
     {
         private Dictionary<BoneActor, BoneState> _boneInitialStateMapper;
         private Dictionary<BoneActor, ObservableCollection<TimeFrame>> _timeFramesMapper;
 
         public SkeletonAnimation Animation { get; private set; }
 
-        public AnimationTimeLineMapper(Skeleton skeleton)
+        public AnimationTimeLineDataSource(Skeleton skeleton)
         {
             _timeFramesMapper = new Dictionary<BoneActor, ObservableCollection<TimeFrame>>();
             _boneInitialStateMapper = new Dictionary<BoneActor, BoneState>();

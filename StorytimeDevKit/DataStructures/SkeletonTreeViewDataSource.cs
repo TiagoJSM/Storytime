@@ -10,7 +10,7 @@ using StoryTimeCore.Extensions;
 
 namespace StoryTimeDevKit.DataStructures
 {
-    public class SkeletonTreeViewMapper
+    public class SkeletonTreeViewDataSource
     {
         private const string DefaultName = "Bone";
 
@@ -21,7 +21,7 @@ namespace StoryTimeDevKit.DataStructures
 
         public SkeletonViewModel SkeletonViewModel { get { return _skeletonVM; } }
 
-        public SkeletonTreeViewMapper(INodeAddedCallback callback, ICommand attachToBoneCommand)
+        public SkeletonTreeViewDataSource(INodeAddedCallback callback, ICommand attachToBoneCommand)
         {
             _actorDictionary = new Dictionary<BoneActor, BoneViewModel>();
             _callback = callback;
@@ -37,7 +37,8 @@ namespace StoryTimeDevKit.DataStructures
                 parentVM = _actorDictionary[actor.Parent];
             }
 
-            var boneVM = new BoneViewModel(parentVM, _callback, _attachToBoneCommand, GenerateName());
+            actor.AssignedBone.Name = GenerateName();
+            var boneVM = new BoneViewModel(parentVM, _callback, _attachToBoneCommand, actor);
             boneVM.BoneActor = actor;
             _actorDictionary.Add(actor, boneVM);
             if(parentVM != null)

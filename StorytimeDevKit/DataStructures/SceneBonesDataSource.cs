@@ -9,12 +9,12 @@ using StoryTimeCore.Extensions;
 
 namespace StoryTimeDevKit.DataStructures
 {
-    public class SceneBonesMapper
+    public class SceneBonesDataSource
     {
         private Dictionary<Bone, BoneActor> _boneDictionary;
         private Skeleton _skeleton;
 
-        public SceneBonesMapper(Skeleton skeleton)
+        public SceneBonesDataSource(Skeleton skeleton)
         {
             _boneDictionary = new Dictionary<Bone, BoneActor>();
             _skeleton = skeleton;

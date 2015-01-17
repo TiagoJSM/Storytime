@@ -35,7 +35,7 @@
             <ColumnDefinition Width="157*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="60" />
             <RowDefinition Height="344*" />
             <RowDefinition Height="130*" />
         </Grid.RowDefinitions>
@@ -51,8 +51,18 @@
                   Grid.ColumnSpan="2"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="top"/>
+        <Menu Height="24" HorizontalAlignment="Left" Name="menu1" VerticalAlignment="Top" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Grid.ColumnSpan="3" BorderThickness="0.5" BorderBrush="Black">
+            <MenuItem Header="File">
+                <MenuItem 
+                    Header="Save" 
+                    Command="{Binding RelativeSource={  
+                                    RelativeSource FindAncestor, 
+					                AncestorType={x:Type UserControl}}, 
+					            Path=SaveSkeletonCommand}"/>
+            </MenuItem>
+        </Menu>
         <my:XnaControl Grid.Row="1" Grid.Column="0" x:Name="PuppeteerEditor" Margin="0,0,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AllowDrop="True"/>
-        <ToolBar HorizontalAlignment="Left" Name="toolBar1" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Height="Auto">
+        <ToolBar HorizontalAlignment="Left" Name="toolBar1" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Height="Auto" Margin="0,24,0,0">
             <RadioButton 
                 Name="SelectBoneMode"
                 GroupName="WorkingModes"

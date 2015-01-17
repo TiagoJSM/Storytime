@@ -18,8 +18,8 @@ namespace StoryTimeDevKit.DataStructures.Factories
 
     public class PuppeteerSceneObjectFactory : TypeConfigurableSceneObjectFactory
     {
-        private SceneBonesMapper _boneMapper;
-        private AnimationTimeLineMapper _animationMapper;
+        private SceneBonesDataSource _boneMapper;
+        private AnimationTimeLineDataSource _animationMapper;
 
         private IPuppeteerSceneOjectActionContext _context;
 

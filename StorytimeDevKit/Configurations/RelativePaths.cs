@@ -10,5 +10,6 @@ namespace StoryTimeDevKit.Configurations
         public static string Textures { get { return "Content/Textures"; } }
         public static string Scenes { get { return "Content/Scenes"; } }
         public static string Assemblies { get { return "Content/Assemblies"; } }
+        public static string BoneAnimation { get { return "Content/BoneAnimation"; } }
     }
 }

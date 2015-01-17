@@ -17,6 +17,7 @@ namespace StoryTimeDevKit.Utils
             Directory.CreateDirectory(RelativePaths.Assemblies);
             Directory.CreateDirectory(RelativePaths.Scenes);
             Directory.CreateDirectory(RelativePaths.Textures);
+            Directory.CreateDirectory(RelativePaths.BoneAnimation);
         }
 
         public static void SaveScene(SavedSceneModel scene)

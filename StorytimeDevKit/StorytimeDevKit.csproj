@@ -116,6 +116,7 @@
     <Compile Include="Commands\ReversibleCommands\SelectActorCommand.cs" />
     <Compile Include="Commands\UICommands\BaseCommand.cs" />
     <Compile Include="Commands\UICommands\Puppeteer\AttachToBoneCommand.cs" />
+    <Compile Include="Commands\UICommands\Puppeteer\SaveSkeletonCommand.cs" />
     <Compile Include="Configurations\ApplicationProperties.cs" />
     <Compile Include="Controllers\IMultiStackedCommandsController.cs" />
     <Compile Include="Controllers\IStackedCommandsController.cs" />
@@ -132,6 +133,9 @@
     <Compile Include="Controllers\TemplateControllers\EditableSceneController.cs" />
     <Compile Include="Controllers\TemplateControllers\MultiStackedCommandsController.cs" />
     <Compile Include="Controllers\TemplateControllers\StackedCommandsController.cs" />
+    <Compile Include="Controls\Dialogs\CreateSkeletonDialog.xaml.cs">
+      <DependentUpon>CreateSkeletonDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\IMouseInteractiveControl.cs" />
     <Compile Include="Controls\IMouseInteractivePanel.cs" />
     <Compile Include="Controls\INodeAddedCallback.cs" />
@@ -152,13 +156,19 @@
     </Compile>
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToEnumValueConverter.cs" />
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToPuppeteerWorkingModeTypeValueConverter.cs" />
-    <Compile Include="DataStructures\AnimationTimeLineMapper.cs" />
+    <Compile Include="DataStructures\AnimationTimeLineDataSource.cs" />
     <Compile Include="DataStructures\BindingEngines\FreeMovementSceneObjectBindingEngine.cs" />
     <Compile Include="DataStructures\BindingEngines\RotateSceneObjectBindingEngine.cs" />
     <Compile Include="DataStructures\BindingEngines\TranslateSceneObjectBindingEngine.cs" />
     <Compile Include="DataStructures\Factories\ISceneObjectFactory.cs" />
     <Compile Include="DataStructures\Factories\PuppeteerSceneObjectFactory.cs" />
     <Compile Include="DataStructures\Factories\TypeConfigurableSceneObjectFactory.cs" />
+    <Compile Include="Extensions\SkeletonExtensions.cs" />
+    <Compile Include="Models\Puppeteer\SaveSkeletonDialogModel.cs" />
+    <Compile Include="Models\SavedData\Bones\SavedSkeletonFile.cs" />
+    <Compile Include="Models\SavedData\Common\SavedVector2.cs" />
+    <Compile Include="Models\SavedData\Bones\SavedBone.cs" />
+    <Compile Include="Models\SavedData\Bones\SavedSkeleton.cs" />
     <Compile Include="Entities\Actors\ArmatureActor.cs" />
     <Compile Include="Entities\Renderables\FreeMovementRenderableAsset.cs" />
     <Compile Include="Entities\Renderables\Puppeteer\EditorBoneAttachedRenderableAsset.cs" />
@@ -189,9 +199,9 @@
     </Compile>
     <Compile Include="Controls\Templates\BaseSceneUserControl.cs" />
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToWidgetModeValueConverter.cs" />
-    <Compile Include="DataStructures\SceneBonesMapper.cs" />
+    <Compile Include="DataStructures\SceneBonesDataSource.cs" />
     <Compile Include="DataStructures\SceneControlData.cs" />
-    <Compile Include="DataStructures\SkeletonTreeViewMapper.cs" />
+    <Compile Include="DataStructures\SkeletonTreeViewDataSource.cs" />
     <Compile Include="Delegates\SceneViewerDelegates.cs" />
     <Compile Include="Delegates\TransformDelegates.cs" />
     <Compile Include="Entities\Actors\BoneActor.cs" />
@@ -315,7 +325,12 @@
     <Compile Include="Texts\ActorPropertyEditorDefaultValues.cs" />
     <Compile Include="Utils\ApplicationUtils.cs" />
     <Compile Include="Utils\DependencyInjectorHelper.cs" />
+    <Compile Include="Utils\PuppeteerUtils.cs" />
     <Compile Include="Utils\XMLSerializerUtils.cs" />
+    <Page Include="Controls\Dialogs\CreateSkeletonDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ParticleEditor\ParticleEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -26,6 +26,8 @@ using StoryTimeDevKit.Controls.Templates;
 using StoryTimeFramework.WorldManagement;
 using StoryTimeDevKit.Models.Puppeteer;
 using StoryTimeDevKit.Enums;
+using StoryTimeDevKit.Commands.UICommands;
+using StoryTimeDevKit.Commands.UICommands.Puppeteer;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
@@ -35,7 +37,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
     public partial class PuppeteerEditorControl : BaseSceneUserControl, IPuppeteerEditorControl
     {
         private MyGame _game;
-        private IPuppeteerController _puppeteerController;
+        
         private TransformModeViewModel _transformModeModel;
         private PuppeteerWorkingModesModel _workingModesModel;
 
@@ -44,12 +46,19 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         public event Action<PuppeteerWorkingModeType> OnWorkingModeChanges;
         public event OnAssetListItemViewModelDrop OnAssetListItemViewModelDrop;
 
+        public IPuppeteerController PuppeteerController { get; private set; }
+        public ICommand SaveSkeletonCommand { get; private set; }
+
         public PuppeteerEditorControl()
         {
             InitializeComponent();
             AssignPanelEventHandling(PuppeteerEditor);
             PuppeteerEditor.OnDropData += OnDropDataHandler;
             Loaded += LoadedHandler;
+            
+            #region Commands
+            SaveSkeletonCommand = new SaveSkeletonCommand(this, Window.GetWindow(this));
+            #endregion
         }
 
         protected override Scene GetScene()
@@ -69,13 +78,13 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                     ApplicationProperties.IPuppeteerControllerGameWorldArgName,
                     _game.GameWorld);
 
-            _puppeteerController =
+            PuppeteerController =
                 DependencyInjectorHelper
                             .PuppeteerKernel
                             .Get<IPuppeteerController>(controlArg);
             //_puppeteerController.GameWorld = _game.GameWorld;
 
-            _puppeteerController.PuppeteerControl = this;
+            PuppeteerController.PuppeteerControl = this;
 
             if (OnLoaded != null)
                 OnLoaded(this);
@@ -100,6 +109,10 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             SelectBoneMode.DataContext = _workingModesModel;
             SelectAssetMode.DataContext = _workingModesModel;
             AddBoneMode.DataContext = _workingModesModel;
+
+            /*#region Commands
+            SaveSkeletonCommand = new SaveSkeletonCommand(_puppeteerController, Window.GetWindow(this));
+            #endregion*/
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

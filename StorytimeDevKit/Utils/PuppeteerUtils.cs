@@ -1,0 +1,23 @@
+﻿using Puppeteer.Armature;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using StoryTimeDevKit.Extensions;
+using StoryTimeDevKit.Models.SavedData.Bones;
+using StoryTimeDevKit.Configurations;
+
+namespace StoryTimeDevKit.Utils
+{
+    public static class PuppeteerUtils
+    {
+        public static void SaveSkeleton(SavedSkeletonFile skeletonFile)
+        {
+            XMLSerializerUtils
+                .SerializeToXML<SavedSkeleton>(
+                    skeletonFile.SavedSkeleton,
+                    skeletonFile.RelativePath);
+
+        }
+    }
+}
