@@ -15,8 +15,24 @@ namespace ParticleEngine
 
         public IBody Body { get; private set; }
         public Color Color { get; set; }
-        public Vector2 Direction { get; set; }
-        public double Velocity { get; set; }
+
+        public Vector2 Direction
+        {
+            get { return Body.Direction; }
+            set
+            {
+                Body.Direction = value;
+            }
+        }
+
+        public float Velocity
+        {
+            get { return Body.Velocity; }
+            set
+            {
+                Body.Velocity = value;
+            }
+        }
         public Vector2 Size { get; set; }
 
         public Vector2 Position

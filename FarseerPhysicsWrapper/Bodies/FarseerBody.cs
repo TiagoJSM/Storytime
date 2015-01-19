@@ -70,6 +70,15 @@ namespace FarseerPhysicsWrapper.Bodies
         {
             Rotation = _body.Rotation;
             Position = _body.Position;
+            var velocity = _body.LinearVelocity;
+            Direction = velocity;
+            Direction.Normalize();
+            //Velocity = _body.LinearVelocity.Normalize();
         }
+
+
+        public Vector2 Direction { get; set; }
+
+        public float Velocity { get; set; }
     }
 }

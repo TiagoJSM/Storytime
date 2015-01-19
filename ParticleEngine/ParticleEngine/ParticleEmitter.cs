@@ -56,7 +56,7 @@ namespace ParticleEngine
             EmissionRateInMilliseconds = 1000;
             Enabled = true;
             EmissionVelocity = 1;
-            EmissionDirection = new Vector2(0, 1);
+            EmissionDirection = new Vector2(1, 1);
             _spawnedParticles = new List<Particle>();
             ParticleBodyFactory = particleBodyFactory;
             ParticleSize = new Vector2(10);
@@ -67,13 +67,13 @@ namespace ParticleEngine
                 new ParticleAnimationFrame()
                 {
                     EndColor = Color.White,
-                    EndDirection = new Vector2(0, 1),
+                    EndDirection = new Vector2(1, 1),
                     EndTime = TimeSpan.FromSeconds(10),
-                    EndVelocity = 10,
+                    EndVelocity = 20,
                     StartColor = Color.White,
-                    StartDirection = new Vector2(0, 1),
+                    StartDirection = new Vector2(1, 1),
                     StartTime = new TimeSpan(),
-                    StartVelocity = 10
+                    StartVelocity = 20
                 }
             };
         }
