@@ -25,6 +25,7 @@ namespace FarseerPhysicsWrapper
         public FarseerPhysicalWorld(Vector2 gravity)
         {
             _world = new World(gravity);
+            _fakePhysicsSimulationBodies = new List<FakePhysicsSimulationBody>();
         }
 
         public IBody CreateRectangularBody(float width, float height, float density, object userData = null)
@@ -35,7 +36,7 @@ namespace FarseerPhysicsWrapper
         public void Update(WorldTime WTime)
         {
             var totalSeconds = (float) WTime.ElapsedSinceLastTime.TotalSeconds;
-            _world.Step(totalSeconds);
+            //_world.Step(totalSeconds);
             foreach (var body in _fakePhysicsSimulationBodies)
             {
                 body.Position = body.Position + (body.Direction*body.Velocity*totalSeconds);

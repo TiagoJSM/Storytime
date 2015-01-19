@@ -33,7 +33,7 @@ namespace StoryTimeFramework.Entities.Actors
 
         private void OnOnCreatedHandler()
         {
-            var bitmap = World.GraphicsContext.LoadTexture2D(ParticleTexture);
+            var bitmap = Scene.GraphicsContext.LoadTexture2D(ParticleTexture);
             var asset = new Static2DRenderableAsset();
             asset.Texture2D = bitmap;
             RenderableAsset = asset;

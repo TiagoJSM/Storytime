@@ -53,12 +53,29 @@ namespace ParticleEngine
 
         public ParticleEmitter(IParticleBodyFactory particleBodyFactory)
         {
-            EmissionRateInMilliseconds = 1;
+            EmissionRateInMilliseconds = 1000;
             Enabled = true;
             EmissionVelocity = 1;
             EmissionDirection = new Vector2(0, 1);
             _spawnedParticles = new List<Particle>();
             ParticleBodyFactory = particleBodyFactory;
+            ParticleSize = new Vector2(10);
+            ParticlesTimeToLive = TimeSpan.FromSeconds(10);
+            AnimationBoard = new ParticleAnimationBoard();
+            AnimationBoard.Frames = new List<ParticleAnimationFrame>()
+            {
+                new ParticleAnimationFrame()
+                {
+                    EndColor = Color.White,
+                    EndDirection = new Vector2(0, 1),
+                    EndTime = TimeSpan.FromSeconds(10),
+                    EndVelocity = 10,
+                    StartColor = Color.White,
+                    StartDirection = new Vector2(0, 1),
+                    StartTime = new TimeSpan(),
+                    StartVelocity = 10
+                }
+            };
         }
 
         public void TimeElapse(TimeSpan elapsedSinceLastUpdate)
@@ -81,7 +98,7 @@ namespace ParticleEngine
 
         private void UpdateParticles(TimeSpan elapsedSinceLastUpdate)
         {
-            foreach (var particle in _spawnedParticles)
+            foreach (var particle in _spawnedParticles.ToList())
             {
                 particle.ElapsedLifeTime = particle.ElapsedLifeTime.Add(elapsedSinceLastUpdate);
                 if (!particle.IsAlive)
@@ -102,7 +119,9 @@ namespace ParticleEngine
             var particle = new Particle(
                 ParticleBodyFactory.CreateParticleBody(ParticlesArePhysicallySimulated, ParticleSize.X, ParticleSize.Y, 0.1f))
             {
-                TimeToLive = ParticlesTimeToLive
+                TimeToLive = ParticlesTimeToLive,
+                Direction = EmissionDirection,
+                Velocity = EmissionVelocity
             };
             _spawnedParticles.Add(particle);
             if (OnParticleSpawned != null)

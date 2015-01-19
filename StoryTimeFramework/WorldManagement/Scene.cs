@@ -127,7 +127,9 @@ namespace StoryTimeFramework.WorldManagement
         public void Update(WorldTime WTime)
         {
             _currentTime = WTime;
-            foreach (var ba in _worldEntities)
+
+            PhysicalWorld.Update(_currentTime);
+            foreach (var ba in _worldEntities.ToArray())
             {
                 ba.TimeElapse(_currentTime);
             }
@@ -135,10 +137,16 @@ namespace StoryTimeFramework.WorldManagement
 
         public TEntity AddWorldEntity<TEntity>(Action<TEntity> initializer = null) where TEntity : WorldEntity
         {
-            var entity =  AddWorldEntity(typeof(TEntity), null) as TEntity;
-            if (initializer != null)
-                initializer(entity);
-            return entity;
+            Action<WorldEntity> initializerAdapter =
+                (ent) =>
+                {
+                    if (initializer != null)
+                    {
+                        initializer(ent as TEntity);
+                    }
+                };
+
+            return AddWorldEntity(typeof(TEntity), initializerAdapter) as TEntity;
         }
 
         public WorldEntity AddWorldEntity(Type entityType, Action<WorldEntity> initializer = null)
