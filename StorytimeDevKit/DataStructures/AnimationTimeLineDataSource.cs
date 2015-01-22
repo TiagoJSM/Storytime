@@ -81,6 +81,11 @@ namespace StoryTimeDevKit.DataStructures
             return items.FirstOrDefault(i => i.IsIntervalIntesected(convertedSeconds, true)) as BoneAnimationTimeFrameModel;
         }
 
+        public bool HasAnimations()
+        {
+            return _timeFramesMapper.Any(tf => tf.Value.Any());
+        }
+
         private BoneAnimationTimeFrameModel GetLastTimeFrame(ObservableCollection<TimeFrame> items)
         {
             if (!items.Any()) return null;

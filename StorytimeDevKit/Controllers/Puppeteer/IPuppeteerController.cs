@@ -14,8 +14,10 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
     {
         IPuppeteerEditorControl PuppeteerControl { get; set; }
         GameWorld GameWorld { get; }
-        SaveSkeletonDialogModel SavedSkeletonModel { get; }
+        SavePuppeteerItemDialogModel SavedPuppeteerItemModel { get; }
         Skeleton Skeleton { get; }
+        bool HasAnimations { get; }
         void SaveSkeleton();
+        void SaveAnimatedSkeleton();
     }
 }

@@ -48,6 +48,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
         public IPuppeteerController PuppeteerController { get; private set; }
         public ICommand SaveSkeletonCommand { get; private set; }
+        public ICommand SaveAnimatedSkeletonCommand { get; set; }
 
         public PuppeteerEditorControl()
         {
@@ -58,6 +59,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             
             #region Commands
             SaveSkeletonCommand = new SaveSkeletonCommand(this, Window.GetWindow(this));
+            SaveAnimatedSkeletonCommand = new SaveAnimatedSkeletonCommand(this, Window.GetWindow(this));
             #endregion
         }
 
@@ -109,10 +111,6 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             SelectBoneMode.DataContext = _workingModesModel;
             SelectAssetMode.DataContext = _workingModesModel;
             AddBoneMode.DataContext = _workingModesModel;
-
-            /*#region Commands
-            SaveSkeletonCommand = new SaveSkeletonCommand(_puppeteerController, Window.GetWindow(this));
-            #endregion*/
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

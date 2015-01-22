@@ -1,5 +1,4 @@
-﻿using StoryTimeDevKit.Controllers.Puppeteer;
-using StoryTimeDevKit.Controls.Dialogs;
+﻿using StoryTimeDevKit.Controls.Dialogs;
 using StoryTimeDevKit.Controls.Puppeteer;
 using System;
 using System.Collections.Generic;
@@ -9,12 +8,12 @@ using System.Windows;
 
 namespace StoryTimeDevKit.Commands.UICommands.Puppeteer
 {
-    public class SaveSkeletonCommand : BaseCommand
+    public class SaveAnimatedSkeletonCommand : BaseCommand
     {
         private IPuppeteerEditorControl _control;
         private Window _window;
 
-        public SaveSkeletonCommand(IPuppeteerEditorControl control, Window window)
+        public SaveAnimatedSkeletonCommand(IPuppeteerEditorControl control, Window window)
         {
             _control = control;
             _window = window;
@@ -22,7 +21,9 @@ namespace StoryTimeDevKit.Commands.UICommands.Puppeteer
 
         public override bool CanExecute(object parameter)
         {
-            return _control.PuppeteerController.Skeleton.RootBones.Any();
+            var hasBones = _control.PuppeteerController.Skeleton.RootBones.Any();
+            if (!hasBones) return false;
+            return _control.PuppeteerController.HasAnimations;
         }
 
         public override void Execute(object parameter)
@@ -37,7 +38,7 @@ namespace StoryTimeDevKit.Commands.UICommands.Puppeteer
 
             if (accepted == true)
             {
-                _control.PuppeteerController.SaveSkeleton();
+                _control.PuppeteerController.SaveAnimatedSkeleton();
             }
         }
     }

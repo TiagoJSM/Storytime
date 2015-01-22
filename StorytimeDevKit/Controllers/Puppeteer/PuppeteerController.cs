@@ -100,6 +100,10 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             }
         }
         public Skeleton Skeleton { get; private set; }
+        public bool HasAnimations
+        {
+            get { return _animationTimeLineData.HasAnimations(); }
+        }
 
         public ISkeletonTreeViewControl SkeletonTreeViewControl
         {
@@ -119,7 +123,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         }
         public SkeletonViewModel SkeletonViewModel { get { return _skeletonTreeViewData.SkeletonViewModel; } }
 
-        public SaveSkeletonDialogModel SavedSkeletonModel { get; private set; }
+        public SavePuppeteerItemDialogModel SavedPuppeteerItemModel { get; private set; }
 
         public IAnimationTimeLineControl TimeLineControl
         {
@@ -168,7 +172,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                 };
 
             Skeleton = new Skeleton();
-            SavedSkeletonModel = new SaveSkeletonDialogModel();
+            SavedPuppeteerItemModel = new SavePuppeteerItemDialogModel();
             _factory = new PuppeteerSceneObjectFactory(this);
             _armatureActor = Scene.AddWorldEntity<ArmatureActor>();
             _sceneBoneData = new SceneBonesDataSource(Skeleton);
@@ -232,7 +236,20 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                 new SavedSkeletonFile()
                 {
                     SavedSkeleton = Skeleton.ToSavedSkeleton(),
-                    FileNameWithoutExtension = SavedSkeletonModel.FileNameWithoutExtension
+                    FileNameWithoutExtension = SavedPuppeteerItemModel.FileNameWithoutExtension
+                });
+        }
+
+        public void SaveAnimatedSkeleton()
+        {
+            PuppeteerUtils.SaveAnimatedSkeleton(
+                new SavedAnimatedSkeletonFile()
+                {
+                    SavedAnimatedSkeleton = new SavedAnimatedSkeleton()
+                    {
+                        SavedSkeleton = Skeleton.ToSavedSkeleton(),
+                    },
+                    FileNameWithoutExtension = SavedPuppeteerItemModel.FileNameWithoutExtension
                 });
         }
 

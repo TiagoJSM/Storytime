@@ -19,16 +19,16 @@ namespace StoryTimeDevKit.Controls.Dialogs
     /// <summary>
     /// Interaction logic for CreateSkeletonDialog.xaml
     /// </summary>
-    public partial class CreateSkeletonDialog : Window
+    public partial class CreatePuppeteerItemDialog : Window
     {
-        public SaveSkeletonDialogModel Model { get; set; }
+        public SavePuppeteerItemDialogModel Model { get; set; }
 
-        public CreateSkeletonDialog()
-            : this(new SaveSkeletonDialogModel())
+        public CreatePuppeteerItemDialog()
+            : this(new SavePuppeteerItemDialogModel())
         {
         }
 
-        public CreateSkeletonDialog(SaveSkeletonDialogModel model)
+        public CreatePuppeteerItemDialog(SavePuppeteerItemDialogModel model)
         {
             Model = model;
             DataContext = Model;

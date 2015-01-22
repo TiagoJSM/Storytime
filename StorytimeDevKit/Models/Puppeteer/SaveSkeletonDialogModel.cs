@@ -5,7 +5,7 @@ using System.Text;
 
 namespace StoryTimeDevKit.Models.Puppeteer
 {
-    public class SaveSkeletonDialogModel
+    public class SavePuppeteerItemDialogModel
     {
         public string FileNameWithoutExtension { get; set; }
     }

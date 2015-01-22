@@ -19,5 +19,14 @@ namespace StoryTimeDevKit.Utils
                     skeletonFile.RelativePath);
 
         }
+
+        public static void SaveAnimatedSkeleton(SavedAnimatedSkeletonFile skeletonFile)
+        {
+            XMLSerializerUtils
+                .SerializeToXML<SavedAnimatedSkeleton>(
+                    skeletonFile.SavedAnimatedSkeleton,
+                    skeletonFile.RelativePath);
+
+        }
     }
 }
