@@ -16,7 +16,7 @@ namespace StoryTimeFramework.Entities.Components
         public ParticleEmitterComponent()
         {
             OnCreated += OnCreatedHandler;
-            ParticleTexture = "default";
+            ParticleTexture = "Particle";
         }
 
         public override void TimeElapse(WorldTime WTime)

@@ -45,6 +45,13 @@
     <Compile Include="ParticleAnimationBoard.cs" />
     <Compile Include="ParticleAnimationFrame.cs" />
     <Compile Include="ParticleEmitter.cs" />
+    <Compile Include="ParticleProcessors\ColorParticleProcessor.cs" />
+    <Compile Include="ParticleProcessors\DirectionParticleProcessor.cs" />
+    <Compile Include="ParticleProcessors\IParticleProcessor.cs" />
+    <Compile Include="ParticleProcessors\ParticleSpawnProcessors\ParticleSpawnProcessor.cs" />
+    <Compile Include="ParticleProcessors\ParticleSpawnProcessors\TemplateParticleSpawnProcessor.cs" />
+    <Compile Include="ParticleProcessors\TemplateParticleProcessor.cs" />
+    <Compile Include="ParticleProcessors\VelocityParticleProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

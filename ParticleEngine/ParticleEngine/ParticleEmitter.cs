@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using ParticleEngine.ParticleProcessors;
+using ParticleEngine.ParticleProcessors.ParticleSpawnProcessors;
 using StoryTimeCore.CustomAttributes.Editor;
 using StoryTimeCore.Input.Time;
 using StoryTimeCore.Physics;
@@ -46,10 +48,15 @@ namespace ParticleEngine
         public Vector2 ParticleSpawnOffsetSize { get; set; }
 
         public ParticleAnimationBoard AnimationBoard { get; set; }
-
         public IParticleBodyFactory ParticleBodyFactory { get; private set; }
-
         public bool ParticlesArePhysicallySimulated { get; set; }
+        public int SpawnedParticlesCount
+        {
+            get { return _spawnedParticles.Count; }
+        }
+
+        public ParticleSpawnProcessor SpawnProcessor { get; private set; }
+        public List<IParticleProcessor> ParticleProcessors { get; set; } 
 
         public ParticleEmitter(IParticleBodyFactory particleBodyFactory)
         {
@@ -96,6 +103,31 @@ namespace ParticleEngine
             }
         }
 
+        public Particle SpawnParticle()
+        {
+            var particle = new Particle(
+                ParticleBodyFactory.CreateParticleBody(ParticlesArePhysicallySimulated, ParticleSize.X, ParticleSize.Y, 0.1f))
+            {
+                TimeToLive = ParticlesTimeToLive,
+                Direction = EmissionDirection,
+                Velocity = EmissionVelocity
+            };
+            _spawnedParticles.Add(particle);
+            if (OnParticleSpawned != null)
+                OnParticleSpawned(particle);
+            return particle;
+        }
+
+        public void SetParticleSpawnProcessor<TSpawnProcessor>() where TSpawnProcessor : ParticleSpawnProcessor
+        {
+            SetParticleSpawnProcessor(typeof (TSpawnProcessor));
+        }
+
+        public void SetParticleSpawnProcessor(Type spawnProcessorType)
+        {
+            Activator.CreateInstance(spawnProcessorType, new[] {this});
+        }
+
         private void UpdateParticles(TimeSpan elapsedSinceLastUpdate)
         {
             foreach (var particle in _spawnedParticles.ToList())
@@ -112,21 +144,6 @@ namespace ParticleEngine
                 particle.Velocity  = frame.GetVelocityAt(particle.ElapsedLifeTime);
                 particle.Direction = frame.GetDirectionAt(particle.ElapsedLifeTime);
             }
-        }
-
-        private Particle SpawnParticle()
-        {
-            var particle = new Particle(
-                ParticleBodyFactory.CreateParticleBody(ParticlesArePhysicallySimulated, ParticleSize.X, ParticleSize.Y, 0.1f))
-            {
-                TimeToLive = ParticlesTimeToLive,
-                Direction = EmissionDirection,
-                Velocity = EmissionVelocity
-            };
-            _spawnedParticles.Add(particle);
-            if (OnParticleSpawned != null)
-                OnParticleSpawned(particle);
-            return particle;
         }
 
         private void OnDestroyHandler()
