@@ -181,6 +181,11 @@ namespace StoryTimeFramework.WorldManagement
             return EntitiesInOrder(filteredEntities);
         }
 
+        public IEnumerable<TEntity> GetAll<TEntity>() where TEntity : WorldEntity
+        {
+            return new List<TEntity>(WorldEntities.OfType<TEntity>());
+        }
+
         private List<WorldEntity> EntitiesInOrder(IEnumerable<WorldEntity> entities)
         {
             var orderedEntities = new List<OrderedWorldEntity>();

@@ -41,7 +41,6 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         
         private TransformModeViewModel _transformModeModel;
         private PuppeteerWorkingModesModel _workingModesModel;
-        private SavedPuppeteerLoadFactory _loadSaveFilesfatory;
 
         public event Action<IPuppeteerEditorControl> OnLoaded;
         public event Action<IPuppeteerEditorControl> OnUnloaded;
@@ -58,7 +57,6 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             InitializeComponent();
             AssignPanelEventHandling(PuppeteerEditor);
             PuppeteerEditor.OnDropData += OnDropDataHandler;
-            _loadSaveFilesfatory = new SavedPuppeteerLoadFactory();
             Loaded += LoadedHandler;
             
             #region Commands

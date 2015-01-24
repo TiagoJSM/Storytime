@@ -57,6 +57,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
             Controls = new ObservableCollection<TimeLineTuple>();
             Controls.CollectionChanged += ControlsCollectionChangeHandler;
+
             _timeMarkerTimer = new DispatcherTimer();
             _timeMarkerTimer.Interval = TimeSpan.FromSeconds(1.0/30.0);
             _timeMarkerTimer.Tick += timeMarkerTimer_TickHandler;
@@ -99,6 +100,11 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         public void ResetAnimation()
         {
             _timeMarkerModel.Seconds = 0;
+        }
+
+        public void Clear()
+        {
+            Controls.Clear();
         }
 
         private void LoadedHandler(object sender, RoutedEventArgs e)

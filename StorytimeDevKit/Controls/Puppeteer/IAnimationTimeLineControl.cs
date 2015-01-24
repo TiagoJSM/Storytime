@@ -10,7 +10,7 @@ using TimeLineTool;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
-    public interface IAnimationTimeLineControl
+    public interface IAnimationTimeLineControl : IControl
     {
         event Action<double> OnTimeMarkerChange;
 

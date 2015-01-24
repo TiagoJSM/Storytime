@@ -141,6 +141,7 @@
     <Compile Include="Controls\Dialogs\LoadSavedPuppeteerItemsDialog.xaml.cs">
       <DependentUpon>LoadSavedPuppeteerItemsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\IControl.cs" />
     <Compile Include="Controls\IMouseInteractiveControl.cs" />
     <Compile Include="Controls\IMouseInteractivePanel.cs" />
     <Compile Include="Controls\INodeAddedCallback.cs" />

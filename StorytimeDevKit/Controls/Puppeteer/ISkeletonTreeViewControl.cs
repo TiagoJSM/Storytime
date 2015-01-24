@@ -5,7 +5,7 @@ using System.Text;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
-    public interface ISkeletonTreeViewControl
+    public interface ISkeletonTreeViewControl : IControl
     {
         event Action<ISkeletonTreeViewControl> OnLoaded;
         event Action<ISkeletonTreeViewControl> OnUnloaded;

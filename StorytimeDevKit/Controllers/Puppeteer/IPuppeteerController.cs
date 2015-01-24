@@ -7,6 +7,7 @@ using StoryTimeFramework.WorldManagement;
 using StoryTimeDevKit.Models.SavedData.Bones;
 using Puppeteer.Armature;
 using StoryTimeDevKit.Models.Puppeteer;
+using System.IO;
 
 namespace StoryTimeDevKit.Controllers.Puppeteer
 {
@@ -19,5 +20,6 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         bool HasAnimations { get; }
         void SaveSkeleton();
         void SaveAnimatedSkeleton();
+        void Load(FileInfo file);
     }
 }

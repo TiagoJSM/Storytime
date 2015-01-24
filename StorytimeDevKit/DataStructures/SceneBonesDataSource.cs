@@ -59,6 +59,11 @@ namespace StoryTimeDevKit.DataStructures
             }
         }
 
+        public void Clear()
+        {
+            _boneDictionary = new Dictionary<Bone, BoneActor>();
+        }
+
         private void OnPositionChangeHandler(BoneActor actor)
         {
             SetBoneData(actor);

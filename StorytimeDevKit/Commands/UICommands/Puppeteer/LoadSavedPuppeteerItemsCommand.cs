@@ -2,6 +2,7 @@
 using StoryTimeDevKit.Controls.Puppeteer;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -27,16 +28,18 @@ namespace StoryTimeDevKit.Commands.UICommands.Puppeteer
         public override void Execute(object parameter)
         {
             bool? accepted = true;
+            FileInfo file = null;
             if (string.IsNullOrWhiteSpace(_control.PuppeteerController.SavedPuppeteerItemModel.FileNameWithoutExtension))
             {
-                var dialog = new LoadSavedPuppeteerItemsDialog(/*_control.PuppeteerController.SavedPuppeteerItemModel*/);
+                var dialog = new LoadSavedPuppeteerItemsDialog();
                 dialog.Owner = _window;
                 accepted = dialog.ShowDialog();
+                file = dialog.FileInfo;
             }
 
             if (accepted == true)
             {
-                //Load the skeleton data
+                _control.PuppeteerController.Load(file);
                 //_control.PuppeteerController.SaveSkeleton();
             }
         }

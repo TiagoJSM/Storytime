@@ -18,11 +18,13 @@ namespace StoryTimeDevKit.DataStructures
     {
         private Dictionary<BoneActor, BoneState> _boneInitialStateMapper;
         private Dictionary<BoneActor, ObservableCollection<TimeFrame>> _timeFramesMapper;
+        private Skeleton _skeleton;
 
         public SkeletonAnimation Animation { get; private set; }
 
         public AnimationTimeLineDataSource(Skeleton skeleton)
         {
+            _skeleton = skeleton;
             _timeFramesMapper = new Dictionary<BoneActor, ObservableCollection<TimeFrame>>();
             _boneInitialStateMapper = new Dictionary<BoneActor, BoneState>();
             Animation = new SkeletonAnimation(skeleton);
@@ -84,6 +86,13 @@ namespace StoryTimeDevKit.DataStructures
         public bool HasAnimations()
         {
             return _timeFramesMapper.Any(tf => tf.Value.Any());
+        }
+
+        public void Clear()
+        {
+            _boneInitialStateMapper = new Dictionary<BoneActor, BoneState>();
+            _timeFramesMapper = new Dictionary<BoneActor, ObservableCollection<TimeFrame>>();
+            Animation = new SkeletonAnimation(_skeleton);
         }
 
         private BoneAnimationTimeFrameModel GetLastTimeFrame(ObservableCollection<TimeFrame> items)

@@ -35,6 +35,7 @@ using StoryTimeDevKit.Enums;
 using StoryTimeDevKit.Models.SavedData.Bones;
 using StoryTimeDevKit.Utils;
 using StoryTimeDevKit.Extensions;
+using System.IO;
 
 namespace StoryTimeDevKit.Controllers.Puppeteer
 {
@@ -55,7 +56,8 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         private SkeletonTreeViewDataSource _skeletonTreeViewData;
         private AnimationTimeLineDataSource _animationTimeLineData;
 
-        private ISceneObjectFactory _factory;
+        private ISceneObjectFactory _sceneObjectFactory;
+        private SavedPuppeteerLoadFactory _loadSaveFilesfatory;
 
         private Dictionary<PuppeteerWorkingModeType, WorkingMode> _workingModes;
         private Dictionary<BoneAttachedRenderableAsset, AssetListItemViewModel> _assetMapping;
@@ -157,7 +159,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         }
         protected override ISceneObjectFactory SceneObjectFactory
         {
-            get { return _factory; }
+            get { return _sceneObjectFactory; }
         }
 
         public PuppeteerController(GameWorld gameWorld, TransformModeViewModel transformModeModel, PuppeteerWorkingModesModel workingModesModel)
@@ -173,7 +175,8 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
 
             Skeleton = new Skeleton();
             SavedPuppeteerItemModel = new SavePuppeteerItemDialogModel();
-            _factory = new PuppeteerSceneObjectFactory(this);
+            _sceneObjectFactory = new PuppeteerSceneObjectFactory(this);
+            _loadSaveFilesfatory = new SavedPuppeteerLoadFactory();
             _armatureActor = Scene.AddWorldEntity<ArmatureActor>();
             _sceneBoneData = new SceneBonesDataSource(Skeleton);
             _animationTimeLineData = new AnimationTimeLineDataSource(Skeleton);
@@ -264,6 +267,28 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                 _animationTimeLineData.AddBoneInitialSate(actor);
             else
                 _animationTimeLineData.AddAnimationFrame(actor, Seconds.Value);
+        }
+
+        public void Load(FileInfo file)
+        {
+            ClearAll();
+            var loadedContent = _loadSaveFilesfatory.Load(file);
+            //assign loaded content
+        }
+
+        public void ClearAll()
+        {
+            var boneActors = Scene.GetAll<BoneActor>();
+            foreach (var boneActor in boneActors)
+                Scene.RemoveActor(boneActor);
+            foreach (var bone in Skeleton.RootBones.ToList())
+                Skeleton.RemoveBone(bone);
+            _sceneBoneData.Clear();
+            _skeletonTreeViewData.Clear();
+            _animationTimeLineData.Clear();
+            _skeletonTreeViewControl.Clear();
+            _timeLineControl.Clear();
+            Selected = null;
         }
 
         private void AssignPuppeteerEditorControlEvents()

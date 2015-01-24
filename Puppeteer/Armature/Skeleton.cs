@@ -22,6 +22,11 @@ namespace Puppeteer.Armature
             _rootBones.Add(bone);
         }
 
+        public void RemoveBone(Bone bone)
+        {
+            _rootBones.Remove(bone);
+        }
+
         public IEnumerator<Bone> GetEnumerator()
         {
             return _rootBones.GetEnumerator();

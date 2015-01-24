@@ -61,6 +61,12 @@ namespace StoryTimeDevKit.DataStructures
             return null;
         }
 
+        public void Clear()
+        {
+            _actorDictionary = new Dictionary<BoneActor, BoneViewModel>();
+            _skeletonVM = new SkeletonViewModel(_callback);
+        }
+
         private string GenerateName()
         {
             for (var idx = 1; ; idx++)
