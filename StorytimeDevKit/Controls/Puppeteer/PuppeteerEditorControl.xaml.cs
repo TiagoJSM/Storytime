@@ -28,6 +28,7 @@ using StoryTimeDevKit.Models.Puppeteer;
 using StoryTimeDevKit.Enums;
 using StoryTimeDevKit.Commands.UICommands;
 using StoryTimeDevKit.Commands.UICommands.Puppeteer;
+using StoryTimeDevKit.DataStructures.Factories;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
@@ -40,6 +41,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         
         private TransformModeViewModel _transformModeModel;
         private PuppeteerWorkingModesModel _workingModesModel;
+        private SavedPuppeteerLoadFactory _loadSaveFilesfatory;
 
         public event Action<IPuppeteerEditorControl> OnLoaded;
         public event Action<IPuppeteerEditorControl> OnUnloaded;
@@ -49,17 +51,20 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         public IPuppeteerController PuppeteerController { get; private set; }
         public ICommand SaveSkeletonCommand { get; private set; }
         public ICommand SaveAnimatedSkeletonCommand { get; set; }
+        public ICommand LoadSavedPuppeteerItemsCommand { get; set; }
 
         public PuppeteerEditorControl()
         {
             InitializeComponent();
             AssignPanelEventHandling(PuppeteerEditor);
             PuppeteerEditor.OnDropData += OnDropDataHandler;
+            _loadSaveFilesfatory = new SavedPuppeteerLoadFactory();
             Loaded += LoadedHandler;
             
             #region Commands
             SaveSkeletonCommand = new SaveSkeletonCommand(this, Window.GetWindow(this));
             SaveAnimatedSkeletonCommand = new SaveAnimatedSkeletonCommand(this, Window.GetWindow(this));
+            LoadSavedPuppeteerItemsCommand = new LoadSavedPuppeteerItemsCommand(this, Window.GetWindow(this));
             #endregion
         }
 

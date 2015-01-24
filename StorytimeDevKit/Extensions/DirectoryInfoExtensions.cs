@@ -17,5 +17,10 @@ namespace StoryTimeDevKit.Extensions
         {
             return di.GetFiles(string.Format("*{0}", extension), option);
         }
+
+        public static IEnumerable<FileInfo> GetFilesByExtension(this DirectoryInfo di, params string[] extension)
+        {
+            return extension.SelectMany(e => di.GetFilesByExtension(e));
+        }
     }
 }

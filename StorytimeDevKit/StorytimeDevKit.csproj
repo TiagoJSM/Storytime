@@ -116,6 +116,7 @@
     <Compile Include="Commands\ReversibleCommands\SelectActorCommand.cs" />
     <Compile Include="Commands\UICommands\BaseCommand.cs" />
     <Compile Include="Commands\UICommands\Puppeteer\AttachToBoneCommand.cs" />
+    <Compile Include="Commands\UICommands\Puppeteer\LoadSavedPuppeteerItemsCommand.cs" />
     <Compile Include="Commands\UICommands\Puppeteer\SaveAnimatedSkeletonCommand.cs" />
     <Compile Include="Commands\UICommands\Puppeteer\SaveSkeletonCommand.cs" />
     <Compile Include="Configurations\ApplicationProperties.cs" />
@@ -136,6 +137,9 @@
     <Compile Include="Controllers\TemplateControllers\StackedCommandsController.cs" />
     <Compile Include="Controls\Dialogs\CreatePuppeteerItemDialog.xaml.cs">
       <DependentUpon>CreatePuppeteerItemDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\LoadSavedPuppeteerItemsDialog.xaml.cs">
+      <DependentUpon>LoadSavedPuppeteerItemsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\IMouseInteractiveControl.cs" />
     <Compile Include="Controls\IMouseInteractivePanel.cs" />
@@ -163,6 +167,7 @@
     <Compile Include="DataStructures\BindingEngines\TranslateSceneObjectBindingEngine.cs" />
     <Compile Include="DataStructures\Factories\ISceneObjectFactory.cs" />
     <Compile Include="DataStructures\Factories\PuppeteerSceneObjectFactory.cs" />
+    <Compile Include="DataStructures\Factories\SavedPuppeteerLoadFactory.cs" />
     <Compile Include="DataStructures\Factories\TypeConfigurableSceneObjectFactory.cs" />
     <Compile Include="Extensions\SkeletonExtensions.cs" />
     <Compile Include="Models\Puppeteer\SaveSkeletonDialogModel.cs" />
@@ -335,6 +340,10 @@
     <Compile Include="Utils\PuppeteerUtils.cs" />
     <Compile Include="Utils\XMLSerializerUtils.cs" />
     <Page Include="Controls\Dialogs\CreatePuppeteerItemDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\LoadSavedPuppeteerItemsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
