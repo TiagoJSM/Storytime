@@ -1,10 +1,12 @@
 ﻿using Puppeteer.Armature;
 using StoryTimeDevKit.Configurations;
+using StoryTimeDevKit.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using StoryTimeDevKit.Extensions;
 
 namespace StoryTimeDevKit.DataStructures.Factories
 {
@@ -34,7 +36,11 @@ namespace StoryTimeDevKit.DataStructures.Factories
 
         private SavedPuppeteerLoadedContent LoadSavedSkeleton(FileInfo file)
         {
-            return null;
+            var savedSkeleton = PuppeteerUtils.LoadSkeleton(file.FullName);
+            return new SavedPuppeteerLoadedContent()
+            {
+                Skeleton = savedSkeleton.ToSkeleton()
+            };
         }
 
         private SavedPuppeteerLoadedContent LoadSavedAnimatedSkeleton(FileInfo file)

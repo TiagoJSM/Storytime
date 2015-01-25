@@ -190,7 +190,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         {
             var boneActor = Selected as BoneActor;
             var child = AddBone(boneStartPosition, boneActor);
-            HandleNewBoneAdded(child);
+            //HandleNewBoneAdded(child);
             return child;
         }
 
@@ -198,7 +198,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         {
             var boneActor = Selected as BoneActor;
             var child = AddBone(boneStartPosition, boneEndPosition, boneActor);
-            HandleNewBoneAdded(child);
+            //HandleNewBoneAdded(child);
             return child;
         }
 
@@ -273,7 +273,10 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         {
             ClearAll();
             var loadedContent = _loadSaveFilesfatory.Load(file);
-            //assign loaded content
+            if (loadedContent.Skeleton != null)
+            {
+                //LoadSkeleton(loadedContent.Skeleton);
+            }
         }
 
         public void ClearAll()
@@ -410,6 +413,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             _sceneBoneData.Add(actor);
             _skeletonTreeViewData.AddBone(actor);
             _animationTimeLineData.AddTimeLineFor(actor);
+            HandleNewBoneAdded(actor);
             return actor;
         }
 

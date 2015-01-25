@@ -17,7 +17,6 @@ namespace StoryTimeDevKit.Utils
                 .SerializeToXML<SavedSkeleton>(
                     skeletonFile.SavedSkeleton,
                     skeletonFile.RelativePath);
-
         }
 
         public static void SaveAnimatedSkeleton(SavedAnimatedSkeletonFile skeletonFile)
@@ -26,7 +25,14 @@ namespace StoryTimeDevKit.Utils
                 .SerializeToXML<SavedAnimatedSkeleton>(
                     skeletonFile.SavedAnimatedSkeleton,
                     skeletonFile.RelativePath);
+        }
 
+        public static SavedSkeleton LoadSkeleton(string filePath)
+        {
+            return
+                XMLSerializerUtils
+                    .DeserializeFromXML<SavedSkeleton>(
+                        filePath);
         }
     }
 }
