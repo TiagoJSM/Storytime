@@ -273,9 +273,9 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         {
             ClearAll();
             var loadedContent = _loadSaveFilesfatory.Load(file);
-            if (loadedContent.Skeleton != null)
+            if (loadedContent.SavedSkeleton != null)
             {
-                //LoadSkeleton(loadedContent.Skeleton);
+                LoadSavedSkeleton(loadedContent.SavedSkeleton);
             }
         }
 
@@ -404,7 +404,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             _timeLineControl.AddFrame(null, 0, Vector2.Zero);
         }
 
-        private BoneActor AddBone(Vector2 boneStartPosition, BoneActor parent)
+        private BoneActor AddBone(Vector2 boneStartPosition, BoneActor parent = null)
         {
             var actor = Scene.AddWorldEntity<BoneActor>();
             actor.Parent = parent;
@@ -417,13 +417,33 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             return actor;
         }
 
-        private BoneActor AddBone(Vector2 boneStartPosition, Vector2 boneEndPosition, BoneActor parent)
+        private BoneActor AddBone(Vector2 boneStartPosition, Vector2 boneEndPosition, BoneActor parent = null)
         {
             var actor = AddBone(boneStartPosition, parent);
             var bone = actor.AssignedBone;
             bone.AbsoluteEnd = boneEndPosition;
             _sceneBoneData.SynchronizeBoneChain(bone);
             return actor;
+        }
+
+        private void LoadSavedSkeleton(SavedSkeleton savedSkeleton)
+        {
+            var rootBones = savedSkeleton.RootBones;
+
+            foreach (var rootBone in rootBones)
+            {
+                var boneActor = AddBone(rootBone.AbsolutePosition.GetVector2(), rootBone.AbsoluteEnd.GetVector2());
+                LoadSavedBone(rootBone, boneActor);
+            }
+        }
+
+        private void LoadSavedBone(SavedBone boneParent, BoneActor parent = null)
+        {
+            foreach (var child in boneParent.Children)
+            {
+                var boneActor = AddBone(child.AbsolutePosition.GetVector2(), child.AbsoluteEnd.GetVector2(), parent);
+                LoadSavedBone(child, boneActor);
+            }
         }
 
         public void NodeAddedCallback(TreeViewItemViewModel parent, IEnumerable<TreeViewItemViewModel> newModels)

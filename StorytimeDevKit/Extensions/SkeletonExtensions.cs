@@ -28,47 +28,11 @@ namespace StoryTimeDevKit.Extensions
         {
             return new SavedBone()
             {
-                Length = bone.Length,
                 Name = bone.Name,
-                Rotation = bone.Rotation,
-                Translation = new SavedVector2(bone.Translation.X, bone.Translation.Y),
+                AbsolutePosition = new SavedVector2(bone.AbsolutePosition),
+                AbsoluteEnd = new SavedVector2(bone.AbsoluteEnd),
                 Children = bone.Children.ToSavedBones()
             };
-        }
-
-        public static Skeleton ToSkeleton(this SavedSkeleton savedSkeleton)
-        {
-            var skeleton = new Skeleton();
-
-            var children = savedSkeleton.RootBones.ToBones();
-
-            foreach (var child in children)
-                skeleton.AddBone(child);
-
-            return skeleton;
-        }
-
-        public static Bone[] ToBones(this IEnumerable<SavedBone> savedBones)
-        {
-            return savedBones.Select(ToBone).ToArray();
-        }
-
-        public static Bone ToBone(this SavedBone savedBone)
-        {
-            var bone = new Bone()
-            {
-                Length = savedBone.Length,
-                Name = savedBone.Name,
-                Rotation = savedBone.Rotation,
-                Translation = new Vector2(savedBone.Translation.X, savedBone.Translation.Y)
-            };
-
-            var children = savedBone.Children.ToBones();
-
-            foreach(var child in children)
-                bone.AddChildren(child);
-
-            return bone;
         }
     }
 }

@@ -27,20 +27,14 @@ namespace StoryTimeDevKit.Commands.UICommands.Puppeteer
 
         public override void Execute(object parameter)
         {
-            bool? accepted = true;
-            FileInfo file = null;
-            if (string.IsNullOrWhiteSpace(_control.PuppeteerController.SavedPuppeteerItemModel.FileNameWithoutExtension))
-            {
-                var dialog = new LoadSavedPuppeteerItemsDialog();
-                dialog.Owner = _window;
-                accepted = dialog.ShowDialog();
-                file = dialog.FileInfo;
-            }
+            var dialog = new LoadSavedPuppeteerItemsDialog();
+            dialog.Owner = _window;
+            var accepted = dialog.ShowDialog();
+            var file = dialog.FileInfo;
 
             if (accepted == true)
             {
                 _control.PuppeteerController.Load(file);
-                //_control.PuppeteerController.SaveSkeleton();
             }
         }
     }

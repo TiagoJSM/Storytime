@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,16 @@ namespace StoryTimeDevKit.Models.SavedData.Common
         {
             X = x;
             Y = y;
+        }
+
+        public SavedVector2(Vector2 vec2)
+            : this(vec2.X, vec2.Y)
+        {
+        }
+
+        public Vector2 GetVector2()
+        {
+            return new Vector2(X, Y);
         }
     }
 }

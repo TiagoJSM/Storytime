@@ -11,13 +11,11 @@ namespace StoryTimeDevKit.Models.SavedData.Bones
     {
         [XmlElement("Name")]
         public string Name { get; set; }
-        [XmlElement("Length")]
-        public float Length { get; set; }
         [XmlArray("Children")]
         public SavedBone[] Children { get; set; }
-        [XmlElement("Translation")]
-        public SavedVector2 Translation { get; set; }
-        [XmlElement("Rotation")]
-        public float Rotation { get; set; }
+        [XmlElement("AbsolutePosition")]
+        public SavedVector2 AbsolutePosition { get; set; }
+        [XmlElement("AbsoluteEnd")]
+        public SavedVector2 AbsoluteEnd { get; set; }
     }
 }

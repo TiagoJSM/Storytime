@@ -7,12 +7,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using StoryTimeDevKit.Extensions;
+using StoryTimeDevKit.Models.SavedData.Bones;
 
 namespace StoryTimeDevKit.DataStructures.Factories
 {
     public class SavedPuppeteerLoadedContent
     {
-        public Skeleton Skeleton { get; set; }
+        public SavedSkeleton SavedSkeleton { get; set; }
     }
 
     public class SavedPuppeteerLoadFactory
@@ -39,7 +40,7 @@ namespace StoryTimeDevKit.DataStructures.Factories
             var savedSkeleton = PuppeteerUtils.LoadSkeleton(file.FullName);
             return new SavedPuppeteerLoadedContent()
             {
-                Skeleton = savedSkeleton.ToSkeleton()
+                SavedSkeleton = savedSkeleton
             };
         }
 
