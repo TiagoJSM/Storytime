@@ -15,7 +15,6 @@ namespace ParticleEngine
 {
     public class ParticleEmitter
     {
-        private double _totalElapsedSinceLastParticleInMillis;
         private double _emissionRateInMilliseconds;
         private List<Particle> _spawnedParticles;
 
@@ -56,7 +55,7 @@ namespace ParticleEngine
         }
 
         public ParticleSpawnProcessor SpawnProcessor { get; private set; }
-        public List<IParticleProcessor> ParticleProcessors { get; set; } 
+        public List<IParticleProcessor> ParticleProcessors { get; private set; } 
 
         public ParticleEmitter(IParticleBodyFactory particleBodyFactory)
         {
@@ -89,33 +88,11 @@ namespace ParticleEngine
         {
             if (!Enabled) return;
 
-            _totalElapsedSinceLastParticleInMillis += elapsedSinceLastUpdate.TotalMilliseconds;
-
             UpdateParticles(elapsedSinceLastUpdate);
-
-            while (_totalElapsedSinceLastParticleInMillis > EmissionRateInMilliseconds)
+            if (SpawnProcessor != null)
             {
-                _totalElapsedSinceLastParticleInMillis -= EmissionRateInMilliseconds;
-                if (MaxParticles != null && MaxParticles.Value >= _spawnedParticles.Count)
-                    continue;
-
-                var particle = SpawnParticle();
+                SpawnProcessor.TimeElapse(elapsedSinceLastUpdate);   
             }
-        }
-
-        public Particle SpawnParticle()
-        {
-            var particle = new Particle(
-                ParticleBodyFactory.CreateParticleBody(ParticlesArePhysicallySimulated, ParticleSize.X, ParticleSize.Y, 0.1f))
-            {
-                TimeToLive = ParticlesTimeToLive,
-                Direction = EmissionDirection,
-                Velocity = EmissionVelocity
-            };
-            _spawnedParticles.Add(particle);
-            if (OnParticleSpawned != null)
-                OnParticleSpawned(particle);
-            return particle;
         }
 
         public void SetParticleSpawnProcessor<TSpawnProcessor>() where TSpawnProcessor : ParticleSpawnProcessor
@@ -125,7 +102,11 @@ namespace ParticleEngine
 
         public void SetParticleSpawnProcessor(Type spawnProcessorType)
         {
-            Activator.CreateInstance(spawnProcessorType, new[] {this});
+            if (spawnProcessorType.IsAssignableFrom(typeof (ParticleSpawnProcessor)))
+            {
+                return;
+            }
+            SpawnProcessor = Activator.CreateInstance(spawnProcessorType, new[] { this }) as ParticleSpawnProcessor;
         }
 
         private void UpdateParticles(TimeSpan elapsedSinceLastUpdate)
@@ -136,13 +117,12 @@ namespace ParticleEngine
                 if (!particle.IsAlive)
                 {
                     _spawnedParticles.Remove(particle);
-                    continue;
                 }
+            }
 
-                var frame = AnimationBoard.GetAt(particle.ElapsedLifeTime);
-                particle.Color = frame.GetColorAt(particle.ElapsedLifeTime);
-                particle.Velocity  = frame.GetVelocityAt(particle.ElapsedLifeTime);
-                particle.Direction = frame.GetDirectionAt(particle.ElapsedLifeTime);
+            foreach (var processor in ParticleProcessors)
+            {
+                processor.Process(_spawnedParticles);
             }
         }
 
