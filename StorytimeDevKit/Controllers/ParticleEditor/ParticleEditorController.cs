@@ -5,6 +5,8 @@ using System.Text;
 using FarseerPhysicsWrapper;
 using Microsoft.Xna.Framework;
 using ParticleEngine;
+using ParticleEngine.ParticleProcessors;
+using ParticleEngine.ParticleProcessors.ParticleSpawnProcessors;
 using StoryTimeDevKit.Controls.Editors;
 using StoryTimeDevKit.Controls.ParticleEditor;
 using StoryTimeFramework.Entities.Actors;
@@ -18,11 +20,11 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         private IParticleEmissorPropertyEditor _particleEmissorPropertyEditor;
         private IParticleEditorControl _particleEditorControl;
         private GameWorld _gameWorld;
-        private ParticleEmmiterActor _particleEmmiterActor;
+        private ParticleEmitterActor _particleEmitterActor;
 
-        private ParticleEmitter ParticleEmmiter
+        private ParticleEmitter ParticleEmitter
         {
-            get { return _particleEmmiterActor.ParticleEmitterComponent.ParticleEmitter; }
+            get { return _particleEmitterActor.ParticleEmitterComponent.ParticleEmitter; }
         }
 
         public IParticleEmissorPropertyEditor ParticleEmissorPropertyEditor
@@ -34,7 +36,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
                 if (_particleEmissorPropertyEditor != null)
                     UnassignParticleEmissorPropertyEditorEventHandlers();
                 _particleEmissorPropertyEditor = value;
-                _particleEmissorPropertyEditor.Selected = ParticleEmmiter;
+                _particleEmissorPropertyEditor.Selected = ParticleEmitter;
                 if (_particleEmissorPropertyEditor != null)
                 {
                     AssignParticleEmissorPropertyEditorEventHandlers();
@@ -65,15 +67,16 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             scene.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
             _gameWorld.AddScene(scene);
             _gameWorld.SetActiveScene(scene);
-            _particleEmmiterActor = scene.AddWorldEntity<ParticleEmmiterActor>();
+            _particleEmitterActor = scene.AddWorldEntity<ParticleEmitterActor>();
+            SetParticleEmitterEditorDefaultValues();
            
             //ToDo: delete these lines in the future
             var bitmap = gameWorld.GraphicsContext.LoadTexture2D("default");
             var asset = new Static2DRenderableAsset();
             asset.Texture2D = bitmap;
-            _particleEmmiterActor.RenderableAsset = asset;
+            _particleEmitterActor.RenderableAsset = asset;
             var name = "one";
-            _particleEmmiterActor.Body = _particleEmmiterActor.Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
+            _particleEmitterActor.Body = _particleEmitterActor.Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
         }
 
         private void UnassignParticleEmissorPropertyEditorEventHandlers()
@@ -94,6 +97,23 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         private void UnassignParticleEditorControlEventHandlers()
         {
 
+        }
+
+        private void SetParticleEmitterEditorDefaultValues()
+        {
+            ParticleEmitter.SetParticleSpawnProcessor<DefaultParticleSpawnProcessor>();
+            ParticleEmitter.ParticleProcessors.Add(
+                new VelocityParticleProcessor()
+                {
+                    InitialVelocity = ParticleEmitter.EmissionVelocity,
+                    FinalVelocity = ParticleEmitter.EmissionVelocity
+                });
+            ParticleEmitter.ParticleProcessors.Add(
+                new DirectionParticleProcessor()
+                {
+                    InitialDirection = ParticleEmitter.EmissionDirection,
+                    FinalDirection = ParticleEmitter.EmissionDirection
+                });
         }
     }
 }

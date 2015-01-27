@@ -27,7 +27,8 @@ namespace ParticleEngine.ParticleProcessors.ParticleSpawnProcessors
 
         public TemplateParticleSpawnProcessor(ParticleEmitter emitter)
             : base(emitter)
-        { 
+        {
+            EmissionRateInMilliseconds = 1000;
         }
 
         public override void TimeElapse(TimeSpan elapsedSinceLastUpdate)
@@ -40,10 +41,10 @@ namespace ParticleEngine.ParticleProcessors.ParticleSpawnProcessors
                 if (MaxParticles != null && MaxParticles.Value >= ParticleEmitter.SpawnedParticlesCount)
                     continue;
 
-                DoTimeElapse(elapsedSinceLastUpdate);
+                SpawnParticle(elapsedSinceLastUpdate);
             }
         }
 
-        protected abstract void DoTimeElapse(TimeSpan elapsedSinceLastUpdate);
+        protected abstract void SpawnParticle(TimeSpan elapsedSinceLastUpdate);
     }
 }

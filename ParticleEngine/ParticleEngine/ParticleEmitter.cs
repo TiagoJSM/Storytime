@@ -21,8 +21,8 @@ namespace ParticleEngine
         public event Action<Particle> OnParticleSpawned;
 
         public string ParticlePath { get; set; }
-        [Editable(EditorName = "Emission rate in milliseconds")]
-        public double EmissionRateInMilliseconds
+        //[Editable(EditorName = "Emission rate in milliseconds")]
+        /*public double EmissionRateInMilliseconds
         {
             get { return _emissionRateInMilliseconds; }
             set
@@ -31,22 +31,22 @@ namespace ParticleEngine
                 if (value <= 0) return;
                 _emissionRateInMilliseconds = value;
             }
-        }
+        }*/
         public Vector2 EmissionDirection { get; set; }
         public float EmissionVelocity { get; set; }
         public bool Enabled { get; set; }
-        public int? MaxParticles { get; set; }
+        //public int? MaxParticles { get; set; }
         public TimeSpan ParticlesTimeToLive { get; set; }
         public Vector2 Position { get; set; }
         public Vector2 ParticleSize { get; set; }
 
-        public Vector2 ParticleSpawnOffsetPosition { get; set; }
-        public Vector2 ParticleSpawnOffsetDirection { get; set; }
-        public double ParticleSpawnOffsetVelocity { get; set; }
-        public double ParticleTimeToLiveOffsetInMilliseconds { get; set; }
-        public Vector2 ParticleSpawnOffsetSize { get; set; }
+        //public Vector2 ParticleSpawnOffsetPosition { get; set; }
+        //public Vector2 ParticleSpawnOffsetDirection { get; set; }
+        //public double ParticleSpawnOffsetVelocity { get; set; }
+        //public double ParticleTimeToLiveOffsetInMilliseconds { get; set; }
+        //public Vector2 ParticleSpawnOffsetSize { get; set; }
 
-        public ParticleAnimationBoard AnimationBoard { get; set; }
+        //public ParticleAnimationBoard AnimationBoard { get; set; }
         public IParticleBodyFactory ParticleBodyFactory { get; private set; }
         public bool ParticlesArePhysicallySimulated { get; set; }
         public int SpawnedParticlesCount
@@ -59,7 +59,7 @@ namespace ParticleEngine
 
         public ParticleEmitter(IParticleBodyFactory particleBodyFactory)
         {
-            EmissionRateInMilliseconds = 1000;
+            //EmissionRateInMilliseconds = 1000;
             Enabled = true;
             EmissionVelocity = 1;
             EmissionDirection = new Vector2(1, 1);
@@ -67,7 +67,8 @@ namespace ParticleEngine
             ParticleBodyFactory = particleBodyFactory;
             ParticleSize = new Vector2(10);
             ParticlesTimeToLive = TimeSpan.FromSeconds(10);
-            AnimationBoard = new ParticleAnimationBoard();
+            ParticleProcessors = new List<IParticleProcessor>();
+            /*AnimationBoard = new ParticleAnimationBoard();
             AnimationBoard.Frames = new List<ParticleAnimationFrame>()
             {
                 new ParticleAnimationFrame()
@@ -81,7 +82,7 @@ namespace ParticleEngine
                     StartTime = new TimeSpan(),
                     StartVelocity = 20
                 }
-            };
+            };*/
         }
 
         public void TimeElapse(TimeSpan elapsedSinceLastUpdate)
@@ -107,6 +108,21 @@ namespace ParticleEngine
                 return;
             }
             SpawnProcessor = Activator.CreateInstance(spawnProcessorType, new[] { this }) as ParticleSpawnProcessor;
+        }
+
+        public Particle SpawnParticle()
+        {
+            var particle = new Particle(
+                ParticleBodyFactory.CreateParticleBody(ParticlesArePhysicallySimulated, ParticleSize.X, ParticleSize.Y, 0.1f))
+            {
+                TimeToLive = ParticlesTimeToLive,
+                Direction = EmissionDirection,
+                Velocity = EmissionVelocity
+            };
+            _spawnedParticles.Add(particle);
+            if (OnParticleSpawned != null)
+                OnParticleSpawned(particle);
+            return particle;
         }
 
         private void UpdateParticles(TimeSpan elapsedSinceLastUpdate)

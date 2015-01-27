@@ -7,17 +7,18 @@ using StoryTimeFramework.Entities.Components;
 
 namespace StoryTimeFramework.Entities.Actors
 {
-    public class ParticleEmmiterActor : BaseActor
+    public class ParticleEmitterActor : BaseActor
     {
         public ParticleEmitterComponent ParticleEmitterComponent { get; private set; }
        
-        public ParticleEmmiterActor()
+        public ParticleEmitterActor()
         {
             OnCreated += OnCreatedHandler;
         }
 
         private void OnCreatedHandler()
         {
+            Body = Scene.PhysicalWorld.CreateRectangularBody(1, 1, 1);
             ParticleEmitterComponent = Components.AddComponent<ParticleEmitterComponent>();
         }
     }

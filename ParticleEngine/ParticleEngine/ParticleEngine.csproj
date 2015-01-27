@@ -48,6 +48,7 @@
     <Compile Include="ParticleProcessors\ColorParticleProcessor.cs" />
     <Compile Include="ParticleProcessors\DirectionParticleProcessor.cs" />
     <Compile Include="ParticleProcessors\IParticleProcessor.cs" />
+    <Compile Include="ParticleProcessors\ParticleSpawnProcessors\DefaultParticleSpawnProcessor.cs" />
     <Compile Include="ParticleProcessors\ParticleSpawnProcessors\ParticleSpawnProcessor.cs" />
     <Compile Include="ParticleProcessors\ParticleSpawnProcessors\TemplateParticleSpawnProcessor.cs" />
     <Compile Include="ParticleProcessors\TemplateParticleProcessor.cs" />
