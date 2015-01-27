@@ -29,6 +29,7 @@ namespace ParticleEngine.ParticleProcessors.ParticleSpawnProcessors
             : base(emitter)
         {
             EmissionRateInMilliseconds = 1000;
+            MaxParticles = 10;
         }
 
         public override void TimeElapse(TimeSpan elapsedSinceLastUpdate)
@@ -38,7 +39,7 @@ namespace ParticleEngine.ParticleProcessors.ParticleSpawnProcessors
             while (_totalElapsedSinceLastParticleInMillis > EmissionRateInMilliseconds)
             {
                 _totalElapsedSinceLastParticleInMillis -= EmissionRateInMilliseconds;
-                if (MaxParticles != null && MaxParticles.Value >= ParticleEmitter.SpawnedParticlesCount)
+                if (MaxParticles != null && MaxParticles.Value <= ParticleEmitter.SpawnedParticlesCount)
                     continue;
 
                 SpawnParticle(elapsedSinceLastUpdate);

@@ -61,7 +61,7 @@ namespace ParticleEngine
         {
             //EmissionRateInMilliseconds = 1000;
             Enabled = true;
-            EmissionVelocity = 1;
+            EmissionVelocity = 50;
             EmissionDirection = new Vector2(1, 1);
             _spawnedParticles = new List<Particle>();
             ParticleBodyFactory = particleBodyFactory;
