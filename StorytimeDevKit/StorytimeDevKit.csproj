@@ -177,6 +177,9 @@
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />
     <Compile Include="Extensions\ITimeLineDataItemExtensions.cs" />
+    <Compile Include="Models\ParticleEditor\ParticleEmitterViewModel.cs" />
+    <Compile Include="Models\ParticleEditor\ParticleProcessorViewModel.cs" />
+    <Compile Include="Models\ParticleEditor\ParticleTreeViewItem.cs" />
     <Compile Include="Models\Puppeteer\AnimationTimeLineControlsViewModel.cs" />
     <Compile Include="Models\Puppeteer\AssetListItem.cs" />
     <Compile Include="Controls\Puppeteer\IAnimationTimeLineControl.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -11,6 +12,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ninject;
+using StoryTimeDevKit.Commands.UICommands;
+using StoryTimeDevKit.Controllers.Puppeteer;
+using StoryTimeDevKit.Models.ParticleEditor;
+using StoryTimeDevKit.Models.Puppeteer;
+using StoryTimeDevKit.Utils;
 
 namespace StoryTimeDevKit.Controls.ParticleEditor
 {
@@ -19,9 +26,74 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
     /// </summary>
     public partial class ParticleEmissorListView : UserControl
     {
+        public ICommand SwitchEditMode { get; private set; }
+        public ICommand SelectedItemChangedCommand { get; private set; }
+
         public ParticleEmissorListView()
         {
             InitializeComponent();
+            Loaded += LoadedHandler;
+        }
+
+        public void LoadedHandler(object sender, RoutedEventArgs e)
+        {
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
+
+            /*_skeletonController =
+                DependencyInjectorHelper
+                    .PuppeteerKernel
+                    .Get<ISkeletonViewerController>();
+
+            _skeletonController.SkeletonTreeViewControl = this;
+            base.DataContext = _skeletonController.SkeletonViewModel;*/
+
+            SwitchEditMode = new RelayCommand(
+                (o) =>
+                {
+                    var item = (o as ParticleTreeViewItem);
+                    item.EditMode = !item.EditMode;
+                },
+                (o) =>
+                {
+                    return (o as ParticleTreeViewItem) != null;
+                }
+            );
+
+            SelectedItemChangedCommand = new RelayCommand(
+                (o) =>
+                {
+                    var item = (o as ParticleTreeViewItem);
+                    //_skeletonController.SelectBone(bone);
+                },
+                (o) =>
+                {
+                    return (o as ParticleTreeViewItem) != null;
+                }
+            );
+        }
+
+        private void etb_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var tb = sender as TextBox;
+
+            if (!tb.IsVisible) return;
+
+            //for some reason the textbox has to be rebound when is set to visible again
+            var binding = BindingOperations.GetBindingExpressionBase(tb, TextBox.TextProperty);
+            binding.UpdateTarget();
+
+            tb.Focus();
+        }
+
+        private void etb_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var tb = sender as TextBox;
+
+            if (string.IsNullOrWhiteSpace(tb.Text)) return;
+            //if (_skeletonController.GetBoneViewModelByName(tb.Text) != null) return;
+
+            tb.GetBindingExpression(TextBox.TextProperty).UpdateSource();
         }
     }
 }
