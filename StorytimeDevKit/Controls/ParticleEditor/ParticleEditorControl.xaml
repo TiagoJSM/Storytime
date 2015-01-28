@@ -45,6 +45,10 @@
             Grid.ColumnSpan="2" 
             Width="{Binding ElementName=MainGrid,Path=ActualWidth}" 
             Height="Auto">
+            <Button 
+                Name="SelectBoneMode">
+                <Image Width ="25" Height="25" Source="/Images/ParticleEditor/Add.png"/>
+            </Button>
         </ToolBar>
         <xna:XnaControl 
             Grid.Row="1" 
@@ -55,8 +59,8 @@
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Stretch" 
             AllowDrop="True"/>
-        <particleEditor:ParticleEmissorListView Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        <editors:ParticleEmissorPropertyEditor Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" Margin="0" x:Name="actorPropertyEditor1" VerticalAlignment="Stretch" />
+        <particleEditor:ParticleEmissorTreeView Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <editors:ParticleEmitterPropertyEditor Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" Margin="0" x:Name="actorPropertyEditor1" VerticalAlignment="Stretch" />
         <!--<my1:PuppeteerControlTabs Grid.Column="0" Grid.Row="2" Margin="0,0,6,0" />-->
     </Grid>
 </templates:BaseSceneUserControl>

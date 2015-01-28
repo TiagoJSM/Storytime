@@ -6,8 +6,8 @@ using StoryTimeDevKit.Controls.Editors;
 
 namespace StoryTimeDevKit.Controllers.ParticleEditor
 {
-    public interface IParticleEmissorPropertyEditorController
+    public interface IParticleEmitterPropertyEditorController
     {
-        IParticleEmissorPropertyEditor ParticleEmissorPropertyEditor { get; set; }
+        IParticleEmitterPropertyEditor ParticleEmitterPropertyEditor { get; set; }
     }
 }

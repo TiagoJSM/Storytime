@@ -5,7 +5,7 @@ using System.Text;
 
 namespace StoryTimeDevKit.Controls.Editors
 {
-    public interface IParticleEmissorPropertyEditor
+    public interface IParticleEmitterPropertyEditor
     {
         object Selected { get; set; }
     }

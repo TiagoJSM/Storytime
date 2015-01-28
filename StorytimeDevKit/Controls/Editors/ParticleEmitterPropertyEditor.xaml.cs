@@ -26,11 +26,11 @@ namespace StoryTimeDevKit.Controls.Editors
     /// <summary>
     /// Interaction logic for ParticleEmissorPropertyEditor.xaml
     /// </summary>
-    public partial class ParticleEmissorPropertyEditor : UserControl, IParticleEmissorPropertyEditor
+    public partial class ParticleEmitterPropertyEditor : UserControl, IParticleEmitterPropertyEditor
     {
         private PropertyEditorModel _model;
         private object _selected;
-        private IParticleEmissorPropertyEditorController _controller;
+        private IParticleEmitterPropertyEditorController _controller;
 
         public object Selected
         {
@@ -43,7 +43,7 @@ namespace StoryTimeDevKit.Controls.Editors
             }
         }
 
-        public ParticleEmissorPropertyEditor()
+        public ParticleEmitterPropertyEditor()
         {
             InitializeComponent();
             Loaded += LoadedHandler;
@@ -57,8 +57,8 @@ namespace StoryTimeDevKit.Controls.Editors
             _controller =
                 DependencyInjectorHelper
                     .ParticleEditorKernel
-                    .Get<IParticleEmissorPropertyEditorController>();
-            _controller.ParticleEmissorPropertyEditor = this;
+                    .Get<IParticleEmitterPropertyEditorController>();
+            _controller.ParticleEmitterPropertyEditor = this;
         }
     }
 }

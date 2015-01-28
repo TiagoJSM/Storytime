@@ -120,7 +120,8 @@
     <Compile Include="Controllers\IMultiStackedCommandsController.cs" />
     <Compile Include="Controllers\IStackedCommandsController.cs" />
     <Compile Include="Controllers\ParticleEditor\IParticleEditorController.cs" />
-    <Compile Include="Controllers\ParticleEditor\IParticleEmissorPropertyEditorController.cs" />
+    <Compile Include="Controllers\ParticleEditor\IParticleEmitterPropertyEditorController.cs" />
+    <Compile Include="Controllers\ParticleEditor\IParticleEmittersController.cs" />
     <Compile Include="Controllers\ParticleEditor\ParticleEditorController.cs" />
     <Compile Include="Controllers\Puppeteer\IAnimationTimeLineController.cs" />
     <Compile Include="Controllers\Puppeteer\IPuppeteerController.cs" />
@@ -138,9 +139,9 @@
     <Compile Include="Controls\Dialogs\ParticleEditorDialog.xaml.cs">
       <DependentUpon>ParticleEditorDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Editors\IParticleEmissorPropertyEditor.cs" />
-    <Compile Include="Controls\Editors\ParticleEmissorPropertyEditor.xaml.cs">
-      <DependentUpon>ParticleEmissorPropertyEditor.xaml</DependentUpon>
+    <Compile Include="Controls\Editors\IParticleEmitterPropertyEditor.cs" />
+    <Compile Include="Controls\Editors\ParticleEmitterPropertyEditor.xaml.cs">
+      <DependentUpon>ParticleEmitterPropertyEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\IMouseInteractiveControl.cs" />
     <Compile Include="Controls\IMouseInteractivePanel.cs" />
@@ -149,8 +150,8 @@
     <Compile Include="Controls\ParticleEditor\ParticleEditorControl.xaml.cs">
       <DependentUpon>ParticleEditorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ParticleEditor\ParticleEmissorListView.xaml.cs">
-      <DependentUpon>ParticleEmissorListView.xaml</DependentUpon>
+    <Compile Include="Controls\ParticleEditor\ParticleEmissorTreeView.xaml.cs">
+      <DependentUpon>ParticleEmissorTreeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Puppeteer\AnimationTimeLineControl.xaml.cs">
       <DependentUpon>AnimationTimeLineControl.xaml</DependentUpon>
@@ -334,7 +335,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Editors\ParticleEmissorPropertyEditor.xaml">
+    <Page Include="Controls\Editors\ParticleEmitterPropertyEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -342,7 +343,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ParticleEditor\ParticleEmissorListView.xaml">
+    <Page Include="Controls\ParticleEditor\ParticleEmissorTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -608,6 +609,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\MainWindow\ToolBar\atoms.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ParticleEditor\Add.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

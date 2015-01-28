@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using FarseerPhysicsWrapper;
@@ -9,16 +10,18 @@ using ParticleEngine.ParticleProcessors;
 using ParticleEngine.ParticleProcessors.ParticleSpawnProcessors;
 using StoryTimeDevKit.Controls.Editors;
 using StoryTimeDevKit.Controls.ParticleEditor;
+using StoryTimeDevKit.Models.ParticleEditor;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeFramework.Resources.Graphic;
 using StoryTimeFramework.WorldManagement;
 
 namespace StoryTimeDevKit.Controllers.ParticleEditor
 {
-    public class ParticleEditorController : IParticleEditorController, IParticleEmissorPropertyEditorController
+    public class ParticleEditorController : IParticleEditorController, IParticleEmitterPropertyEditorController, IParticleEmittersController
     {
-        private IParticleEmissorPropertyEditor _particleEmissorPropertyEditor;
+        private IParticleEmitterPropertyEditor _particleEmitterPropertyEditor;
         private IParticleEditorControl _particleEditorControl;
+
         private GameWorld _gameWorld;
         private ParticleEmitterActor _particleEmitterActor;
 
@@ -27,17 +30,19 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             get { return _particleEmitterActor.ParticleEmitterComponent.ParticleEmitter; }
         }
 
-        public IParticleEmissorPropertyEditor ParticleEmissorPropertyEditor
+        public ObservableCollection<ParticleTreeViewItem> ParticleTreeViewItems { get; private set; }
+
+        public IParticleEmitterPropertyEditor ParticleEmitterPropertyEditor
         {
-            get { return _particleEmissorPropertyEditor; }
+            get { return _particleEmitterPropertyEditor; }
             set
             {
-                if (_particleEmissorPropertyEditor == value) return;
-                if (_particleEmissorPropertyEditor != null)
+                if (_particleEmitterPropertyEditor == value) return;
+                if (_particleEmitterPropertyEditor != null)
                     UnassignParticleEmissorPropertyEditorEventHandlers();
-                _particleEmissorPropertyEditor = value;
-                _particleEmissorPropertyEditor.Selected = ParticleEmitter;
-                if (_particleEmissorPropertyEditor != null)
+                _particleEmitterPropertyEditor = value;
+                _particleEmitterPropertyEditor.Selected = ParticleEmitter;
+                if (_particleEmitterPropertyEditor != null)
                 {
                     AssignParticleEmissorPropertyEditorEventHandlers();
                 } 

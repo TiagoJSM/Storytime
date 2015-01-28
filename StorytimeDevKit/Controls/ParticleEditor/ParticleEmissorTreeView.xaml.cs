@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ninject;
 using StoryTimeDevKit.Commands.UICommands;
+using StoryTimeDevKit.Controllers.ParticleEditor;
 using StoryTimeDevKit.Controllers.Puppeteer;
 using StoryTimeDevKit.Models.ParticleEditor;
 using StoryTimeDevKit.Models.Puppeteer;
@@ -22,14 +23,16 @@ using StoryTimeDevKit.Utils;
 namespace StoryTimeDevKit.Controls.ParticleEditor
 {
     /// <summary>
-    /// Interaction logic for ParticleEmissorListView.xaml
+    /// Interaction logic for ParticleEmissorTreeView.xaml
     /// </summary>
-    public partial class ParticleEmissorListView : UserControl
+    public partial class ParticleEmissorTreeView : UserControl
     {
+        private IParticleEmittersController _particleEmittersController;
+
         public ICommand SwitchEditMode { get; private set; }
         public ICommand SelectedItemChangedCommand { get; private set; }
 
-        public ParticleEmissorListView()
+        public ParticleEmissorTreeView()
         {
             InitializeComponent();
             Loaded += LoadedHandler;
@@ -40,13 +43,13 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            /*_skeletonController =
+            _particleEmittersController =
                 DependencyInjectorHelper
                     .PuppeteerKernel
-                    .Get<ISkeletonViewerController>();
+                    .Get<IParticleEmittersController>();
 
-            _skeletonController.SkeletonTreeViewControl = this;
-            base.DataContext = _skeletonController.SkeletonViewModel;*/
+            //_particleEmittersController. = this;
+            base.DataContext = _particleEmittersController.ParticleTreeViewItems;
 
             SwitchEditMode = new RelayCommand(
                 (o) =>
