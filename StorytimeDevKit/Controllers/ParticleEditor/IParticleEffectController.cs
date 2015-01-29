@@ -7,8 +7,8 @@ using StoryTimeDevKit.Models.ParticleEditor;
 
 namespace StoryTimeDevKit.Controllers.ParticleEditor
 {
-    public interface IParticleEmittersController
+    public interface IParticleEffectController
     {
-        ObservableCollection<ParticleTreeViewItem> ParticleTreeViewItems { get; }
+        ObservableCollection<ParticleEffectViewModel> ParticleEffectViewModel { get; }
     }
 }

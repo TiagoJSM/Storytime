@@ -9,6 +9,7 @@
             xmlns:particleEditor="clr-namespace:StoryTimeDevKit.Controls.ParticleEditor"
             xmlns:editors="clr-namespace:StoryTimeDevKit.Controls.Editors"
             mc:Ignorable="d" 
+            Background="#FF46484A"
             d:DesignHeight="600" d:DesignWidth="900">
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
@@ -46,7 +47,7 @@
             Width="{Binding ElementName=MainGrid,Path=ActualWidth}" 
             Height="Auto">
             <Button 
-                Name="SelectBoneMode">
+                Name="AddParticleEmitter" Click="AddParticleEmitter_Click">
                 <Image Width ="25" Height="25" Source="/Images/ParticleEditor/Add.png"/>
             </Button>
         </ToolBar>
@@ -59,7 +60,7 @@
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Stretch" 
             AllowDrop="True"/>
-        <particleEditor:ParticleEmissorTreeView Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <particleEditor:ParticleEffectTreeView Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         <editors:ParticleEmitterPropertyEditor Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" Margin="0" x:Name="actorPropertyEditor1" VerticalAlignment="Stretch" />
         <!--<my1:PuppeteerControlTabs Grid.Column="0" Grid.Row="2" Margin="0,0,6,0" />-->
     </Grid>

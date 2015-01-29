@@ -6,13 +6,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="514" 
              d:DesignWidth="703" 
+             Background="#FF46484A"
              xmlns:my="clr-namespace:StoryTimeDevKit.Controls.XNA"
              xmlns:TransformableWidgetNS="clr-namespace:StoryTimeDevKit.Entities.Renderables"
              xmlns:RadioButtonsConvNS="clr-namespace:StoryTimeDevKit.Converters.ToolbarRadioButtons"
              xmlns:Enums="clr-namespace:StoryTimeDevKit.Enums"
              xmlns:my1="clr-namespace:StoryTimeDevKit.Controls.Puppeteer"
              xmlns:TemplateControls="clr-namespace:StoryTimeDevKit.Controls.Templates"
-             Background="#FF46484A" 
              Unloaded="UserControl_Unloaded">
 
     <UserControl.Resources>

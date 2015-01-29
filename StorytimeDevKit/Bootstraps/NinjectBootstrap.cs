@@ -32,7 +32,7 @@ namespace StoryTimeDevKit.Bootstraps
 
         public static void ParticleEditorConfigure(IKernel kernel)
         {
-            kernel.Bind<IParticleEditorController, IParticleEmitterPropertyEditorController, IParticleEmittersController>().To<ParticleEditorController>().InSingletonScope();
+            kernel.Bind<IParticleEditorController, IParticleEmitterPropertyEditorController, IParticleEffectController>().To<ParticleEditorController>().InSingletonScope();
         }
     }
 }

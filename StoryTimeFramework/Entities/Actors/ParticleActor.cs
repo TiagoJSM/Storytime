@@ -23,7 +23,7 @@ namespace StoryTimeFramework.Entities.Actors
             }
         }
 
-        public string ParticleTexture { get; set; }
+        //public string ParticleTexture { get; set; }
 
         public ParticleActor()
         {
@@ -33,7 +33,7 @@ namespace StoryTimeFramework.Entities.Actors
 
         private void OnOnCreatedHandler()
         {
-            var bitmap = Scene.GraphicsContext.LoadTexture2D(ParticleTexture);
+            var bitmap = Scene.GraphicsContext.LoadTexture2D(_particle.ParticleTexture);
             var asset = new Static2DRenderableAsset();
             asset.Texture2D = bitmap;
             RenderableAsset = asset;

@@ -8,25 +8,30 @@ using StoryTimeFramework.Entities.Actors;
 
 namespace StoryTimeFramework.Entities.Components
 {
-    public class ParticleEmitterComponent : Component
+    public class ParticleEffectComponent : Component
     {
-        public ParticleEmitter ParticleEmitter { get; private set; }
+        public ParticleEffect ParticleEffect { get; private set; }
 
-        public ParticleEmitterComponent()
+        public ParticleEffectComponent()
         {
             OnCreated += OnCreatedHandler;
         }
 
         public override void TimeElapse(WorldTime WTime)
         {
-            ParticleEmitter.Position = OwnerActor.Body.Position;
-            ParticleEmitter.TimeElapse(WTime.ElapsedSinceLastTime);
+            ParticleEffect.Position = OwnerActor.Body.Position;
+            ParticleEffect.TimeElapse(WTime.ElapsedSinceLastTime);
         }
 
         private void OnCreatedHandler()
         {
-            ParticleEmitter = new ParticleEmitter(Scene.PhysicalWorld);
-            ParticleEmitter.OnParticleSpawned += OnParticleSpawnedHandler;
+            ParticleEffect = new ParticleEffect(Scene.PhysicalWorld);
+            ParticleEffect.OnParticleEmitterSpawned += OnParticleEmitterSpawnedHandler;
+        }
+
+        private void OnParticleEmitterSpawnedHandler(ParticleEmitter emitter)
+        {
+            emitter.OnParticleSpawned += OnParticleSpawnedHandler;
         }
 
         private void OnParticleSpawnedHandler(Particle particle)

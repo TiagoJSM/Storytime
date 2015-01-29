@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:my2="clr-namespace:StoryTimeDevKit.Controls.GameObjects" 
-             xmlns:my3="clr-namespace:StoryTimeDevKit.Controls.SceneViewer"  
+             xmlns:my3="clr-namespace:StoryTimeDevKit.Controls.SceneViewer"
+             xmlns:templates="clr-namespace:StoryTimeDevKit.Controls.Templates"
              DispatcherUnhandledException="AppDispatcherUnhandledException"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
@@ -45,6 +46,5 @@
             <Setter Property="Background" Value="DimGray"/>
             <Setter Property="BorderThickness" Value="2"/>
         </Style>
-        
     </Application.Resources>
 </Application>

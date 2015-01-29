@@ -121,7 +121,7 @@
     <Compile Include="Controllers\IStackedCommandsController.cs" />
     <Compile Include="Controllers\ParticleEditor\IParticleEditorController.cs" />
     <Compile Include="Controllers\ParticleEditor\IParticleEmitterPropertyEditorController.cs" />
-    <Compile Include="Controllers\ParticleEditor\IParticleEmittersController.cs" />
+    <Compile Include="Controllers\ParticleEditor\IParticleEffectController.cs" />
     <Compile Include="Controllers\ParticleEditor\ParticleEditorController.cs" />
     <Compile Include="Controllers\Puppeteer\IAnimationTimeLineController.cs" />
     <Compile Include="Controllers\Puppeteer\IPuppeteerController.cs" />
@@ -150,8 +150,8 @@
     <Compile Include="Controls\ParticleEditor\ParticleEditorControl.xaml.cs">
       <DependentUpon>ParticleEditorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ParticleEditor\ParticleEmissorTreeView.xaml.cs">
-      <DependentUpon>ParticleEmissorTreeView.xaml</DependentUpon>
+    <Compile Include="Controls\ParticleEditor\ParticleEffectTreeView.xaml.cs">
+      <DependentUpon>ParticleEffectTreeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Puppeteer\AnimationTimeLineControl.xaml.cs">
       <DependentUpon>AnimationTimeLineControl.xaml</DependentUpon>
@@ -178,6 +178,7 @@
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />
     <Compile Include="Extensions\ITimeLineDataItemExtensions.cs" />
+    <Compile Include="Models\ParticleEditor\ParticleEffectViewModel.cs" />
     <Compile Include="Models\ParticleEditor\ParticleEmitterViewModel.cs" />
     <Compile Include="Models\ParticleEditor\ParticleProcessorViewModel.cs" />
     <Compile Include="Models\ParticleEditor\ParticleTreeViewItem.cs" />
@@ -343,7 +344,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ParticleEditor\ParticleEmissorTreeView.xaml">
+    <Page Include="Controls\ParticleEditor\ParticleEffectTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

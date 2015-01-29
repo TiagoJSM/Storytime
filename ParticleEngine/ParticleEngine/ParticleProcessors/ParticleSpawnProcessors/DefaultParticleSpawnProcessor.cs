@@ -9,7 +9,7 @@ namespace ParticleEngine.ParticleProcessors.ParticleSpawnProcessors
     {
         public DefaultParticleSpawnProcessor(ParticleEmitter emitter)
             : base(emitter)
-        { 
+        {
         }
 
         protected override void SpawnParticle(TimeSpan elapsedSinceLastUpdate)

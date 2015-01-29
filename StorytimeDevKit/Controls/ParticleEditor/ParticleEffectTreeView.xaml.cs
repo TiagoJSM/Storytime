@@ -23,16 +23,16 @@ using StoryTimeDevKit.Utils;
 namespace StoryTimeDevKit.Controls.ParticleEditor
 {
     /// <summary>
-    /// Interaction logic for ParticleEmissorTreeView.xaml
+    /// Interaction logic for ParticleEffectTreeView.xaml
     /// </summary>
-    public partial class ParticleEmissorTreeView : UserControl
+    public partial class ParticleEffectTreeView : UserControl
     {
-        private IParticleEmittersController _particleEmittersController;
+        private IParticleEffectController _particleEffectController;
 
         public ICommand SwitchEditMode { get; private set; }
         public ICommand SelectedItemChangedCommand { get; private set; }
 
-        public ParticleEmissorTreeView()
+        public ParticleEffectTreeView()
         {
             InitializeComponent();
             Loaded += LoadedHandler;
@@ -43,13 +43,13 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            _particleEmittersController =
+            _particleEffectController =
                 DependencyInjectorHelper
-                    .PuppeteerKernel
-                    .Get<IParticleEmittersController>();
+                    .ParticleEditorKernel
+                    .Get<IParticleEffectController>();
 
-            //_particleEmittersController. = this;
-            base.DataContext = _particleEmittersController.ParticleTreeViewItems;
+            //_particleEffectController. = this;
+            base.DataContext = _particleEffectController.ParticleEffectViewModel;
 
             SwitchEditMode = new RelayCommand(
                 (o) =>

@@ -15,23 +15,12 @@ namespace ParticleEngine
 {
     public class ParticleEmitter
     {
-        private double _emissionRateInMilliseconds;
         private List<Particle> _spawnedParticles;
 
         public event Action<Particle> OnParticleSpawned;
 
         public string ParticlePath { get; set; }
-        //[Editable(EditorName = "Emission rate in milliseconds")]
-        /*public double EmissionRateInMilliseconds
-        {
-            get { return _emissionRateInMilliseconds; }
-            set
-            {
-                if (_emissionRateInMilliseconds == value) return;
-                if (value <= 0) return;
-                _emissionRateInMilliseconds = value;
-            }
-        }*/
+
         public Vector2 EmissionDirection { get; set; }
         public float EmissionVelocity { get; set; }
         public bool Enabled { get; set; }
@@ -39,14 +28,8 @@ namespace ParticleEngine
         public TimeSpan ParticlesTimeToLive { get; set; }
         public Vector2 Position { get; set; }
         public Vector2 ParticleSize { get; set; }
+        public string ParticleTexture { get; set; }
 
-        //public Vector2 ParticleSpawnOffsetPosition { get; set; }
-        //public Vector2 ParticleSpawnOffsetDirection { get; set; }
-        //public double ParticleSpawnOffsetVelocity { get; set; }
-        //public double ParticleTimeToLiveOffsetInMilliseconds { get; set; }
-        //public Vector2 ParticleSpawnOffsetSize { get; set; }
-
-        //public ParticleAnimationBoard AnimationBoard { get; set; }
         public IParticleBodyFactory ParticleBodyFactory { get; private set; }
         public bool ParticlesArePhysicallySimulated { get; set; }
         public int SpawnedParticlesCount
@@ -59,7 +42,6 @@ namespace ParticleEngine
 
         public ParticleEmitter(IParticleBodyFactory particleBodyFactory)
         {
-            //EmissionRateInMilliseconds = 1000;
             Enabled = true;
             EmissionVelocity = 50;
             EmissionDirection = new Vector2(1, 1);
@@ -68,21 +50,7 @@ namespace ParticleEngine
             ParticleSize = new Vector2(10);
             ParticlesTimeToLive = TimeSpan.FromSeconds(10);
             ParticleProcessors = new List<IParticleProcessor>();
-            /*AnimationBoard = new ParticleAnimationBoard();
-            AnimationBoard.Frames = new List<ParticleAnimationFrame>()
-            {
-                new ParticleAnimationFrame()
-                {
-                    EndColor = Color.White,
-                    EndDirection = new Vector2(1, 1),
-                    EndTime = TimeSpan.FromSeconds(10),
-                    EndVelocity = 20,
-                    StartColor = Color.White,
-                    StartDirection = new Vector2(1, 1),
-                    StartTime = new TimeSpan(),
-                    StartVelocity = 20
-                }
-            };*/
+            ParticleTexture = "Particle";
         }
 
         public void TimeElapse(TimeSpan elapsedSinceLastUpdate)
@@ -96,24 +64,26 @@ namespace ParticleEngine
             }
         }
 
-        public void SetParticleSpawnProcessor<TSpawnProcessor>() where TSpawnProcessor : ParticleSpawnProcessor
+        public TSpawnProcessor SetParticleSpawnProcessor<TSpawnProcessor>() where TSpawnProcessor : ParticleSpawnProcessor
         {
-            SetParticleSpawnProcessor(typeof (TSpawnProcessor));
+            return SetParticleSpawnProcessor(typeof(TSpawnProcessor)) as TSpawnProcessor;
         }
 
-        public void SetParticleSpawnProcessor(Type spawnProcessorType)
+        public ParticleSpawnProcessor SetParticleSpawnProcessor(Type spawnProcessorType)
         {
             if (spawnProcessorType.IsAssignableFrom(typeof (ParticleSpawnProcessor)))
             {
-                return;
+                return null;
             }
             SpawnProcessor = Activator.CreateInstance(spawnProcessorType, new[] { this }) as ParticleSpawnProcessor;
+            return SpawnProcessor;
         }
 
         public Particle SpawnParticle()
         {
             var particle = new Particle(
-                ParticleBodyFactory.CreateParticleBody(ParticlesArePhysicallySimulated, ParticleSize.X, ParticleSize.Y, 0.1f))
+                ParticleBodyFactory.CreateParticleBody(ParticlesArePhysicallySimulated, ParticleSize.X, ParticleSize.Y, 0.1f),
+                ParticleTexture)
             {
                 TimeToLive = ParticlesTimeToLive,
                 Direction = EmissionDirection,
