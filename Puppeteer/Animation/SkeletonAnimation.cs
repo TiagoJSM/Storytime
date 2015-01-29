@@ -14,6 +14,8 @@ namespace Puppeteer.Animation
         private TimeSpan _elapsedTime;
         private TimeSpan _longestAnimationTime;
 
+        public Dictionary<Bone, List<BoneAnimationFrame>> FramesMapping { get { return _framesMapping; } }
+
         public SkeletonAnimation(Skeleton skeleton)
         {
             _framesMapping = new Dictionary<Bone, List<BoneAnimationFrame>>();

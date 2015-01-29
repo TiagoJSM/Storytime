@@ -251,6 +251,13 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                     SavedAnimatedSkeleton = new SavedAnimatedSkeleton()
                     {
                         SavedSkeleton = Skeleton.ToSavedSkeleton(),
+                        SavedAnimations = new SavedAnimations()
+                        {
+                            SavedAnimationCollection = new SavedAnimation[]
+                            {
+                                _animationTimeLineData.Animation.FramesMapping.ToSavedAnimation()
+                            }
+                        }
                     },
                     FileNameWithoutExtension = SavedPuppeteerItemModel.FileNameWithoutExtension
                 });
@@ -261,12 +268,18 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             _sceneBoneData.SynchronizeBoneChain(bone);
         }
 
+        public void AddAnimationFrameFor(BoneActor actor, BoneState fromState, BoneState toState)
+        {
+            if (Seconds == null) return;
+            _animationTimeLineData.AddAnimationFrame(actor, Seconds.Value, fromState, toState);
+        }
+
         public void AddAnimationFrameFor(BoneActor actor)
         {
-            if (Seconds == null)
+            /*if (Seconds == null)
                 _animationTimeLineData.AddBoneInitialSate(actor);
             else
-                _animationTimeLineData.AddAnimationFrame(actor, Seconds.Value);
+                _animationTimeLineData.AddAnimationFrame(actor, Seconds.Value);*/
         }
 
         public void Load(FileInfo file)

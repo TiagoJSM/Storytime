@@ -139,10 +139,12 @@ namespace StoryTimeDevKit.Controllers.TemplateControllers
             _rotateBindingEngine = new RotateSceneObjectBindingEngine(RotateWidget, SceneObjectViewModel);
             _freeMovementBindingEngine = new FreeMovementSceneObjectBindingEngine(FreeMovementWidget, SceneObjectViewModel);
 
+            TranslateWidget.OnStartTranslate += OnStartTranslateHandler;
             TranslateWidget.OnTranslate += OnTranslateHandler;
             TranslateWidget.OnTranslationComplete += OnTranslationComplete;
             FreeMovementWidget.OnTranslate += OnTranslateHandler;
             FreeMovementWidget.OnTranslationComplete += OnTranslationComplete;
+            RotateWidget.OnStartRotation += OnStartRotationHandler;
             RotateWidget.OnRotation += OnRotateHandler;
             RotateWidget.OnStopRotation += OnStopRotationHandler;
         }
@@ -152,6 +154,11 @@ namespace StoryTimeDevKit.Controllers.TemplateControllers
             SceneObjectViewModel.WidgetMode = mode;
         }
 
+        private void OnStartTranslateHandler(Vector2 position)
+        {
+            SceneObjectViewModel.SceneObject.StartTranslate(position);
+        }
+
         private void OnTranslateHandler(Vector2 translation)
         {
             SceneObjectViewModel.SceneObject.Translate(translation);
@@ -159,12 +166,17 @@ namespace StoryTimeDevKit.Controllers.TemplateControllers
 
         private void OnTranslationComplete(Vector2 fromPosition, Vector2 toPosition)
         {
-            SceneObjectViewModel.SceneObject.EndTranslation();
+            SceneObjectViewModel.SceneObject.EndTranslation(fromPosition, toPosition);
+        }
+
+        private void OnStartRotationHandler(float originalRotation)
+        {
+            SceneObjectViewModel.SceneObject.StartRotation(originalRotation);
         }
 
         private void OnStopRotationHandler(float originalRotation, float finalRotation)
         {
-            SceneObjectViewModel.SceneObject.EndRotation();
+            SceneObjectViewModel.SceneObject.EndRotation(originalRotation, finalRotation);
         }
 
         private void OnRotateHandler(float rotation)

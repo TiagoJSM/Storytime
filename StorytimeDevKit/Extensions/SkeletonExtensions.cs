@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Puppeteer.Animation;
 using Puppeteer.Armature;
 using StoryTimeDevKit.Models.SavedData.Bones;
 using StoryTimeDevKit.Models.SavedData.Common;
@@ -32,6 +33,34 @@ namespace StoryTimeDevKit.Extensions
                 AbsolutePosition = new SavedVector2(bone.AbsolutePosition),
                 AbsoluteEnd = new SavedVector2(bone.AbsoluteEnd),
                 Children = bone.Children.ToSavedBones()
+            };
+        }
+
+        public static SavedAnimation ToSavedAnimation(this Dictionary<Bone, List<BoneAnimationFrame>> frameMapping)
+        {
+            return new SavedAnimation()
+            {
+                BoneAnimationFrames = frameMapping.Select(fm =>
+                {
+                    return new SavedBoneAnimation()
+                    {
+                        BoneName = fm.Key.Name,
+                        AnimationFrames = fm.Value.Select(baf =>
+                        {
+                            return new SavedAnimationFrame()
+                            {
+                                EndRotation = baf.EndRotation,
+                                EndTime = baf.EndTime,
+                                EndTranslation = baf.EndTranslation,
+                                StartRotation = baf.StartRotation,
+                                StartTime = baf.StartTime,
+                                StartTranslation = baf.StartTranslation
+                            };
+                        })
+                        .ToArray()
+                    };
+                })
+                .ToArray()
             };
         }
     }

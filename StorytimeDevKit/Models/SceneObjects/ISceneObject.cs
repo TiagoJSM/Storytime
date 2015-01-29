@@ -16,9 +16,11 @@ namespace StoryTimeDevKit.Models.SceneObjects
         Vector2 Position { get; }
         float Rotation { get; }
 
+        void StartTranslate(Vector2 position);
         void Translate(Vector2 translation);
-        void EndTranslation();
+        void EndTranslation(Vector2 fromTranslation, Vector2 toTranslation);
+        void StartRotation(float originalRotation);
         void Rotate(float rotation);
-        void EndRotation();
+        void EndRotation(float fromRotation, float toRotation);
     }
 }
