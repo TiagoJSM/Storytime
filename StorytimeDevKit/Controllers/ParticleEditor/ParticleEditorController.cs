@@ -34,13 +34,13 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         private SetParticleSpawnProcessorCommand _setParticleSpawnProcessorCommand;
 
         private GameWorld _gameWorld;
-        private ParticleEmitterActor _particleEmitterActor;
+        private ParticleEffectActor _particleEffectActor;
         private SetParticleProcessorCommand _setParticleProcessorCommand;
 
-        private ParticleEmitter ParticleEmitter
+        /*private ParticleEmitter ParticleEmitter
         {
-            get { return _particleEmitterActor.ParticleEmitterComponent.ParticleEmitter; }
-        }
+            get { return _particleEffectActor.ParticleEmitterComponent.ParticleEmitter; }
+        }*/
 
         private ParticleEffectViewModel _effectViewModel;
 
@@ -55,7 +55,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
                 if (_particleEmitterPropertyEditor != null)
                     UnassignParticleEmissorPropertyEditorEventHandlers();
                 _particleEmitterPropertyEditor = value;
-                _particleEmitterPropertyEditor.Selected = ParticleEmitter;
+                //_particleEmitterPropertyEditor.Selected = ParticleEmitter;
                 if (_particleEmitterPropertyEditor != null)
                 {
                     AssignParticleEmissorPropertyEditorEventHandlers();
@@ -86,7 +86,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             scene.PhysicalWorld = new FarseerPhysicalWorld(Vector2.Zero);
             _gameWorld.AddScene(scene);
             _gameWorld.SetActiveScene(scene);
-            _particleEmitterActor = scene.AddWorldEntity<ParticleEmitterActor>();
+            _particleEffectActor = scene.AddWorldEntity<ParticleEffectActor>();
             
             _addParticleEmitterCommand = new AddParticleEmitterCommand(this);
             _setParticleSpawnProcessorCommand = new SetParticleSpawnProcessorCommand(this);
@@ -95,22 +95,25 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             ParticleEffectViewModel = new ObservableCollection<ParticleEffectViewModel>();
             _effectViewModel = new ParticleEffectViewModel("Particle effect", this, _addParticleEmitterCommand);
             ParticleEffectViewModel.Add(_effectViewModel);
-            
-            SetParticleEmitterEditorDefaultValues();
            
             //ToDo: delete these lines in the future
             var bitmap = gameWorld.GraphicsContext.LoadTexture2D("default");
             var asset = new Static2DRenderableAsset();
             asset.Texture2D = bitmap;
-            _particleEmitterActor.RenderableAsset = asset;
+            _particleEffectActor.RenderableAsset = asset;
             var name = "one";
-            _particleEmitterActor.Body = _particleEmitterActor.Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
+            _particleEffectActor.Body = _particleEffectActor.Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
         }
 
         public void AddParticleEmitterTo(ParticleEffectViewModel particleEffect)
         {
-            particleEffect.Children.Add(
-                new ParticleEmitterViewModel("name", this, _setParticleSpawnProcessorCommand, _setParticleProcessorCommand, particleEffect));
+            var emitterViewModel = new ParticleEmitterViewModel("name", this, _setParticleSpawnProcessorCommand,
+                _setParticleProcessorCommand, particleEffect);
+            
+            var emitter = _particleEffectActor.ParticleEffectComponent.ParticleEffect.AddEmitter();
+            SetParticleEmitterEditorDefaultValues(emitter);
+
+            particleEffect.Children.Add(emitterViewModel);
         }
 
         public void SetParticleSpawnProcessorTo(ParticleEmitterViewModel particleEmitter)
@@ -145,20 +148,20 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
 
         }
 
-        private void SetParticleEmitterEditorDefaultValues()
+        private void SetParticleEmitterEditorDefaultValues(ParticleEmitter emitter)
         {
-            ParticleEmitter.SetParticleSpawnProcessor<DefaultParticleSpawnProcessor>();
-            ParticleEmitter.ParticleProcessors.Add(
+            emitter.SetParticleSpawnProcessor<DefaultParticleSpawnProcessor>();
+            emitter.ParticleProcessors.Add(
                 new VelocityParticleProcessor()
                 {
-                    InitialVelocity = ParticleEmitter.EmissionVelocity,
-                    FinalVelocity = ParticleEmitter.EmissionVelocity
+                    InitialVelocity = emitter.EmissionVelocity,
+                    FinalVelocity = emitter.EmissionVelocity
                 });
-            ParticleEmitter.ParticleProcessors.Add(
+            emitter.ParticleProcessors.Add(
                 new DirectionParticleProcessor()
                 {
-                    InitialDirection = ParticleEmitter.EmissionDirection,
-                    FinalDirection = ParticleEmitter.EmissionDirection
+                    InitialDirection = emitter.EmissionDirection,
+                    FinalDirection = emitter.EmissionDirection
                 });
         }
 

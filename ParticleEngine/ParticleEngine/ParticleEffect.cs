@@ -30,13 +30,9 @@ namespace ParticleEngine
 
         public event Action<ParticleEmitter> OnParticleEmitterSpawned;
 
-        public ParticleEffect()
-        {
-            _particleEmitters = new List<ParticleEmitter>();
-        }
-
         public ParticleEffect(IParticleBodyFactory particleBodyFactory)
         {
+            _particleEmitters = new List<ParticleEmitter>();
             _particleBodyFactory = particleBodyFactory;
         }
 
