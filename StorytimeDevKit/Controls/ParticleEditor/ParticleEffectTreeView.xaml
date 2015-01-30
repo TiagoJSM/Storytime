@@ -178,7 +178,7 @@
                     <HierarchicalDataTemplate DataType="{x:Type particleEditor:ParticleSpawnProcessorViewModel}">
                         <StackPanel Orientation="Horizontal" Tag="{Binding Tag}">
                             <Image Width="20" Height="20" Source="/Images/ParticleEditor/Gears.png" Margin="0,2,2,0"/>
-                            <TextBlock Name="tb" FontSize="14" Text="{Binding Name}">
+                            <TextBlock Name="tb" FontSize="14" Text="{Binding Name}" Foreground="#FF0DC927">
                             </TextBlock>
                             <StackPanel.ContextMenu>
                                 <ContextMenu>
