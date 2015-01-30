@@ -116,6 +116,8 @@
     <Compile Include="Commands\ReversibleCommands\SelectActorCommand.cs" />
     <Compile Include="Commands\UICommands\BaseCommand.cs" />
     <Compile Include="Commands\UICommands\ParticleEditor\AddParticleEmitterCommand.cs" />
+    <Compile Include="Commands\UICommands\ParticleEditor\RemoveParticleProcessorCommand.cs" />
+    <Compile Include="Commands\UICommands\ParticleEditor\ReplaceParticleProcessorCommand.cs" />
     <Compile Include="Commands\UICommands\ParticleEditor\SetParticleProcessorCommand.cs" />
     <Compile Include="Commands\UICommands\ParticleEditor\SetParticleSpawnProcessorCommand.cs" />
     <Compile Include="Commands\UICommands\Puppeteer\AttachToBoneCommand.cs" />
@@ -185,6 +187,7 @@
     <Compile Include="Models\ParticleEditor\ParticleEffectViewModel.cs" />
     <Compile Include="Models\ParticleEditor\ParticleEmitterViewModel.cs" />
     <Compile Include="Models\ParticleEditor\ParticleProcessorViewModel.cs" />
+    <Compile Include="Models\ParticleEditor\ParticleSpawnProcessorViewModel.cs" />
     <Compile Include="Models\ParticleEditor\ParticleTreeViewItem.cs" />
     <Compile Include="Models\Puppeteer\AnimationTimeLineControlsViewModel.cs" />
     <Compile Include="Models\Puppeteer\AssetListItem.cs" />

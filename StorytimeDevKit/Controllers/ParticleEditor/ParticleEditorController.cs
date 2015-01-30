@@ -32,15 +32,17 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
 
         private AddParticleEmitterCommand _addParticleEmitterCommand;
         private SetParticleSpawnProcessorCommand _setParticleSpawnProcessorCommand;
+        private SetParticleProcessorCommand _setParticleProcessorCommand;
+        private RemoveParticleProcessorCommand _removeParticleProcessorCommand;
+        private ReplaceParticleProcessorCommand _replaceParticleProcessorCommand;
 
         private GameWorld _gameWorld;
         private ParticleEffectActor _particleEffectActor;
-        private SetParticleProcessorCommand _setParticleProcessorCommand;
 
-        /*private ParticleEmitter ParticleEmitter
+        private ParticleEffect ParticleEffect
         {
-            get { return _particleEffectActor.ParticleEmitterComponent.ParticleEmitter; }
-        }*/
+            get { return _particleEffectActor.ParticleEffectComponent.ParticleEffect; }
+        }
 
         private ParticleEffectViewModel _effectViewModel;
 
@@ -55,7 +57,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
                 if (_particleEmitterPropertyEditor != null)
                     UnassignParticleEmissorPropertyEditorEventHandlers();
                 _particleEmitterPropertyEditor = value;
-                //_particleEmitterPropertyEditor.Selected = ParticleEmitter;
+                _particleEmitterPropertyEditor.Selected = ParticleEffect;
                 if (_particleEmitterPropertyEditor != null)
                 {
                     AssignParticleEmissorPropertyEditorEventHandlers();
@@ -91,6 +93,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             _addParticleEmitterCommand = new AddParticleEmitterCommand(this);
             _setParticleSpawnProcessorCommand = new SetParticleSpawnProcessorCommand(this);
             _setParticleProcessorCommand = new SetParticleProcessorCommand(this);
+            _removeParticleProcessorCommand = new RemoveParticleProcessorCommand(this);
             
             ParticleEffectViewModel = new ObservableCollection<ParticleEffectViewModel>();
             _effectViewModel = new ParticleEffectViewModel("Particle effect", this, _addParticleEmitterCommand);
@@ -105,27 +108,43 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             _particleEffectActor.Body = _particleEffectActor.Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
         }
 
-        public void AddParticleEmitterTo(ParticleEffectViewModel particleEffect)
+        public void AddParticleEmitterTo(ParticleEffectViewModel particleEffectViewModel)
         {
+            var emitter = ParticleEffect.AddEmitter();
             var emitterViewModel = new ParticleEmitterViewModel("name", this, _setParticleSpawnProcessorCommand,
-                _setParticleProcessorCommand, particleEffect);
+                _setParticleProcessorCommand, particleEffectViewModel, emitter);
             
-            var emitter = _particleEffectActor.ParticleEffectComponent.ParticleEffect.AddEmitter();
-            SetParticleEmitterEditorDefaultValues(emitter);
+            SetParticleEmitterDefaultValues(emitter, emitterViewModel);
 
-            particleEffect.Children.Add(emitterViewModel);
+            particleEffectViewModel.Children.Add(emitterViewModel);
         }
 
-        public void SetParticleSpawnProcessorTo(ParticleEmitterViewModel particleEmitter)
+        public void SetParticleSpawnProcessorTo(ParticleEmitterViewModel particleEmitterViewModel)
         {
-            particleEmitter.Children.Add(
-                new ParticleProcessorViewModel("name", particleEmitter, this));
+            var spawnProcessor = particleEmitterViewModel.ParticleEmitter.SetParticleSpawnProcessor<DefaultParticleSpawnProcessor>();
+            particleEmitterViewModel.Children.Add(
+                new ParticleSpawnProcessorViewModel(spawnProcessor, particleEmitterViewModel, this, _replaceParticleProcessorCommand));
         }
 
         public void AddParticleProcessorTo(ParticleEmitterViewModel particleEmitter)
         {
+            var velocityProcessor =
+                new VelocityParticleProcessor()
+                {
+                    InitialVelocity = particleEmitter.ParticleEmitter.EmissionVelocity,
+                    FinalVelocity = particleEmitter.ParticleEmitter.EmissionVelocity
+                };
             particleEmitter.Children.Add(
-                new ParticleProcessorViewModel("name", particleEmitter, this));
+                new ParticleProcessorViewModel(velocityProcessor, particleEmitter, this, _removeParticleProcessorCommand));
+        }
+
+        public void ReplaceParticleProcessorFromEmitter(ParticleEmitter particleEmitter, Type spawnProcessorType)
+        {
+        }
+
+        public void RemoveParticleProcessorFromEmitter(ParticleProcessorViewModel particleProcessor, ParticleEmitter particleEmitter)
+        {
+            
         }
 
         private void UnassignParticleEmissorPropertyEditorEventHandlers()
@@ -148,21 +167,31 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
 
         }
 
-        private void SetParticleEmitterEditorDefaultValues(ParticleEmitter emitter)
+        private void SetParticleEmitterDefaultValues(ParticleEmitter emitter, ParticleEmitterViewModel emitterViewModel)
         {
-            emitter.SetParticleSpawnProcessor<DefaultParticleSpawnProcessor>();
-            emitter.ParticleProcessors.Add(
+            var spawnProcessor = emitter.SetParticleSpawnProcessor<DefaultParticleSpawnProcessor>();
+            var velocityProcessor =
                 new VelocityParticleProcessor()
                 {
                     InitialVelocity = emitter.EmissionVelocity,
                     FinalVelocity = emitter.EmissionVelocity
-                });
-            emitter.ParticleProcessors.Add(
+                };
+            var directionProcessor =
                 new DirectionParticleProcessor()
                 {
                     InitialDirection = emitter.EmissionDirection,
                     FinalDirection = emitter.EmissionDirection
-                });
+                };
+
+            emitter.ParticleProcessors.Add(velocityProcessor);
+            emitter.ParticleProcessors.Add(directionProcessor);
+
+            emitterViewModel.Children.Add(
+                new ParticleSpawnProcessorViewModel(spawnProcessor, emitterViewModel, this, _replaceParticleProcessorCommand));
+            emitterViewModel.Children.Add(
+                new ParticleProcessorViewModel(velocityProcessor, emitterViewModel, this, _removeParticleProcessorCommand));
+            emitterViewModel.Children.Add(
+                new ParticleProcessorViewModel(directionProcessor, emitterViewModel, this, _removeParticleProcessorCommand));
         }
 
         public void NodeAddedCallback(TreeViewItemViewModel parent, IEnumerable<TreeViewItemViewModel> newModels)
