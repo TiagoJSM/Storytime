@@ -46,10 +46,6 @@
             Grid.ColumnSpan="2" 
             Width="{Binding ElementName=MainGrid,Path=ActualWidth}" 
             Height="Auto">
-            <Button 
-                Name="AddParticleEmitter" Click="AddParticleEmitter_Click">
-                <Image Width ="25" Height="25" Source="/Images/ParticleEditor/Add.png"/>
-            </Button>
         </ToolBar>
         <xna:XnaControl 
             Grid.Row="1" 

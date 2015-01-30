@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using StoryTimeDevKit.Commands.UICommands.ParticleEditor;
 using StoryTimeDevKit.Controls;
 
 namespace StoryTimeDevKit.Models.ParticleEditor
@@ -11,10 +12,10 @@ namespace StoryTimeDevKit.Models.ParticleEditor
     {
         public ICommand AddParticleEmitter { get; private set; }
 
-        public ParticleEffectViewModel(string name, INodeAddedCallback nodeAddCB)
+        public ParticleEffectViewModel(string name, INodeAddedCallback nodeAddCB, ICommand addParticleEmitterCommand)
             : base(name, null, nodeAddCB)
         {
-
+            AddParticleEmitter = addParticleEmitterCommand;
         }
 
     }

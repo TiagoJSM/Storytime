@@ -25,7 +25,7 @@
                     <HierarchicalDataTemplate DataType="{x:Type particleEditor:ParticleEffectViewModel}" 
                         ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal" Tag="{Binding Tag}">
-                            <Image Width="20" Height="20" Source="/Images/Puppeteer/ToolBar/BoneIcon.png" Margin="0,2,2,0"/>
+                            <Image Width="20" Height="20" Source="/Images/ParticleEditor/Effect.png" Margin="0,2,2,0"/>
                             <TextBlock Name="tb" FontSize="14" Text="{Binding Name}">
                                 <TextBlock.ContextMenu>
                                     <ContextMenu>
@@ -88,7 +88,7 @@
                     <HierarchicalDataTemplate DataType="{x:Type particleEditor:ParticleEmitterViewModel}" 
                         ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal" Tag="{Binding Tag}">
-                            <Image Width="20" Height="20" Source="/Images/Puppeteer/ToolBar/BoneIcon.png" Margin="0,2,2,0"/>
+                            <Image Width="20" Height="20" Source="/Images/ParticleEditor/Emitter.png" Margin="0,2,2,0"/>
                             <TextBlock Name="tb" FontSize="14" Text="{Binding Name}">
                                 <TextBlock.ContextMenu>
                                     <ContextMenu>
@@ -154,7 +154,7 @@
 
                     <HierarchicalDataTemplate DataType="{x:Type particleEditor:ParticleProcessorViewModel}">
                         <StackPanel Orientation="Horizontal" Tag="{Binding Tag}">
-                            <Image Width="20" Height="20" Source="/Images/Puppeteer/ToolBar/BoneIcon.png" Margin="0,2,2,0"/>
+                            <Image Width="20" Height="20" Source="/Images/ParticleEditor/Gears.png" Margin="0,2,2,0"/>
                             <TextBlock Name="tb" FontSize="14" Text="{Binding Name}">
                                 <TextBlock.ContextMenu>
                                     <ContextMenu>

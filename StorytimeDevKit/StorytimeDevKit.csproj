@@ -115,10 +115,14 @@
     <Compile Include="Commands\ReversibleCommands\RotateActorCommand.cs" />
     <Compile Include="Commands\ReversibleCommands\SelectActorCommand.cs" />
     <Compile Include="Commands\UICommands\BaseCommand.cs" />
+    <Compile Include="Commands\UICommands\ParticleEditor\AddParticleEmitterCommand.cs" />
+    <Compile Include="Commands\UICommands\ParticleEditor\SetParticleProcessorCommand.cs" />
+    <Compile Include="Commands\UICommands\ParticleEditor\SetParticleSpawnProcessorCommand.cs" />
     <Compile Include="Commands\UICommands\Puppeteer\AttachToBoneCommand.cs" />
     <Compile Include="Configurations\ApplicationProperties.cs" />
     <Compile Include="Controllers\IMultiStackedCommandsController.cs" />
     <Compile Include="Controllers\IStackedCommandsController.cs" />
+    <Compile Include="Controllers\ParticleEditor\IParticleEditorActionContext.cs" />
     <Compile Include="Controllers\ParticleEditor\IParticleEditorController.cs" />
     <Compile Include="Controllers\ParticleEditor\IParticleEmitterPropertyEditorController.cs" />
     <Compile Include="Controllers\ParticleEditor\IParticleEffectController.cs" />
@@ -613,6 +617,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ParticleEditor\Add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ParticleEditor\Gears.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ParticleEditor\Emitter.png" />
+    <Resource Include="Images\ParticleEditor\Effect.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

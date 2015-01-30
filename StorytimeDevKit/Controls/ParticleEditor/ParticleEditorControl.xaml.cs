@@ -69,10 +69,5 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
 			RotateButton.DataContext = _transformModeModel;
 			ScaleButton.DataContext = _transformModeModel;*/
 		}
-
-        private void AddParticleEmitter_Click(object sender, RoutedEventArgs e)
-        {
-            _particleController.AddParticleEmitter();
-        }
 	}
 }

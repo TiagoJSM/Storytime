@@ -11,7 +11,5 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
     public interface IParticleEditorController : IController<IParticleEditorControl>, IController<IGameObjectsControl>
     {
         IParticleEditorControl ParticleEditorControl { get; set; }
-
-        void AddParticleEmitter();
     }
 }

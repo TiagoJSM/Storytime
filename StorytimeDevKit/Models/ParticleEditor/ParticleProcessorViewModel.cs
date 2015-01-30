@@ -12,12 +12,6 @@ namespace StoryTimeDevKit.Models.ParticleEditor
     {
         public ICommand RemoveParticleProcessor { get; private set; }
 
-        public ParticleProcessorViewModel(string name, INodeAddedCallback nodeAddCB)
-            : this(name, null, nodeAddCB)
-        {
-
-        }
-
         public ParticleProcessorViewModel(string name, TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB)
             : base(name, parent, nodeAddCB)
         {

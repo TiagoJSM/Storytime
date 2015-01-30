@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using ParticleEngine;
 using ParticleEngine.ParticleProcessors;
 using ParticleEngine.ParticleProcessors.ParticleSpawnProcessors;
+using StoryTimeDevKit.Commands.UICommands.ParticleEditor;
 using StoryTimeDevKit.Controls;
 using StoryTimeDevKit.Controls.Editors;
 using StoryTimeDevKit.Controls.ParticleEditor;
@@ -23,13 +24,18 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         IParticleEditorController, 
         IParticleEmitterPropertyEditorController, 
         IParticleEffectController,
+        IParticleEditorActionContext,
         INodeAddedCallback
     {
         private IParticleEmitterPropertyEditor _particleEmitterPropertyEditor;
         private IParticleEditorControl _particleEditorControl;
 
+        private AddParticleEmitterCommand _addParticleEmitterCommand;
+        private SetParticleSpawnProcessorCommand _setParticleSpawnProcessorCommand;
+
         private GameWorld _gameWorld;
         private ParticleEmitterActor _particleEmitterActor;
+        private SetParticleProcessorCommand _setParticleProcessorCommand;
 
         private ParticleEmitter ParticleEmitter
         {
@@ -81,9 +87,15 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             _gameWorld.AddScene(scene);
             _gameWorld.SetActiveScene(scene);
             _particleEmitterActor = scene.AddWorldEntity<ParticleEmitterActor>();
+            
+            _addParticleEmitterCommand = new AddParticleEmitterCommand(this);
+            _setParticleSpawnProcessorCommand = new SetParticleSpawnProcessorCommand(this);
+            _setParticleProcessorCommand = new SetParticleProcessorCommand(this);
+            
             ParticleEffectViewModel = new ObservableCollection<ParticleEffectViewModel>();
-            _effectViewModel = new ParticleEffectViewModel("Particle effect", this);
+            _effectViewModel = new ParticleEffectViewModel("Particle effect", this, _addParticleEmitterCommand);
             ParticleEffectViewModel.Add(_effectViewModel);
+            
             SetParticleEmitterEditorDefaultValues();
            
             //ToDo: delete these lines in the future
@@ -95,9 +107,22 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             _particleEmitterActor.Body = _particleEmitterActor.Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f, name);
         }
 
-        public void AddParticleEmitter()
+        public void AddParticleEmitterTo(ParticleEffectViewModel particleEffect)
         {
-            _effectViewModel.Children.Add(new ParticleEmitterViewModel("Added", this));
+            particleEffect.Children.Add(
+                new ParticleEmitterViewModel("name", this, _setParticleSpawnProcessorCommand, _setParticleProcessorCommand, particleEffect));
+        }
+
+        public void SetParticleSpawnProcessorTo(ParticleEmitterViewModel particleEmitter)
+        {
+            particleEmitter.Children.Add(
+                new ParticleProcessorViewModel("name", particleEmitter, this));
+        }
+
+        public void AddParticleProcessorTo(ParticleEmitterViewModel particleEmitter)
+        {
+            particleEmitter.Children.Add(
+                new ParticleProcessorViewModel("name", particleEmitter, this));
         }
 
         private void UnassignParticleEmissorPropertyEditorEventHandlers()

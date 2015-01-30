@@ -37,7 +37,6 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
             : this()
         {
             _parent = parent;
-            //GameObjects = gameObjects;
             ChildAdded += nodeAddCB.NodeAddedCallback;
             
             if (lazyLoadChildren)
