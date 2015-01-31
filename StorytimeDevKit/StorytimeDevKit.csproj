@@ -160,6 +160,9 @@
     <Compile Include="Controls\Puppeteer\HorizontalRuler.xaml.cs">
       <DependentUpon>HorizontalRuler.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Puppeteer\RenderableAssetOrderControl.xaml.cs">
+      <DependentUpon>RenderableAssetOrderControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToEnumValueConverter.cs" />
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToPuppeteerWorkingModeTypeValueConverter.cs" />
     <Compile Include="DataStructures\AnimationTimeLineDataSource.cs" />
@@ -170,6 +173,7 @@
     <Compile Include="DataStructures\Factories\PuppeteerSceneObjectFactory.cs" />
     <Compile Include="DataStructures\Factories\SavedPuppeteerLoadFactory.cs" />
     <Compile Include="DataStructures\Factories\TypeConfigurableSceneObjectFactory.cs" />
+    <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\SkeletonExtensions.cs" />
     <Compile Include="Models\Puppeteer\SaveSkeletonDialogModel.cs" />
     <Compile Include="Models\SavedData\Bones\SavedAnimatedSkeleton.cs" />
@@ -401,6 +405,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Editors\ActorPropertyEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Puppeteer\RenderableAssetOrderControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

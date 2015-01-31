@@ -172,7 +172,14 @@
             </RadioButton>
             <Separator />
         </ToolBar>
-        <my1:SkeletonTreeViewControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <TabControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Name="tabControl1" VerticalAlignment="Stretch" Foreground="#FF190000">
+            <TabItem Header="Skeleton" Name="SkeletonControl">
+                <my1:SkeletonTreeViewControl  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </TabItem>
+            <TabItem Header="Assets" Name="RenderableAssetOrder">
+                <my1:RenderableAssetOrderControl  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </TabItem>
+        </TabControl>
         <my1:PuppeteerControlTabs Grid.Column="0" Grid.Row="2" Margin="0,0,6,0" />
     </Grid>
 </TemplateControls:BaseSceneUserControl>
