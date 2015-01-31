@@ -14,6 +14,7 @@ namespace StoryTimeDevKit.DataStructures.Factories
     public class SavedPuppeteerLoadedContent
     {
         public SavedSkeleton SavedSkeleton { get; set; }
+        public SavedAnimations SavedAnimations { get; set; }
     }
 
     public class SavedPuppeteerLoadFactory
@@ -46,7 +47,12 @@ namespace StoryTimeDevKit.DataStructures.Factories
 
         private SavedPuppeteerLoadedContent LoadSavedAnimatedSkeleton(FileInfo file)
         {
-            return null;
+            var savedSkeleton = PuppeteerUtils.LoadAnimatedSkeleton(file.FullName);
+            return new SavedPuppeteerLoadedContent()
+            {
+                SavedSkeleton = savedSkeleton.SavedSkeleton,
+                SavedAnimations = savedSkeleton.SavedAnimations
+            };
         }
     }
 }

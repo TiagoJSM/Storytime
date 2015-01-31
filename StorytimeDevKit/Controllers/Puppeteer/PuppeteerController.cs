@@ -274,14 +274,6 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             _animationTimeLineData.AddAnimationFrame(actor, Seconds.Value, fromState, toState);
         }
 
-        public void AddAnimationFrameFor(BoneActor actor)
-        {
-            /*if (Seconds == null)
-                _animationTimeLineData.AddBoneInitialSate(actor);
-            else
-                _animationTimeLineData.AddAnimationFrame(actor, Seconds.Value);*/
-        }
-
         public void Load(FileInfo file)
         {
             ClearAll();
@@ -289,6 +281,10 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             if (loadedContent.SavedSkeleton != null)
             {
                 LoadSavedSkeleton(loadedContent.SavedSkeleton);
+            }
+            if (loadedContent.SavedAnimations != null)
+            {
+                LoadSavedAnimations(loadedContent.SavedAnimations);
             }
         }
 
@@ -447,6 +443,37 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             {
                 var boneActor = AddBone(rootBone.AbsolutePosition.GetVector2(), rootBone.AbsoluteEnd.GetVector2());
                 LoadSavedBone(rootBone, boneActor);
+            }
+        }
+
+        private void LoadSavedAnimations(SavedAnimations savedAnimations)
+        {
+            //ToDo: in the future the editor will support multiple animations, then this has to be changed
+            var savedAnimation = savedAnimations.SavedAnimationCollection.First();
+            
+            foreach(var boneAnimationFrames in savedAnimation.BoneAnimationFrames)
+            {
+                LoadSavedBoneAnimations(boneAnimationFrames);
+            }
+        }
+
+        private void LoadSavedBoneAnimations(SavedBoneAnimation savedBoneAnimation)
+        {
+            var actor = _sceneBoneData.GetBoneActorByName(savedBoneAnimation.BoneName);
+            foreach(var frame in savedBoneAnimation.AnimationFrames)
+            {
+                var seconds = frame.EndTime.TotalSeconds;
+                var fromState = new BoneState()
+                {
+                    Rotation = frame.StartRotation,
+                    Translation = frame.StartTranslation
+                };
+                var toState = new BoneState()
+                {
+                    Rotation = frame.EndRotation,
+                    Translation = frame.EndTranslation
+                };
+                _animationTimeLineData.AddAnimationFrame(actor, seconds, fromState, toState);
             }
         }
 

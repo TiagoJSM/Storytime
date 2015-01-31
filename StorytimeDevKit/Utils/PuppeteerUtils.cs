@@ -34,5 +34,13 @@ namespace StoryTimeDevKit.Utils
                     .DeserializeFromXML<SavedSkeleton>(
                         filePath);
         }
+
+        public static SavedAnimatedSkeleton LoadAnimatedSkeleton(string filePath)
+        {
+            return
+                XMLSerializerUtils
+                    .DeserializeFromXML<SavedAnimatedSkeleton>(
+                        filePath);
+        }
     }
 }

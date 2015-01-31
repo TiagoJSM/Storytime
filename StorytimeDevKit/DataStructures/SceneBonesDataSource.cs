@@ -59,6 +59,11 @@ namespace StoryTimeDevKit.DataStructures
             }
         }
 
+        public BoneActor GetBoneActorByName(string boneName)
+        {
+            return _boneDictionary.Where(kvp => kvp.Key.Name == boneName).First().Value;
+        }
+
         public void Clear()
         {
             _boneDictionary = new Dictionary<Bone, BoneActor>();
