@@ -14,55 +14,50 @@ using System.Windows.Shapes;
 using StoryTimeDevKit.Extensions;
 using System.Collections.ObjectModel;
 using StoryTimeDevKit.Models;
+using StoryTimeDevKit.Models.Puppeteer;
+using System.ComponentModel;
+using StoryTimeDevKit.Controllers.Puppeteer;
+using StoryTimeDevKit.Utils;
+using Ninject;
+using StoryTimeDevKit.Delegates.Puppeteer;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
-    public class Demo : BaseViewModel
-    {
-        bool dragOverTarget;
-        string name;
-
-        public bool DragOverTarget
-        {
-            get { return dragOverTarget; }
-            set
-            {
-                dragOverTarget = value;
-                base.OnPropertyChanged("DragOverTarget");
-            }
-        }
-        public string Name
-        {
-            get { return name; }
-            set
-            {
-                name = value;
-                base.OnPropertyChanged("Name");
-            }
-        }
-    }
     /// <summary>
     /// Interaction logic for RenderableAssetOrderControl.xaml
     /// </summary>
-    public partial class RenderableAssetOrderControl : UserControl
+    public partial class RenderableAssetOrderControl : UserControl, IRenderableAssetOrderControl
     {
         private const string _format = "myformat";
         private Point _startPosition;
-        private Adorner _adorner;
         private ListViewItem _draggedItem;
         private ListViewItem _overTarget;
-        private new ObservableCollection<Demo> data;
+
+        private ObservableCollection<AssetViewModel> _data;
+
+        private ISkeletonViewerController _skeletonViewerController;
+
+        public event OnAssetOrderChange OnAssetOrderChange;
 
         public RenderableAssetOrderControl()
         {
-            data = new ObservableCollection<Demo>()
-            {
-                new Demo{Name="Storm"},
-                new Demo{Name="Earth"},
-                new Demo{Name="Fire"}
-            };
-            base.DataContext = data;
             InitializeComponent();
+            Loaded += LoadedHandler;
+        }
+
+        private void LoadedHandler(object sender, RoutedEventArgs e)
+        {
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
+
+            _skeletonViewerController =
+                DependencyInjectorHelper
+                    .PuppeteerKernel
+                    .Get<ISkeletonViewerController>();
+
+            _skeletonViewerController.RenderableAssetOrderControl = this;
+            _data = _skeletonViewerController.RenderableAssetOrderModels;
+            base.DataContext = _data;
         }
 
         private void List_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -82,9 +77,9 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                 ListView listView = sender as ListView;
                 _draggedItem = ((DependencyObject)e.OriginalSource).FindAnchestor<ListViewItem>();
 
-                var c = listView.ItemContainerGenerator.ItemFromContainer(_draggedItem);
+                var data = listView.ItemContainerGenerator.ItemFromContainer(_draggedItem);
 
-                DataObject dragData = new DataObject(_format, c);
+                DataObject dragData = new DataObject(_format, data);
                 DragDrop.DoDragDrop(_draggedItem, dragData, DragDropEffects.Move);
             }
         }
@@ -103,15 +98,17 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             if (dropTarget == null) return;
             if (_draggedItem == _overTarget) return;
             if (!e.Data.GetDataPresent(_format)) return;
-            if(!data.Contains(dropTarget.Content)) return;
-            var insertIndex = data.IndexOf(dropTarget.Content as Demo);
+            if(!_data.Contains(dropTarget.Content)) return;
+            var insertIndex = _data.IndexOf(dropTarget.Content as AssetViewModel);
             if(insertIndex < 0) return;
 
-            var contact = e.Data.GetData(_format) as Demo;
-            data.Remove(contact);
-            data.Insert(insertIndex, contact);
-            (_overTarget.Content as Demo).DragOverTarget = false;
+            var asset = e.Data.GetData(_format) as AssetViewModel;
+            _data.Remove(asset);
+            _data.Insert(insertIndex, asset);
+            (_overTarget.Content as AssetViewModel).DragOverTarget = false;
             _overTarget = null;
+            if (OnAssetOrderChange != null)
+                OnAssetOrderChange(asset, insertIndex);
         }
 
         private void DragList_DragOver(object sender, DragEventArgs e)
@@ -119,7 +116,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             _overTarget = ((DependencyObject)e.OriginalSource).FindAnchestor<ListViewItem>();
             if (_overTarget == null) return;
             if (_draggedItem == _overTarget) return;
-            (_overTarget.Content as Demo).DragOverTarget = true;
+            (_overTarget.Content as AssetViewModel).DragOverTarget = true;
         }
 
         private void DragList_DragLeave(object sender, DragEventArgs e)
@@ -127,7 +124,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             var dropTarget = ((DependencyObject)e.OriginalSource).FindAnchestor<ListViewItem>();
             if (dropTarget == null) return;
             if (_draggedItem == dropTarget) return;
-            (_overTarget.Content as Demo).DragOverTarget = false;
+            (_overTarget.Content as AssetViewModel).DragOverTarget = false;
         }
  
     }

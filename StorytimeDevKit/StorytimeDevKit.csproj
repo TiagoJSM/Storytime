@@ -160,6 +160,7 @@
     <Compile Include="Controls\Puppeteer\HorizontalRuler.xaml.cs">
       <DependentUpon>HorizontalRuler.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Puppeteer\IRenderableAssetOrderControl.cs" />
     <Compile Include="Controls\Puppeteer\RenderableAssetOrderControl.xaml.cs">
       <DependentUpon>RenderableAssetOrderControl.xaml</DependentUpon>
     </Compile>
@@ -173,6 +174,7 @@
     <Compile Include="DataStructures\Factories\PuppeteerSceneObjectFactory.cs" />
     <Compile Include="DataStructures\Factories\SavedPuppeteerLoadFactory.cs" />
     <Compile Include="DataStructures\Factories\TypeConfigurableSceneObjectFactory.cs" />
+    <Compile Include="Delegates\Puppeteer\ControlDelegates.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\SkeletonExtensions.cs" />
     <Compile Include="Models\Puppeteer\SaveSkeletonDialogModel.cs" />
@@ -218,7 +220,7 @@
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToWidgetModeValueConverter.cs" />
     <Compile Include="DataStructures\SceneBonesDataSource.cs" />
     <Compile Include="DataStructures\SceneControlData.cs" />
-    <Compile Include="DataStructures\SkeletonTreeViewDataSource.cs" />
+    <Compile Include="DataStructures\SkeletonViewDataSource.cs" />
     <Compile Include="Delegates\SceneViewerDelegates.cs" />
     <Compile Include="Delegates\TransformDelegates.cs" />
     <Compile Include="Entities\Actors\BoneActor.cs" />
@@ -583,9 +585,7 @@
     <Resource Include="Images\Puppeteer\ToolBar\SelectAssetIcon.png" />
     <Resource Include="Images\Puppeteer\ToolBar\SelectBoneIcon.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Delegates\Puppeteer\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\Puppeteer\AnimationTimeLine\record.png" />
   </ItemGroup>

@@ -51,9 +51,10 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         private IPuppeteerEditorControl _puppeteerEditorControl;
         private ISkeletonTreeViewControl _skeletonTreeViewControl;
         private IAnimationTimeLineControl _timeLineControl;
+        private IRenderableAssetOrderControl _renderableAssetOrderControl;
 
         private SceneBonesDataSource _sceneBoneData;
-        private SkeletonTreeViewDataSource _skeletonTreeViewData;
+        private SkeletonViewDataSource _skeletonTreeViewData;
         private AnimationTimeLineDataSource _animationTimeLineData;
 
         private ISceneObjectFactory _sceneObjectFactory;
@@ -62,7 +63,6 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         private Dictionary<PuppeteerWorkingModeType, WorkingMode> _workingModes;
         private Dictionary<BoneAttachedRenderableAsset, AssetListItemViewModel> _assetMapping;
         private PuppeteerWorkingModesModel _workingModesModel;
-        private ArmatureActor _armatureActor;
 
         public IPuppeteerEditorControl PuppeteerControl 
         {
@@ -124,6 +124,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             }
         }
         public SkeletonViewModel SkeletonViewModel { get { return _skeletonTreeViewData.SkeletonViewModel; } }
+        public ObservableCollection<AssetViewModel> RenderableAssetOrderModels { get { return _skeletonTreeViewData.RenderableAssetOrderModels; } }
 
         public SavePuppeteerItemDialogModel SavedPuppeteerItemModel { get; private set; }
 
@@ -153,6 +154,23 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             }
         }
 
+        public IRenderableAssetOrderControl RenderableAssetOrderControl
+        {
+            get
+            {
+                return _renderableAssetOrderControl;
+            }
+            set
+            {
+                if (_renderableAssetOrderControl == value) return;
+                if (_renderableAssetOrderControl != null)
+                    UnassignRenderableAssetOrderControlEvents();
+                _renderableAssetOrderControl = value;
+                if (value != null)
+                    AssignRenderableAssetOrderControlEvents();
+            }
+        }
+
         protected override Dictionary<PuppeteerWorkingModeType, WorkingMode> WorkingModeMapping
         {
             get { return _workingModes; }
@@ -177,10 +195,9 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             SavedPuppeteerItemModel = new SavePuppeteerItemDialogModel();
             _sceneObjectFactory = new PuppeteerSceneObjectFactory(this);
             _loadSaveFilesfatory = new SavedPuppeteerLoadFactory();
-            _armatureActor = Scene.AddWorldEntity<ArmatureActor>();
             _sceneBoneData = new SceneBonesDataSource(Skeleton);
             _animationTimeLineData = new AnimationTimeLineDataSource(Skeleton);
-            _skeletonTreeViewData = new SkeletonTreeViewDataSource(this, new AttachToBoneCommand(this));
+            _skeletonTreeViewData = new SkeletonViewDataSource(this, new AttachToBoneCommand(this), Scene.AddWorldEntity<ArmatureActor>());
             _assetMapping = new Dictionary<BoneAttachedRenderableAsset, AssetListItemViewModel>();
             _workingModesModel = workingModesModel;
             ConfigureSceneUI();
@@ -229,8 +246,10 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             var asset = SceneObjectViewModel.SceneObject.Object as BoneAttachedRenderableAsset;
             asset.Bone = model.BoneActor.AssignedBone;
             var viewModel = _assetMapping[asset];
-            var assetViewModel = new AssetViewModel(model, this, viewModel.Name);
-            model.Children.Add(assetViewModel);
+            _skeletonTreeViewData.AttachAssetToBone(asset, model);
+            //var assetViewModel = new AssetViewModel(model, this, viewModel.Name);
+
+            //model.Children.Add(assetViewModel);
         }
 
         public void SaveSkeleton()
@@ -343,6 +362,16 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             _timeLineControl.OnTimeMarkerChange -= OnTimeMarkerChangeHandler;
         }
 
+        private void AssignRenderableAssetOrderControlEvents()
+        {
+            _renderableAssetOrderControl.OnAssetOrderChange += OnAssetOrderChangeHandler;
+        }
+
+        private void UnassignRenderableAssetOrderControlEvents()
+        {
+            _renderableAssetOrderControl.OnAssetOrderChange += OnAssetOrderChangeHandler;
+        }
+
         private void PuppeteerOnLoadedHandler(IPuppeteerEditorControl control)
         {
         }
@@ -394,7 +423,8 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                 Texture2D = texture,
                 RenderingOffset = dropPosition
             };
-            _armatureActor.ArmatureRenderableAsset.Add(asset);
+            var assetViewModel = new AssetViewModel(this, asset, viewModel.Name);
+            _skeletonTreeViewData.AddAssetToArmature(assetViewModel);
             _assetMapping.Add(asset, viewModel);
         }
 
@@ -484,6 +514,11 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                 var boneActor = AddBone(child.AbsolutePosition.GetVector2(), child.AbsoluteEnd.GetVector2(), parent);
                 LoadSavedBone(child, boneActor);
             }
+        }
+
+        private void OnAssetOrderChangeHandler(AssetViewModel model, int index)
+        {
+            _skeletonTreeViewData.Move(model, index);
         }
 
         public void NodeAddedCallback(TreeViewItemViewModel parent, IEnumerable<TreeViewItemViewModel> newModels)
