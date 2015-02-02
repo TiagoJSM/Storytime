@@ -19,7 +19,8 @@
                       BorderThickness="1" 
                       HorizontalContentAlignment="Stretch" 
                       Name="ParticleEmitters" 
-                      VerticalContentAlignment="Stretch" SelectedItemChanged="ParticleEmitters_SelectedItemChanged">
+                      VerticalContentAlignment="Stretch" 
+                      SelectedItemChanged="ParticleEmitters_SelectedItemChanged">
 
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type particleEditor:ParticleEffectViewModel}" 
