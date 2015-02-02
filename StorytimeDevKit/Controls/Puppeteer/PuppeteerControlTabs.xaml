@@ -32,33 +32,35 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <ToggleButton 
-                        Name="RecordButton"
-                        Width ="30" Height="30"
-                        IsChecked="{Binding 
-                                        Source={StaticResource timeLineControlsModel},
-                                        Path = Record,
-                                        Mode=TwoWay}" 
-                        Style="{StaticResource DisabledOpacity}" 
-                        Margin="6,2,571,8"
-                         Grid.Row="0">
-                        <Image Width ="20" Height="20" Source="/Images/Puppeteer/AnimationTimeLine/record.png"/>
-                    </ToggleButton>
-                    <ToggleButton 
-                        Name="PlayStopButton"
-                        Width ="30" Height="30"
-                        IsChecked="{Binding 
-                                        Source={StaticResource timeLineControlsModel},
-                                        Path = Play,
-                                        Mode=OneTime}"
-                        IsEnabled ="{Binding 
-                                        Source={StaticResource timeLineControlsModel},
-                                        Path = PlayEnabled}" 
-                        Style="{StaticResource DisabledOpacity}" 
-                        Margin="42,2,536,8"
-                        Grid.Row="0" Click="PlayStopButton_Click">
-                        <Image Width ="20" Height="20" Source="/Images/Puppeteer/AnimationTimeLine/play.png"/>
-                    </ToggleButton>
+                    <StackPanel Orientation="Horizontal">
+                        <ToggleButton 
+                            Name="RecordButton"
+                            Width ="30" Height="30"
+                            Margin="5,0,0,0"
+                            IsChecked="{Binding 
+                                            Source={StaticResource timeLineControlsModel},
+                                            Path = Record,
+                                            Mode=TwoWay}" 
+                            Style="{StaticResource DisabledOpacity}" 
+                            Grid.Row="0">
+                            <Image Width ="20" Height="20" Source="/Images/Puppeteer/AnimationTimeLine/record.png"/>
+                        </ToggleButton>
+                        <ToggleButton 
+                            Name="PlayStopButton"
+                            Width ="30" Height="30"
+                            Margin="5,0,0,0"
+                            IsChecked="{Binding 
+                                            Source={StaticResource timeLineControlsModel},
+                                            Path = Play,
+                                            Mode=OneTime}"
+                            IsEnabled ="{Binding 
+                                            Source={StaticResource timeLineControlsModel},
+                                            Path = PlayEnabled}" 
+                            Style="{StaticResource DisabledOpacity}" 
+                            Grid.Row="0" Click="PlayStopButton_Click">
+                            <Image Width ="20" Height="20" Source="/Images/Puppeteer/AnimationTimeLine/play.png"/>
+                        </ToggleButton>
+                    </StackPanel>
                     <my1:AnimationTimeLineControl Width="Auto" Height="114" BorderThickness="0" Grid.Row="1" SecondsPerStep="0.25" />
                 </Grid>
             </TabItem>
