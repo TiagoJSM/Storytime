@@ -11,6 +11,7 @@ namespace StoryTimeDevKit.Models.Puppeteer
     public class AssetViewModel : TreeViewItemViewModel
     {
         private string _name;
+        private bool _dragOverTarget;
 
         public string Name
         {
@@ -26,17 +27,32 @@ namespace StoryTimeDevKit.Models.Puppeteer
             }
         }
 
+        public bool DragOverTarget
+        {
+            get
+            {
+                return _dragOverTarget;
+            }
+            set
+            {
+                if (_dragOverTarget == value) return;
+                _dragOverTarget = value;
+                OnPropertyChanged("DragOverTarget");
+            }
+        }
+
         public BoneAttachedRenderableAsset Asset { get; set; }
 
-        public AssetViewModel(INodeAddedCallback nodeAddCB, string name)
-            : this(null, nodeAddCB, name)
+        public AssetViewModel(INodeAddedCallback nodeAddCB, BoneAttachedRenderableAsset asset, string name)
+            : this(null, nodeAddCB, asset, name)
         {
         }
 
-        public AssetViewModel(TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB, string name)
+        public AssetViewModel(TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB, BoneAttachedRenderableAsset asset, string name)
             : base(parent, nodeAddCB, false)
         {
             Name = name;
+            Asset = asset;
         }
     }
 }

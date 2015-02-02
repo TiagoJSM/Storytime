@@ -35,6 +35,11 @@ namespace Puppeteer.Resources
             RaiseOnBoundingBoxChanges();
         }
 
+        public void Move(BoneAttachedRenderableAsset asset, int index)
+        {
+            _renderables.Move(asset, index);
+        }
+
         protected override AxisAlignedBoundingBox2D RawAABoundingBox
         {
             get 
