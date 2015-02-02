@@ -19,7 +19,7 @@
                       BorderThickness="1" 
                       HorizontalContentAlignment="Stretch" 
                       Name="ParticleEmitters" 
-                      VerticalContentAlignment="Stretch">
+                      VerticalContentAlignment="Stretch" SelectedItemChanged="ParticleEmitters_SelectedItemChanged">
 
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type particleEditor:ParticleEffectViewModel}" 
@@ -68,14 +68,7 @@
                                             Command="{Binding Path=AddParticleEmitter}"
                                             CommandParameter="{Binding}" />
                                 </ContextMenu>
-                                </StackPanel.ContextMenu>
-                            <StackPanel.InputBindings>
-                                <MouseBinding MouseAction="LeftClick" 
-                                            Command="{Binding SelectedItemChangedCommand,
-                                                        RelativeSource={RelativeSource FindAncestor, 
-                                                        AncestorType={x:Type UserControl}}}"
-                                            CommandParameter="{Binding}"/>
-                            </StackPanel.InputBindings>
+                            </StackPanel.ContextMenu>
                         </StackPanel>
                         <HierarchicalDataTemplate.Triggers>
                             <DataTrigger Binding="{Binding EditMode}" Value="True">
@@ -135,14 +128,7 @@
                                             Command="{Binding Path=SetParticleProcessor}"
                                             CommandParameter="{Binding}" />
                                 </ContextMenu>
-                                </StackPanel.ContextMenu>
-                            <StackPanel.InputBindings>
-                                <MouseBinding MouseAction="LeftClick" 
-                                            Command="{Binding SelectedItemChangedCommand,
-                                                        RelativeSource={RelativeSource FindAncestor, 
-                                                        AncestorType={x:Type UserControl}}}"
-                                            CommandParameter="{Binding}"/>
-                            </StackPanel.InputBindings>
+                            </StackPanel.ContextMenu>
                         </StackPanel>
                         <HierarchicalDataTemplate.Triggers>
                             <DataTrigger Binding="{Binding EditMode}" Value="True">
@@ -164,22 +150,14 @@
                                             Command="{Binding Path=RemoveParticleProcessor}"
                                             CommandParameter="{Binding}" />
                                 </ContextMenu>
-                                </StackPanel.ContextMenu>
-                            <StackPanel.InputBindings>
-                                <MouseBinding MouseAction="LeftClick" 
-                                            Command="{Binding SelectedItemChangedCommand,
-                                                        RelativeSource={RelativeSource FindAncestor, 
-                                                        AncestorType={x:Type UserControl}}}"
-                                            CommandParameter="{Binding}"/>
-                            </StackPanel.InputBindings>
+                            </StackPanel.ContextMenu>
                         </StackPanel>
                     </HierarchicalDataTemplate>
 
                     <HierarchicalDataTemplate DataType="{x:Type particleEditor:ParticleSpawnProcessorViewModel}">
                         <StackPanel Orientation="Horizontal" Tag="{Binding Tag}">
                             <Image Width="20" Height="20" Source="/Images/ParticleEditor/Gears.png" Margin="0,2,2,0"/>
-                            <TextBlock Name="tb" FontSize="14" Text="{Binding Name}" Foreground="#FF0DC927">
-                            </TextBlock>
+                            <TextBlock Name="tb" FontSize="14" Text="{Binding Name}" Foreground="#FF0DC927"/>
                             <StackPanel.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem 
@@ -188,13 +166,6 @@
                                             CommandParameter="{Binding}" />
                                 </ContextMenu>
                             </StackPanel.ContextMenu>
-                            <StackPanel.InputBindings>
-                                <MouseBinding MouseAction="LeftClick" 
-                                            Command="{Binding SelectedItemChangedCommand,
-                                                        RelativeSource={RelativeSource FindAncestor, 
-                                                        AncestorType={x:Type UserControl}}}"
-                                            CommandParameter="{Binding}"/>
-                            </StackPanel.InputBindings>
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>

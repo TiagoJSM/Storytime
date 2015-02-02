@@ -30,7 +30,6 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
         private IParticleEffectController _particleEffectController;
 
         public ICommand SwitchEditMode { get; private set; }
-        public ICommand SelectedItemChangedCommand { get; private set; }
 
         public ParticleEffectTreeView()
         {
@@ -62,18 +61,6 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
                     return (o as ParticleTreeViewItem) != null;
                 }
             );
-
-            SelectedItemChangedCommand = new RelayCommand(
-                (o) =>
-                {
-                    var item = (o as ParticleTreeViewItem);
-                    //_skeletonController.SelectBone(bone);
-                },
-                (o) =>
-                {
-                    return (o as ParticleTreeViewItem) != null;
-                }
-            );
         }
 
         private void etb_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -97,6 +84,11 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
             //if (_skeletonController.GetBoneViewModelByName(tb.Text) != null) return;
 
             tb.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+        }
+
+        private void ParticleEmitters_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            
         }
     }
 }
