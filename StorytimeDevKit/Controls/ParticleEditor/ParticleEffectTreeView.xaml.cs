@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -23,11 +24,13 @@ using StoryTimeDevKit.Utils;
 namespace StoryTimeDevKit.Controls.ParticleEditor
 {
     /// <summary>
-    /// Interaction logic for ParticleEffectTreeView.xaml
+    /// Interaction logic for ParticleEffectControl.xaml
     /// </summary>
-    public partial class ParticleEffectTreeView : UserControl
+    public partial class ParticleEffectTreeView : UserControl, IParticleEffectTreeView
     {
         private IParticleEffectController _particleEffectController;
+
+        public event Action<ParticleTreeViewItem> OnSelectedItemChanged;
 
         public ICommand SwitchEditMode { get; private set; }
 
@@ -47,7 +50,7 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
                     .ParticleEditorKernel
                     .Get<IParticleEffectController>();
 
-            //_particleEffectController. = this;
+            _particleEffectController.ParticleEffectControl = this;
             base.DataContext = _particleEffectController.ParticleEffectViewModel;
 
             SwitchEditMode = new RelayCommand(
@@ -86,9 +89,11 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
             tb.GetBindingExpression(TextBox.TextProperty).UpdateSource();
         }
 
-        private void ParticleEmitters_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void ParticleEffect_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            
+            if (OnSelectedItemChanged == null) return;
+            if (!(ParticleEffect.SelectedItem is ParticleTreeViewItem)) return;
+            OnSelectedItemChanged(ParticleEffect.SelectedItem as ParticleTreeViewItem);
         }
     }
 }

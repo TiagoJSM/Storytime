@@ -38,7 +38,14 @@ namespace StoryTimeDevKit.Controls.Editors
             set
             {
                 _selected = value;
-                _model = new PropertyEditorModel(_selected);
+                if (value == null)
+                {
+                    _model = null;
+                }
+                else
+                {
+                    _model = new PropertyEditorModel(_selected);   
+                }
                 propertyGrid.SelectedObject = _model;
             }
         }

@@ -22,7 +22,7 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
         //public IGameObjectsControl GameObjects { get; private set; }
 
         bool _isExpanded;
-        bool _isSelected;
+        bool _isSelected = true;
 
         #endregion // Data
 

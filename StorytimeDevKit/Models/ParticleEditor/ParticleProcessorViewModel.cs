@@ -16,7 +16,7 @@ namespace StoryTimeDevKit.Models.ParticleEditor
 
         public ParticleProcessorViewModel(IParticleProcessor particleProcessor, TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB,
             ICommand removeParticleProcessor)
-            : base(particleProcessor.GetType().Name, parent, nodeAddCB)
+            : base(particleProcessor.GetType().Name, parent, nodeAddCB, particleProcessor)
         {
             RemoveParticleProcessor = removeParticleProcessor;
             ParticleProcessor = particleProcessor;

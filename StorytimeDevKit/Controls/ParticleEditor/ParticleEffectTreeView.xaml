@@ -18,9 +18,9 @@
                       ItemsSource="{Binding}" 
                       BorderThickness="1" 
                       HorizontalContentAlignment="Stretch" 
-                      Name="ParticleEmitters" 
+                      Name="ParticleEffect" 
                       VerticalContentAlignment="Stretch" 
-                      SelectedItemChanged="ParticleEmitters_SelectedItemChanged">
+                      SelectedItemChanged="ParticleEffect_SelectedItemChanged">
 
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type particleEditor:ParticleEffectViewModel}" 
@@ -170,6 +170,12 @@
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
             </TreeView>
         </GroupBox>
     </Grid>

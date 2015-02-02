@@ -29,6 +29,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
     {
         private IParticleEmitterPropertyEditor _particleEmitterPropertyEditor;
         private IParticleEditorControl _particleEditorControl;
+        private IParticleEffectTreeView _particleEffectControl;
 
         private AddParticleEmitterCommand _addParticleEmitterCommand;
         private SetParticleSpawnProcessorCommand _setParticleSpawnProcessorCommand;
@@ -78,6 +79,22 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
                 {
                     AssignParticleEditorControlEventHandlers();
                 } 
+            }
+        }
+
+        public IParticleEffectTreeView ParticleEffectControl
+        {
+            get { return _particleEffectControl; }
+            set
+            {
+                if (_particleEffectControl == value) return;
+                if (_particleEffectControl != null)
+                    UnassignParticleEffectControlEventHandlers();
+                _particleEffectControl = value;
+                if (_particleEditorControl != null)
+                {
+                    AssignParticleEffectControlEventHandlers();
+                }
             }
         }
 
@@ -167,6 +184,16 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
 
         }
 
+        private void AssignParticleEffectControlEventHandlers()
+        {
+            _particleEffectControl.OnSelectedItemChanged += OnSelectedItemChangedHandler;
+        }
+
+        private void UnassignParticleEffectControlEventHandlers()
+        {
+            _particleEffectControl.OnSelectedItemChanged -= OnSelectedItemChangedHandler;
+        }
+
         private void SetParticleEmitterDefaultValues(ParticleEmitter emitter, ParticleEmitterViewModel emitterViewModel)
         {
             var spawnProcessor = emitter.SetParticleSpawnProcessor<DefaultParticleSpawnProcessor>();
@@ -192,6 +219,11 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
                 new ParticleProcessorViewModel(velocityProcessor, emitterViewModel, this, _removeParticleProcessorCommand));
             emitterViewModel.Children.Add(
                 new ParticleProcessorViewModel(directionProcessor, emitterViewModel, this, _removeParticleProcessorCommand));
+        }
+
+        private void OnSelectedItemChangedHandler(ParticleTreeViewItem item)
+        {
+            _particleEmitterPropertyEditor.Selected = item.EditableObject;
         }
 
         public void NodeAddedCallback(TreeViewItemViewModel parent, IEnumerable<TreeViewItemViewModel> newModels)

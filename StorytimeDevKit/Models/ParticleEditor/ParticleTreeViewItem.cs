@@ -40,16 +40,19 @@ namespace StoryTimeDevKit.Models.ParticleEditor
             }
         }
 
-        public ParticleTreeViewItem(string name, INodeAddedCallback nodeAddCB)
-            : this(name, null, nodeAddCB)
+        public object EditableObject { get; private set; }
+
+        public ParticleTreeViewItem(string name, INodeAddedCallback nodeAddCB, object editableObject)
+            : this(name, null, nodeAddCB, editableObject)
         {
 
         }
 
-        public ParticleTreeViewItem(string name, TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB)
+        public ParticleTreeViewItem(string name, TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB, object editableObject)
             : base(parent, nodeAddCB, false)
         {
             Name = name;
+            EditableObject = editableObject;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace StoryTimeDevKit.Models.ParticleEditor
 
         public ParticleSpawnProcessorViewModel(ParticleSpawnProcessor spawnProcessor, TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB,
             ICommand replaceSpawnParticleProcessor)
-            : base(spawnProcessor.GetType().Name, parent, nodeAddCB)
+            : base(spawnProcessor.GetType().Name, parent, nodeAddCB, spawnProcessor)
         {
             ReplaceSpawnParticleProcessor = replaceSpawnParticleProcessor;
             SpawnProcessor = spawnProcessor;

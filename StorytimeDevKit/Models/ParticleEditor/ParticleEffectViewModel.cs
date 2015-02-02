@@ -13,7 +13,7 @@ namespace StoryTimeDevKit.Models.ParticleEditor
         public ICommand AddParticleEmitter { get; private set; }
 
         public ParticleEffectViewModel(string name, INodeAddedCallback nodeAddCB, ICommand addParticleEmitterCommand)
-            : base(name, null, nodeAddCB)
+            : base(name, nodeAddCB, null)
         {
             AddParticleEmitter = addParticleEmitterCommand;
         }

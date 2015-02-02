@@ -153,6 +153,7 @@
     <Compile Include="Controls\IMouseInteractivePanel.cs" />
     <Compile Include="Controls\INodeAddedCallback.cs" />
     <Compile Include="Controls\ParticleEditor\IParticleEditorControl.cs" />
+    <Compile Include="Controls\ParticleEditor\IParticleEffectTreeView.cs" />
     <Compile Include="Controls\ParticleEditor\ParticleEditorControl.xaml.cs">
       <DependentUpon>ParticleEditorControl.xaml</DependentUpon>
     </Compile>

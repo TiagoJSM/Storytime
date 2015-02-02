@@ -22,8 +22,8 @@ namespace StoryTimeDevKit.Models.ParticleEditor
             ICommand setParticleSpawnProcessor, 
             ICommand setParticleProcessor,
             TreeViewItemViewModel parent,
-            ParticleEmitter emitter )
-            : base(name, parent, nodeAddCB)
+            ParticleEmitter emitter)
+            : base(name, parent, nodeAddCB, emitter)
         {
             SetParticleSpawnProcessor = setParticleSpawnProcessor;
             SetParticleProcessor = setParticleProcessor;
