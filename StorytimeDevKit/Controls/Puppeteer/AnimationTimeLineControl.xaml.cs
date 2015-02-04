@@ -155,6 +155,10 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         private void timeMarkerTimer_TickHandler(object sender, EventArgs e)
         {
             _timeMarkerModel.Seconds += _timeMarkerTimer.Interval.TotalSeconds;
+            if (_timeMarkerModel.Seconds > _timelineController.AnimationTotalTime.TotalSeconds)
+            {
+                PauseAnimation();
+            }
         }
 
         private void OnSecondsChangeHandler(double seconds)

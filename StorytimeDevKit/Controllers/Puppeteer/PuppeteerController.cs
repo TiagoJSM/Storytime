@@ -153,6 +153,10 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                 return SceneObjectViewModel.SceneObject.Object is BoneAttachedRenderableAsset;
             }
         }
+        public TimeSpan AnimationTotalTime
+        {
+            get { return _animationTimeLineData.AnimationTotalTime; }
+        }
 
         public IRenderableAssetOrderControl RenderableAssetOrderControl
         {

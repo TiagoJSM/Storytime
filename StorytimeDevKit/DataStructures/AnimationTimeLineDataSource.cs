@@ -12,45 +12,31 @@ using StoryTimeDevKit.Configurations;
 using StoryTimeDevKit.Extensions;
 using Puppeteer.Animation;
 using Microsoft.Xna.Framework;
+using System.Collections.Specialized;
 
 namespace StoryTimeDevKit.DataStructures
 {
     public class AnimationTimeLineDataSource
     {
-        //private Dictionary<BoneActor, BoneState> _boneInitialStateMapper;
         private Dictionary<BoneActor, ObservableCollection<TimeFrame>> _timeFramesMapper;
         private Skeleton _skeleton;
 
         public SkeletonAnimation Animation { get; private set; }
+        public TimeSpan AnimationTotalTime { get; private set; }
 
         public AnimationTimeLineDataSource(Skeleton skeleton)
         {
             _skeleton = skeleton;
             _timeFramesMapper = new Dictionary<BoneActor, ObservableCollection<TimeFrame>>();
-            //_boneInitialStateMapper = new Dictionary<BoneActor, BoneState>();
             Animation = new SkeletonAnimation(skeleton);
         }
 
         public void AddTimeLineFor(BoneActor actor)
         {
-            _timeFramesMapper.Add(actor, new ObservableCollection<TimeFrame>());
-            //AddBoneInitialSate(actor);
+            var timeFramecollection = new ObservableCollection<TimeFrame>();
+            timeFramecollection.CollectionChanged += CheckIfAnimationTimeChanges;
+            _timeFramesMapper.Add(actor, timeFramecollection);
         }
-
-        /*public void AddBoneInitialSate(BoneActor actor)
-        {
-            BoneState state = null;
-            if (_boneInitialStateMapper.TryGetValue(actor, out state))
-            {
-                state.Translation = actor.AssignedBone.Translation;
-                state.Rotation = actor.AssignedBone.Rotation;
-            }
-            else
-            {
-                state = GetStateFromActor(actor);
-                _boneInitialStateMapper.Add(actor, state);
-            }
-        }*/
 
         public void AddAnimationFrame(BoneActor actor, double animationEndTimeInSeconds, BoneState fromState, BoneState toState)
         {
@@ -91,7 +77,6 @@ namespace StoryTimeDevKit.DataStructures
 
         public void Clear()
         {
-            //_boneInitialStateMapper = new Dictionary<BoneActor, BoneState>();
             _timeFramesMapper = new Dictionary<BoneActor, ObservableCollection<TimeFrame>>();
             Animation = new SkeletonAnimation(_skeleton);
         }
@@ -118,8 +103,6 @@ namespace StoryTimeDevKit.DataStructures
         {
             var dataCollection = GetCollectionBoundToActor(actor);
             var frame = GetLastTimeFrame(dataCollection);
-
-            //var currentState = GetStateFromActor(actor);
 
             BoneAnimationTimeFrameModel item = null;
             if (frame == null)
@@ -170,15 +153,6 @@ namespace StoryTimeDevKit.DataStructures
             dataCollection.Add(item);
         }
 
-        /*private BoneState GetStateFromActor(BoneActor actor)
-        {
-            return new BoneState()
-            {
-                Translation = actor.AssignedBone.Translation,
-                Rotation = actor.AssignedBone.Rotation
-            };
-        }*/
-
         private void SetActorPropertiesToBoneEndState(BoneAnimationTimeFrameModel frame, BoneActor actor, BoneState toState)
         {
             frame.EndState.Translation = toState.Translation;
@@ -194,6 +168,14 @@ namespace StoryTimeDevKit.DataStructures
 
             nextFrame.AnimationFrame.StartTranslation = toState.Translation;
             nextFrame.AnimationFrame.StartRotation = toState.Rotation;
+        }
+
+        private void CheckIfAnimationTimeChanges(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            var timeFrames = sender as ObservableCollection<TimeFrame>;
+            var boneAnimationMaximum = timeFrames.MaxBy(tf => tf.EndTime);
+            if (boneAnimationMaximum.EndTime > AnimationTotalTime)
+                AnimationTotalTime = boneAnimationMaximum.EndTime;
         }
     }
 }
