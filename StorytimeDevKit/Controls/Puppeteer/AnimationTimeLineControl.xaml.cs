@@ -22,6 +22,7 @@ using StoryTimeDevKit.Controllers.Puppeteer;
 using Ninject;
 using System.Collections.Specialized;
 using System.Windows.Threading;
+using System.Windows.Controls.Primitives;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
@@ -35,6 +36,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         private IAnimationTimeLineController _timelineController;
 
         private TimeMarkerViewModel _timeMarkerModel;
+        private bool _isDragging;
 
         public ObservableCollection<TimeLineTuple> Controls { get; private set; }
 
@@ -59,9 +61,9 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             Controls.CollectionChanged += ControlsCollectionChangeHandler;
 
             _timeMarkerTimer = new DispatcherTimer();
-            _timeMarkerTimer.Interval = TimeSpan.FromSeconds(1.0/30.0);
+            _timeMarkerTimer.Interval = TimeSpan.FromSeconds(1.0 / 30.0);
             _timeMarkerTimer.Tick += timeMarkerTimer_TickHandler;
-            
+
             _timeMarkerModel = new TimeMarkerViewModel(Ruler.PixelsPerUnit, 0.25);
             _timeMarkerModel.OnSecondsChange += OnSecondsChangeHandler;
             line.DataContext = _timeMarkerModel;
@@ -79,12 +81,12 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                     Bone = bone,
                     Control = new SingleTimeLineControl() { Width = maxWith, MaxWidth = maxWith, TimeFrames = items }
                 });
-            
+
         }
 
         public void AddFrame(BoneViewModel bone, float rotation, Vector2 position)
         {
-           //this.InvalidateVisual();
+            //this.InvalidateVisual();
         }
 
         public void PlayAnimation()
@@ -159,6 +161,14 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         {
             if (OnTimeMarkerChange != null)
                 OnTimeMarkerChange(seconds);
+        }
+
+        private void GridViewColumnHeader_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                _timeMarkerModel.X = Mouse.GetPosition(Ruler).X;
+            }
         }
     }
 }

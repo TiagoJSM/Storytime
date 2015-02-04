@@ -57,6 +57,8 @@ namespace StoryTimeDevKit.Models.Puppeteer
             {
                 if (_x == value) return;
                 _x = value;
+                if (_x < 0)
+                    _x = 0;
                 OnPropertyChanged("X");
                 OnPropertyChanged("LineXPosition");
 

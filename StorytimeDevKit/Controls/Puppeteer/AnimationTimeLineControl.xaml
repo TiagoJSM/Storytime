@@ -27,7 +27,7 @@
                     </GridViewColumn>
                     <GridViewColumn>
                         <GridViewColumnHeader 
-                            Click="GridViewColumnHeader_Click" >
+                            Click="GridViewColumnHeader_Click" MouseMove="GridViewColumnHeader_MouseMove" >
                                 <my:HorizontalRuler 
                                     x:Name="Ruler" 
                                     Height="30" 
@@ -44,7 +44,7 @@
             </ListView.View>
         </ListView>
         <Line 
-            Name="line" 
+            Name="line"
             Visibility="{Binding Visible}" 
             Stroke="Red" 
             StrokeThickness="3"
