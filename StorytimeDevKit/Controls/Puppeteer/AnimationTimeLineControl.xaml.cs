@@ -51,6 +51,8 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             set { SetValue(SecondsPerStepProperty, value); }
         }
 
+        public bool AnimationLoop { get; set; }
+
         public event Action<double> OnTimeMarkerChange;
 
         public AnimationTimeLineControl()
@@ -157,7 +159,10 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             _timeMarkerModel.Seconds += _timeMarkerTimer.Interval.TotalSeconds;
             if (_timeMarkerModel.Seconds > _timelineController.AnimationTotalTime.TotalSeconds)
             {
-                PauseAnimation();
+                if (!AnimationLoop)
+                    PauseAnimation();
+                else
+                    ResetAnimation();
             }
         }
 

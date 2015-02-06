@@ -12,6 +12,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 {
     public interface IAnimationTimeLineControl : IControl
     {
+        bool AnimationLoop { get; set; }
         event Action<double> OnTimeMarkerChange;
 
         void AddTimeLine(BoneViewModel bone, ObservableCollection<TimeFrame> items);

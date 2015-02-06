@@ -585,7 +585,9 @@
     <Resource Include="Images\Puppeteer\ToolBar\SelectAssetIcon.png" />
     <Resource Include="Images\Puppeteer\ToolBar\SelectBoneIcon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Puppeteer\AnimationTimeLine\infinite.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Puppeteer\AnimationTimeLine\record.png" />
   </ItemGroup>
