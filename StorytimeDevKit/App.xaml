@@ -45,6 +45,10 @@
             <Setter Property="Background" Value="DimGray"/>
             <Setter Property="BorderThickness" Value="2"/>
         </Style>
-        
+        <Style TargetType="{x:Type ToggleButton}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+
     </Application.Resources>
 </Application>

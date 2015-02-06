@@ -9,8 +9,9 @@
              d:DesignHeight="179" d:DesignWidth="619">
     <UserControl.Resources>
         <models:AnimationTimeLineControlsViewModel x:Key="timeLineControlsModel" />
-
-        <Style x:Key="DisabledOpacity" TargetType="{x:Type ToggleButton}">
+        <Style TargetType="{x:Type ToggleButton}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="2"/>
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.25" />
@@ -41,7 +42,6 @@
                                             Source={StaticResource timeLineControlsModel},
                                             Path = Record,
                                             Mode=TwoWay}" 
-                            Style="{StaticResource DisabledOpacity}" 
                             Grid.Row="0">
                             <Image Width ="20" Height="20" Source="/Images/Puppeteer/AnimationTimeLine/record.png"/>
                         </ToggleButton>
@@ -56,7 +56,6 @@
                             IsEnabled ="{Binding 
                                             Source={StaticResource timeLineControlsModel},
                                             Path = PlayEnabled}" 
-                            Style="{StaticResource DisabledOpacity}" 
                             Grid.Row="0" Click="PlayStopButton_Click">
                             <Image Width ="20" Height="20" Source="/Images/Puppeteer/AnimationTimeLine/play.png"/>
                         </ToggleButton>
@@ -64,7 +63,6 @@
                             Name="AnimationLoopButton"
                             Width ="30" Height="30"
                             Margin="5,0,0,0"
-                            Style="{StaticResource DisabledOpacity}" 
                             Grid.Row="0" Click="AnimationLoopButton_Click">
                             <Image Width ="26" Height="30" Source="/Images/Puppeteer/AnimationTimeLine/infinite.png"/>
                         </ToggleButton>
