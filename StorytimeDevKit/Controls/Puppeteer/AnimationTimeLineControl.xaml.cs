@@ -54,6 +54,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         public bool AnimationLoop { get; set; }
 
         public event Action<double> OnTimeMarkerChange;
+        public event Action<AnimationTimeLineControl> OnAnimationStopPlaying;
 
         public AnimationTimeLineControl()
         {
@@ -99,6 +100,8 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         public void PauseAnimation()
         {
             _timeMarkerTimer.Stop();
+            if (OnAnimationStopPlaying != null)
+                OnAnimationStopPlaying(this);
         }
 
         public void ResetAnimation()

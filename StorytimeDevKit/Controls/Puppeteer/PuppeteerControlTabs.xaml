@@ -52,7 +52,7 @@
                             IsChecked="{Binding 
                                             Source={StaticResource timeLineControlsModel},
                                             Path = Play,
-                                            Mode=OneTime}"
+                                            Mode=TwoWay}"
                             IsEnabled ="{Binding 
                                             Source={StaticResource timeLineControlsModel},
                                             Path = PlayEnabled}" 

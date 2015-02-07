@@ -15,6 +15,7 @@ using StoryTimeDevKit.Controllers.Puppeteer;
 using System.ComponentModel;
 using StoryTimeDevKit.Utils;
 using Ninject;
+using StoryTimeDevKit.Models.Puppeteer;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
@@ -23,15 +24,16 @@ namespace StoryTimeDevKit.Controls.Puppeteer
     /// </summary>
     public partial class PuppeteerControlTabs : UserControl
     {
+        private AnimationTimeLineControlsViewModel _model;
         public PuppeteerControlTabs()
         {
             InitializeComponent();
-
+            _model = this.FindResource("timeLineControlsModel") as AnimationTimeLineControlsViewModel;
+            TimeLines.OnAnimationStopPlaying += OnAnimationStopPlayingHandler;
         }
 
         private void PlayStopButton_Click(object sender, RoutedEventArgs e)
         {
-            
             if (PlayStopButton.IsChecked ?? false)
             {
                 TimeLines.ResetAnimation();
@@ -46,6 +48,11 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         private void AnimationLoopButton_Click(object sender, RoutedEventArgs e)
         {
             TimeLines.AnimationLoop = AnimationLoopButton.IsChecked ?? false;
+        }
+
+        public void OnAnimationStopPlayingHandler(AnimationTimeLineControl control)
+        {
+            _model.Play = false;
         }
     }
 }

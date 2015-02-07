@@ -34,7 +34,7 @@ namespace StoryTimeDevKit.DataStructures
         public void AddTimeLineFor(BoneActor actor)
         {
             var timeFramecollection = new ObservableCollection<TimeFrame>();
-            timeFramecollection.CollectionChanged += CheckIfAnimationTimeChanges;
+            timeFramecollection.CollectionChanged += CheckIfAnimationTimeFramesCountChanges;
             _timeFramesMapper.Add(actor, timeFramecollection);
         }
 
@@ -170,12 +170,25 @@ namespace StoryTimeDevKit.DataStructures
             nextFrame.AnimationFrame.StartRotation = toState.Rotation;
         }
 
-        private void CheckIfAnimationTimeChanges(object sender, NotifyCollectionChangedEventArgs e)
+        private void CheckIfAnimationTimeFramesCountChanges(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var timeFrames = sender as ObservableCollection<TimeFrame>;
-            var boneAnimationMaximum = timeFrames.MaxBy(tf => tf.EndTime);
-            if (boneAnimationMaximum.EndTime > AnimationTotalTime)
-                AnimationTotalTime = boneAnimationMaximum.EndTime;
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                var timeFrames = sender as ObservableCollection<TimeFrame>;
+                var boneAnimationMaximum = timeFrames.MaxBy(tf => tf.EndTime);
+                if (boneAnimationMaximum.EndTime > AnimationTotalTime)
+                    AnimationTotalTime = boneAnimationMaximum.EndTime;
+
+                var newTimeFrames = e.NewItems.Cast<TimeFrame>();
+                foreach (var newTimeFrame in newTimeFrames)
+                    newTimeFrame.OnEndTimeChanges += OnTimeFrameEndTimeChangesHandler;
+            }
+        }
+
+        private void OnTimeFrameEndTimeChangesHandler(TimeFrame timeFrame)
+        {
+            if (timeFrame.EndTime > AnimationTotalTime)
+                AnimationTotalTime = timeFrame.EndTime;
         }
     }
 }

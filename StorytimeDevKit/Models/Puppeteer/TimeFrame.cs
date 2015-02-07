@@ -10,6 +10,9 @@ namespace StoryTimeDevKit.Models.Puppeteer
         private TimeSpan _startTime;
         private TimeSpan _endTime;
 
+        public event Action<TimeFrame> OnStartTimeChanges;
+        public event Action<TimeFrame> OnEndTimeChanges;
+
         public TimeSpan StartTime
         {
             get
@@ -21,6 +24,8 @@ namespace StoryTimeDevKit.Models.Puppeteer
                 if (_startTime == value) return;
                 _startTime = value;
                 OnPropertyChanged("StartTime");
+                if (OnStartTimeChanges != null)
+                    OnStartTimeChanges(this);
             }
         }
 
@@ -35,6 +40,8 @@ namespace StoryTimeDevKit.Models.Puppeteer
                 if (_endTime == value) return;
                 _endTime = value;
                 OnPropertyChanged("EndTime");
+                if (OnEndTimeChanges != null)
+                    OnEndTimeChanges(this);
             }
         }
     }
