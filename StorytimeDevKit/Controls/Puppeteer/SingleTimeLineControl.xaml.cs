@@ -155,19 +155,37 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                 _frame = frame;
                 _control = control;
                 if (_previous != null)
-                    _previous.OnEndChanges += OnEndChangesHandler;
+                    _previous.OnEndChanges += OnPreviousEndChangesHandler;
                 if (_frame != null)
                 {
                     _logicalX = _control.GetDataPointXFromFrame(frame);
                     _frame.PropertyChanged += PropertyChangedHandler;
                 }
+                OnEndChanges += OnEndChangesHandler;
             }
 
-            private void OnEndChangesHandler(DataPoint previous)
+            private void OnPreviousEndChangesHandler(DataPoint previous)
             {
                 base.OnPropertyChanged("StartX");
                 base.OnPropertyChanged("StartY");
                 base.OnPropertyChanged("Width"); ;
+
+                _frame.EndTime = _control.GetTimeFromXPosition(EndX);
+                var next = _control.GetDataPointAfter(this);
+                if (next != null)
+                {
+                    next._frame.StartTime = _frame.EndTime;
+                }
+            }
+
+            private void OnEndChangesHandler(DataPoint previous)
+            {
+                _frame.EndTime = _control.GetTimeFromXPosition(EndX);
+                var next = _control.GetDataPointAfter(this);
+                if (next != null)
+                {
+                    next._frame.StartTime = _frame.EndTime;
+                }
             }
 
             private void PropertyChangedHandler(object sender, PropertyChangedEventArgs e)
@@ -312,6 +330,11 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         private double GetDataPointXFromFrame(TimeFrame frame)
         {
             return frame.EndTime.TotalSeconds * PixelsPerUnit;
+        }
+
+        private TimeSpan GetTimeFromXPosition(double xPosition)
+        {
+            return TimeSpan.FromSeconds(xPosition / PixelsPerUnit);
         }
     }
 }
