@@ -315,7 +315,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         {
             var boneActors = Scene.GetAll<BoneActor>();
             foreach (var boneActor in boneActors)
-                Scene.RemoveActor(boneActor);
+                Scene.RemoveWorldEntity(boneActor);
             foreach (var bone in Skeleton.RootBones.ToList())
                 Skeleton.RemoveBone(bone);
             _sceneBoneData.Clear();

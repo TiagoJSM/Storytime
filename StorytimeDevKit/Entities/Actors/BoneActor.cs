@@ -76,10 +76,6 @@ namespace StoryTimeDevKit.Entities.Actors
             OnBoundingBoxChanges += OnBoundingBoxChangesHandler;
         }
 
-        public override void TimeElapse(WorldTime WTime)
-        {
-        }
-
         private void OnCreatedHandler()
         {
             Body = Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f);

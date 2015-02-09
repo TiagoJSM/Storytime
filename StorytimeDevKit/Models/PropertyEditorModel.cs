@@ -16,28 +16,34 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 namespace StoryTimeDevKit.Models
 {
     
-    public class ActorPropertyEditorModel : DynamicObject, ICustomTypeDescriptor, INotifyPropertyChanged
+    public class PropertyEditorModel : DynamicObject, ICustomTypeDescriptor, INotifyPropertyChanged
     {
-        private readonly IDictionary<string, ActorEditablePropertyModel> dynamicProperties =
-            new Dictionary<string, ActorEditablePropertyModel>();
-        private BaseActor _ba;
+        private readonly IDictionary<string, EditablePropertyModel> dynamicProperties =
+            new Dictionary<string, EditablePropertyModel>();
+        private object _data;
 
-        public ActorPropertyEditorModel(BaseActor ba)
+        public PropertyEditorModel(object data)
         {
-            _ba = ba;
+            _data = data;
+            AddEditablePropertiesFromData();
+        }
+
+        private void AddEditablePropertiesFromData()
+        {
             var editableProps =
-                ba.GetType()
+                _data.GetType()
                 .GetProperties()
-                .Where(prop => prop.ContainsAttribute(typeof(EditableAttribute))) 
+                .Where(prop => prop.ContainsAttribute(typeof(EditableAttribute)))
                 .Where(prop => prop.CanBeGettedAndSetted())
-                .Select(prop => ConvertToActorEditableProperty(prop))
+                .Select(prop => ConvertToEditableProperty(prop))
                 .ToList();
 
             foreach (var editableProp in editableProps)
                 AddProperty(editableProp);
+            
         }
 
-        private ActorEditablePropertyModel ConvertToActorEditableProperty(PropertyInfo prop)
+        private EditablePropertyModel ConvertToEditableProperty(PropertyInfo prop)
         {
             var editable = 
                 (EditableAttribute)(Attribute.GetCustomAttributes(prop, typeof(EditableAttribute), true).First());
@@ -51,11 +57,11 @@ namespace StoryTimeDevKit.Models
             if (String.IsNullOrWhiteSpace(propName))
                 propName = prop.Name;
             
-            return new ActorEditablePropertyModel()
+            return new EditablePropertyModel()
             {
                 PropertyGroup = propGroup,
                 PropertyName = propName,
-                Data = prop.GetValue(_ba, null),
+                Data = prop.GetValue(_data, null),
                 DataType = prop.PropertyType
             };
         }
@@ -63,7 +69,7 @@ namespace StoryTimeDevKit.Models
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             var memberName = binder.Name;
-            ActorEditablePropertyModel bucket;
+            EditablePropertyModel bucket;
             var gotValue = dynamicProperties.TryGetValue(memberName, out bucket);
             result = bucket.Data;
             return gotValue;
@@ -72,7 +78,7 @@ namespace StoryTimeDevKit.Models
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
             var memberName = binder.Name;
-            var model = new ActorEditablePropertyModel() 
+            var model = new EditablePropertyModel() 
             {
                 Data = value,
                 DataType = binder.ReturnType,
@@ -83,7 +89,7 @@ namespace StoryTimeDevKit.Models
             return true;
         }
 
-        protected void AddProperty(ActorEditablePropertyModel editableProp)
+        protected void AddProperty(EditablePropertyModel editableProp)
         {
             dynamicProperties[editableProp.PropertyName] = editableProp;
             NotifyToRefreshAllProperties();
@@ -103,14 +109,14 @@ namespace StoryTimeDevKit.Models
             return new PropertyDescriptorCollection(properties.ToArray());
         }
 
-        private Attribute[] GetPropertyEditorAttributesFrom(ActorEditablePropertyModel model)
+        private Attribute[] GetPropertyEditorAttributesFrom(EditablePropertyModel model)
         {
             if (IsExpandable(model))
                 return new Attribute[] { new CategoryAttribute(model.PropertyGroup), new ExpandableObjectAttribute() };
             return new Attribute[] { new CategoryAttribute(model.PropertyGroup) };
         }
 
-        private bool IsExpandable(ActorEditablePropertyModel model)
+        private bool IsExpandable(EditablePropertyModel model)
         {
             if (model.DataType.IsPrimitive)
                 return false;
@@ -209,10 +215,10 @@ namespace StoryTimeDevKit.Models
 
         private class DynamicPropertyDescriptor : PropertyDescriptor
         {
-            private readonly ActorPropertyEditorModel obj;
+            private readonly PropertyEditorModel obj;
             private readonly Type propertyType;
 
-            public DynamicPropertyDescriptor(ActorPropertyEditorModel obj,
+            public DynamicPropertyDescriptor(PropertyEditorModel obj,
                 string propertyName, Type propertyType, Attribute[] propertyAttributes)
                 : base(propertyName, propertyAttributes)
             {
@@ -246,7 +252,7 @@ namespace StoryTimeDevKit.Models
 
             public override Type ComponentType
             {
-                get { return typeof(ActorPropertyEditorModel); }
+                get { return typeof(PropertyEditorModel); }
             }
 
             public override bool IsReadOnly

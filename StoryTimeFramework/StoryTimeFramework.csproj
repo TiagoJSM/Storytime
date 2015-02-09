@@ -75,10 +75,13 @@
     <Compile Include="Entities\Actors\Actor.cs" />
     <Compile Include="Entities\Actors\BaseActor.cs" />
     <Compile Include="Entities\Actors\ParticleActor.cs" />
+    <Compile Include="Entities\Actors\ParticleEffectActor.cs" />
+    <Compile Include="Entities\Actors\ParticleEmitterActor.cs" />
     <Compile Include="Entities\Cameras\Camera.cs" />
     <Compile Include="Entities\Actors\Character.cs" />
     <Compile Include="Entities\Components\ComponentCollection.cs" />
     <Compile Include="Entities\Components\Component.cs" />
+    <Compile Include="Entities\Components\ParticleEffectComponent.cs" />
     <Compile Include="Entities\Components\ParticleEmitterComponent.cs" />
     <Compile Include="Entities\Controllers\BaseAIController.cs" />
     <Compile Include="Entities\Controllers\BaseController.cs" />

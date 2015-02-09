@@ -43,6 +43,13 @@ namespace StoryTimeFramework.Entities
             _initialized = true;
         }
 
+        public void Destroy()
+        {
+            Scene.RemoveWorldEntity(this);
+            if (OnDestroyed != null)
+                OnDestroyed();
+        }
+
         public abstract void TimeElapse(WorldTime WTime);
 
         protected void RaiseBoundingBoxChanges()

@@ -127,15 +127,26 @@ namespace StoryTimeFramework.WorldManagement
         public void Update(WorldTime WTime)
         {
             _currentTime = WTime;
-            foreach (var ba in _worldEntities)
+
+            PhysicalWorld.Update(_currentTime);
+            foreach (var ba in _worldEntities.ToArray())
             {
                 ba.TimeElapse(_currentTime);
             }
         }
 
-        public TEntity AddWorldEntity<TEntity>(Action<WorldEntity> initializer = null) where TEntity : WorldEntity
+        public TEntity AddWorldEntity<TEntity>(Action<TEntity> initializer = null) where TEntity : WorldEntity
         {
-            return AddWorldEntity(typeof(TEntity), initializer) as TEntity;
+            Action<WorldEntity> initializerAdapter =
+                (ent) =>
+                {
+                    if (initializer != null)
+                    {
+                        initializer(ent as TEntity);
+                    }
+                };
+
+            return AddWorldEntity(typeof(TEntity), initializerAdapter) as TEntity;
         }
 
         public WorldEntity AddWorldEntity(Type entityType, Action<WorldEntity> initializer = null)
@@ -155,7 +166,7 @@ namespace StoryTimeFramework.WorldManagement
             return entity;
         }
 
-        public void RemoveActor(WorldEntity entity)
+        public void RemoveWorldEntity(WorldEntity entity)
         {
             if (!_worldEntities.Contains(entity)) return;
 

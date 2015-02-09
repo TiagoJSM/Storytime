@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using StoryTimeCore.Input.Time;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeFramework.WorldManagement;
 
@@ -22,7 +23,7 @@ namespace StoryTimeFramework.Entities.Components
             ActorOwner = ownerActor;
         }
 
-        public Component AddComponent<TComponent>() where TComponent : Component
+        public TComponent AddComponent<TComponent>() where TComponent : Component
         {
             var component = Scene.AddWorldEntity<TComponent>();
             component.OwnerActor = ActorOwner;
@@ -38,6 +39,14 @@ namespace StoryTimeFramework.Entities.Components
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _components.GetEnumerator();
+        }
+
+        public void TimeElapse(WorldTime WTime)
+        {
+            foreach (var component in _components)
+            {
+                component.TimeElapse(WTime);
+            }
         }
     }
 }

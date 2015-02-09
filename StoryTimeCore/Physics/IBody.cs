@@ -17,5 +17,7 @@ namespace StoryTimeCore.Physics
         event Action<IBody> OnRotationChanges;
         Vector2 Position { get; set; }
         float Rotation { get; set; }
+        Vector2 Direction { get; set; }
+        float Velocity { get; set; }
     }
 }

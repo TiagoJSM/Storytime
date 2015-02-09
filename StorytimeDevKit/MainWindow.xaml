@@ -105,6 +105,13 @@
 					    Path=Puppeteer}">
                 <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/puppet.png"/>
             </Button>
+            <Button 
+                Command="{Binding RelativeSource={  
+                            RelativeSource FindAncestor, 
+					        AncestorType={x:Type Window}}, 
+					    Path=ParticleEditor}">
+                <Image Width ="25" Height="25" Source="/Images/MainWindow/ToolBar/atoms.png"/>
+            </Button>
             <Separator />
             <RadioButton 
                 Name="TranslateButton"

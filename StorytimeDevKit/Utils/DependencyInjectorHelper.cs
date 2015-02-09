@@ -29,5 +29,15 @@ namespace StoryTimeDevKit.Utils
                         .Properties[ApplicationProperties.PuppeteerDependencyInjectorKey] as IKernel;
             }
         }
+
+        public static IKernel ParticleEditorKernel
+        {
+            get
+            {
+                return Application
+                        .Current
+                        .Properties[ApplicationProperties.ParticleEditorInjectorKey] as IKernel;
+            }
+        }
     }
 }

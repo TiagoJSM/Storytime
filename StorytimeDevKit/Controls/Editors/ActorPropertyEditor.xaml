@@ -7,7 +7,7 @@
              d:DesignHeight="300" d:DesignWidth="300" 
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
     <Grid>
-        <TreeView HorizontalAlignment="Stretch" Name="treeView1" VerticalAlignment="Stretch" Padding="0" />
+        <!--<TreeView HorizontalAlignment="Stretch" Name="treeView1" VerticalAlignment="Stretch" Padding="0" />-->
         <xctk:PropertyGrid HorizontalAlignment="Stretch" Name="propertyGrid1" VerticalAlignment="Stretch" />
     </Grid>
 </UserControl>

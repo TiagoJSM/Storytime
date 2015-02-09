@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Ninject;
+using StoryTimeDevKit.Controllers.ParticleEditor;
 using StoryTimeDevKit.Controllers.Scenes;
 using StoryTimeDevKit.Controllers.GameObjects;
 using StoryTimeDevKit.Controllers.ImageViewer;
@@ -22,11 +23,16 @@ namespace StoryTimeDevKit.Bootstraps
             kernel.Bind<TransformModeViewModel>().To<TransformModeViewModel>().InSingletonScope();
         }
 
-        internal static void PuppeteerConfigure(IKernel kernel)
+        public static void PuppeteerConfigure(IKernel kernel)
         {
             kernel.Bind<IPuppeteerController, ISkeletonViewerController, IAnimationTimeLineController>().To<PuppeteerController>().InSingletonScope();
             kernel.Bind<TransformModeViewModel>().To<TransformModeViewModel>().InSingletonScope();
             kernel.Bind<PuppeteerWorkingModesModel>().To<PuppeteerWorkingModesModel>().InSingletonScope();
+        }
+
+        public static void ParticleEditorConfigure(IKernel kernel)
+        {
+            kernel.Bind<IParticleEditorController, IParticleEmitterPropertyEditorController, IParticleEffectController>().To<ParticleEditorController>().InSingletonScope();
         }
     }
 }

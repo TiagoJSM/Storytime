@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="DataStructures\BoundingBox2D.cs" />
     <Compile Include="DataStructures\Circle.cs" />
+    <Compile Include="Delegates\TimeDelegates.cs" />
     <Compile Include="Delegates\TransformDelegates.cs" />
     <Compile Include="Entities\ICamera.cs" />
     <Compile Include="Extensions\BoundingBox2DExtensions.cs" />

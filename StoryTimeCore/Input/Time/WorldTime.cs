@@ -13,6 +13,7 @@ namespace StoryTimeCore.Input.Time
         public WorldTime(TimeSpan totalElapsedTime, TimeSpan elapsedSinceLastTime)
         {
             _totalElapsedTime = totalElapsedTime;
+            _elapsedSinceLastTime = elapsedSinceLastTime;
         }
 
         private TimeSpan _totalElapsedTime;

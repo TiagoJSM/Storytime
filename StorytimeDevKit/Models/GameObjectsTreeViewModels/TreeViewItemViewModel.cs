@@ -22,7 +22,7 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
         private TreeViewItemViewModel _parent;
 
         bool _isExpanded;
-        bool _isSelected;
+        bool _isSelected = true;
 
         #endregion // Data
 
@@ -37,7 +37,6 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
             : this()
         {
             _parent = parent;
-            //GameObjects = gameObjects;
             ChildAdded += nodeAddCB.NodeAddedCallback;
             
             if (lazyLoadChildren)

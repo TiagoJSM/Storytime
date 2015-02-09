@@ -29,11 +29,6 @@ namespace StoryTimeDevKit.Entities.Actors
             OnCreated += OnCreatedHandler;
         }
 
-        public override void TimeElapse(WorldTime WTime)
-        {
-            
-        }
-
         public void OnCreatedHandler()
         {
             Body = Scene.PhysicalWorld.CreateRectangularBody(1, 1, 1);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,18 +12,35 @@ namespace ParticleEngine
 {
     public class Particle
     {
-        private IBody _body;
         private TimeSpan _timeToLive;
-        
+
+        public IBody Body { get; private set; }
         public Color Color { get; set; }
-        public Vector2 Direction { get; set; }
-        public double Velocity { get; set; }
+        public string ParticleTexture {get; private set; }
+
+        public Vector2 Direction
+        {
+            get { return Body.Direction; }
+            set
+            {
+                Body.Direction = value;
+            }
+        }
+
+        public float Velocity
+        {
+            get { return Body.Velocity; }
+            set
+            {
+                Body.Velocity = value;
+            }
+        }
         public Vector2 Size { get; set; }
 
         public Vector2 Position
         {
-            get { return _body.Position; }
-            set { _body.Position = value; }
+            get { return Body.Position; }
+            set { Body.Position = value; }
         }
 
         public bool IsAlive
@@ -38,10 +56,11 @@ namespace ParticleEngine
         public TimeSpan TimeToLive { get; set; }
         public TimeSpan ElapsedLifeTime { get; set; }
 
-        public Particle(IBody body)
+        public Particle(IBody body, string particleTexture)
         {
-            _body = body;
+            Body = body;
             Color = new Color(1f, 1f, 1f);
+            ParticleTexture = particleTexture;
         }
     }
 }

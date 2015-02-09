@@ -16,6 +16,7 @@ using FarseerPhysics.Dynamics;
 using StoryTimeCore.General;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
+using StoryTimeCore.Delegates;
 
 namespace StoryTimeFramework.Entities.Actors
 {
@@ -26,6 +27,8 @@ namespace StoryTimeFramework.Entities.Actors
     {
         private IRenderableAsset _renderableAsset;
         private IBody _body;
+
+        public OnTimeElapse OnTimeElapse;
 
         [Editable(EditorGroup = "Physics", EditorName = "Body")]
         public IBody Body 
@@ -51,7 +54,7 @@ namespace StoryTimeFramework.Entities.Actors
                 _body = value;
             }
         }
-        [Editable(EditorGroup = "Renderable", EditorName = "Actor")]
+        [Editable(EditorGroup = "Renderable", EditorName = "Asset")]
         public IRenderableAsset RenderableAsset 
         {
             get
@@ -120,6 +123,15 @@ namespace StoryTimeFramework.Entities.Actors
         public BaseActor()
         {
             Components = new ComponentCollection(this);
+        }
+
+        public sealed override void TimeElapse(WorldTime WTime)
+        {
+            Components.TimeElapse(WTime);
+            if (_renderableAsset != null)
+                _renderableAsset.TimeElapse(WTime);
+            if (OnTimeElapse != null)
+                OnTimeElapse(WTime);
         }
 
         private void RenderableActorBoundingBoxChangesHandler(IRenderableAsset asset)

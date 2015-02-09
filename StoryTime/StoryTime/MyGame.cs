@@ -139,12 +139,12 @@ namespace StoryTime
 
             base.Update(gameTime);
 
+            var wt = new WorldTime(gameTime.TotalGameTime, gameTime.ElapsedGameTime);
             
+            GameWorld.Update(wt);
+
             if (OnUpdate != null)
-            {
-                var wt = new WorldTime(gameTime.TotalGameTime, gameTime.ElapsedGameTime);
                 OnUpdate(wt);
-            }
         }
 
         //public void Draw(GraphicsDevice gd)

@@ -77,7 +77,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                 return;
 
             _game = new MyGame(PuppeteerEditor.Handle);
-
+            _game.GameWorld.UpdateWorld = false;
             var controlArg =
                 new ConstructorArgument(
                     ApplicationProperties.IPuppeteerControllerGameWorldArgName,
