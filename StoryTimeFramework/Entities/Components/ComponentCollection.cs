@@ -16,8 +16,8 @@ namespace StoryTimeFramework.Entities.Components
     public class ComponentCollection : Component, IEnumerable<Component>
     {
         private List<Component> _components;
- 
-        //public BaseActor ActorOwner { get; private set; }
+        private AxisAlignedBoundingBox2D _rawAABoundingBox;
+        
         public Scene Scene { get { return OwnerActor.Scene; } }
         public IEnumerable<Component> Components { get { return _components; } } 
 
@@ -33,6 +33,7 @@ namespace StoryTimeFramework.Entities.Components
             component.OwnerActor = OwnerActor;
             _components.Add(component);
             component.OnBoundingBoxChanges += OnBoundingBoxChangesHandler;
+            UpdateBoundingBox();
             return component;
         }
 
@@ -55,20 +56,21 @@ namespace StoryTimeFramework.Entities.Components
 
         public override void TimeElapse(WorldTime WTime)
         {
-            /*foreach (var component in _components)
-            {
-                component.TimeElapse(WTime);
-            }*/
-        }
-
-        private void OnBoundingBoxChangesHandler(WorldEntity entity)
-        {
-
         }
 
         protected override AxisAlignedBoundingBox2D RawAABoundingBox
         {
-            get { return Components.Select(c => c.AABoundingBox).Combine(); }
+            get { return _rawAABoundingBox; }
+        }
+
+        private void OnBoundingBoxChangesHandler(WorldEntity entity)
+        {
+            UpdateBoundingBox();
+        }
+
+        private void UpdateBoundingBox()
+        {
+            _rawAABoundingBox = Components.Select(c => c.AABoundingBox).Combine();
         }
     }
 }
