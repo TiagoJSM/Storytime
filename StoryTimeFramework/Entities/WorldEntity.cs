@@ -7,6 +7,7 @@ using StoryTimeCore.DataStructures;
 using StoryTimeCore.General;
 using StoryTimeCore.Input.Time;
 using StoryTimeFramework.WorldManagement;
+using StoryTimeCore.Extensions;
 
 namespace StoryTimeFramework.Entities
 {
@@ -25,15 +26,8 @@ namespace StoryTimeFramework.Entities
 
         public event Action<WorldEntity> OnBoundingBoxChanges;
 
-        public virtual AxisAlignedBoundingBox2D AABoundingBox
-        {
-            get { return new AxisAlignedBoundingBox2D(0, 0, 1); }
-        }
-
-        public virtual BoundingBox2D BoundingBox
-        {
-            get { return new BoundingBox2D(new Vector2(1)); }
-        }
+        public abstract AxisAlignedBoundingBox2D AABoundingBox { get; }
+        public abstract BoundingBox2D BoundingBox { get; }
 
         public void Initialize()
         {

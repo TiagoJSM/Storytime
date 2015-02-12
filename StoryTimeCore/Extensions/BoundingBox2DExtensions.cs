@@ -46,5 +46,15 @@ namespace StoryTimeCore.Extensions
                 scaledPoint3,
                 scaledPoint4);
         }
+
+        public static AxisAlignedBoundingBox2D GetAABoundingBox(this BoundingBox2D box)
+        {
+            var boxWidth = box.Width;
+            var boxHeight = box.Height;
+            var boxCenter = box.Center;
+            var x = boxCenter.X - boxWidth / 2;
+            var y = boxCenter.Y - boxHeight / 2;
+            return new AxisAlignedBoundingBox2D(x, y, boxHeight, boxWidth);
+        }
     }
 }

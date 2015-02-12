@@ -5,6 +5,9 @@ using System.Text;
 using ParticleEngine;
 using StoryTimeCore.Input.Time;
 using StoryTimeFramework.Entities.Actors;
+using StoryTimeCore.DataStructures;
+using StoryTimeCore.Contexts.Interfaces;
+using Microsoft.Xna.Framework;
 
 namespace StoryTimeFramework.Entities.Components
 {
@@ -22,6 +25,13 @@ namespace StoryTimeFramework.Entities.Components
             ParticleEmitter.Position = OwnerActor.Body.Position;
             ParticleEmitter.TimeElapse(WTime.ElapsedSinceLastTime);
         }
+
+        public override void Render(IRenderer renderer)
+        {
+            renderer.RenderBoundingBox(this.BoundingBox, Color.Red, 1.0f);
+        }
+
+        protected override AxisAlignedBoundingBox2D RawAABoundingBox { get { return new AxisAlignedBoundingBox2D(0, 0, 50); } }
 
         private void OnCreatedHandler()
         {

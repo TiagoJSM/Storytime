@@ -6,29 +6,41 @@ using System.Text;
 using StoryTimeCore.Input.Time;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeFramework.WorldManagement;
+using StoryTimeCore.General;
+using StoryTimeCore.DataStructures;
+using StoryTimeCore.Extensions;
+using StoryTimeCore.Contexts.Interfaces;
 
 namespace StoryTimeFramework.Entities.Components
 {
-    public class ComponentCollection : IEnumerable<Component>
+    public class ComponentCollection : Component, IEnumerable<Component>
     {
         private List<Component> _components;
  
-        public BaseActor ActorOwner { get; private set; }
-        public Scene Scene { get { return ActorOwner.Scene; }}
+        //public BaseActor ActorOwner { get; private set; }
+        public Scene Scene { get { return OwnerActor.Scene; } }
         public IEnumerable<Component> Components { get { return _components; } } 
 
         public ComponentCollection(BaseActor ownerActor)
         {
             _components = new List<Component>();
-            ActorOwner = ownerActor;
+            OwnerActor = ownerActor;
         }
 
         public TComponent AddComponent<TComponent>() where TComponent : Component
         {
             var component = Scene.AddWorldEntity<TComponent>();
-            component.OwnerActor = ActorOwner;
+            component.OwnerActor = OwnerActor;
             _components.Add(component);
+            component.OnBoundingBoxChanges += OnBoundingBoxChangesHandler;
             return component;
+        }
+
+        public override void Render(IRenderer renderer)
+        {
+            if (!RenderInGame) return;
+            foreach (var component in _components)
+                component.Render(renderer);
         }
 
         public IEnumerator<Component> GetEnumerator()
@@ -41,12 +53,22 @@ namespace StoryTimeFramework.Entities.Components
             return _components.GetEnumerator();
         }
 
-        public void TimeElapse(WorldTime WTime)
+        public override void TimeElapse(WorldTime WTime)
         {
-            foreach (var component in _components)
+            /*foreach (var component in _components)
             {
                 component.TimeElapse(WTime);
-            }
+            }*/
+        }
+
+        private void OnBoundingBoxChangesHandler(WorldEntity entity)
+        {
+
+        }
+
+        protected override AxisAlignedBoundingBox2D RawAABoundingBox
+        {
+            get { return Components.Select(c => c.AABoundingBox).Combine(); }
         }
     }
 }

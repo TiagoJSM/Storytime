@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.Entities;
 using StoryTimeCore.Input.Time;
+using StoryTimeCore.Extensions;
 
 namespace StoryTimeFramework.Entities.Actors
 {
@@ -33,16 +34,24 @@ namespace StoryTimeFramework.Entities.Actors
 
         public override AxisAlignedBoundingBox2D AABoundingBox
         {
-            get { return new AxisAlignedBoundingBox2D(0, 0, 1); }
-        }
-
-        public override BoundingBox2D BoundingBox
-        {
-            get { return new BoundingBox2D(new Vector2(1)); }
+            get { return BoundingBox.GetAABoundingBox(); }
         }
 
         public override void TimeElapse(WorldTime WTime)
         {
+        }
+
+        public override BoundingBox2D BoundingBox
+        {
+            get 
+            {
+                return
+                    new BoundingBox2D(
+                        Vector2.Zero,
+                        new Vector2(1, 0),
+                        new Vector2(1, 1),
+                        new Vector2(0, 1));
+            }
         }
     }
 }

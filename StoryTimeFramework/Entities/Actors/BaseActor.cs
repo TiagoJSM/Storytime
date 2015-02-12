@@ -72,12 +72,17 @@ namespace StoryTimeFramework.Entities.Actors
                 _renderableAsset = value;
             }
         }
-        
+
+        public override BoundingBox2D BoundingBox
+        {
+            get { return Components.BoundingBox; }
+        }
+
         public override AxisAlignedBoundingBox2D AABoundingBox
         {
             get 
             {
-                var position = Vector2.Zero;
+                /*var position = Vector2.Zero;
                 float rotation = 0;
 
                 if (Body != null)
@@ -92,29 +97,8 @@ namespace StoryTimeFramework.Entities.Actors
                 box.Translate(position);
                 return
                     box
-                    .GetRotated(rotation, position);
-            }
-        }
-        public override BoundingBox2D BoundingBox
-        {
-            get 
-            {
-                var position = Vector2.Zero;
-                float rotation = 0;
-
-                if (Body != null)
-                {
-                    position = Body.Position;
-                    rotation = Body.Rotation;
-                }
-                if (RenderableAsset == null)
-                    return new BoundingBox2D(position);
-
-                var box = RenderableAsset.BoundingBox;
-                box.Translate(position);
-                return
-                    box
-                    .GetRotated(rotation, position);
+                    .GetRotated(rotation, position);*/
+                return Components.AABoundingBox;
             }
         }
 

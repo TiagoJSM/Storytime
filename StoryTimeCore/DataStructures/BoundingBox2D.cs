@@ -52,6 +52,52 @@ namespace StoryTimeCore.DataStructures
                 return new Vector2((maxX + minX) / 2, (maxY + minY) / 2);
             }
         }
+        public float Width
+        {
+            get
+            {
+                var minX = Left;
+                var maxX = Right;
+                return maxX - minX;
+            }
+        }
+        public float Height
+        {
+            get
+            {
+                var minY = Bottom;
+                var maxY = Top;
+                return maxY - minY;
+            }
+        }
+        public float Left
+        {
+            get
+            {
+                return _points.Min(v => v.X);
+            }
+        }
+        public float Right
+        {
+            get
+            {
+                return _points.Max(v => v.X);
+            }
+        }
+        public float Top
+        {
+            get
+            {
+                return _points.Max(v => v.Y);
+            }
+        }
+        public float Bottom
+        {
+            get
+            {
+                return _points.Min(v => v.Y);
+            }
+        }
 
         public BoundingBox2D(Vector2 point)
         {
