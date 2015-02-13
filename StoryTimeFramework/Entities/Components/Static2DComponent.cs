@@ -123,7 +123,9 @@ namespace StoryTimeFramework.Entities.Components
 
         public override void Render(IRenderer renderer)
         {
-            
+            if (!IsVisible) return;
+
+            renderer.Render(_renderableAsset.Texture2D, Transformation, RawAABoundingBox);
         }
 
         public override void TimeElapse(WorldTime WTime)

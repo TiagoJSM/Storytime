@@ -111,7 +111,7 @@ namespace StoryTimeFramework.Entities.Actors
 
         public sealed override void TimeElapse(WorldTime WTime)
         {
-            Components.TimeElapse(WTime);
+            //Components.TimeElapse(WTime);
             if (_renderableAsset != null)
                 _renderableAsset.TimeElapse(WTime);
             if (OnTimeElapse != null)

@@ -13,13 +13,22 @@ using StoryTimeCore.Contexts.Interfaces;
 
 namespace StoryTimeFramework.Entities.Components
 {
-    public class ComponentCollection : Component, IEnumerable<Component>
+    public class ComponentCollection : IEnumerable<Component>
     {
         private List<Component> _components;
         private AxisAlignedBoundingBox2D _rawAABoundingBox;
-        
+
+        public BaseActor OwnerActor { get; set; }
         public Scene Scene { get { return OwnerActor.Scene; } }
-        public IEnumerable<Component> Components { get { return _components; } } 
+        public IEnumerable<Component> Components { get { return _components; } }
+        public BoundingBox2D BoundingBox 
+        {
+            get { return _rawAABoundingBox.GetBoundingBox2D(); }
+        }
+        public AxisAlignedBoundingBox2D AABoundingBox
+        {
+            get {  }
+        }
 
         public ComponentCollection(BaseActor ownerActor)
         {
@@ -42,9 +51,8 @@ namespace StoryTimeFramework.Entities.Components
             return component;
         }
 
-        public override void Render(IRenderer renderer)
+        public void Render(IRenderer renderer)
         {
-            if (!RenderInGame) return;
             foreach (var component in _components)
                 component.Render(renderer);
         }
@@ -57,15 +65,6 @@ namespace StoryTimeFramework.Entities.Components
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _components.GetEnumerator();
-        }
-
-        public override void TimeElapse(WorldTime WTime)
-        {
-        }
-
-        protected override AxisAlignedBoundingBox2D RawAABoundingBox
-        {
-            get { return _rawAABoundingBox; }
         }
 
         private void OnBoundingBoxChangesHandler(WorldEntity entity)

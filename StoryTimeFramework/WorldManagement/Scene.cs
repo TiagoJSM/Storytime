@@ -109,6 +109,14 @@ namespace StoryTimeFramework.WorldManagement
             graphicsContext.SetCamera(_activeCamera);
             var renderingViewport = new AxisAlignedBoundingBox2D(vp.X, vp.Y, vp.Height, vp.Width);
             var enumActors = GetRenderablesIn(renderingViewport);
+
+            var v = enumActors.ToList();
+            if (v.Count == 2)
+            {
+                var bb = v[1].BoundingBox;
+                var aabb = v[1].AABoundingBox;
+            }
+
             var renderer = graphicsContext.GetRenderer();
             foreach (var ba in enumActors)
             {
