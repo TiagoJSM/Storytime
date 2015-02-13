@@ -15,17 +15,13 @@ namespace StoryTimeCore.Resources.Graphic
     /// The interface that defines a renderable asset.
     /// The ITimeUpdatable interface is inherited due to possible animations by the asset that are time dependent.
     /// </summary>
-    public interface IRenderableAsset : IRenderable, ITimeUpdatable, IBoundingBoxable
+    public interface IRenderableAsset : IRenderable, ITimeUpdatable, IBoundingBoxable, IPositionable
     {
         event OnBoundingBoxChanges OnBoundingBoxChanges;
         event OnRotationChanges OnRotationChanges;
         event OnPositionChanges OnPositionChanges;
 
         bool IsVisible { get; set; }
-        Vector2 Origin { get; set; }
-        Vector2 RenderingOffset { get; set; }
-        float Rotation { get; set; }
-        Vector2 Scale { get; set; }
         AxisAlignedBoundingBox2D AABoundingBoxWithoutOrigin { get; }
     }
 }

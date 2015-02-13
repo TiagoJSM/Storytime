@@ -81,6 +81,7 @@
     <Compile Include="Extensions\RectangleExtensions.cs" />
     <Compile Include="Extensions\Vector2Extensions.cs" />
     <Compile Include="Extensions\Vector3Extensions.cs" />
+    <Compile Include="General\IPositionable.cs" />
     <Compile Include="Manageables\ISynchronizable.cs" />
     <Compile Include="Physics\IBody.cs" />
     <Compile Include="Contexts\Interfaces\IGraphicsContext.cs" />

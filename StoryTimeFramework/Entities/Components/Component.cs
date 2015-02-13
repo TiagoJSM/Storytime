@@ -46,5 +46,10 @@ namespace StoryTimeFramework.Entities.Components
         protected abstract AxisAlignedBoundingBox2D RawAABoundingBox { get; }
 
         public abstract void Render(IRenderer renderer);
+
+        protected ITexture2D LoadTexture2D(string relativePath)
+        {
+            return OwnerActor.Scene.GraphicsContext.LoadTexture2D(relativePath);
+        }
     }
 }

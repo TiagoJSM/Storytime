@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
+using StoryTimeCore.General;
 using StoryTimeCore.Resources.Graphic;
 
 namespace StoryTimeCore.Utils
@@ -19,7 +20,7 @@ namespace StoryTimeCore.Utils
                 Matrix.CreateTranslation(position.ToVector3());
         }
 
-        public static Matrix CreateRenderableAssetTransformation(IRenderableAsset asset)
+        public static Matrix CreateRenderableAssetTransformation(IPositionable asset)
         {
             return
                 Matrix.CreateTranslation(-new Vector3(asset.Origin, 0))

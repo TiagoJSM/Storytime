@@ -118,7 +118,7 @@ namespace StoryTimeFramework.Entities.Actors
                 OnTimeElapse(WTime);
         }
 
-        private void RenderableActorBoundingBoxChangesHandler(IRenderableAsset asset)
+        private void RenderableActorBoundingBoxChangesHandler(IBoundingBoxable boxable)
         {
             RaiseBoundingBoxChanges();
         }
