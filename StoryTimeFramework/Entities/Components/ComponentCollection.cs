@@ -27,12 +27,17 @@ namespace StoryTimeFramework.Entities.Components
             OwnerActor = ownerActor;
         }
 
-        public TComponent AddComponent<TComponent>() where TComponent : Component
+        public TComponent AddComponent<TComponent>(Action<TComponent> initializer = null) where TComponent : Component
         {
-            var component = Scene.AddWorldEntity<TComponent>();
-            component.OwnerActor = OwnerActor;
+            Action<TComponent> componentInitializer = c =>
+            {
+                c.OwnerActor = OwnerActor;
+                c.OnBoundingBoxChanges += OnBoundingBoxChangesHandler;
+                if(initializer != null)
+                    initializer(c);
+            };
+            var component = Scene.AddWorldEntity<TComponent>(componentInitializer);
             _components.Add(component);
-            component.OnBoundingBoxChanges += OnBoundingBoxChangesHandler;
             UpdateBoundingBox();
             return component;
         }
