@@ -13,7 +13,6 @@ using StoryTimeFramework.WorldManagement.Manageables;
 using StoryTimeFramework.Entities.Controllers;
 using System.Reflection;
 using StoryTimeCore.DataStructures;
-//using StoryTimeSceneGraph;
 using StoryTimeCore.Resources.Graphic;
 using StoryTimeCore.General;
 using FarseerPhysics.Dynamics;
@@ -120,13 +119,15 @@ namespace StoryTimeFramework.WorldManagement
             var renderer = graphicsContext.GetRenderer();
             foreach (var ba in enumActors)
             {
-                renderer.TranslationTransformation += ba.Body.Position;
+                /*renderer.TranslationTransformation += ba.Body.Position;
                 renderer.RotationTransformation += ba.Body.Rotation;
                 ba.RenderableAsset.Render(renderer);
                 renderer.RotationTransformation -= ba.Body.Rotation;
-                renderer.TranslationTransformation -= ba.Body.Position;
+                renderer.TranslationTransformation -= ba.Body.Position;*/
 
                 //renderer.RenderBoundingBox(ba.BoundingBox, Color.Red);
+
+                ba.Components.Render(renderer);
             }
             //TODO: should reset renderer here!
             _gui.Render(renderer);

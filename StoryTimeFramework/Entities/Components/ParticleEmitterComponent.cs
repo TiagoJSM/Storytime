@@ -26,7 +26,7 @@ namespace StoryTimeFramework.Entities.Components
             ParticleEmitter.TimeElapse(WTime.ElapsedSinceLastTime);
         }
 
-        public override void Render(IRenderer renderer)
+        protected override void DoRender(IRenderer renderer)
         {
             renderer.RenderBoundingBox(this.BoundingBox, Color.Red, 1.0f);
         }

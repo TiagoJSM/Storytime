@@ -29,6 +29,7 @@ namespace StoryTimeFramework.Entities.Actors
         private IBody _body;
 
         public OnTimeElapse OnTimeElapse;
+        public OnBodyChanges OnBodyChanges;
 
         [Editable(EditorGroup = "Physics", EditorName = "Body")]
         public IBody Body 
@@ -52,6 +53,8 @@ namespace StoryTimeFramework.Entities.Actors
                     value.OnRotationChanges += BodyRotationChangesHandler;
                 }
                 _body = value;
+                if (OnBodyChanges != null)
+                    OnBodyChanges(_body);
             }
         }
         [Editable(EditorGroup = "Renderable", EditorName = "Asset")]
@@ -126,16 +129,22 @@ namespace StoryTimeFramework.Entities.Actors
         private void BodyPositionChangesHandler(IBody body)
         {
             RaiseBoundingBoxChanges();
+            if (OnBodyChanges != null)
+                OnBodyChanges(body);
         }
 
         private void BodyRotationChangesHandler(IBody body)
         {
             RaiseBoundingBoxChanges();
+            if (OnBodyChanges != null)
+                OnBodyChanges(body);
         }
 
         private void BodyScaleChangesHandler(IBody body)
         {
             RaiseBoundingBoxChanges();
+            if (OnBodyChanges != null)
+                OnBodyChanges(body);
         }
     }
 }

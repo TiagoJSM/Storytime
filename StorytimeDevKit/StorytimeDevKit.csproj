@@ -194,6 +194,7 @@
     <Compile Include="DataStructures\Factories\SavedPuppeteerLoadFactory.cs" />
     <Compile Include="DataStructures\Factories\TypeConfigurableSceneObjectFactory.cs" />
     <Compile Include="Delegates\Puppeteer\ControlDelegates.cs" />
+    <Compile Include="Entities\Components\BoneComponent.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\SkeletonExtensions.cs" />
     <Compile Include="Models\Puppeteer\SaveSkeletonDialogModel.cs" />

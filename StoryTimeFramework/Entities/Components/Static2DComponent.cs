@@ -14,82 +14,10 @@ using StoryTimeFramework.Resources.Graphic;
 
 namespace StoryTimeFramework.Entities.Components
 {
-    public class Static2DComponent : Component, IPositionable
+    public class Static2DComponent : Component
     {
-        private Vector2 _origin;
-        private float _rotation;
-        private Vector2 _scale;
-        private Vector2 _renderingOffset;
         private Static2DRenderableAsset _renderableAsset;
-
-        public event OnBoundingBoxChanges OnBoundingBoxChanges;
-        public event OnRotationChanges OnRotationChanges;
-        public event OnPositionChanges OnPositionChanges;
-
-        public virtual bool IsVisible { get; set; }
-
-        public Vector2 Origin
-        {
-            get
-            {
-                return _origin;
-            }
-            set
-            {
-                if (_origin != value)
-                {
-                    _origin = value;
-                    if (OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
-                }
-            }
-        }
-        public float Rotation
-        {
-            get
-            {
-                return _rotation;
-            }
-            set
-            {
-                if (_rotation != value)
-                {
-                    _rotation = value;
-                    if (OnRotationChanges != null) OnRotationChanges(this);
-                    if (OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
-                }
-            }
-        }
-        public Vector2 Scale
-        {
-            get
-            {
-                return _scale;
-            }
-            set
-            {
-                if (_scale != value)
-                {
-                    _scale = value;
-                    if (OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
-                }
-            }
-        }
-        public Vector2 RenderingOffset
-        {
-            get
-            {
-                return _renderingOffset;
-            }
-            set
-            {
-                if (_renderingOffset != value)
-                {
-                    _renderingOffset = value;
-                    if (OnPositionChanges != null) OnPositionChanges(this);
-                    if (OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
-                }
-            }
-        }
+        private ITexture2D _texture;
 
         public string Texture2DName { get; set; }
 
@@ -102,30 +30,21 @@ namespace StoryTimeFramework.Entities.Components
         {
             get
             {
-                var boundingBox = _renderableAsset.BoundingBox;
+                var boundingBox = RawAABoundingBox.GetBoundingBox2D();
                 boundingBox.Transform(Transformation);
                 return boundingBox;
             }
         }
 
-        protected virtual Matrix Transformation
-        {
-            get
-            {
-                return MatrixUtils.CreateRenderableAssetTransformation(this);
-            }
-        }
-
         public Static2DComponent()
         {
+            IsVisible = true;
             OnCreated += OnCreatedHandler;
         }
 
-        public override void Render(IRenderer renderer)
+        protected override void DoRender(IRenderer renderer)
         {
-            if (!IsVisible) return;
-
-            renderer.Render(_renderableAsset.Texture2D, Transformation, RawAABoundingBox);
+            RenderTexture(renderer, _texture);
         }
 
         public override void TimeElapse(WorldTime WTime)
@@ -134,16 +53,12 @@ namespace StoryTimeFramework.Entities.Components
 
         protected override AxisAlignedBoundingBox2D RawAABoundingBox
         {
-            get { return _renderableAsset.AABoundingBox; }
+            get { return _texture.GetAABoundingBox(); }
         }
 
         private void OnCreatedHandler()
         {
-            var texture = LoadTexture2D(Texture2DName);
-            _renderableAsset = new Static2DRenderableAsset()
-            {
-                Texture2D = texture
-            };
+            _texture = LoadTexture2D(Texture2DName);
         }
     }
 }

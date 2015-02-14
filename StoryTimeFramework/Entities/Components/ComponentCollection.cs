@@ -10,6 +10,7 @@ using StoryTimeCore.General;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.Extensions;
 using StoryTimeCore.Contexts.Interfaces;
+using StoryTimeCore.Physics;
 
 namespace StoryTimeFramework.Entities.Components
 {
@@ -27,13 +28,18 @@ namespace StoryTimeFramework.Entities.Components
         }
         public AxisAlignedBoundingBox2D AABoundingBox
         {
-            get {  }
+            get 
+            {
+                return _rawAABoundingBox;
+            }
         }
 
         public ComponentCollection(BaseActor ownerActor)
         {
             _components = new List<Component>();
             OwnerActor = ownerActor;
+            ownerActor.OnBodyChanges += OnBodyChangesHandler;
+            UpdateBoundingBox();
         }
 
         public TComponent AddComponent<TComponent>(Action<TComponent> initializer = null) where TComponent : Component
@@ -72,9 +78,28 @@ namespace StoryTimeFramework.Entities.Components
             UpdateBoundingBox();
         }
 
+        private void OnBodyChangesHandler(IBody body)
+        {
+            UpdateBoundingBox();
+        }
+
         private void UpdateBoundingBox()
         {
-            _rawAABoundingBox = Components.Select(c => c.AABoundingBox).Combine();
+            if (!Components.Any())
+            {
+                if (OwnerActor.Body == null)
+                {
+                    _rawAABoundingBox = new AxisAlignedBoundingBox2D();
+                }
+                else
+                {
+                    _rawAABoundingBox = _rawAABoundingBox = new AxisAlignedBoundingBox2D(OwnerActor.Body.Position);
+                }
+            }
+            else
+            {
+                _rawAABoundingBox = Components.Select(c => c.AABoundingBox).Combine();
+            } 
         }
     }
 }
