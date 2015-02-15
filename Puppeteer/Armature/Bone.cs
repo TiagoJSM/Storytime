@@ -191,7 +191,8 @@ namespace Puppeteer.Armature
             : this(name)
         {
             Parent = parent;
-            Parent.AddChildren(this);
+            if (parent != null)
+             Parent.AddChildren(this);
         }
 
         public void AddChildren(Bone children)

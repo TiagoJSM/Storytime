@@ -119,15 +119,14 @@ namespace StoryTimeFramework.WorldManagement
             var renderer = graphicsContext.GetRenderer();
             foreach (var ba in enumActors)
             {
-                /*renderer.TranslationTransformation += ba.Body.Position;
-                renderer.RotationTransformation += ba.Body.Rotation;
-                ba.RenderableAsset.Render(renderer);
-                renderer.RotationTransformation -= ba.Body.Rotation;
-                renderer.TranslationTransformation -= ba.Body.Position;*/
-
-                //renderer.RenderBoundingBox(ba.BoundingBox, Color.Red);
-
+                //renderer.TranslationTransformation += ba.Body.Position;
+                //renderer.RotationTransformation += ba.Body.Rotation;
+                //ba.RenderableAsset.Render(renderer);
                 ba.Components.Render(renderer);
+                //renderer.RotationTransformation -= ba.Body.Rotation;
+                //renderer.TranslationTransformation -= ba.Body.Position;
+
+                renderer.RenderBoundingBox(ba.BoundingBox, Color.Red);
             }
             //TODO: should reset renderer here!
             _gui.Render(renderer);

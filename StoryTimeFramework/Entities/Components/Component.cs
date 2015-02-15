@@ -107,14 +107,9 @@ namespace StoryTimeFramework.Entities.Components
                 if (OwnerActor == null || OwnerActor.Body == null)
                     return RawAABoundingBox.GetBoundingBox2D();
 
-                var position = OwnerActor.Body.Position;
-                var rotation = OwnerActor.Body.Rotation;
-
                 var box = RawAABoundingBox.GetBoundingBox2D();
-                box.Translate(position);
-                return
-                    box
-                    .GetRotated(rotation, position);
+                box.Transform(Transformation);
+                return box;
             }
         }
         public Matrix Transformation

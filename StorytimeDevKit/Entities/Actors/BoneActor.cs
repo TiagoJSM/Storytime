@@ -25,6 +25,7 @@ namespace StoryTimeDevKit.Entities.Actors
         private Vector2 _parentBoneEndReference;
         private float _parentRotationReference;
         private BoneComponent _boneComponent;
+        private Bone _assignedBone;
 
         public event OnPositionChange OnPositionChange;
         public event OnParentChange OnParentChange;
@@ -33,17 +34,11 @@ namespace StoryTimeDevKit.Entities.Actors
         {
             get 
             {
-                var position = Body.Position;
-                position.Y += _boneComponent.AABoundingBox.Height;
-                return position.Rotate(Body.Rotation, Body.Position);
+                return AssignedBone.AbsoluteEnd;
             }
             set
             {
-                var originalBounds =
-                    _boneComponent
-                    .AABoundingBoxWithoutOrigin
-                    .GetScaled(_boneComponent.Scale.Inverse(), Vector2.Zero);
-
+                var originalBounds = _boneComponent.Texture.GetAABoundingBox();
                 var distance = Vector2.Distance(Body.Position, value);
                 var angle = value.AngleWithCenterIn(Body.Position) - 90.0f;
                 var yScale = distance / originalBounds.Height;
@@ -70,12 +65,29 @@ namespace StoryTimeDevKit.Entities.Actors
                     OnParentChange(this);
             }
         }
-        public Bone AssignedBone { get; set; }
+        public Bone AssignedBone 
+        { 
+            get
+            {
+                return _assignedBone;
+            }
+            set
+            {
+                _assignedBone = value;
+                UpdateActor();
+            }
+        }
 
         public BoneActor()
         {
             OnCreated += OnCreatedHandler;
             OnBoundingBoxChanges += OnBoundingBoxChangesHandler;
+        }
+
+        public void UpdateActor()
+        {
+            Body.Position = _assignedBone.AbsolutePosition;
+            BoneEnd = _assignedBone.AbsoluteEnd;
         }
 
         private void OnCreatedHandler()

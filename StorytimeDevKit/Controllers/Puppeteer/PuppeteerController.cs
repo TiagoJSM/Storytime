@@ -199,7 +199,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             SavedPuppeteerItemModel = new SavePuppeteerItemDialogModel();
             _sceneObjectFactory = new PuppeteerSceneObjectFactory(this);
             _loadSaveFilesfatory = new SavedPuppeteerLoadFactory();
-            _sceneBoneData = new SceneBonesDataSource(Skeleton);
+            _sceneBoneData = new SceneBonesDataSource(Skeleton, Scene);
             _animationTimeLineData = new AnimationTimeLineDataSource(Skeleton);
             _skeletonTreeViewData = new SkeletonViewDataSource(this, new AttachToBoneCommand(this), Scene.AddWorldEntity<ArmatureActor>());
             _assetMapping = new Dictionary<BoneAttachedRenderableAsset, AssetListItemViewModel>();
@@ -211,7 +211,6 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         {
             var boneActor = Selected as BoneActor;
             var child = AddBone(boneStartPosition, boneActor);
-            //HandleNewBoneAdded(child);
             return child;
         }
 
@@ -219,7 +218,6 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
         {
             var boneActor = Selected as BoneActor;
             var child = AddBone(boneStartPosition, boneEndPosition, boneActor);
-            //HandleNewBoneAdded(child);
             return child;
         }
 
@@ -439,34 +437,35 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             _sceneBoneData.SynchronizeFullBoneChain();
         }
 
-        private void HandleNewBoneAdded(BoneActor actor)
+        private BoneActor AddBone(Vector2 boneStartPosition, BoneActor parentActor = null)
         {
-            _timeLineControl.AddTimeLine(
-                _skeletonTreeViewData.GetBoneViewModelFromActor(actor),
-                _animationTimeLineData.GetCollectionBoundToActor(actor));
-            _timeLineControl.AddFrame(null, 0, Vector2.Zero);
-        }
-
-        private BoneActor AddBone(Vector2 boneStartPosition, BoneActor parent = null)
-        {
-            var actor = Scene.AddWorldEntity<BoneActor>();
-            actor.Parent = parent;
-            actor.Body.Position = boneStartPosition;
-
-            _sceneBoneData.Add(actor);
-            _skeletonTreeViewData.AddBone(actor);
-            _animationTimeLineData.AddTimeLineFor(actor);
+            var parentBone = parentActor == null ? null : parentActor.AssignedBone;
+            var actor = _sceneBoneData.Add(boneStartPosition, parentBone);
+            actor.Parent = parentActor;
             HandleNewBoneAdded(actor);
             return actor;
         }
 
-        private BoneActor AddBone(Vector2 boneStartPosition, Vector2 boneEndPosition, BoneActor parent = null)
+        private BoneActor AddBone(Vector2 boneStartPosition, Vector2 boneEndPosition, BoneActor parentActor = null)
         {
-            var actor = AddBone(boneStartPosition, parent);
+            var parentBone = parentActor == null ? null : parentActor.AssignedBone;
+            var actor = _sceneBoneData.Add(boneStartPosition, boneEndPosition, parentBone);
+            actor.Parent = parentActor;
+            HandleNewBoneAdded(actor);
             var bone = actor.AssignedBone;
-            bone.AbsoluteEnd = boneEndPosition;
             _sceneBoneData.SynchronizeBoneChain(bone);
             return actor;
+        }
+
+        private void HandleNewBoneAdded(BoneActor actor)
+        {
+            _skeletonTreeViewData.AddBone(actor);
+            _animationTimeLineData.AddTimeLineFor(actor);
+
+            _timeLineControl.AddTimeLine(
+                _skeletonTreeViewData.GetBoneViewModelFromActor(actor),
+                _animationTimeLineData.GetCollectionBoundToActor(actor));
+            _timeLineControl.AddFrame(null, 0, Vector2.Zero);
         }
 
         private void LoadSavedSkeleton(SavedSkeleton savedSkeleton)

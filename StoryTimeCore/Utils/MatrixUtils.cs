@@ -14,7 +14,7 @@ namespace StoryTimeCore.Utils
         public static Matrix CreateLocalTransformation(Vector2 position, float rotation, Vector2 scale)
         {
             return
-                Matrix.CreateScale(scale.ToVector3()) *
+                Matrix.CreateScale(new Vector3(scale, 1.0f)) *
                 Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)) *
                 Matrix.CreateTranslation(position.ToVector3());
         }

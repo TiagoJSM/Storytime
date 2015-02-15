@@ -17,24 +17,9 @@ namespace StoryTimeFramework.Entities.Components
     public class Static2DComponent : Component
     {
         private Static2DRenderableAsset _renderableAsset;
-        private ITexture2D _texture;
+        public ITexture2D Texture { get; private set; }
 
         public string Texture2DName { get; set; }
-
-        public AxisAlignedBoundingBox2D AABoundingBoxWithoutOrigin
-        {
-            get { return BoundingBoxWithoutOrigin.GetAABoundingBox(); }
-        }
-
-        public BoundingBox2D BoundingBoxWithoutOrigin
-        {
-            get
-            {
-                var boundingBox = RawAABoundingBox.GetBoundingBox2D();
-                boundingBox.Transform(Transformation);
-                return boundingBox;
-            }
-        }
 
         public Static2DComponent()
         {
@@ -44,7 +29,7 @@ namespace StoryTimeFramework.Entities.Components
 
         protected override void DoRender(IRenderer renderer)
         {
-            RenderTexture(renderer, _texture);
+            RenderTexture(renderer, Texture);
         }
 
         public override void TimeElapse(WorldTime WTime)
@@ -53,12 +38,12 @@ namespace StoryTimeFramework.Entities.Components
 
         protected override AxisAlignedBoundingBox2D RawAABoundingBox
         {
-            get { return _texture.GetAABoundingBox(); }
+            get { return Texture.GetAABoundingBox(); }
         }
 
         private void OnCreatedHandler()
         {
-            _texture = LoadTexture2D(Texture2DName);
+            Texture = LoadTexture2D(Texture2DName);
         }
     }
 }

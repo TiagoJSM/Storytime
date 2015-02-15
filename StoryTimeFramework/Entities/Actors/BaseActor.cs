@@ -85,22 +85,6 @@ namespace StoryTimeFramework.Entities.Actors
         {
             get 
             {
-                /*var position = Vector2.Zero;
-                float rotation = 0;
-
-                if (Body != null)
-                {
-                    position = Body.Position;
-                    rotation = Body.Rotation;
-                }
-                if (RenderableAsset == null)
-                    return new AxisAlignedBoundingBox2D(position);
-
-                var box = RenderableAsset.AABoundingBox;
-                box.Translate(position);
-                return
-                    box
-                    .GetRotated(rotation, position);*/
                 return Components.AABoundingBox;
             }
         }
