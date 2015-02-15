@@ -94,7 +94,6 @@ namespace StoryTimeDevKit.Entities.Actors
         {
             Body = Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f);
             _boneComponent = Components.AddComponent<BoneComponent>();
-            //RenderableAsset = new BoneRenderableAsset(Scene.GraphicsContext);
         }
 
         private void OnBoundingBoxChangesHandler(WorldEntity entity)

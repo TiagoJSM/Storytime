@@ -109,24 +109,12 @@ namespace StoryTimeFramework.WorldManagement
             var renderingViewport = new AxisAlignedBoundingBox2D(vp.X, vp.Y, vp.Height, vp.Width);
             var enumActors = GetRenderablesIn(renderingViewport);
 
-            var v = enumActors.ToList();
-            if (v.Count == 2)
-            {
-                var bb = v[1].BoundingBox;
-                var aabb = v[1].AABoundingBox;
-            }
-
             var renderer = graphicsContext.GetRenderer();
             foreach (var ba in enumActors)
             {
-                //renderer.TranslationTransformation += ba.Body.Position;
-                //renderer.RotationTransformation += ba.Body.Rotation;
-                //ba.RenderableAsset.Render(renderer);
                 ba.Components.Render(renderer);
-                //renderer.RotationTransformation -= ba.Body.Rotation;
-                //renderer.TranslationTransformation -= ba.Body.Position;
-
-                renderer.RenderBoundingBox(ba.BoundingBox, Color.Red);
+                //TODO: if I uncomment this line I get a bug after opening a new window after closing one previously
+                //renderer.RenderBoundingBox(ba.BoundingBox, Color.Red);
             }
             //TODO: should reset renderer here!
             _gui.Render(renderer);
