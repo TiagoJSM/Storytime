@@ -95,8 +95,10 @@ namespace StoryTime.Contexts
             public void Render(ITexture2D texture, Matrix transformation, AxisAlignedBoundingBox2D boundingBox)
             {
                 var tex = _xnaGD._gContentManager.GetTexture(texture);
+                var worldMatrixPreTransform = _xnaGD._basicEffect.World;
+
                 _xnaGD._basicEffect.Texture = tex;
-                _xnaGD._basicEffect.World = transformation * RendererTransformation();
+                _xnaGD._basicEffect.World *= transformation * RendererTransformation();
                 _xnaGD._basicEffect.View = _xnaGD.ViewMatrix;
                 _xnaGD._basicEffect.Projection = _xnaGD.ProjectionMatrix;
 
@@ -105,6 +107,7 @@ namespace StoryTime.Contexts
                     pass.Apply();
                     _xnaGD._gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, GetVerticesFor(boundingBox), 0, 2);
                 }
+                _xnaGD._basicEffect.World = worldMatrixPreTransform;
             }
 
             public void RenderRectangle(Rectangle rec, Color color, float thickness = 1.0f)

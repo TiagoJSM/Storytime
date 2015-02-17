@@ -46,7 +46,7 @@ namespace StoryTimeFramework.Entities.Components
         {
             Action<TComponent> componentInitializer = c =>
             {
-                c.OwnerActor = OwnerActor;
+                c.Owner = OwnerActor;
                 c.OnBoundingBoxChanges += OnBoundingBoxChangesHandler;
                 if(initializer != null)
                     initializer(c);

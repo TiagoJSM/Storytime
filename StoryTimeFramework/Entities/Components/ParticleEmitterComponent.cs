@@ -22,7 +22,7 @@ namespace StoryTimeFramework.Entities.Components
 
         public override void TimeElapse(WorldTime WTime)
         {
-            ParticleEmitter.Position = OwnerActor.Body.Position;
+            ParticleEmitter.Position = Owner.Body.Position;
             ParticleEmitter.TimeElapse(WTime.ElapsedSinceLastTime);
         }
 

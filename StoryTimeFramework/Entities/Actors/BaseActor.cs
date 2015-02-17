@@ -17,13 +17,14 @@ using StoryTimeCore.General;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
 using StoryTimeCore.Delegates;
+using StoryTimeCore.Entities;
 
 namespace StoryTimeFramework.Entities.Actors
 {
     /// <summary>
     /// The base class for scene actors, this class defines the drawable components for the scene.
     /// </summary>
-    public abstract class BaseActor : WorldEntity, ITimeUpdatable
+    public abstract class BaseActor : WorldEntity, ITimeUpdatable, IComponentOwner
     {
         private IRenderableAsset _renderableAsset;
         private IBody _body;

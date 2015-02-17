@@ -87,6 +87,7 @@
     <Compile Include="Entities\Controllers\BaseAIController.cs" />
     <Compile Include="Entities\Controllers\BaseController.cs" />
     <Compile Include="Entities\Controllers\BasePlayerController.cs" />
+    <Compile Include="Entities\IComponentOwner.cs" />
     <Compile Include="Entities\WorldEntity.cs" />
     <Compile Include="Extensions\CameraExtensions.cs" />
     <Compile Include="GenericExceptions\InvalidIndexException.cs" />

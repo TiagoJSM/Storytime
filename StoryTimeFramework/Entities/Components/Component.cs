@@ -13,6 +13,7 @@ using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeCore.General;
 using StoryTimeCore.Utils;
 using StoryTimeCore.Delegates;
+using StoryTimeCore.Entities;
 
 namespace StoryTimeFramework.Entities.Components
 {
@@ -26,7 +27,7 @@ namespace StoryTimeFramework.Entities.Components
         public event OnRotationChanges OnRotationChanges;
         public event OnPositionChanges OnPositionChanges;
 
-        public BaseActor OwnerActor { get; set; }
+        public IComponentOwner Owner { get; set; }
         public bool RenderInGame { get; protected set; }
         public virtual bool IsVisible { get; set; }
         public override AxisAlignedBoundingBox2D AABoundingBox
@@ -104,7 +105,7 @@ namespace StoryTimeFramework.Entities.Components
         {
             get 
             {
-                if (OwnerActor == null || OwnerActor.Body == null)
+                if (Owner == null || Owner.Body == null)
                     return RawAABoundingBox.GetBoundingBox2D();
 
                 var box = RawAABoundingBox.GetBoundingBox2D();
@@ -117,9 +118,9 @@ namespace StoryTimeFramework.Entities.Components
             get
             {
                 var transformation = MatrixUtils.CreateTransformation(this);
-                if (OwnerActor.Body == null)
+                if (Owner.Body == null)
                     return transformation;
-                var body = OwnerActor.Body;
+                var body = Owner.Body;
                 var localTransform =
                     MatrixUtils.CreateLocalTransformation(
                         body.Position,
@@ -144,7 +145,7 @@ namespace StoryTimeFramework.Entities.Components
 
         protected ITexture2D LoadTexture2D(string relativePath)
         {
-            return OwnerActor.Scene.GraphicsContext.LoadTexture2D(relativePath);
+            return Owner.Scene.GraphicsContext.LoadTexture2D(relativePath);
         }
 
         protected void RenderTexture(IRenderer renderer, ITexture2D texture)
