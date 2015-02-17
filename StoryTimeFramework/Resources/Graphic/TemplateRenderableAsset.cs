@@ -149,7 +149,7 @@ namespace StoryTimeFramework.Resources.Graphic
         {
             get
             {
-                return MatrixUtils.CreateRenderableAssetTransformation(this);
+                return MatrixUtils.CreateTransformation(this);
             }
         }
 

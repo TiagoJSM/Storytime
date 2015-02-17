@@ -83,6 +83,7 @@
     <Compile Include="Entities\Components\Component.cs" />
     <Compile Include="Entities\Components\ParticleEffectComponent.cs" />
     <Compile Include="Entities\Components\ParticleEmitterComponent.cs" />
+    <Compile Include="Entities\Components\Static2DComponent.cs" />
     <Compile Include="Entities\Controllers\BaseAIController.cs" />
     <Compile Include="Entities\Controllers\BaseController.cs" />
     <Compile Include="Entities\Controllers\BasePlayerController.cs" />

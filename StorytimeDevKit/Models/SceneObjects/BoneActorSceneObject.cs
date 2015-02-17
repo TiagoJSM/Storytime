@@ -9,6 +9,7 @@ using StoryTimeCore.Physics;
 using StoryTimeDevKit.DataStructures;
 using Puppeteer.Armature;
 using StoryTimeDevKit.DataStructures.Factories;
+using StoryTimeDevKit.Models.Puppeteer;
 
 namespace StoryTimeDevKit.Models.SceneObjects
 {
@@ -17,6 +18,7 @@ namespace StoryTimeDevKit.Models.SceneObjects
         private BoneActor _boneActor;
         private IPuppeteerSceneOjectActionContext _context;
         private Bone _bone;
+        private BoneState _startTransformState;
 
         public event OnPositionChanges OnPositionChanges;
         public event OnRotationChanges OnRotationChanges;
@@ -54,9 +56,13 @@ namespace StoryTimeDevKit.Models.SceneObjects
             _context.SynchronizeBoneChain(_bone);
         }
 
-        private void AddAnimationFrame()
+        public void StartTranslate(Vector2 position)
         {
-            _context.AddAnimationFrameFor(_boneActor);
+            _startTransformState = new BoneState()
+            {
+                Translation = _bone.Translation,
+                Rotation = _bone.Rotation
+            };
         }
 
         public void Translate(Vector2 translation)
@@ -67,9 +73,23 @@ namespace StoryTimeDevKit.Models.SceneObjects
                 OnPositionChanges(_boneActor.Body.Position);
         }
 
-        public void EndTranslation()
+        public void EndTranslation(Vector2 fromTranslation, Vector2 toTranslation)
         {
-            AddAnimationFrame(); 
+            var endTransformState = new BoneState()
+            {
+                Translation = _bone.Translation,
+                Rotation = _bone.Rotation
+            };
+            _context.AddAnimationFrameFor(_boneActor, _startTransformState, endTransformState);
+        }
+
+        public void StartRotation(float originalRotation)
+        {
+            _startTransformState = new BoneState()
+            {
+                Translation = _bone.Translation,
+                Rotation = _bone.Rotation
+            };
         }
 
         public void Rotate(float rotation)
@@ -80,9 +100,14 @@ namespace StoryTimeDevKit.Models.SceneObjects
                 OnRotationChanges(_boneActor.Body.Rotation);
         }
 
-        public void EndRotation()
+        public void EndRotation(float fromRotation, float toRotation)
         {
-            AddAnimationFrame();
+            var endTransformState = new BoneState()
+            {
+                Translation = _bone.Translation,
+                Rotation = _bone.Rotation
+            };
+            _context.AddAnimationFrameFor(_boneActor, _startTransformState, endTransformState);
         }
     }
 }

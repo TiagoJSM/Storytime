@@ -10,5 +10,6 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
     public interface IAnimationTimeLineController : IController<IAnimationTimeLineControl>
     {
         IAnimationTimeLineControl TimeLineControl { get; set; }
+        TimeSpan AnimationTotalTime { get; }
     }
 }

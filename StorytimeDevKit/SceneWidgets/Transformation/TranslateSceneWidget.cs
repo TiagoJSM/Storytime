@@ -11,6 +11,7 @@ using StoryTimeUI.Delegates;
 
 namespace StoryTimeDevKit.SceneWidgets.Transformation
 {
+    public delegate void OnStartTranslate(Vector2 position);
     public delegate void OnTranslate(Vector2 translation);
     public delegate void OnTranslationComplete(Vector2 fromPosition, Vector2 toPosition);
 
@@ -52,6 +53,7 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
 
             private void OnStartDragHandler(Vector2 currentPosition)
             {
+                _translateWidget.StartTranslate(currentPosition);
                 _translateWidget._startDragPositon = _translateWidget.Position;
             }
 
@@ -71,6 +73,7 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
 
         private Vector2 _startDragPositon;
 
+        public event OnStartTranslate OnStartTranslate;
         public event OnTranslate OnTranslate;
         public event OnTranslationComplete OnTranslationComplete;
 
@@ -91,6 +94,12 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
         {
             Children.Add(new ArrowTranslateSceneWidget(this, TranslateArrowDirection.Horizontal));
             Children.Add(new ArrowTranslateSceneWidget(this, TranslateArrowDirection.Vertical));
+        }
+
+        private void StartTranslate(Vector2 position)
+        {
+            if (OnStartTranslate == null) return;
+            OnStartTranslate(position);
         }
 
         private void Translate(Vector2 translation)

@@ -14,6 +14,8 @@ namespace Puppeteer.Animation
         private TimeSpan _elapsedTime;
         private TimeSpan _longestAnimationTime;
 
+        public Dictionary<Bone, List<BoneAnimationFrame>> FramesMapping { get { return _framesMapping; } }
+
         public SkeletonAnimation(Skeleton skeleton)
         {
             _framesMapping = new Dictionary<Bone, List<BoneAnimationFrame>>();
@@ -59,22 +61,37 @@ namespace Puppeteer.Animation
         {
             foreach (var bone in _skeleton)
             {
-                var endTime = _elapsedTime;
-                if (!_framesMapping.ContainsKey(bone)) 
-                    continue;
-                var frames = _framesMapping[bone];
-                var frame = frames.GetAt(_elapsedTime);
-
-                if (frame == null)
-                {
-                    frame = frames.GetLastFrame();
-                    endTime = frame.EndTime;
-                }
-
-                if (frame == null) 
-                    continue;
-                frame.SetBoneTransformationValues(bone, endTime);
+                UpdateBone(bone);
+                UpdateChildBonesOf(bone);
             }
+        }
+
+        private void UpdateChildBonesOf(Bone bone)
+        {
+            foreach(var child in bone.Children)
+            {
+                UpdateBone(child);
+                UpdateChildBonesOf(child);
+            }
+        }
+
+        private void UpdateBone(Bone bone)
+        {
+            var endTime = _elapsedTime;
+            if (!_framesMapping.ContainsKey(bone))
+                return;
+            var frames = _framesMapping[bone];
+            var frame = frames.GetAt(_elapsedTime);
+
+            if (frame == null)
+            {
+                frame = frames.GetLastFrame();
+                endTime = frame.EndTime;
+            }
+
+            if (frame == null)
+                return;
+            frame.SetBoneTransformationValues(bone, endTime);
         }
     }
 }

@@ -29,6 +29,7 @@ namespace StoryTimeFramework.Entities.Actors
         private IBody _body;
 
         public OnTimeElapse OnTimeElapse;
+        public OnBodyChanges OnBodyChanges;
 
         [Editable(EditorGroup = "Physics", EditorName = "Body")]
         public IBody Body 
@@ -52,6 +53,8 @@ namespace StoryTimeFramework.Entities.Actors
                     value.OnRotationChanges += BodyRotationChangesHandler;
                 }
                 _body = value;
+                if (OnBodyChanges != null)
+                    OnBodyChanges(_body);
             }
         }
         [Editable(EditorGroup = "Renderable", EditorName = "Asset")]
@@ -72,49 +75,17 @@ namespace StoryTimeFramework.Entities.Actors
                 _renderableAsset = value;
             }
         }
-        
+
+        public override BoundingBox2D BoundingBox
+        {
+            get { return Components.BoundingBox; }
+        }
+
         public override AxisAlignedBoundingBox2D AABoundingBox
         {
             get 
             {
-                var position = Vector2.Zero;
-                float rotation = 0;
-
-                if (Body != null)
-                {
-                    position = Body.Position;
-                    rotation = Body.Rotation;
-                }
-                if (RenderableAsset == null)
-                    return new AxisAlignedBoundingBox2D(position);
-
-                var box = RenderableAsset.AABoundingBox;
-                box.Translate(position);
-                return
-                    box
-                    .GetRotated(rotation, position);
-            }
-        }
-        public override BoundingBox2D BoundingBox
-        {
-            get 
-            {
-                var position = Vector2.Zero;
-                float rotation = 0;
-
-                if (Body != null)
-                {
-                    position = Body.Position;
-                    rotation = Body.Rotation;
-                }
-                if (RenderableAsset == null)
-                    return new BoundingBox2D(position);
-
-                var box = RenderableAsset.BoundingBox;
-                box.Translate(position);
-                return
-                    box
-                    .GetRotated(rotation, position);
+                return Components.AABoundingBox;
             }
         }
 
@@ -127,14 +98,14 @@ namespace StoryTimeFramework.Entities.Actors
 
         public sealed override void TimeElapse(WorldTime WTime)
         {
-            Components.TimeElapse(WTime);
+            //Components.TimeElapse(WTime);
             if (_renderableAsset != null)
                 _renderableAsset.TimeElapse(WTime);
             if (OnTimeElapse != null)
                 OnTimeElapse(WTime);
         }
 
-        private void RenderableActorBoundingBoxChangesHandler(IRenderableAsset asset)
+        private void RenderableActorBoundingBoxChangesHandler(IBoundingBoxable boxable)
         {
             RaiseBoundingBoxChanges();
         }
@@ -142,16 +113,22 @@ namespace StoryTimeFramework.Entities.Actors
         private void BodyPositionChangesHandler(IBody body)
         {
             RaiseBoundingBoxChanges();
+            if (OnBodyChanges != null)
+                OnBodyChanges(body);
         }
 
         private void BodyRotationChangesHandler(IBody body)
         {
             RaiseBoundingBoxChanges();
+            if (OnBodyChanges != null)
+                OnBodyChanges(body);
         }
 
         private void BodyScaleChangesHandler(IBody body)
         {
             RaiseBoundingBoxChanges();
+            if (OnBodyChanges != null)
+                OnBodyChanges(body);
         }
     }
 }

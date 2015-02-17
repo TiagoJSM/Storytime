@@ -50,7 +50,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                     .Get<ISkeletonViewerController>();
 
             _skeletonController.SkeletonTreeViewControl = this;
-            base.DataContext = _skeletonController.SkeletonViewModel;
+            Clear();
 
             SwitchEditMode = new RelayCommand(
                 (o) =>
@@ -78,6 +78,11 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
             if (OnLoaded != null)
                 OnLoaded(this);
+        }
+
+        public void Clear()
+        {
+            base.DataContext = _skeletonController.SkeletonViewModel;
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

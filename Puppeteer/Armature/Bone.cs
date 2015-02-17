@@ -43,6 +43,7 @@ namespace Puppeteer.Armature
             }
         }
 
+        public string Name { get; set; }
         public Vector2 AbsolutePosition
         {
             get 
@@ -179,17 +180,19 @@ namespace Puppeteer.Armature
             }
         }
 
-        public Bone()
+        public Bone(string name = null)
         {
             _children = new List<Bone>();
             _transformationMatrixIsDirty = true;
+            Name = name;
         }
 
-        public Bone(Bone parent)
-            :this()
+        public Bone(Bone parent, string name = null)
+            : this(name)
         {
             Parent = parent;
-            Parent.AddChildren(this);
+            if (parent != null)
+             Parent.AddChildren(this);
         }
 
         public void AddChildren(Bone children)

@@ -30,6 +30,10 @@ namespace StoryTimeDevKit.Models.SceneObjects
             get { return _boneAttachedAsset.Rotation; }
         }
 
+        public void StartTranslate(Vector2 position)
+        {
+        }
+
         public void Translate(Vector2 translation)
         {
             _boneAttachedAsset.RenderingOffset = _boneAttachedAsset.RenderingOffset + translation;
@@ -37,7 +41,11 @@ namespace StoryTimeDevKit.Models.SceneObjects
                 OnPositionChanges(_boneAttachedAsset.RenderingOffset);
         }
 
-        public void EndTranslation()
+        public void EndTranslation(Vector2 fromTranslation, Vector2 toTranslation)
+        {
+        }
+
+        public void StartRotation(float originalRotation)
         {
         }
 
@@ -48,7 +56,7 @@ namespace StoryTimeDevKit.Models.SceneObjects
                 OnRotationChanges(_boneAttachedAsset.Rotation);
         }
 
-        public void EndRotation()
+        public void EndRotation(float fromRotation, float toRotation)
         {
         }
 

@@ -7,19 +7,20 @@ using StoryTimeDevKit.Models.SceneObjects;
 using Microsoft.Xna.Framework;
 using Puppeteer.Armature;
 using Puppeteer.Resources;
+using StoryTimeDevKit.Models.Puppeteer;
 
 namespace StoryTimeDevKit.DataStructures.Factories
 {
     public interface IPuppeteerSceneOjectActionContext
     {
         void SynchronizeBoneChain(Bone bone);
-        void AddAnimationFrameFor(BoneActor actor);
+        void AddAnimationFrameFor(BoneActor actor, BoneState fromState, BoneState toState);
     }
 
     public class PuppeteerSceneObjectFactory : TypeConfigurableSceneObjectFactory
     {
-        private SceneBonesMapper _boneMapper;
-        private AnimationTimeLineMapper _animationMapper;
+        private SceneBonesDataSource _boneMapper;
+        private AnimationTimeLineDataSource _animationMapper;
 
         private IPuppeteerSceneOjectActionContext _context;
 

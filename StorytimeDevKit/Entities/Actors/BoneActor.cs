@@ -12,6 +12,7 @@ using StoryTimeCore.Extensions;
 using StoryTimeCore.DataStructures;
 using StoryTimeDevKit.Entities.Renderables.Puppeteer;
 using Puppeteer.Armature;
+using StoryTimeDevKit.Entities.Components;
 
 namespace StoryTimeDevKit.Entities.Actors
 {
@@ -23,6 +24,8 @@ namespace StoryTimeDevKit.Entities.Actors
         private BoneActor _parent;
         private Vector2 _parentBoneEndReference;
         private float _parentRotationReference;
+        private BoneComponent _boneComponent;
+        private Bone _assignedBone;
 
         public event OnPositionChange OnPositionChange;
         public event OnParentChange OnParentChange;
@@ -31,22 +34,16 @@ namespace StoryTimeDevKit.Entities.Actors
         {
             get 
             {
-                var position = Body.Position;
-                position.Y += RenderableAsset.AABoundingBox.Height;
-                return position.Rotate(Body.Rotation, Body.Position);
+                return AssignedBone.AbsoluteEnd;
             }
             set
             {
-                var originalBounds = 
-                    RenderableAsset
-                    .AABoundingBoxWithoutOrigin
-                    .GetScaled(RenderableAsset.Scale.Inverse(), Vector2.Zero);
-
+                var originalBounds = _boneComponent.Texture.GetAABoundingBox();
                 var distance = Vector2.Distance(Body.Position, value);
                 var angle = value.AngleWithCenterIn(Body.Position) - 90.0f;
                 var yScale = distance / originalBounds.Height;
                 Body.Rotation = angle;
-                RenderableAsset.Scale = new Vector2(1.0f, yScale);
+                _boneComponent.Scale = new Vector2(1.0f, yScale);
             }
         }
         public BoneActor Parent 
@@ -68,7 +65,18 @@ namespace StoryTimeDevKit.Entities.Actors
                     OnParentChange(this);
             }
         }
-        public Bone AssignedBone { get; set; }
+        public Bone AssignedBone 
+        { 
+            get
+            {
+                return _assignedBone;
+            }
+            set
+            {
+                _assignedBone = value;
+                UpdateActor();
+            }
+        }
 
         public BoneActor()
         {
@@ -76,10 +84,16 @@ namespace StoryTimeDevKit.Entities.Actors
             OnBoundingBoxChanges += OnBoundingBoxChangesHandler;
         }
 
+        public void UpdateActor()
+        {
+            Body.Position = _assignedBone.AbsolutePosition;
+            BoneEnd = _assignedBone.AbsoluteEnd;
+        }
+
         private void OnCreatedHandler()
         {
             Body = Scene.PhysicalWorld.CreateRectangularBody(160f, 160f, 1f);
-            RenderableAsset = new BoneRenderableAsset(Scene.GraphicsContext);
+            _boneComponent = Components.AddComponent<BoneComponent>();
         }
 
         private void OnBoundingBoxChangesHandler(WorldEntity entity)

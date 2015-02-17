@@ -18,8 +18,8 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
         static readonly TreeViewItemViewModel DummyChild = new TreeViewItemViewModel();
 
         readonly ObservableCollection<TreeViewItemViewModel> _children;
-        readonly TreeViewItemViewModel _parent;
-        //public IGameObjectsControl GameObjects { get; private set; }
+        
+        private TreeViewItemViewModel _parent;
 
         bool _isExpanded;
         bool _isSelected = true;
@@ -148,6 +148,7 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
         public TreeViewItemViewModel Parent
         {
             get { return _parent; }
+            set { _parent = value; }
         }
 
         #endregion // Parent
@@ -175,8 +176,11 @@ namespace StoryTimeDevKit.Models.GameObjectsTreeViewModels
 
         private void children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if(ChildAdded != null)
-                ChildAdded(this, e.NewItems.Cast<TreeViewItemViewModel>());
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                if (ChildAdded != null)
+                    ChildAdded(this, e.NewItems.Cast<TreeViewItemViewModel>());
+            }
         }
 
     }

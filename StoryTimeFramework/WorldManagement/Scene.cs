@@ -13,7 +13,6 @@ using StoryTimeFramework.WorldManagement.Manageables;
 using StoryTimeFramework.Entities.Controllers;
 using System.Reflection;
 using StoryTimeCore.DataStructures;
-//using StoryTimeSceneGraph;
 using StoryTimeCore.Resources.Graphic;
 using StoryTimeCore.General;
 using FarseerPhysics.Dynamics;
@@ -109,15 +108,12 @@ namespace StoryTimeFramework.WorldManagement
             graphicsContext.SetCamera(_activeCamera);
             var renderingViewport = new AxisAlignedBoundingBox2D(vp.X, vp.Y, vp.Height, vp.Width);
             var enumActors = GetRenderablesIn(renderingViewport);
+
             var renderer = graphicsContext.GetRenderer();
             foreach (var ba in enumActors)
             {
-                renderer.TranslationTransformation += ba.Body.Position;
-                renderer.RotationTransformation += ba.Body.Rotation;
-                ba.RenderableAsset.Render(renderer);
-                renderer.RotationTransformation -= ba.Body.Rotation;
-                renderer.TranslationTransformation -= ba.Body.Position;
-
+                ba.Components.Render(renderer);
+                //TODO: if I uncomment this line I get a bug after opening a new window after closing one previously
                 //renderer.RenderBoundingBox(ba.BoundingBox, Color.Red);
             }
             //TODO: should reset renderer here!
@@ -190,6 +186,11 @@ namespace StoryTimeFramework.WorldManagement
             var actors = _quadTree.Intersect(point);
             var filteredEntities = actors.Where(a => a.BoundingBox.Contains(point));
             return EntitiesInOrder(filteredEntities);
+        }
+
+        public IEnumerable<TEntity> GetAll<TEntity>() where TEntity : WorldEntity
+        {
+            return new List<TEntity>(WorldEntities.OfType<TEntity>());
         }
 
         private List<WorldEntity> EntitiesInOrder(IEnumerable<WorldEntity> entities)

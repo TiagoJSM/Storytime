@@ -20,12 +20,12 @@ namespace StoryTimeDevKit.Models.Puppeteer
         {
             get
             {
-                return _name;
+                return BoneActor.AssignedBone.Name;
             }
             set
             {
-                if (_name == value) return;
-                _name = value;
+                if (BoneActor.AssignedBone.Name == value) return;
+                BoneActor.AssignedBone.Name = value;
                 OnPropertyChanged("Name");
             }
         }
@@ -48,16 +48,16 @@ namespace StoryTimeDevKit.Models.Puppeteer
 
         public BoneActor BoneActor { get; set; }
 
-        public BoneViewModel(INodeAddedCallback nodeAddCB, ICommand attachToBoneCommand, string name)
-            : this(null, nodeAddCB, attachToBoneCommand, name)
+        public BoneViewModel(INodeAddedCallback nodeAddCB, ICommand attachToBoneCommand, BoneActor actor)
+            : this(null, nodeAddCB, attachToBoneCommand, actor)
         {
         }
 
         public BoneViewModel(
-            TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB, ICommand attachToBoneCommand, string name)
+            TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB, ICommand attachToBoneCommand, BoneActor actor)
             : base(parent, nodeAddCB, false)
         {
-            Name = name;
+            BoneActor = actor;
             AttachToBoneCommand = attachToBoneCommand;
         }
     }

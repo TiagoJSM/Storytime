@@ -11,6 +11,7 @@ using StoryTimeCore.Extensions;
 
 namespace StoryTimeDevKit.SceneWidgets.Transformation
 {
+    public delegate void OnStartRotation(float originalRotation);
     public delegate void OnRotation(float rotation);
     public delegate void OnStopRotation(float originalRotation, float finalRotation);
 
@@ -32,6 +33,7 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
             }
         }
 
+        public OnStartRotation OnStartRotation;
         public OnRotation OnRotation;
         public OnStopRotation OnStopRotation;
 
@@ -62,6 +64,8 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
         {
             _lastAngle = currentPosition.AngleWithCenterIn(Position);
             _originalRotation = Rotation;
+            if (OnStartRotation != null)
+                OnStartRotation(_originalRotation);
         }
 
         private void OnDragHandler(Vector2 dragged, Vector2 currentPosition)

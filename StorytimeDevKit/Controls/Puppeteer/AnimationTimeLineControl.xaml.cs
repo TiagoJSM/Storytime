@@ -22,6 +22,7 @@ using StoryTimeDevKit.Controllers.Puppeteer;
 using Ninject;
 using System.Collections.Specialized;
 using System.Windows.Threading;
+using System.Windows.Controls.Primitives;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
@@ -35,6 +36,7 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         private IAnimationTimeLineController _timelineController;
 
         private TimeMarkerViewModel _timeMarkerModel;
+        private bool _isDragging;
 
         public ObservableCollection<TimeLineTuple> Controls { get; private set; }
 
@@ -49,7 +51,10 @@ namespace StoryTimeDevKit.Controls.Puppeteer
             set { SetValue(SecondsPerStepProperty, value); }
         }
 
+        public bool AnimationLoop { get; set; }
+
         public event Action<double> OnTimeMarkerChange;
+        public event Action<AnimationTimeLineControl> OnAnimationStopPlaying;
 
         public AnimationTimeLineControl()
         {
@@ -57,10 +62,11 @@ namespace StoryTimeDevKit.Controls.Puppeteer
 
             Controls = new ObservableCollection<TimeLineTuple>();
             Controls.CollectionChanged += ControlsCollectionChangeHandler;
+
             _timeMarkerTimer = new DispatcherTimer();
-            _timeMarkerTimer.Interval = TimeSpan.FromSeconds(1.0/30.0);
+            _timeMarkerTimer.Interval = TimeSpan.FromSeconds(1.0 / 30.0);
             _timeMarkerTimer.Tick += timeMarkerTimer_TickHandler;
-            
+
             _timeMarkerModel = new TimeMarkerViewModel(Ruler.PixelsPerUnit, 0.25);
             _timeMarkerModel.OnSecondsChange += OnSecondsChangeHandler;
             line.DataContext = _timeMarkerModel;
@@ -78,12 +84,12 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                     Bone = bone,
                     Control = new SingleTimeLineControl() { Width = maxWith, MaxWidth = maxWith, TimeFrames = items }
                 });
-            
+
         }
 
         public void AddFrame(BoneViewModel bone, float rotation, Vector2 position)
         {
-           //this.InvalidateVisual();
+            //this.InvalidateVisual();
         }
 
         public void PlayAnimation()
@@ -94,11 +100,18 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         public void PauseAnimation()
         {
             _timeMarkerTimer.Stop();
+            if (OnAnimationStopPlaying != null)
+                OnAnimationStopPlaying(this);
         }
 
         public void ResetAnimation()
         {
             _timeMarkerModel.Seconds = 0;
+        }
+
+        public void Clear()
+        {
+            Controls.Clear();
         }
 
         private void LoadedHandler(object sender, RoutedEventArgs e)
@@ -147,12 +160,27 @@ namespace StoryTimeDevKit.Controls.Puppeteer
         private void timeMarkerTimer_TickHandler(object sender, EventArgs e)
         {
             _timeMarkerModel.Seconds += _timeMarkerTimer.Interval.TotalSeconds;
+            if (_timeMarkerModel.Seconds > _timelineController.AnimationTotalTime.TotalSeconds)
+            {
+                if (!AnimationLoop)
+                    PauseAnimation();
+                else
+                    ResetAnimation();
+            }
         }
 
         private void OnSecondsChangeHandler(double seconds)
         {
             if (OnTimeMarkerChange != null)
                 OnTimeMarkerChange(seconds);
+        }
+
+        private void GridViewColumnHeader_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                _timeMarkerModel.X = Mouse.GetPosition(Ruler).X;
+            }
         }
     }
 }

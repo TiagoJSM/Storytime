@@ -35,7 +35,7 @@
             <ColumnDefinition Width="157*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="60" />
             <RowDefinition Height="344*" />
             <RowDefinition Height="130*" />
         </Grid.RowDefinitions>
@@ -51,8 +51,30 @@
                   Grid.ColumnSpan="2"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="top"/>
+        <Menu Height="24" HorizontalAlignment="Left" Name="menu1" VerticalAlignment="Top" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Grid.ColumnSpan="3" BorderThickness="0.5" BorderBrush="Black">
+            <MenuItem Header="File">
+                <MenuItem 
+                    Header="Load..." 
+                    Command="{Binding RelativeSource={  
+                                    RelativeSource FindAncestor, 
+					                AncestorType={x:Type UserControl}}, 
+					            Path=LoadSavedPuppeteerItemsCommand}"/>
+                <MenuItem 
+                    Header="Save skeleton" 
+                    Command="{Binding RelativeSource={  
+                                    RelativeSource FindAncestor, 
+					                AncestorType={x:Type UserControl}}, 
+					            Path=SaveSkeletonCommand}"/>
+                <MenuItem 
+                    Header="Save animated skeleton" 
+                    Command="{Binding RelativeSource={  
+                                    RelativeSource FindAncestor, 
+					                AncestorType={x:Type UserControl}}, 
+					            Path=SaveAnimatedSkeletonCommand}"/>
+            </MenuItem>
+        </Menu>
         <my:XnaControl Grid.Row="1" Grid.Column="0" x:Name="PuppeteerEditor" Margin="0,0,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AllowDrop="True"/>
-        <ToolBar HorizontalAlignment="Left" Name="toolBar1" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Height="Auto">
+        <ToolBar HorizontalAlignment="Left" Name="toolBar1" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Height="Auto" Margin="0,24,0,0">
             <RadioButton 
                 Name="SelectBoneMode"
                 GroupName="WorkingModes"
@@ -150,7 +172,14 @@
             </RadioButton>
             <Separator />
         </ToolBar>
-        <my1:SkeletonTreeViewControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <TabControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Name="tabControl1" VerticalAlignment="Stretch" Foreground="#FF190000">
+            <TabItem Header="Skeleton" Name="SkeletonControl">
+                <my1:SkeletonTreeViewControl  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </TabItem>
+            <TabItem Header="Assets" Name="RenderableAssetOrder">
+                <my1:RenderableAssetOrderControl  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </TabItem>
+        </TabControl>
         <my1:PuppeteerControlTabs Grid.Column="0" Grid.Row="2" Margin="0,0,6,0" />
     </Grid>
 </TemplateControls:BaseSceneUserControl>

@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="DataStructures\BoundingBox2D.cs" />
     <Compile Include="DataStructures\Circle.cs" />
+    <Compile Include="Delegates\BodyDelegates.cs" />
     <Compile Include="Delegates\TimeDelegates.cs" />
     <Compile Include="Delegates\TransformDelegates.cs" />
     <Compile Include="Entities\ICamera.cs" />
@@ -76,10 +77,13 @@
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\MatrixExtensions.cs" />
     <Compile Include="Extensions\RectangleExtensions.cs" />
+    <Compile Include="Extensions\TextureExtensions.cs" />
     <Compile Include="Extensions\Vector2Extensions.cs" />
     <Compile Include="Extensions\Vector3Extensions.cs" />
+    <Compile Include="General\IPositionable.cs" />
     <Compile Include="Manageables\ISynchronizable.cs" />
     <Compile Include="Physics\IBody.cs" />
     <Compile Include="Contexts\Interfaces\IGraphicsContext.cs" />

@@ -6,18 +6,23 @@ using StoryTimeDevKit.Entities.Actors;
 using Puppeteer.Armature;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
+using StoryTimeFramework.WorldManagement;
 
 namespace StoryTimeDevKit.DataStructures
 {
-    public class SceneBonesMapper
+    public class SceneBonesDataSource
     {
+        private const float FirstBoneDefaultLenght = 100;
+
         private Dictionary<Bone, BoneActor> _boneDictionary;
         private Skeleton _skeleton;
+        private Scene _scene;
 
-        public SceneBonesMapper(Skeleton skeleton)
+        public SceneBonesDataSource(Skeleton skeleton, Scene scene)
         {
             _boneDictionary = new Dictionary<Bone, BoneActor>();
             _skeleton = skeleton;
+            _scene = scene;
         }
 
         public Bone Add(BoneActor actor)
@@ -30,7 +35,10 @@ namespace StoryTimeDevKit.DataStructures
             }
             else 
             {
-                bone = new Bone();
+                bone = new Bone()
+                {
+                    Length = FirstBoneDefaultLenght
+                };
                 _skeleton.AddBone(bone);
             }
 
@@ -41,6 +49,34 @@ namespace StoryTimeDevKit.DataStructures
 
             _boneDictionary.Add(bone, actor);
             return bone;
+        }
+
+        public BoneActor Add(Vector2 startPosition, Bone parent = null)
+        {
+            Bone bone = new Bone(parent)
+            {
+                AbsolutePosition = startPosition,
+                Length = FirstBoneDefaultLenght
+            };
+            if (parent == null)
+            {
+                _skeleton.AddBone(bone);
+            }
+            return CreateBoneActorWith(bone);
+        }
+
+        public BoneActor Add(Vector2 startPosition, Vector2 endPosition, Bone parent = null)
+        {
+            Bone bone = new Bone(parent)
+            {
+                AbsolutePosition = startPosition,
+                AbsoluteEnd = endPosition
+            };
+            if (parent == null)
+            {
+                _skeleton.AddBone(bone);
+            }
+            return CreateBoneActorWith(bone);
         }
 
         public void SynchronizeBoneChain(Bone bone)
@@ -57,6 +93,16 @@ namespace StoryTimeDevKit.DataStructures
                 var actor = _boneDictionary[bone];
                 SynchronizeBoneChain(actor.AssignedBone);
             }
+        }
+
+        public BoneActor GetBoneActorByName(string boneName)
+        {
+            return _boneDictionary.Where(kvp => kvp.Key.Name == boneName).First().Value;
+        }
+
+        public void Clear()
+        {
+            _boneDictionary = new Dictionary<Bone, BoneActor>();
         }
 
         private void OnPositionChangeHandler(BoneActor actor)
@@ -106,6 +152,17 @@ namespace StoryTimeDevKit.DataStructures
         {
             actor.Body.Position = actor.AssignedBone.AbsolutePosition;
             actor.BoneEnd = actor.AssignedBone.AbsoluteEnd;
+        }
+
+        private BoneActor CreateBoneActorWith(Bone bone)
+        {
+            var actor = _scene.AddWorldEntity<BoneActor>();
+            actor.AssignedBone = bone;
+
+            actor.OnParentChange += OnParentChangeHandler;
+
+            _boneDictionary.Add(bone, actor);
+            return actor;
         }
     }
 }

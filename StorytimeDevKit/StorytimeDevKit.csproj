@@ -121,6 +121,9 @@
     <Compile Include="Commands\UICommands\ParticleEditor\SetParticleProcessorCommand.cs" />
     <Compile Include="Commands\UICommands\ParticleEditor\SetParticleSpawnProcessorCommand.cs" />
     <Compile Include="Commands\UICommands\Puppeteer\AttachToBoneCommand.cs" />
+    <Compile Include="Commands\UICommands\Puppeteer\LoadSavedPuppeteerItemsCommand.cs" />
+    <Compile Include="Commands\UICommands\Puppeteer\SaveAnimatedSkeletonCommand.cs" />
+    <Compile Include="Commands\UICommands\Puppeteer\SaveSkeletonCommand.cs" />
     <Compile Include="Configurations\ApplicationProperties.cs" />
     <Compile Include="Controllers\IMultiStackedCommandsController.cs" />
     <Compile Include="Controllers\IStackedCommandsController.cs" />
@@ -142,6 +145,13 @@
     <Compile Include="Controllers\TemplateControllers\EditableSceneController.cs" />
     <Compile Include="Controllers\TemplateControllers\MultiStackedCommandsController.cs" />
     <Compile Include="Controllers\TemplateControllers\StackedCommandsController.cs" />
+    <Compile Include="Controls\Dialogs\CreatePuppeteerItemDialog.xaml.cs">
+      <DependentUpon>CreatePuppeteerItemDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\LoadSavedPuppeteerItemsDialog.xaml.cs">
+      <DependentUpon>LoadSavedPuppeteerItemsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\IControl.cs" />
     <Compile Include="Controls\Dialogs\ParticleEditorDialog.xaml.cs">
       <DependentUpon>ParticleEditorDialog.xaml</DependentUpon>
     </Compile>
@@ -169,15 +179,35 @@
     <Compile Include="Controls\Puppeteer\HorizontalRuler.xaml.cs">
       <DependentUpon>HorizontalRuler.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Puppeteer\IRenderableAssetOrderControl.cs" />
+    <Compile Include="Controls\Puppeteer\RenderableAssetOrderControl.xaml.cs">
+      <DependentUpon>RenderableAssetOrderControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToEnumValueConverter.cs" />
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToPuppeteerWorkingModeTypeValueConverter.cs" />
-    <Compile Include="DataStructures\AnimationTimeLineMapper.cs" />
+    <Compile Include="DataStructures\AnimationTimeLineDataSource.cs" />
     <Compile Include="DataStructures\BindingEngines\FreeMovementSceneObjectBindingEngine.cs" />
     <Compile Include="DataStructures\BindingEngines\RotateSceneObjectBindingEngine.cs" />
     <Compile Include="DataStructures\BindingEngines\TranslateSceneObjectBindingEngine.cs" />
     <Compile Include="DataStructures\Factories\ISceneObjectFactory.cs" />
     <Compile Include="DataStructures\Factories\PuppeteerSceneObjectFactory.cs" />
+    <Compile Include="DataStructures\Factories\SavedPuppeteerLoadFactory.cs" />
     <Compile Include="DataStructures\Factories\TypeConfigurableSceneObjectFactory.cs" />
+    <Compile Include="Delegates\Puppeteer\ControlDelegates.cs" />
+    <Compile Include="Entities\Components\BoneComponent.cs" />
+    <Compile Include="Extensions\ControlExtensions.cs" />
+    <Compile Include="Extensions\SkeletonExtensions.cs" />
+    <Compile Include="Models\Puppeteer\SaveSkeletonDialogModel.cs" />
+    <Compile Include="Models\SavedData\Bones\SavedAnimatedSkeleton.cs" />
+    <Compile Include="Models\SavedData\Bones\SavedAnimatedSkeletonFile.cs" />
+    <Compile Include="Models\SavedData\Bones\SavedAnimation.cs" />
+    <Compile Include="Models\SavedData\Bones\SavedAnimationFrame.cs" />
+    <Compile Include="Models\SavedData\Bones\SavedAnimations.cs" />
+    <Compile Include="Models\SavedData\Bones\SavedBoneAnimation.cs" />
+    <Compile Include="Models\SavedData\Bones\SavedSkeletonFile.cs" />
+    <Compile Include="Models\SavedData\Common\SavedVector2.cs" />
+    <Compile Include="Models\SavedData\Bones\SavedBone.cs" />
+    <Compile Include="Models\SavedData\Bones\SavedSkeleton.cs" />
     <Compile Include="Entities\Actors\ArmatureActor.cs" />
     <Compile Include="Entities\Renderables\FreeMovementRenderableAsset.cs" />
     <Compile Include="Entities\Renderables\Puppeteer\EditorBoneAttachedRenderableAsset.cs" />
@@ -213,9 +243,9 @@
     </Compile>
     <Compile Include="Controls\Templates\BaseSceneUserControl.cs" />
     <Compile Include="Converters\ToolbarRadioButtons\BooleanToWidgetModeValueConverter.cs" />
-    <Compile Include="DataStructures\SceneBonesMapper.cs" />
+    <Compile Include="DataStructures\SceneBonesDataSource.cs" />
     <Compile Include="DataStructures\SceneControlData.cs" />
-    <Compile Include="DataStructures\SkeletonTreeViewMapper.cs" />
+    <Compile Include="DataStructures\SkeletonViewDataSource.cs" />
     <Compile Include="Delegates\SceneViewerDelegates.cs" />
     <Compile Include="Delegates\TransformDelegates.cs" />
     <Compile Include="Entities\Actors\BoneActor.cs" />
@@ -339,7 +369,16 @@
     <Compile Include="Texts\ActorPropertyEditorDefaultValues.cs" />
     <Compile Include="Utils\ApplicationUtils.cs" />
     <Compile Include="Utils\DependencyInjectorHelper.cs" />
+    <Compile Include="Utils\PuppeteerUtils.cs" />
     <Compile Include="Utils\XMLSerializerUtils.cs" />
+    <Page Include="Controls\Dialogs\CreatePuppeteerItemDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\LoadSavedPuppeteerItemsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Dialogs\ParticleEditorDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -401,6 +440,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Editors\ActorPropertyEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Puppeteer\RenderableAssetOrderControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -580,7 +623,7 @@
     <Resource Include="Images\Puppeteer\ToolBar\SelectBoneIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Delegates\Puppeteer\" />
+    <Resource Include="Images\Puppeteer\AnimationTimeLine\infinite.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Puppeteer\AnimationTimeLine\record.png" />

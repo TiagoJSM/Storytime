@@ -40,7 +40,7 @@ namespace StoryTimeDevKit.Models.Puppeteer
             {
                 return _play;
             }
-            private set
+            set
             {
                 if (_play == value) return;
                 _play = value;

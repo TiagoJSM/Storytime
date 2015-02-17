@@ -11,50 +11,39 @@ using MoreLinq;
 using StoryTimeDevKit.Configurations;
 using StoryTimeDevKit.Extensions;
 using Puppeteer.Animation;
+using Microsoft.Xna.Framework;
+using System.Collections.Specialized;
 
 namespace StoryTimeDevKit.DataStructures
 {
-    public class AnimationTimeLineMapper
+    public class AnimationTimeLineDataSource
     {
-        private Dictionary<BoneActor, BoneState> _boneInitialStateMapper;
         private Dictionary<BoneActor, ObservableCollection<TimeFrame>> _timeFramesMapper;
+        private Skeleton _skeleton;
 
         public SkeletonAnimation Animation { get; private set; }
+        public TimeSpan AnimationTotalTime { get; private set; }
 
-        public AnimationTimeLineMapper(Skeleton skeleton)
+        public AnimationTimeLineDataSource(Skeleton skeleton)
         {
+            _skeleton = skeleton;
             _timeFramesMapper = new Dictionary<BoneActor, ObservableCollection<TimeFrame>>();
-            _boneInitialStateMapper = new Dictionary<BoneActor, BoneState>();
             Animation = new SkeletonAnimation(skeleton);
         }
 
         public void AddTimeLineFor(BoneActor actor)
         {
-            _timeFramesMapper.Add(actor, new ObservableCollection<TimeFrame>());
-            AddBoneInitialSate(actor);
+            var timeFramecollection = new ObservableCollection<TimeFrame>();
+            timeFramecollection.CollectionChanged += CheckIfAnimationTimeFramesCountChanges;
+            _timeFramesMapper.Add(actor, timeFramecollection);
         }
 
-        public void AddBoneInitialSate(BoneActor actor)
-        {
-            BoneState state = null;
-            if (_boneInitialStateMapper.TryGetValue(actor, out state))
-            {
-                state.Translation = actor.AssignedBone.Translation;
-                state.Rotation = actor.AssignedBone.Rotation;
-            }
-            else
-            {
-                state = GetStateFromActor(actor);
-                _boneInitialStateMapper.Add(actor, state);
-            }
-        }
-
-        public void AddAnimationFrame(BoneActor actor, double animationEndTimeInSeconds)
+        public void AddAnimationFrame(BoneActor actor, double animationEndTimeInSeconds, BoneState fromState, BoneState toState)
         {
             var frameAtTime = GetFrameAt(actor, animationEndTimeInSeconds);
             if (frameAtTime == null)
             {
-                AddNewAnimationFrame(actor, animationEndTimeInSeconds);
+                AddNewAnimationFrame(actor, animationEndTimeInSeconds, fromState, toState);
                 return;
             }
 
@@ -63,7 +52,7 @@ namespace StoryTimeDevKit.DataStructures
                 return;
             }
 
-            SetActorPropertiesToBoneEndState(frameAtTime, actor);
+            SetActorPropertiesToBoneEndState(frameAtTime, actor, toState);
         }
 
         public ObservableCollection<TimeFrame> GetCollectionBoundToActor(BoneActor actor)
@@ -79,6 +68,17 @@ namespace StoryTimeDevKit.DataStructures
             if (items == null) return null;
             var convertedSeconds = TimeSpan.FromSeconds(seconds);
             return items.FirstOrDefault(i => i.IsIntervalIntesected(convertedSeconds, true)) as BoneAnimationTimeFrameModel;
+        }
+
+        public bool HasAnimations()
+        {
+            return _timeFramesMapper.Any(tf => tf.Value.Any());
+        }
+
+        public void Clear()
+        {
+            _timeFramesMapper = new Dictionary<BoneActor, ObservableCollection<TimeFrame>>();
+            Animation = new SkeletonAnimation(_skeleton);
         }
 
         private BoneAnimationTimeFrameModel GetLastTimeFrame(ObservableCollection<TimeFrame> items)
@@ -99,12 +99,10 @@ namespace StoryTimeDevKit.DataStructures
             return items.FirstOrDefault(i => i.EndTime == frame.StartTime) as BoneAnimationTimeFrameModel;
         }
 
-        private void AddNewAnimationFrame(BoneActor actor, double animationEndTimeInSeconds)
+        private void AddNewAnimationFrame(BoneActor actor, double animationEndTimeInSeconds, BoneState fromState, BoneState toState)
         {
             var dataCollection = GetCollectionBoundToActor(actor);
             var frame = GetLastTimeFrame(dataCollection);
-
-            var currentState = GetStateFromActor(actor);
 
             BoneAnimationTimeFrameModel item = null;
             if (frame == null)
@@ -113,8 +111,16 @@ namespace StoryTimeDevKit.DataStructures
                 {
                     StartTime = new TimeSpan(),
                     EndTime = TimeSpan.FromSeconds(animationEndTimeInSeconds),
-                    StartState = _boneInitialStateMapper[actor],
-                    EndState = currentState
+                    StartState = new BoneState()
+                    {
+                        Rotation = fromState.Rotation,
+                        Translation = fromState.Translation
+                    },
+                    EndState = new BoneState()
+                    {
+                        Rotation = toState.Rotation,
+                        Translation = toState.Translation
+                    }
                 };
             }
             else
@@ -124,7 +130,11 @@ namespace StoryTimeDevKit.DataStructures
                     StartTime = frame.EndTime,
                     EndTime = TimeSpan.FromSeconds(animationEndTimeInSeconds),
                     StartState = frame.EndState,
-                    EndState = currentState
+                    EndState = new BoneState()
+                    {
+                        Rotation = toState.Rotation,
+                        Translation = toState.Translation
+                    }
                 };
             }
 
@@ -143,30 +153,42 @@ namespace StoryTimeDevKit.DataStructures
             dataCollection.Add(item);
         }
 
-        private BoneState GetStateFromActor(BoneActor actor)
+        private void SetActorPropertiesToBoneEndState(BoneAnimationTimeFrameModel frame, BoneActor actor, BoneState toState)
         {
-            return new BoneState()
-            {
-                Translation = actor.AssignedBone.Translation,
-                Rotation = actor.AssignedBone.Rotation
-            };
-        }
+            frame.EndState.Translation = toState.Translation;
+            frame.EndState.Rotation = toState.Rotation;
 
-        private void SetActorPropertiesToBoneEndState(BoneAnimationTimeFrameModel frame, BoneActor actor)
-        {
-            frame.EndState.Translation = actor.AssignedBone.Translation;
-            frame.EndState.Rotation = actor.AssignedBone.Rotation;
-
-            frame.AnimationFrame.EndTranslation = actor.AssignedBone.Translation;
-            frame.AnimationFrame.EndRotation = actor.AssignedBone.Rotation;
+            frame.AnimationFrame.EndTranslation = toState.Translation;
+            frame.AnimationFrame.EndRotation = toState.Rotation;
 
             var items = GetCollectionBoundToActor(actor);
             var nextFrame = GetFrameAfter(items, frame);
 
             if (nextFrame == null) return;
 
-            nextFrame.AnimationFrame.StartTranslation = actor.AssignedBone.Translation;
-            nextFrame.AnimationFrame.StartRotation = actor.AssignedBone.Rotation;
+            nextFrame.AnimationFrame.StartTranslation = toState.Translation;
+            nextFrame.AnimationFrame.StartRotation = toState.Rotation;
+        }
+
+        private void CheckIfAnimationTimeFramesCountChanges(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                var timeFrames = sender as ObservableCollection<TimeFrame>;
+                var boneAnimationMaximum = timeFrames.MaxBy(tf => tf.EndTime);
+                if (boneAnimationMaximum.EndTime > AnimationTotalTime)
+                    AnimationTotalTime = boneAnimationMaximum.EndTime;
+
+                var newTimeFrames = e.NewItems.Cast<TimeFrame>();
+                foreach (var newTimeFrame in newTimeFrames)
+                    newTimeFrame.OnEndTimeChanges += OnTimeFrameEndTimeChangesHandler;
+            }
+        }
+
+        private void OnTimeFrameEndTimeChangesHandler(TimeFrame timeFrame)
+        {
+            if (timeFrame.EndTime > AnimationTotalTime)
+                AnimationTotalTime = timeFrame.EndTime;
         }
     }
 }

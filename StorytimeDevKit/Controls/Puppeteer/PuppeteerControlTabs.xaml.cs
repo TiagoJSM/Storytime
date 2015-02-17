@@ -15,6 +15,7 @@ using StoryTimeDevKit.Controllers.Puppeteer;
 using System.ComponentModel;
 using StoryTimeDevKit.Utils;
 using Ninject;
+using StoryTimeDevKit.Models.Puppeteer;
 
 namespace StoryTimeDevKit.Controls.Puppeteer
 {
@@ -23,36 +24,35 @@ namespace StoryTimeDevKit.Controls.Puppeteer
     /// </summary>
     public partial class PuppeteerControlTabs : UserControl
     {
-        private IAnimationTimeLineController _timelineController;
-
+        private AnimationTimeLineControlsViewModel _model;
         public PuppeteerControlTabs()
         {
             InitializeComponent();
-            Loaded += LoadedHandler;
-        }
-
-        private void LoadedHandler(object sender, RoutedEventArgs e)
-        {
-            if (DesignerProperties.GetIsInDesignMode(this))
-                return;
-
-            _timelineController =
-                DependencyInjectorHelper
-                    .PuppeteerKernel
-                    .Get<IAnimationTimeLineController>();
+            _model = this.FindResource("timeLineControlsModel") as AnimationTimeLineControlsViewModel;
+            TimeLines.OnAnimationStopPlaying += OnAnimationStopPlayingHandler;
         }
 
         private void PlayStopButton_Click(object sender, RoutedEventArgs e)
         {
             if (PlayStopButton.IsChecked ?? false)
             {
-                _timelineController.TimeLineControl.ResetAnimation();
-                _timelineController.TimeLineControl.PlayAnimation();
+                TimeLines.ResetAnimation();
+                TimeLines.PlayAnimation();
             }
             else
             {
-                _timelineController.TimeLineControl.PauseAnimation();
+                TimeLines.PauseAnimation();
             }
+        }
+
+        private void AnimationLoopButton_Click(object sender, RoutedEventArgs e)
+        {
+            TimeLines.AnimationLoop = AnimationLoopButton.IsChecked ?? false;
+        }
+
+        public void OnAnimationStopPlayingHandler(AnimationTimeLineControl control)
+        {
+            _model.Play = false;
         }
     }
 }
