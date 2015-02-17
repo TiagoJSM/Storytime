@@ -13,20 +13,20 @@ namespace StoryTimeDevKit.Models.ParticleEditor
     public class ParticleEmitterViewModel : ParticleTreeViewItem
     {
         public ICommand SetParticleSpawnProcessor { get; private set; }
-        public ICommand SetParticleProcessor { get; private set; }
+        public ICommand AddParticleProcessor { get; private set; }
         public ParticleEmitter ParticleEmitter { get; private set; }
 
         public ParticleEmitterViewModel(
             string name, 
             INodeAddedCallback nodeAddCB, 
             ICommand setParticleSpawnProcessor, 
-            ICommand setParticleProcessor,
+            ICommand addParticleProcessor,
             TreeViewItemViewModel parent,
             ParticleEmitter emitter)
             : base(name, parent, nodeAddCB, emitter)
         {
             SetParticleSpawnProcessor = setParticleSpawnProcessor;
-            SetParticleProcessor = setParticleProcessor;
+            AddParticleProcessor = addParticleProcessor;
             ParticleEmitter = emitter;
         }
     }

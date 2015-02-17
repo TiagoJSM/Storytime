@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using FarseerPhysicsWrapper;
 using Microsoft.Xna.Framework;
@@ -32,7 +33,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         private IParticleEffectTreeView _particleEffectControl;
 
         private AddParticleEmitterCommand _addParticleEmitterCommand;
-        private SetParticleSpawnProcessorCommand _setParticleSpawnProcessorCommand;
+        private AddParticleSpawnProcessorCommand _addParticleSpawnProcessorCommand;
         private SetParticleProcessorCommand _setParticleProcessorCommand;
         private RemoveParticleProcessorCommand _removeParticleProcessorCommand;
         private ReplaceParticleProcessorCommand _replaceParticleProcessorCommand;
@@ -48,6 +49,8 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         private ParticleEffectViewModel _effectViewModel;
 
         public ObservableCollection<ParticleEffectViewModel> ParticleEffectViewModel { get; private set; }
+
+        public ObservableCollection<ParticleProcessorContextViewModel> ParticleProcessors { get; private set; }
 
         public IParticleEmitterPropertyEditor ParticleEmitterPropertyEditor
         {
@@ -108,13 +111,14 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             _particleEffectActor = scene.AddWorldEntity<ParticleEffectActor>();
             
             _addParticleEmitterCommand = new AddParticleEmitterCommand(this);
-            _setParticleSpawnProcessorCommand = new SetParticleSpawnProcessorCommand(this);
+            _addParticleSpawnProcessorCommand = new AddParticleSpawnProcessorCommand(this);
             _setParticleProcessorCommand = new SetParticleProcessorCommand(this);
             _removeParticleProcessorCommand = new RemoveParticleProcessorCommand(this);
             
             ParticleEffectViewModel = new ObservableCollection<ParticleEffectViewModel>();
             _effectViewModel = new ParticleEffectViewModel("Particle effect", this, _addParticleEmitterCommand);
             ParticleEffectViewModel.Add(_effectViewModel);
+            ParticleProcessors = LoadParticleProcessors();
            
             //ToDo: delete these lines in the future
             var bitmap = gameWorld.GraphicsContext.LoadTexture2D("default");
@@ -128,7 +132,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         public void AddParticleEmitterTo(ParticleEffectViewModel particleEffectViewModel)
         {
             var emitter = ParticleEffect.AddEmitter();
-            var emitterViewModel = new ParticleEmitterViewModel("name", this, _setParticleSpawnProcessorCommand,
+            var emitterViewModel = new ParticleEmitterViewModel("name", this, _addParticleSpawnProcessorCommand,
                 _setParticleProcessorCommand, particleEffectViewModel, emitter);
             
             SetParticleEmitterDefaultValues(emitter, emitterViewModel);
@@ -224,6 +228,19 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         private void OnSelectedItemChangedHandler(ParticleTreeViewItem item)
         {
             _particleEmitterPropertyEditor.Selected = item.EditableObject;
+        }
+
+        private ObservableCollection<ParticleProcessorContextViewModel> LoadParticleProcessors()
+        {
+            var assembly = Assembly.Load("ParticleEngine");
+
+            var particleProcessorType = typeof(IParticleProcessor);
+            var particleProcessors = assembly.GetTypes()
+                .Where(t => t != particleProcessorType && particleProcessorType.IsAssignableFrom(t))
+                .Select(t =>new ParticleProcessorContextViewModel(t))
+                .ToList();
+
+            return new ObservableCollection<ParticleProcessorContextViewModel>(particleProcessors);
         }
 
         public void NodeAddedCallback(TreeViewItemViewModel parent, IEnumerable<TreeViewItemViewModel> newModels)

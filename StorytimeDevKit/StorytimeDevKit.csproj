@@ -119,7 +119,7 @@
     <Compile Include="Commands\UICommands\ParticleEditor\RemoveParticleProcessorCommand.cs" />
     <Compile Include="Commands\UICommands\ParticleEditor\ReplaceParticleProcessorCommand.cs" />
     <Compile Include="Commands\UICommands\ParticleEditor\SetParticleProcessorCommand.cs" />
-    <Compile Include="Commands\UICommands\ParticleEditor\SetParticleSpawnProcessorCommand.cs" />
+    <Compile Include="Commands\UICommands\ParticleEditor\AddParticleSpawnProcessorCommand.cs" />
     <Compile Include="Commands\UICommands\Puppeteer\AttachToBoneCommand.cs" />
     <Compile Include="Commands\UICommands\Puppeteer\LoadSavedPuppeteerItemsCommand.cs" />
     <Compile Include="Commands\UICommands\Puppeteer\SaveAnimatedSkeletonCommand.cs" />
@@ -197,6 +197,7 @@
     <Compile Include="Entities\Components\BoneComponent.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\SkeletonExtensions.cs" />
+    <Compile Include="Models\ParticleEditor\ParticleProcessorContextViewModel.cs" />
     <Compile Include="Models\Puppeteer\SaveSkeletonDialogModel.cs" />
     <Compile Include="Models\SavedData\Bones\SavedAnimatedSkeleton.cs" />
     <Compile Include="Models\SavedData\Bones\SavedAnimatedSkeletonFile.cs" />

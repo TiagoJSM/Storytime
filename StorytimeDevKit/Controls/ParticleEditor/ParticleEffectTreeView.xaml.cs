@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,7 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
         public event Action<ParticleTreeViewItem> OnSelectedItemChanged;
 
         public ICommand SwitchEditMode { get; private set; }
+        public ObservableCollection<ParticleProcessorContextViewModel> ParticleProcessors { get; private set; }
 
         public ParticleEffectTreeView()
         {
@@ -52,6 +54,7 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
 
             _particleEffectController.ParticleEffectControl = this;
             base.DataContext = _particleEffectController.ParticleEffectViewModel;
+            ParticleProcessors = _particleEffectController.ParticleProcessors;
 
             SwitchEditMode = new RelayCommand(
                 (o) =>
