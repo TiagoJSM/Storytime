@@ -73,7 +73,7 @@ namespace StoryTimeDevKit.DataStructures
         public void AddAssetToArmature(AssetViewModel assetVM)
         {
             _boneAttachedMapper.Add(assetVM.Asset, assetVM);
-            _armatureActor.ArmatureRenderableAsset.Add(assetVM.Asset);
+            _armatureActor.SkeletonComponent.Add(assetVM.Asset);
             assetVM.Parent = SkeletonViewModel;
             SkeletonViewModel.Children.Add(assetVM);
             RenderableAssetOrderModels.Add(assetVM);
@@ -89,7 +89,7 @@ namespace StoryTimeDevKit.DataStructures
 
         public void Move(AssetViewModel model, int index)
         {
-            _armatureActor.ArmatureRenderableAsset.Move(model.Asset, index);
+            _armatureActor.SkeletonComponent.Move(model.Asset, index);
         }
 
         public void Clear()

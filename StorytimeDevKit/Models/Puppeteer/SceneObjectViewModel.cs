@@ -182,7 +182,7 @@ namespace StoryTimeDevKit.Models.Puppeteer
 
         private void OnRotationChanges()
         {
-            OnPropertyChanged("Position");
+            OnPropertyChanged("Rotation");
         }
 
         private void OnScaleChanges()

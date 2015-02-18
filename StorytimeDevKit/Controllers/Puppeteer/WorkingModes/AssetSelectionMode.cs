@@ -27,9 +27,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
             var armature = actor as ArmatureActor;
             if (armature == null) return;
             Context.Selected = 
-                armature.ArmatureRenderableAsset.GetIntersectedBoneAttachedAssets(position).FirstOrDefault();
-            //armature.ArmatureRenderableAsset.
-            //Context.SelectedObject = bone;
+                armature.SkeletonComponent.GetIntersectedBoneAttachedAssets(position).FirstOrDefault();
         }
     }
 }

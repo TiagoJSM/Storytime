@@ -195,13 +195,14 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                     { PuppeteerWorkingModeType.AddBoneMode, new AddBoneMode(this) }
                 };
 
-            Skeleton = new Skeleton();
+            var armatureActor = Scene.AddWorldEntity<ArmatureActor>();
+            Skeleton = armatureActor.SkeletonComponent.Skeleton;
             SavedPuppeteerItemModel = new SavePuppeteerItemDialogModel();
             _sceneObjectFactory = new PuppeteerSceneObjectFactory(this);
             _loadSaveFilesfatory = new SavedPuppeteerLoadFactory();
             _sceneBoneData = new SceneBonesDataSource(Skeleton, Scene);
             _animationTimeLineData = new AnimationTimeLineDataSource(Skeleton);
-            _skeletonTreeViewData = new SkeletonViewDataSource(this, new AttachToBoneCommand(this), Scene.AddWorldEntity<ArmatureActor>());
+            _skeletonTreeViewData = new SkeletonViewDataSource(this, new AttachToBoneCommand(this), armatureActor);
             _assetMapping = new Dictionary<BoneAttachedRenderableAsset, AssetListItemViewModel>();
             _workingModesModel = workingModesModel;
             ConfigureSceneUI();

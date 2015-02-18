@@ -52,7 +52,7 @@
     <Compile Include="Armature\Bone.cs" />
     <Compile Include="Armature\Skeleton.cs" />
     <Compile Include="Entities\SkeletonComponent.cs" />
-    <Compile Include="Extensions\ArmatureRenderableAssetExtensions.cs" />
+    <Compile Include="Extensions\ArmatureExtensions.cs" />
     <Compile Include="Extensions\BoneAnimationFrameExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ArmatureRenderableAsset.cs" />

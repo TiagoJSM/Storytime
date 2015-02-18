@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using StoryTimeCore.Extensions;
+using Puppeteer.Armature;
 
 namespace Puppeteer.Entities
 {
@@ -17,10 +18,13 @@ namespace Puppeteer.Entities
         private List<BoneAttachedRenderableAsset> _renderables;
         private AxisAlignedBoundingBox2D _box;
 
+        public Skeleton Skeleton { get; private set; }
+
         public IEnumerable<BoneAttachedRenderableAsset> BoneAttachedAssets { get { return _renderables; } }
 
         public SkeletonComponent()
         {
+            Skeleton = new Skeleton();
             _renderables = new List<BoneAttachedRenderableAsset>();
         }
 
@@ -43,7 +47,7 @@ namespace Puppeteer.Entities
 
         protected override AxisAlignedBoundingBox2D RawAABoundingBox
         {
-            get { throw new NotImplementedException(); }
+            get { return _box; }
         }
 
         protected override void DoRender(IRenderer renderer)

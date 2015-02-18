@@ -134,6 +134,7 @@ namespace StoryTimeFramework.Entities.Components
 
         public Component()
         {
+            IsVisible = true;
             _scale = Vector2.One;
         }
 

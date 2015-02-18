@@ -69,7 +69,7 @@ namespace StoryTimeDevKit.Controllers.TemplateControllers
             }
             set
             {
-                if (SceneObjectViewModel.SceneObject == value) return;
+                if (SceneObjectViewModel.SceneObject != null && SceneObjectViewModel.SceneObject.Object == value) return;
                 if (value == null)
                 {
                     SceneObjectViewModel.SceneObject = null;

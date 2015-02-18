@@ -23,7 +23,6 @@ namespace StoryTimeFramework.Entities.Components
 
         public Static2DComponent()
         {
-            IsVisible = true;
             OnCreated += OnCreatedHandler;
         }
 
