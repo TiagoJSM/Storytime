@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using StoryTimeCore.Extensions;
 using Puppeteer.Armature;
+using StoryTimeCore.General;
 
 namespace Puppeteer.Entities
 {
@@ -36,8 +37,8 @@ namespace Puppeteer.Entities
         public void Add(BoneAttachedRenderableAsset asset)
         {
             _renderables.Add(asset);
-            _box = _renderables.Select(r => r.AABoundingBox).Combine();
-            RaiseBoundingBoxChanges();
+            asset.OnBoundingBoxChanges += AssetOnBoundingBoxChangesHandler;
+            UpdateBounds();
         }
 
         public void Move(BoneAttachedRenderableAsset asset, int index)
@@ -54,6 +55,17 @@ namespace Puppeteer.Entities
         {
             foreach (IRenderableAsset asset in _renderables)
                 asset.Render(renderer);
+        }
+
+        private void AssetOnBoundingBoxChangesHandler(IBoundingBoxable boundingBoxable)
+        {
+            UpdateBounds();
+        }
+
+        private void UpdateBounds()
+        {
+            _box = _renderables.Select(r => r.AABoundingBox).Combine();
+            RaiseBoundingBoxChanges();
         }
     }
 }
