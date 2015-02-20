@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ParticleEngine;
 using StoryTimeCore.Input.Time;
+using StoryTimeFramework.Entities.Components;
 using StoryTimeFramework.Resources.Graphic;
 
 namespace StoryTimeFramework.Entities.Actors
@@ -23,8 +24,6 @@ namespace StoryTimeFramework.Entities.Actors
             }
         }
 
-        //public string ParticleTexture { get; set; }
-
         public ParticleActor()
         {
             OnTimeElapse += OnTimeElapseHandler;
@@ -33,10 +32,7 @@ namespace StoryTimeFramework.Entities.Actors
 
         private void OnOnCreatedHandler()
         {
-            var bitmap = Scene.GraphicsContext.LoadTexture2D(_particle.ParticleTexture);
-            var asset = new Static2DRenderableAsset();
-            asset.Texture2D = bitmap;
-            RenderableAsset = asset;
+            Components.AddComponent<ParticleComponent>(c => c.Particle = _particle);
         }
 
         private void OnTimeElapseHandler(WorldTime wTime)
