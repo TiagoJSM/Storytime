@@ -36,7 +36,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         private AddParticleSpawnProcessorCommand _addParticleSpawnProcessorCommand;
         private AddParticleProcessorCommand _addParticleProcessorCommand;
         private RemoveParticleProcessorCommand _removeParticleProcessorCommand;
-        private ReplaceParticleProcessorCommand _replaceParticleProcessorCommand;
+        private ReplaceParticleSpawnProcessorCommand _replaceParticleSpawnSpawnProcessorCommand;
 
         private GameWorld _gameWorld;
         private ParticleEffectActor _particleEffectActor;
@@ -51,6 +51,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         public ObservableCollection<ParticleEffectViewModel> ParticleEffectViewModel { get; private set; }
 
         public ObservableCollection<ParticleProcessorContextViewModel> ParticleProcessors { get; private set; }
+        public ObservableCollection<ParticleSpawnProcessorContextViewModel> ParticleSpawnProcessors { get; private set; }
 
         public IParticleEmitterPropertyEditor ParticleEmitterPropertyEditor
         {
@@ -114,11 +115,13 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             _addParticleSpawnProcessorCommand = new AddParticleSpawnProcessorCommand(this);
             _addParticleProcessorCommand = new AddParticleProcessorCommand(this);
             _removeParticleProcessorCommand = new RemoveParticleProcessorCommand(this);
+            _replaceParticleSpawnSpawnProcessorCommand = new ReplaceParticleSpawnProcessorCommand(this);
             
             ParticleEffectViewModel = new ObservableCollection<ParticleEffectViewModel>();
             _effectViewModel = new ParticleEffectViewModel("Particle effect", this, _addParticleEmitterCommand);
             ParticleEffectViewModel.Add(_effectViewModel);
             ParticleProcessors = LoadParticleProcessors();
+            ParticleSpawnProcessors = LoadParticleSpawnProcessors();
            
             //ToDo: delete these lines in the future
             var bitmap = gameWorld.GraphicsContext.LoadTexture2D("default");
@@ -144,7 +147,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         {
             var spawnProcessor = particleEmitterViewModel.ParticleEmitter.SetParticleSpawnProcessor<DefaultParticleSpawnProcessor>();
             particleEmitterViewModel.Children.Add(
-                new ParticleSpawnProcessorViewModel(spawnProcessor, particleEmitterViewModel, this, _replaceParticleProcessorCommand));
+                new ParticleSpawnProcessorViewModel(spawnProcessor, particleEmitterViewModel, this, _replaceParticleSpawnSpawnProcessorCommand));
         }
 
         public void AddParticleProcessorTo(ParticleEmitterViewModel particleEmitter)
@@ -159,7 +162,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
                 new ParticleProcessorViewModel(velocityProcessor, particleEmitter, this, _removeParticleProcessorCommand));
         }
 
-        public void ReplaceParticleProcessorFromEmitter(ParticleEmitter particleEmitter, Type spawnProcessorType)
+        public void ReplaceParticleSpawnProcessorFromEmitter(ParticleEmitter particleEmitter, Type spawnProcessorType)
         {
         }
 
@@ -218,7 +221,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             emitter.ParticleProcessors.Add(directionProcessor);
 
             emitterViewModel.Children.Add(
-                new ParticleSpawnProcessorViewModel(spawnProcessor, emitterViewModel, this, _replaceParticleProcessorCommand));
+                new ParticleSpawnProcessorViewModel(spawnProcessor, emitterViewModel, this, _replaceParticleSpawnSpawnProcessorCommand));
             emitterViewModel.Children.Add(
                 new ParticleProcessorViewModel(velocityProcessor, emitterViewModel, this, _removeParticleProcessorCommand));
             emitterViewModel.Children.Add(
@@ -241,6 +244,22 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
                 .ToList();
 
             return new ObservableCollection<ParticleProcessorContextViewModel>(particleProcessors);
+        }
+
+        private ObservableCollection<ParticleSpawnProcessorContextViewModel> LoadParticleSpawnProcessors()
+        {
+            var assembly = Assembly.Load("ParticleEngine");
+
+            var particleProcessorType = typeof(ParticleSpawnProcessor);
+            var particleProcessors = assembly.GetTypes()
+                .Where(t => 
+                    t != particleProcessorType && 
+                    !t.IsAbstract &&
+                    particleProcessorType.IsAssignableFrom(t))
+                .Select(t => new ParticleSpawnProcessorContextViewModel(t, _replaceParticleSpawnSpawnProcessorCommand))
+                .ToList();
+
+            return new ObservableCollection<ParticleSpawnProcessorContextViewModel>(particleProcessors);
         }
 
         public void NodeAddedCallback(TreeViewItemViewModel parent, IEnumerable<TreeViewItemViewModel> newModels)

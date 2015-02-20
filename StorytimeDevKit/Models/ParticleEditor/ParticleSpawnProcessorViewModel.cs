@@ -11,14 +11,14 @@ namespace StoryTimeDevKit.Models.ParticleEditor
 {
     public class ParticleSpawnProcessorViewModel : ParticleTreeViewItem
     {
-        public ICommand ReplaceSpawnParticleProcessor { get; private set; }
+        public ICommand ReplaceParticleSpawnProcessor { get; private set; }
         public ParticleSpawnProcessor SpawnProcessor { get; private set; }
 
         public ParticleSpawnProcessorViewModel(ParticleSpawnProcessor spawnProcessor, TreeViewItemViewModel parent, INodeAddedCallback nodeAddCB,
-            ICommand replaceSpawnParticleProcessor)
+            ICommand replaceParticleSpawnProcessor)
             : base(spawnProcessor.GetType().Name, parent, nodeAddCB, spawnProcessor)
         {
-            ReplaceSpawnParticleProcessor = replaceSpawnParticleProcessor;
+            ReplaceParticleSpawnProcessor = replaceParticleSpawnProcessor;
             SpawnProcessor = spawnProcessor;
         }
     }

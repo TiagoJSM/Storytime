@@ -13,6 +13,9 @@
         <CollectionViewSource Source="{Binding ParticleProcessors, 
                                                 RelativeSource={RelativeSource FindAncestor, 
                                                 AncestorType={x:Type UserControl}}}" x:Key="ParticleProcessors"/>
+        <CollectionViewSource Source="{Binding ParticleSpawnProcessors, 
+                                                RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type UserControl}}}" x:Key="ParticleSpawnProcessors"/>
     </UserControl.Resources>
     <Grid>
         <GroupBox Header="Particle emitters" 
@@ -166,7 +169,8 @@
                                     <MenuItem 
                                             Header="Remove" 
                                             Command="{Binding Path=RemoveParticleProcessor}"
-                                            CommandParameter="{Binding}" />
+                                            CommandParameter="{Binding}" >
+                                    </MenuItem>
                                 </ContextMenu>
                             </StackPanel.ContextMenu>
                         </StackPanel>
@@ -178,10 +182,20 @@
                             <TextBlock Name="tb" FontSize="14" Text="{Binding Name}" Foreground="#FF0DC927"/>
                             <StackPanel.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem 
-                                            Header="Replace" 
-                                            Command="{Binding Path=ReplaceSpawnParticleProcessor}"
-                                            CommandParameter="{Binding}" />
+                                    <MenuItem Header="Replace with" >
+                                        <MenuItem.ItemsSource>
+                                            <CompositeCollection>
+                                                <CollectionContainer Collection="{Binding Source={StaticResource ParticleSpawnProcessors}}" />
+                                            </CompositeCollection>
+                                        </MenuItem.ItemsSource>
+                                        <MenuItem.ItemContainerStyle>
+                                            <Style>
+                                                <Setter Property="MenuItem.Header" Value="{Binding Name}"/>
+                                                <Setter Property="MenuItem.Command" Value="{Binding ReplaceParticleSpawnProcessor}"/>
+                                                <Setter Property="MenuItem.CommandParameter" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MenuItem}}, Path=DataContext}"/>
+                                            </Style>
+                                        </MenuItem.ItemContainerStyle>
+                                    </MenuItem>
                                 </ContextMenu>
                             </StackPanel.ContextMenu>
                         </StackPanel>

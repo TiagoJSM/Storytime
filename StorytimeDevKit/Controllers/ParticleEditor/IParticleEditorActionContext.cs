@@ -13,7 +13,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         void SetParticleSpawnProcessorTo(ParticleEmitterViewModel particleEmitter);
         void AddParticleProcessorTo(ParticleEmitterViewModel particleEmitter);
         void RemoveParticleProcessorFromEmitter(ParticleProcessorViewModel particleProcessor, ParticleEmitter particleEmitter);
-        void ReplaceParticleProcessorFromEmitter(ParticleEmitter particleEmitter, Type spawnProcessorType);
+        void ReplaceParticleSpawnProcessorFromEmitter(ParticleEmitter particleEmitter, Type spawnProcessorType);
         
     }
 }

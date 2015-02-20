@@ -37,6 +37,7 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
 
         public ICommand SwitchEditMode { get; private set; }
         public ObservableCollection<ParticleProcessorContextViewModel> ParticleProcessors { get; private set; }
+        public ObservableCollection<ParticleSpawnProcessorContextViewModel> ParticleSpawnProcessors { get; private set; }
 
         public ParticleEffectTreeView()
         {
@@ -57,6 +58,7 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
             _particleEffectController.ParticleEffectControl = this;
             base.DataContext = _particleEffectController.ParticleEffectViewModel;
             ParticleProcessors = _particleEffectController.ParticleProcessors;
+            ParticleSpawnProcessors = _particleEffectController.ParticleSpawnProcessors;
 
             SwitchEditMode = new RelayCommand(
                 (o) =>
