@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 
 namespace StoryTimeDevKit.Models.ParticleEditor
 {
@@ -19,10 +20,12 @@ namespace StoryTimeDevKit.Models.ParticleEditor
                 OnPropertyChanged("Name");
             }
         }
+        public ICommand AddParticleProcessor { get; private set; }
 
-        public ParticleProcessorContextViewModel(Type particleProcessorType)
+        public ParticleProcessorContextViewModel(Type particleProcessorType, ICommand addParticleProcessor)
         {
             Name = particleProcessorType.Name;
+            AddParticleProcessor = addParticleProcessor;
         }
     }
 }

@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:particleEditor="clr-namespace:StoryTimeDevKit.Models.ParticleEditor"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Name="ParticleEffectTree">
     <UserControl.Resources>
         <CollectionViewSource Source="{Binding ParticleProcessors, 
                                                 RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type UserControl}}}" x:Key="ParticleProcessorss"/>
+                                                AncestorType={x:Type UserControl}}}" x:Key="ParticleProcessors"/>
     </UserControl.Resources>
     <Grid>
         <GroupBox Header="Particle emitters" 
@@ -130,18 +131,17 @@
                                             Header="Set particle spawn processor" 
                                             Command="{Binding Path=SetParticleSpawnProcessor}"
                                             CommandParameter="{Binding}" />
-                                    <MenuItem 
-                                            Header="Add particle processor" >
-                                            <!--Command="{Binding Path=AddParticleProcessor}"
-                                            CommandParameter="{Binding}" >-->
+                                    <MenuItem Header="Add particle processor">
                                         <MenuItem.ItemsSource>
                                             <CompositeCollection>
-                                                <CollectionContainer Collection="{Binding Source={StaticResource ParticleProcessorss}}" />
+                                                <CollectionContainer Collection="{Binding Source={StaticResource ParticleProcessors}}" />
                                             </CompositeCollection>
                                         </MenuItem.ItemsSource>
                                         <MenuItem.ItemContainerStyle>
                                             <Style>
                                                 <Setter Property="MenuItem.Header" Value="{Binding Name}"/>
+                                                <Setter Property="MenuItem.Command" Value="{Binding AddParticleProcessor}"/>
+                                                <Setter Property="MenuItem.CommandParameter" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MenuItem}}, Path=DataContext}"/>
                                             </Style>
                                         </MenuItem.ItemContainerStyle>
                                     </MenuItem>

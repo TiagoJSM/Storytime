@@ -7,11 +7,11 @@ using StoryTimeDevKit.Models.ParticleEditor;
 
 namespace StoryTimeDevKit.Commands.UICommands.ParticleEditor
 {
-    public class SetParticleProcessorCommand : BaseCommand
+    public class AddParticleProcessorCommand : BaseCommand
     {
         private IParticleEditorActionContext _actionContext;
 
-        public SetParticleProcessorCommand(IParticleEditorActionContext actionContext)
+        public AddParticleProcessorCommand(IParticleEditorActionContext actionContext)
         {
             _actionContext = actionContext;
         }

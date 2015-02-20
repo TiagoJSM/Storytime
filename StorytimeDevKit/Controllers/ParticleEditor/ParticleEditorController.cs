@@ -34,7 +34,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
 
         private AddParticleEmitterCommand _addParticleEmitterCommand;
         private AddParticleSpawnProcessorCommand _addParticleSpawnProcessorCommand;
-        private SetParticleProcessorCommand _setParticleProcessorCommand;
+        private AddParticleProcessorCommand _addParticleProcessorCommand;
         private RemoveParticleProcessorCommand _removeParticleProcessorCommand;
         private ReplaceParticleProcessorCommand _replaceParticleProcessorCommand;
 
@@ -112,7 +112,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             
             _addParticleEmitterCommand = new AddParticleEmitterCommand(this);
             _addParticleSpawnProcessorCommand = new AddParticleSpawnProcessorCommand(this);
-            _setParticleProcessorCommand = new SetParticleProcessorCommand(this);
+            _addParticleProcessorCommand = new AddParticleProcessorCommand(this);
             _removeParticleProcessorCommand = new RemoveParticleProcessorCommand(this);
             
             ParticleEffectViewModel = new ObservableCollection<ParticleEffectViewModel>();
@@ -133,7 +133,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         {
             var emitter = ParticleEffect.AddEmitter();
             var emitterViewModel = new ParticleEmitterViewModel("name", this, _addParticleSpawnProcessorCommand,
-                _setParticleProcessorCommand, particleEffectViewModel, emitter);
+                _addParticleProcessorCommand, particleEffectViewModel, emitter);
             
             SetParticleEmitterDefaultValues(emitter, emitterViewModel);
 
@@ -237,7 +237,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             var particleProcessorType = typeof(IParticleProcessor);
             var particleProcessors = assembly.GetTypes()
                 .Where(t => t != particleProcessorType && particleProcessorType.IsAssignableFrom(t))
-                .Select(t =>new ParticleProcessorContextViewModel(t))
+                .Select(t => new ParticleProcessorContextViewModel(t, _addParticleProcessorCommand))
                 .ToList();
 
             return new ObservableCollection<ParticleProcessorContextViewModel>(particleProcessors);

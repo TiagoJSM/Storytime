@@ -27,7 +27,9 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
     /// <summary>
     /// Interaction logic for ParticleEffectControl.xaml
     /// </summary>
-    public partial class ParticleEffectTreeView : UserControl, IParticleEffectTreeView
+    public partial class ParticleEffectTreeView : 
+        UserControl, 
+        IParticleEffectTreeView
     {
         private IParticleEffectController _particleEffectController;
 

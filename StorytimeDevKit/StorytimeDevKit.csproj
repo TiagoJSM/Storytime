@@ -118,7 +118,7 @@
     <Compile Include="Commands\UICommands\ParticleEditor\AddParticleEmitterCommand.cs" />
     <Compile Include="Commands\UICommands\ParticleEditor\RemoveParticleProcessorCommand.cs" />
     <Compile Include="Commands\UICommands\ParticleEditor\ReplaceParticleProcessorCommand.cs" />
-    <Compile Include="Commands\UICommands\ParticleEditor\SetParticleProcessorCommand.cs" />
+    <Compile Include="Commands\UICommands\ParticleEditor\AddParticleProcessorCommand.cs" />
     <Compile Include="Commands\UICommands\ParticleEditor\AddParticleSpawnProcessorCommand.cs" />
     <Compile Include="Commands\UICommands\Puppeteer\AttachToBoneCommand.cs" />
     <Compile Include="Commands\UICommands\Puppeteer\LoadSavedPuppeteerItemsCommand.cs" />
