@@ -105,7 +105,7 @@ namespace StoryTimeFramework.Entities.Components
         {
             get 
             {
-                if (Owner == null || Owner.Body == null)
+                if (Owner == null)
                     return RawAABoundingBox.GetBoundingBox2D();
 
                 var box = RawAABoundingBox.GetBoundingBox2D();
@@ -118,15 +118,9 @@ namespace StoryTimeFramework.Entities.Components
             get
             {
                 var transformation = MatrixUtils.CreateTransformation(this);
-                if (Owner.Body == null)
+                if (Owner == null)
                     return transformation;
-                var body = Owner.Body;
-                var localTransform =
-                    MatrixUtils.CreateLocalTransformation(
-                        body.Position,
-                        body.Rotation,
-                        Vector2.One);
-                return transformation * localTransform;
+                return transformation * Owner.Transformation;
             }
         }
         

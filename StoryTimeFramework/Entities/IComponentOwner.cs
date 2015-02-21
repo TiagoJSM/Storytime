@@ -1,4 +1,5 @@
-﻿using StoryTimeCore.Physics;
+﻿using Microsoft.Xna.Framework;
+using StoryTimeCore.Physics;
 using StoryTimeFramework.WorldManagement;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace StoryTimeFramework.Entities
     public interface IComponentOwner
     {
         Scene Scene { get; }
-        IBody Body { get; }
+        Matrix Transformation { get; }
     }
 }

@@ -31,7 +31,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
         {
             BoneActor bone;
             var selectedBone = _context.Selected as BoneActor;
-            
+
             if (selectedBone == null)
             {
                 bone = _context.AddBone(position);

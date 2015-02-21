@@ -31,13 +31,16 @@ namespace Puppeteer.Entities
 
         public override void TimeElapse(WorldTime WTime)
         {
-            
+            //ToDo: Problem here is that the bone doesn't warn the asset that he has changed,
+            //So a check has to be done each cycle
+            //probably the best is that the asset should make the check
+            UpdateBounds();
         }
 
         public void Add(BoneAttachedRenderableAsset asset)
         {
             _renderables.Add(asset);
-            asset.OnBoundingBoxChanges += AssetOnBoundingBoxChangesHandler;
+            //asset.OnBoundingBoxChanges += AssetOnBoundingBoxChangesHandler;
             UpdateBounds();
         }
 
@@ -57,14 +60,19 @@ namespace Puppeteer.Entities
                 asset.Render(renderer);
         }
 
-        private void AssetOnBoundingBoxChangesHandler(IBoundingBoxable boundingBoxable)
+        /*private void AssetOnBoundingBoxChangesHandler(IBoundingBoxable boundingBoxable)
         {
             UpdateBounds();
-        }
+        }*/
 
         private void UpdateBounds()
         {
-            _box = _renderables.Select(r => r.AABoundingBox).Combine();
+            var currentBox = _renderables.Select(r => r.AABoundingBox).Combine();
+            if (currentBox.Equals(_box))
+            {
+                return;
+            }
+            _box = currentBox;
             RaiseBoundingBoxChanges();
         }
     }

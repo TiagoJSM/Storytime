@@ -49,8 +49,11 @@ namespace StoryTimeDevKit.Controllers.Puppeteer.WorkingModes
             if (_intersectedWidget) return;
             //_context.SelectedBone = _context.GetIntersectedBone(position);
             var actor = Context.GetIntersectedActor(position);
-            if(actor != null)
+            if (actor != null)
+            {
+                var v = actor.AABoundingBox;
                 HandleActorIntersection(actor, position);
+            }
         }
 
         protected abstract void HandleActorIntersection(BaseActor actor, Vector2 position);

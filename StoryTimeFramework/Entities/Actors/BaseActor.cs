@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework;
 using StoryTimeCore.Extensions;
 using StoryTimeCore.Delegates;
 using StoryTimeCore.Entities;
+using StoryTimeCore.Utils;
 
 namespace StoryTimeFramework.Entities.Actors
 {
@@ -90,11 +91,24 @@ namespace StoryTimeFramework.Entities.Actors
             }
         }
 
-        public ComponentCollection Components { get; private set; }
+        public Matrix Transformation
+        {
+            get 
+            {
+                if (_body == null)
+                {
+                    return Matrix.Identity;
+                }
+                return MatrixUtils.CreateLocalTransformation(_body.Position, Body.Rotation, Vector2.One);
+            }
+        }
+
+        public ActorComponentCollection Components { get; private set; }
 
         public BaseActor()
         {
-            Components = new ComponentCollection(this);
+            Components = new ActorComponentCollection(this);
+            Components.OnBoundingBoxChanges += OnComponentCollectionBoundingBoxChanges;
         }
 
         public sealed override void TimeElapse(WorldTime WTime)
@@ -130,6 +144,11 @@ namespace StoryTimeFramework.Entities.Actors
             RaiseBoundingBoxChanges();
             if (OnBodyChanges != null)
                 OnBodyChanges(body);
+        }
+
+        private void OnComponentCollectionBoundingBoxChanges(IBoundingBoxable boundingBoxable)
+        {
+            RaiseBoundingBoxChanges();
         }
     }
 }

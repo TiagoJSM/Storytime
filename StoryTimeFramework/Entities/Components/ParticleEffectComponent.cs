@@ -8,6 +8,7 @@ using StoryTimeFramework.Entities.Actors;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.Contexts.Interfaces;
 using Microsoft.Xna.Framework;
+using StoryTimeCore.Extensions;
 
 namespace StoryTimeFramework.Entities.Components
 {
@@ -22,7 +23,7 @@ namespace StoryTimeFramework.Entities.Components
 
         public override void TimeElapse(WorldTime WTime)
         {
-            ParticleEffect.Position = Owner.Body.Position;
+            ParticleEffect.Position = Owner.Transformation.Translation.ToVector2();
             ParticleEffect.TimeElapse(WTime.ElapsedSinceLastTime);
         }
 

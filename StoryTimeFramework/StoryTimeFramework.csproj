@@ -79,7 +79,7 @@
     <Compile Include="Entities\Actors\ParticleEmitterActor.cs" />
     <Compile Include="Entities\Cameras\Camera.cs" />
     <Compile Include="Entities\Actors\Character.cs" />
-    <Compile Include="Entities\Components\ComponentCollection.cs" />
+    <Compile Include="Entities\Components\ActorComponentCollection.cs" />
     <Compile Include="Entities\Components\Component.cs" />
     <Compile Include="Entities\Components\ParticleEffectComponent.cs" />
     <Compile Include="Entities\Components\ParticleEmitterComponent.cs" />

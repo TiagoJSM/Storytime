@@ -195,6 +195,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                     { PuppeteerWorkingModeType.AddBoneMode, new AddBoneMode(this) }
                 };
 
+            gameWorld.UpdateWorld = true;
             var armatureActor = Scene.AddWorldEntity<ArmatureActor>();
             Skeleton = armatureActor.SkeletonComponent.Skeleton;
             SavedPuppeteerItemModel = new SavePuppeteerItemDialogModel();
