@@ -33,7 +33,6 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         private IParticleEffectTreeView _particleEffectControl;
 
         private AddParticleEmitterCommand _addParticleEmitterCommand;
-        private AddParticleSpawnProcessorCommand _addParticleSpawnProcessorCommand;
         private RemoveParticleProcessorCommand _removeParticleProcessorCommand;
 
         private GameWorld _gameWorld;
@@ -110,7 +109,6 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             _particleEffectActor = scene.AddWorldEntity<ParticleEffectActor>();
             
             _addParticleEmitterCommand = new AddParticleEmitterCommand(this);
-            _addParticleSpawnProcessorCommand = new AddParticleSpawnProcessorCommand(this);
             _removeParticleProcessorCommand = new RemoveParticleProcessorCommand(this);
             
             ParticleEffectViewModel = new ObservableCollection<ParticleEffectViewModel>();
