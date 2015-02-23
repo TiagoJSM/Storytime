@@ -11,10 +11,12 @@ namespace StoryTimeDevKit.Commands.UICommands.ParticleEditor
 	public class ReplaceParticleSpawnProcessorCommand : BaseCommand
 	{
 		private IParticleEditorActionContext _actionContext;
+	    private Type _spawnProcessorType;
 
-		public ReplaceParticleSpawnProcessorCommand(IParticleEditorActionContext actionContext)
+		public ReplaceParticleSpawnProcessorCommand(Type spawnProcessorType, IParticleEditorActionContext actionContext)
 		{
 			_actionContext = actionContext;
+		    _spawnProcessorType = spawnProcessorType;
 		}
 
 		public override bool CanExecute(object parameter)
@@ -26,7 +28,7 @@ namespace StoryTimeDevKit.Commands.UICommands.ParticleEditor
 		{
             var particleProcessor = parameter as ParticleSpawnProcessorViewModel;
 			var particleEmitter = (particleProcessor.Parent as ParticleEmitterViewModel).ParticleEmitter;
-			_actionContext.ReplaceParticleSpawnProcessorFromEmitter(particleEmitter, typeof(DefaultParticleSpawnProcessor));
+            _actionContext.ReplaceParticleSpawnProcessorFromEmitter(particleEmitter, _spawnProcessorType);
 		}
 	}
 }

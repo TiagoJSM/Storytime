@@ -34,9 +34,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
 
         private AddParticleEmitterCommand _addParticleEmitterCommand;
         private AddParticleSpawnProcessorCommand _addParticleSpawnProcessorCommand;
-        private AddParticleProcessorCommand _addParticleProcessorCommand;
         private RemoveParticleProcessorCommand _removeParticleProcessorCommand;
-        private ReplaceParticleSpawnProcessorCommand _replaceParticleSpawnSpawnProcessorCommand;
 
         private GameWorld _gameWorld;
         private ParticleEffectActor _particleEffectActor;
@@ -113,9 +111,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             
             _addParticleEmitterCommand = new AddParticleEmitterCommand(this);
             _addParticleSpawnProcessorCommand = new AddParticleSpawnProcessorCommand(this);
-            _addParticleProcessorCommand = new AddParticleProcessorCommand(this);
             _removeParticleProcessorCommand = new RemoveParticleProcessorCommand(this);
-            _replaceParticleSpawnSpawnProcessorCommand = new ReplaceParticleSpawnProcessorCommand(this);
             
             ParticleEffectViewModel = new ObservableCollection<ParticleEffectViewModel>();
             _effectViewModel = new ParticleEffectViewModel("Particle effect", this, _addParticleEmitterCommand);
@@ -135,8 +131,8 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         public void AddParticleEmitterTo(ParticleEffectViewModel particleEffectViewModel)
         {
             var emitter = ParticleEffect.AddEmitter();
-            var emitterViewModel = new ParticleEmitterViewModel("name", this, _addParticleSpawnProcessorCommand,
-                _addParticleProcessorCommand, particleEffectViewModel, emitter);
+            var emitterViewModel = new ParticleEmitterViewModel("name", this,
+                particleEffectViewModel, emitter);
             
             SetParticleEmitterDefaultValues(emitter, emitterViewModel);
 
@@ -147,10 +143,10 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
         {
             var spawnProcessor = particleEmitterViewModel.ParticleEmitter.SetParticleSpawnProcessor<DefaultParticleSpawnProcessor>();
             particleEmitterViewModel.Children.Add(
-                new ParticleSpawnProcessorViewModel(spawnProcessor, particleEmitterViewModel, this, _replaceParticleSpawnSpawnProcessorCommand));
+                new ParticleSpawnProcessorViewModel(spawnProcessor, particleEmitterViewModel, this));
         }
 
-        public void AddParticleProcessorTo(ParticleEmitterViewModel particleEmitter)
+        public void AddParticleProcessorTo(ParticleEmitterViewModel particleEmitter, Type particleProcessorType)
         {
             var velocityProcessor =
                 new VelocityParticleProcessor()
@@ -168,7 +164,9 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
 
         public void RemoveParticleProcessorFromEmitter(ParticleProcessorViewModel particleProcessor, ParticleEmitter particleEmitter)
         {
-            
+            var parent = particleProcessor.Parent;
+            parent.Children.Remove(particleProcessor);
+            particleEmitter.ParticleProcessors.Remove(particleProcessor.ParticleProcessor);
         }
 
         private void UnassignParticleEmissorPropertyEditorEventHandlers()
@@ -221,7 +219,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             emitter.ParticleProcessors.Add(directionProcessor);
 
             emitterViewModel.Children.Add(
-                new ParticleSpawnProcessorViewModel(spawnProcessor, emitterViewModel, this, _replaceParticleSpawnSpawnProcessorCommand));
+                new ParticleSpawnProcessorViewModel(spawnProcessor, emitterViewModel, this));
             emitterViewModel.Children.Add(
                 new ParticleProcessorViewModel(velocityProcessor, emitterViewModel, this, _removeParticleProcessorCommand));
             emitterViewModel.Children.Add(
@@ -240,7 +238,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             var particleProcessorType = typeof(IParticleProcessor);
             var particleProcessors = assembly.GetTypes()
                 .Where(t => t != particleProcessorType && particleProcessorType.IsAssignableFrom(t))
-                .Select(t => new ParticleProcessorContextViewModel(t, _addParticleProcessorCommand))
+                .Select(t => new ParticleProcessorContextViewModel(t, this))
                 .ToList();
 
             return new ObservableCollection<ParticleProcessorContextViewModel>(particleProcessors);
@@ -256,7 +254,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
                     t != particleProcessorType && 
                     !t.IsAbstract &&
                     particleProcessorType.IsAssignableFrom(t))
-                .Select(t => new ParticleSpawnProcessorContextViewModel(t, _replaceParticleSpawnSpawnProcessorCommand))
+                .Select(t => new ParticleSpawnProcessorContextViewModel(t, this))
                 .ToList();
 
             return new ObservableCollection<ParticleSpawnProcessorContextViewModel>(particleProcessors);

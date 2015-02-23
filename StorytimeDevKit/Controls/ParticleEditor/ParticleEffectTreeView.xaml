@@ -130,10 +130,6 @@
                             </TextBox>
                             <StackPanel.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem 
-                                            Header="Set particle spawn processor" 
-                                            Command="{Binding Path=SetParticleSpawnProcessor}"
-                                            CommandParameter="{Binding}" />
                                     <MenuItem Header="Add particle processor">
                                         <MenuItem.ItemsSource>
                                             <CompositeCollection>

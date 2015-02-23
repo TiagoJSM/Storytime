@@ -10,10 +10,12 @@ namespace StoryTimeDevKit.Commands.UICommands.ParticleEditor
     public class AddParticleProcessorCommand : BaseCommand
     {
         private IParticleEditorActionContext _actionContext;
+        private Type _particleProcessorType;
 
-        public AddParticleProcessorCommand(IParticleEditorActionContext actionContext)
+        public AddParticleProcessorCommand(IParticleEditorActionContext actionContext, Type particleProcessorType)
         {
             _actionContext = actionContext;
+            _particleProcessorType = particleProcessorType;
         }
 
         public override bool CanExecute(object parameter)
@@ -24,7 +26,7 @@ namespace StoryTimeDevKit.Commands.UICommands.ParticleEditor
         public override void Execute(object parameter)
         {
             var particleEmitter = parameter as ParticleEmitterViewModel;
-            _actionContext.AddParticleProcessorTo(particleEmitter);
+            _actionContext.AddParticleProcessorTo(particleEmitter, _particleProcessorType);
         }
     }
 }

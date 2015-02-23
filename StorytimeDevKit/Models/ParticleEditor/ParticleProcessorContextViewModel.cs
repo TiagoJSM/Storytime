@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using StoryTimeDevKit.Commands.UICommands.ParticleEditor;
+using StoryTimeDevKit.Controllers.ParticleEditor;
 
 namespace StoryTimeDevKit.Models.ParticleEditor
 {
     public class ParticleProcessorContextViewModel : BaseViewModel
     {
         private string _name;
+        private IParticleEditorActionContext _actionContext;
 
         public string Name
         {
@@ -22,10 +25,11 @@ namespace StoryTimeDevKit.Models.ParticleEditor
         }
         public ICommand AddParticleProcessor { get; private set; }
 
-        public ParticleProcessorContextViewModel(Type particleProcessorType, ICommand addParticleProcessor)
+        public ParticleProcessorContextViewModel(Type particleProcessorType, IParticleEditorActionContext actionContext)
         {
             Name = particleProcessorType.Name;
-            AddParticleProcessor = addParticleProcessor;
+            _actionContext = actionContext;
+            AddParticleProcessor = new AddParticleProcessorCommand(actionContext, particleProcessorType);
         }
     }
 }

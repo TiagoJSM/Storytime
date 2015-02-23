@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using StoryTimeDevKit.Commands.UICommands.ParticleEditor;
+using StoryTimeDevKit.Controllers.ParticleEditor;
 
 namespace StoryTimeDevKit.Models.ParticleEditor
 {
     public class ParticleSpawnProcessorContextViewModel : BaseViewModel
     {
         private string _name;
+        private Type _particleSpawnProcessorType;
 
         public string Name
         {
@@ -22,10 +25,12 @@ namespace StoryTimeDevKit.Models.ParticleEditor
         }
         public ICommand ReplaceParticleSpawnProcessor { get; private set; }
 
-        public ParticleSpawnProcessorContextViewModel(Type particleProcessorType, ICommand replaceParticleSpawnProcessor)
+        public ParticleSpawnProcessorContextViewModel(Type particleSpawnProcessorType, IParticleEditorActionContext actionContext)
         {
-            Name = particleProcessorType.Name;
-            ReplaceParticleSpawnProcessor = replaceParticleSpawnProcessor;
+            _particleSpawnProcessorType = particleSpawnProcessorType;
+            ReplaceParticleSpawnProcessor = new ReplaceParticleSpawnProcessorCommand(particleSpawnProcessorType,
+                actionContext);
+            Name = particleSpawnProcessorType.Name;
         }
     }
 }
