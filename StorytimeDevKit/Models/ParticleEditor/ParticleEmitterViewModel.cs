@@ -14,6 +14,11 @@ namespace StoryTimeDevKit.Models.ParticleEditor
     {
         public ParticleEmitter ParticleEmitter { get; private set; }
 
+        public ParticleSpawnProcessorViewModel ParticleSpawnProcessorViewModel
+        {
+            get { return Children.OfType<ParticleSpawnProcessorViewModel>().FirstOrDefault(); }
+        }
+
         public ParticleEmitterViewModel(
             string name, 
             INodeAddedCallback nodeAddCB, 

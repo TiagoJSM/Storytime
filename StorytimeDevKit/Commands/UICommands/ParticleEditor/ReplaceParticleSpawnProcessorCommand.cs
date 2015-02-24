@@ -27,7 +27,7 @@ namespace StoryTimeDevKit.Commands.UICommands.ParticleEditor
 		public override void Execute(object parameter)
 		{
             var particleProcessor = parameter as ParticleSpawnProcessorViewModel;
-			var particleEmitter = (particleProcessor.Parent as ParticleEmitterViewModel).ParticleEmitter;
+			var particleEmitter = particleProcessor.Parent as ParticleEmitterViewModel;
             _actionContext.ReplaceParticleSpawnProcessorFromEmitter(particleEmitter, _spawnProcessorType);
 		}
 	}
