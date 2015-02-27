@@ -1,4 +1,5 @@
-﻿using StoryTimeDevKit.Configurations;
+﻿using StoryTimeCore.Extensions;
+using StoryTimeDevKit.Configurations;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using StoryTimeDevKit.Extensions;
+using StoryTimeFramework.Configurations;
 
 namespace StoryTimeDevKit.Controls.Dialogs
 {

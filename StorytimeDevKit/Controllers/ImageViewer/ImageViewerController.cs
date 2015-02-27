@@ -6,6 +6,7 @@ using StoryTimeDevKit.Utils;
 using StoryTimeDevKit.Configurations;
 using StoryTimeDevKit.Models.ImageViewer;
 using System.IO;
+using StoryTimeFramework.Configurations;
 
 namespace StoryTimeDevKit.Controllers.ImageViewer
 {

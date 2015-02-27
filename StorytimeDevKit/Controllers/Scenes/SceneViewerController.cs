@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using StoryTimeDevKit.Controls.SceneViewer;
+using StoryTimeFramework.Extensions;
+using StoryTimeFramework.Utils;
 using StoryTimeFramework.WorldManagement;
 using StoryTimeFramework.Entities.Actors;
 using StoryTimeDevKit.Commands;

@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using StoryTimeDevKit.Models.SavedData;
+using StoryTimeFramework.Models.SavedData;
 using StoryTimeFramework.WorldManagement;
-using StoryTimeFramework.Entities.Actors;
-using StoryTimeDevKit.Entities.Renderables;
 
-namespace StoryTimeDevKit.Extensions
+
+namespace StoryTimeFramework.Extensions
 {
     public static class ModelExtensions
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace StoryTimeDevKit.Extensions
+namespace StoryTimeCore.Extensions
 {
     public static class DirectoryInfoExtensions
     {

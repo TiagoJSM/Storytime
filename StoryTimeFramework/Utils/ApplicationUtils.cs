@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using StoryTimeDevKit.Configurations;
-using StoryTimeDevKit.Models.SavedData;
+using StoryTimeCore.Extensions;
+using StoryTimeFramework.Configurations;
+using StoryTimeFramework.Models.SavedData;
 
-namespace StoryTimeDevKit.Utils
+namespace StoryTimeFramework.Utils
 {
     public static class ApplicationUtils
     {
@@ -62,6 +63,11 @@ namespace StoryTimeDevKit.Utils
         public static bool SceneFileExistsInFolder(string folderPath, string sceneName)
         {
             return File.Exists(string.Concat(folderPath, "/",sceneName));
+        }
+
+        public static IEnumerable<FileInfo> GetAllAssemblyFiles()
+        {
+            return new DirectoryInfo(RelativePaths.Assemblies).GetFilesByExtension(FilesExtensions.Assembly);
         }
     }
 }

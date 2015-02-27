@@ -7,6 +7,7 @@ using StoryTimeFramework.WorldManagement;
 using StoryTimeCore.Contexts.Interfaces;
 using StoryTimeCore.Exceptions;
 using StoryTimeUI;
+using StoryTimeFramework.Resources.Loaders;
 
 namespace StoryTimeFramework.WorldManagement
 {
@@ -35,6 +36,7 @@ namespace StoryTimeFramework.WorldManagement
         }
         public IGraphicsContext GraphicsContext { get { return _graphicsContext; } }
         public bool UpdateWorld { get; set; }
+        public ComponentLoader ComponentLoader { get; private set; }
 
         public GameWorld(IGraphicsContext graphicsContext) 
         {
@@ -42,6 +44,7 @@ namespace StoryTimeFramework.WorldManagement
             _activeSceneIndex = NO_ACTIVE_SCENE;
             _graphicsContext = graphicsContext;
             UpdateWorld = true;
+            ComponentLoader = new ComponentLoader();
         }
 
         public Scene GetSceneAt(int index) { return _scenes[index]; }

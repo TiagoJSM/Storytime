@@ -26,6 +26,7 @@ using StoryTimeDevKit.Configurations;
 using StoryTimeDevKit.Utils;
 using Ninject.Parameters;
 using Ninject;
+using StoryTimeFramework.Configurations;
 
 namespace StoryTimeDevKit.Controls.GameObjects
 {

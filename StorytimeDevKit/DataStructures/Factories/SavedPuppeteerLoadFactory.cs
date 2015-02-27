@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using StoryTimeDevKit.Extensions;
 using StoryTimeDevKit.Models.SavedData.Bones;
+using StoryTimeFramework.Configurations;
 
 namespace StoryTimeDevKit.DataStructures.Factories
 {

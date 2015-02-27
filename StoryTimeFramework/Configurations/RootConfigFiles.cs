@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace StoryTimeDevKit.Configurations
+namespace StoryTimeFramework.Configurations
 {
     public static class RootConfigFiles
     {

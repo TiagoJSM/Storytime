@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace StoryTimeDevKit.Models.SavedData
+namespace StoryTimeFramework.Models.SavedData
 {
     public class SavedSceneActor
     {

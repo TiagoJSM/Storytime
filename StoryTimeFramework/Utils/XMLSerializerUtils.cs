@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
 
-namespace StoryTimeDevKit.Utils
+namespace StoryTimeFramework.Utils
 {
     public static class XMLSerializerUtils
     {

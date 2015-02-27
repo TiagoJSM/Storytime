@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace StoryTimeDevKit.Configurations
+namespace StoryTimeFramework.Configurations
 {
     [XmlRoot("GameObjectsPathConfiguration")]
     public class GameObjectsPathConfiguration

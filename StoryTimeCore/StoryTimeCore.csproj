@@ -73,6 +73,7 @@
     <Compile Include="Delegates\TimeDelegates.cs" />
     <Compile Include="Delegates\TransformDelegates.cs" />
     <Compile Include="Entities\ICamera.cs" />
+    <Compile Include="Exceptions\DirectoryInfoExtensions.cs" />
     <Compile Include="Extensions\BoundingBox2DExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />

@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using StoryTimeFramework.Utils;
 using XNAControl;
 using StoryTime;
 using StoryTimeDevKit.Models.GameObjectsTreeViewModels;

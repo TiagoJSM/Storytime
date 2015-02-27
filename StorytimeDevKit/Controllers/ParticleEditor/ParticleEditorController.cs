@@ -236,29 +236,24 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
 
         private ObservableCollection<ParticleProcessorContextViewModel> LoadParticleProcessors()
         {
-            var assembly = Assembly.Load("ParticleEngine");
-
-            var particleProcessorType = typeof(IParticleProcessor);
-            var particleProcessors = assembly.GetTypes()
-                .Where(t => t != particleProcessorType && particleProcessorType.IsAssignableFrom(t))
-                .Select(t => new ParticleProcessorContextViewModel(t, this))
-                .ToList();
+            var particleProcessors = 
+                _gameWorld
+                    .ComponentLoader
+                    .LoadTypesAssignableFrom<IParticleProcessor>()
+                    .Select(t => new ParticleProcessorContextViewModel(t, this))
+                    .ToList();
 
             return new ObservableCollection<ParticleProcessorContextViewModel>(particleProcessors);
         }
 
         private ObservableCollection<ParticleSpawnProcessorContextViewModel> LoadParticleSpawnProcessors()
         {
-            var assembly = Assembly.Load("ParticleEngine");
-
-            var particleProcessorType = typeof(ParticleSpawnProcessor);
-            var particleProcessors = assembly.GetTypes()
-                .Where(t => 
-                    t != particleProcessorType && 
-                    !t.IsAbstract &&
-                    particleProcessorType.IsAssignableFrom(t))
-                .Select(t => new ParticleSpawnProcessorContextViewModel(t, this))
-                .ToList();
+            var particleProcessors = 
+                _gameWorld
+                    .ComponentLoader
+                    .LoadTypesAssignableFrom<ParticleSpawnProcessor>()
+                    .Select(t => new ParticleSpawnProcessorContextViewModel(t, this))
+                    .ToList();
 
             return new ObservableCollection<ParticleSpawnProcessorContextViewModel>(particleProcessors);
         }
