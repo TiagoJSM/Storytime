@@ -21,11 +21,14 @@ namespace StoryTimeDevKit.Models
         private readonly IDictionary<string, EditablePropertyModel> dynamicProperties =
             new Dictionary<string, EditablePropertyModel>();
         private object _data;
+        private bool _updateSourceOnPropertyChanged;
 
-        public PropertyEditorModel(object data)
+        public PropertyEditorModel(object data, bool updateSourceOnPropertyChanged = true)
         {
             _data = data;
+            _updateSourceOnPropertyChanged = updateSourceOnPropertyChanged;
             AddEditablePropertiesFromData();
+            PropertyChanged += OnPropertyChangedHandler;
         }
 
         private void AddEditablePropertiesFromData()
@@ -40,7 +43,6 @@ namespace StoryTimeDevKit.Models
 
             foreach (var editableProp in editableProps)
                 AddProperty(editableProp);
-            
         }
 
         private EditablePropertyModel ConvertToEditableProperty(PropertyInfo prop)
@@ -132,6 +134,13 @@ namespace StoryTimeDevKit.Models
         public string GetClassName()
         {
             return GetType().Name;
+        }
+
+        private void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+        {
+            if (!dynamicProperties.ContainsKey(e.PropertyName)) return;
+            var dynamicProperty = dynamicProperties[e.PropertyName];
+            dynamicProperty = dynamicProperty;
         }
 
         #endregion
@@ -242,7 +251,26 @@ namespace StoryTimeDevKit.Models
 
             public override void SetValue(object component, object value)
             {
+                var currentValue = obj.dynamicProperties[Name].Data;
                 obj.dynamicProperties[Name].Data = value;
+                if (currentValue == null && value != null)
+                {
+                    obj.OnPropertyChanged(Name);
+                    return;
+                }
+                if (currentValue != null && value == null)
+                {
+                    obj.OnPropertyChanged(Name);
+                    return;
+                }
+                if (currentValue != null && value == null)
+                {
+                    return;
+                }
+                if (!currentValue.Equals(value))
+                {
+                    obj.OnPropertyChanged(Name);
+                }
             }
 
             public override bool ShouldSerializeValue(object component)
