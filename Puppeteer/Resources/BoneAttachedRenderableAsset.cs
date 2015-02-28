@@ -9,6 +9,7 @@ using Puppeteer.Armature;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Utils;
 using StoryTimeCore.Extensions;
+using StoryTimeCore.General;
 
 namespace Puppeteer.Resources
 {
@@ -48,13 +49,14 @@ namespace Puppeteer.Resources
             {
                 if (_bone == value) return;
                 _bone = value;
-                var totalTransformation = base.Transformation * Bone.Transformation;
-                _assetDefinedTransformation = totalTransformation * Matrix.Invert(Bone.Transformation);
+                _assetDefinedTransformation = base.Transformation;
                 _boneReferenceTransformation = Bone.Transformation;
-                Rotation = 0;
-                Scale = new Vector2(1);
-                RenderingOffset = Vector2.Zero;
             }
+        }
+
+        public BoneAttachedRenderableAsset()
+        {
+            OnBoundingBoxChanges += OnBoundingBoxChangesHandler;
         }
 
         public override void Render(IRenderer renderer)
@@ -63,19 +65,24 @@ namespace Puppeteer.Resources
             Render(renderer, _texture, boundings);
         }
 
-        protected override Matrix Transformation
+        public override Matrix Transformation
         {
             get
             {
                 if (Bone != null)
                 {
-                    var extra = Matrix.Invert(_boneReferenceTransformation) * Bone.Transformation;
-                    return _assetDefinedTransformation * extra * base.Transformation;
+                    var boneTransformationDifference = Matrix.Invert(_boneReferenceTransformation) * Bone.Transformation;
+                    return _assetDefinedTransformation * boneTransformationDifference;
                 }
                 return base.Transformation;
             }
         }
 
         protected override AxisAlignedBoundingBox2D RawAABoundingBox { get { return _box; } }
+
+        private void OnBoundingBoxChangesHandler(IBoundingBoxable boxable)
+        {
+            _assetDefinedTransformation = base.Transformation;
+        }
     }
 }

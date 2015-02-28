@@ -5,6 +5,7 @@ using System.Text;
 using StoryTimeDevKit.Delegates;
 using Microsoft.Xna.Framework;
 using Puppeteer.Resources;
+using StoryTimeCore.Extensions;
 
 namespace StoryTimeDevKit.Models.SceneObjects
 {
@@ -22,7 +23,11 @@ namespace StoryTimeDevKit.Models.SceneObjects
 
         public Vector2 Position
         {
-            get { return _boneAttachedAsset.RenderingOffset; }
+            get 
+            { 
+                /*return _boneAttachedAsset.RenderingOffset;*/
+                return _boneAttachedAsset.Transformation.Translation.ToVector2();
+            }
         }
 
         public float Rotation
@@ -51,6 +56,7 @@ namespace StoryTimeDevKit.Models.SceneObjects
 
         public void Rotate(float rotation)
         {
+            
             _boneAttachedAsset.Rotation = _boneAttachedAsset.Rotation + rotation;
             if (OnRotationChanges != null)
                 OnRotationChanges(_boneAttachedAsset.Rotation);

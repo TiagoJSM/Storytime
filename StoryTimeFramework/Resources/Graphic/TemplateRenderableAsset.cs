@@ -143,17 +143,17 @@ namespace StoryTimeFramework.Resources.Graphic
             }
         }
 
-        protected void RaiseOnBoundingBoxChanges()
-        {
-            if(OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
-        }
-
-        protected virtual Matrix Transformation
+        public virtual Matrix Transformation
         {
             get
             {
                 return MatrixUtils.CreateTransformation(this);
             }
+        }
+
+        protected void RaiseOnBoundingBoxChanges()
+        {
+            if(OnBoundingBoxChanges != null) OnBoundingBoxChanges(this);
         }
 
         protected abstract AxisAlignedBoundingBox2D RawAABoundingBox { get; }

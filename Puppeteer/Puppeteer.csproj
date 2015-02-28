@@ -51,6 +51,7 @@
     <Compile Include="Animation\SkeletonAnimation.cs" />
     <Compile Include="Armature\Bone.cs" />
     <Compile Include="Armature\Skeleton.cs" />
+    <Compile Include="Entities\BoneAttachmentComponent.cs" />
     <Compile Include="Entities\SkeletonComponent.cs" />
     <Compile Include="Extensions\ArmatureExtensions.cs" />
     <Compile Include="Extensions\BoneAnimationFrameExtensions.cs" />
