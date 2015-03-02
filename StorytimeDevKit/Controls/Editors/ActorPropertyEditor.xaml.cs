@@ -202,7 +202,7 @@ namespace StoryTimeDevKit.Controls.Editors
             //    }
             //};
 
-            propertyGrid1.SelectedObject = model;
+            //propertyGrid1.SelectedObject = model;
             _t = new T() { Title = "lol"};
             propertyGrid1.SelectedObject = _t;
         }
