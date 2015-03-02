@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -31,6 +32,7 @@ namespace StoryTimeDevKit.Controls.Editors
         private PropertyEditorModel _model;
         private object _selected;
         private IParticleEmitterPropertyEditorController _controller;
+        private int i = 0;
 
         public object Selected
         {
@@ -44,7 +46,7 @@ namespace StoryTimeDevKit.Controls.Editors
                 }
                 else
                 {
-                    _model = new PropertyEditorModel(_selected);   
+                    _model = new PropertyEditorModel(_selected, true);   
                 }
                 propertyGrid.SelectedObject = _model;
             }
@@ -66,6 +68,14 @@ namespace StoryTimeDevKit.Controls.Editors
                     .ParticleEditorKernel
                     .Get<IParticleEmitterPropertyEditorController>();
             _controller.ParticleEmitterPropertyEditor = this;
+        }
+
+        private void propertyGrid_PropertyValueChanged(object sender, Xceed.Wpf.Toolkit.PropertyGrid.PropertyValueChangedEventArgs e)
+        {
+            //ToDo: Update _selected according to _model
+            i++;
+            Debug.Write(i + "  ");
+            Debug.WriteLine("propertyGrid_PropertyValueChanged");
         }
     }
 }

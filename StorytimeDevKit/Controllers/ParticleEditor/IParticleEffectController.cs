@@ -10,7 +10,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
 {
     public interface IParticleEffectController
     {
-        ObservableCollection<ParticleEffectViewModel> ParticleEffectViewModel { get; }
+        ObservableCollection<ParticleEffectViewModel> ParticleEffectViewModels { get; }
         IParticleEffectTreeView ParticleEffectControl { get; set; }
         ObservableCollection<ParticleProcessorContextViewModel> ParticleProcessors { get; }
         ObservableCollection<ParticleSpawnProcessorContextViewModel> ParticleSpawnProcessors { get; }

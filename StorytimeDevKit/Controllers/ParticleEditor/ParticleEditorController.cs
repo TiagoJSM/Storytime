@@ -45,7 +45,7 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
 
         private ParticleEffectViewModel _effectViewModel;
 
-        public ObservableCollection<ParticleEffectViewModel> ParticleEffectViewModel { get; private set; }
+        public ObservableCollection<ParticleEffectViewModel> ParticleEffectViewModels { get; private set; }
 
         public ObservableCollection<ParticleProcessorContextViewModel> ParticleProcessors { get; private set; }
         public ObservableCollection<ParticleSpawnProcessorContextViewModel> ParticleSpawnProcessors { get; private set; }
@@ -110,10 +110,10 @@ namespace StoryTimeDevKit.Controllers.ParticleEditor
             
             _addParticleEmitterCommand = new AddParticleEmitterCommand(this);
             _removeParticleProcessorCommand = new RemoveParticleProcessorCommand(this);
-            
-            ParticleEffectViewModel = new ObservableCollection<ParticleEffectViewModel>();
-            _effectViewModel = new ParticleEffectViewModel("Particle effect", this, _addParticleEmitterCommand);
-            ParticleEffectViewModel.Add(_effectViewModel);
+
+            ParticleEffectViewModels = new ObservableCollection<ParticleEffectViewModel>();
+            _effectViewModel = new ParticleEffectViewModel("Particle effect", this, _addParticleEmitterCommand, _particleEffectActor);
+            ParticleEffectViewModels.Add(_effectViewModel);
             ParticleProcessors = LoadParticleProcessors();
             ParticleSpawnProcessors = LoadParticleSpawnProcessors();
            

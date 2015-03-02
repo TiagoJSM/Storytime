@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using StoryTimeCore.CustomAttributes.Editor;
 using StoryTimeCore.Physics;
 
 namespace ParticleEngine
@@ -14,6 +15,9 @@ namespace ParticleEngine
         private Vector2 _position;
 
         public IEnumerable<ParticleEmitter> ParticleEmitters { get { return _particleEmitters; } }
+
+        [Editable]
+        public string Name { get; set; }
 
         public Vector2 Position
         {

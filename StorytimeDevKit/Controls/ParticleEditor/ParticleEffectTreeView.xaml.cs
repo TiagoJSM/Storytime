@@ -56,7 +56,7 @@ namespace StoryTimeDevKit.Controls.ParticleEditor
                     .Get<IParticleEffectController>();
 
             _particleEffectController.ParticleEffectControl = this;
-            base.DataContext = _particleEffectController.ParticleEffectViewModel;
+            base.DataContext = _particleEffectController.ParticleEffectViewModels;
             ParticleProcessors = _particleEffectController.ParticleProcessors;
             ParticleSpawnProcessors = _particleEffectController.ParticleSpawnProcessors;
 

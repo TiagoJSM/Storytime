@@ -18,12 +18,12 @@ namespace StoryTimeDevKit.Models
     
     public class PropertyEditorModel : DynamicObject, ICustomTypeDescriptor, INotifyPropertyChanged
     {
-        private readonly IDictionary<string, EditablePropertyModel> dynamicProperties =
+        private readonly IDictionary<string, EditablePropertyModel> _dynamicProperties =
             new Dictionary<string, EditablePropertyModel>();
         private object _data;
         private bool _updateSourceOnPropertyChanged;
 
-        public PropertyEditorModel(object data, bool updateSourceOnPropertyChanged = true)
+        public PropertyEditorModel(object data, bool updateSourceOnPropertyChanged = false)
         {
             _data = data;
             _updateSourceOnPropertyChanged = updateSourceOnPropertyChanged;
@@ -50,19 +50,21 @@ namespace StoryTimeDevKit.Models
             var editable = 
                 (EditableAttribute)(Attribute.GetCustomAttributes(prop, typeof(EditableAttribute), true).First());
 
+            var propertyName = prop.Name;
             var propGroup = editable.EditorGroup;
-            var propName = editable.EditorName;
+            var displayName = editable.EditorName;
 
             if (String.IsNullOrWhiteSpace(propGroup))
                 propGroup = ActorPropertyEditorDefaultValues.DefaultGroupName;
 
-            if (String.IsNullOrWhiteSpace(propName))
-                propName = prop.Name;
+            if (String.IsNullOrWhiteSpace(displayName))
+                displayName = propertyName;
             
             return new EditablePropertyModel()
             {
                 PropertyGroup = propGroup,
-                PropertyName = propName,
+                PropertyName = propertyName,
+                DisplayName = displayName,
                 Data = prop.GetValue(_data, null),
                 DataType = prop.PropertyType
             };
@@ -72,7 +74,7 @@ namespace StoryTimeDevKit.Models
         {
             var memberName = binder.Name;
             EditablePropertyModel bucket;
-            var gotValue = dynamicProperties.TryGetValue(memberName, out bucket);
+            var gotValue = _dynamicProperties.TryGetValue(memberName, out bucket);
             result = bucket.Data;
             return gotValue;
         }
@@ -93,7 +95,7 @@ namespace StoryTimeDevKit.Models
 
         protected void AddProperty(EditablePropertyModel editableProp)
         {
-            dynamicProperties[editableProp.PropertyName] = editableProp;
+            _dynamicProperties[editableProp.PropertyName] = editableProp;
             NotifyToRefreshAllProperties();
         }
 
@@ -105,9 +107,13 @@ namespace StoryTimeDevKit.Models
             // of course, here must be the attributes associated
             // with each of the dynamic properties
 
-            var properties = dynamicProperties
-                .Select(pair => new DynamicPropertyDescriptor(this,
-                    pair.Key, pair.Value.DataType, GetPropertyEditorAttributesFrom(pair.Value)));
+            var properties = _dynamicProperties
+                .Select(pair => new DynamicPropertyDescriptor(
+                    this,
+                    pair.Value.DisplayName,
+                    pair.Value.PropertyName, 
+                    pair.Value.DataType, 
+                    GetPropertyEditorAttributesFrom(pair.Value)));
             return new PropertyDescriptorCollection(properties.ToArray());
         }
 
@@ -138,9 +144,9 @@ namespace StoryTimeDevKit.Models
 
         private void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
         {
-            if (!dynamicProperties.ContainsKey(e.PropertyName)) return;
-            var dynamicProperty = dynamicProperties[e.PropertyName];
-            dynamicProperty = dynamicProperty;
+            if (!_dynamicProperties.ContainsKey(e.PropertyName)) return;
+            var dynamicProperty = _dynamicProperties[e.PropertyName];
+            _data.SetPropertyValue(e.PropertyName, dynamicProperty.Data);
         }
 
         #endregion
@@ -221,18 +227,23 @@ namespace StoryTimeDevKit.Models
 
         #endregion
 
-
         private class DynamicPropertyDescriptor : PropertyDescriptor
         {
-            private readonly PropertyEditorModel obj;
-            private readonly Type propertyType;
+            private readonly PropertyEditorModel _editorModel;
+            private readonly Type _propertyType;
+            private readonly string _propertyName;
 
-            public DynamicPropertyDescriptor(PropertyEditorModel obj,
-                string propertyName, Type propertyType, Attribute[] propertyAttributes)
-                : base(propertyName, propertyAttributes)
+            public DynamicPropertyDescriptor(
+                PropertyEditorModel editorModel,
+                string displayName,
+                string propertyName, 
+                Type propertyType, 
+                Attribute[] propertyAttributes)
+                : base(displayName, propertyAttributes)
             {
-                this.obj = obj;
-                this.propertyType = propertyType;
+                _propertyName = propertyName;
+                _editorModel = editorModel;
+                _propertyType = propertyType;
             }
 
             public override bool CanResetValue(object component)
@@ -242,7 +253,7 @@ namespace StoryTimeDevKit.Models
 
             public override object GetValue(object component)
             {
-                return obj.dynamicProperties[Name].Data;
+                return _editorModel._dynamicProperties[_propertyName].Data;
             }
 
             public override void ResetValue(object component)
@@ -251,16 +262,16 @@ namespace StoryTimeDevKit.Models
 
             public override void SetValue(object component, object value)
             {
-                var currentValue = obj.dynamicProperties[Name].Data;
-                obj.dynamicProperties[Name].Data = value;
+                var currentValue = _editorModel._dynamicProperties[_propertyName].Data;
+                _editorModel._dynamicProperties[_propertyName].Data = value;
                 if (currentValue == null && value != null)
                 {
-                    obj.OnPropertyChanged(Name);
+                    _editorModel.OnPropertyChanged(_propertyName);
                     return;
                 }
                 if (currentValue != null && value == null)
                 {
-                    obj.OnPropertyChanged(Name);
+                    _editorModel.OnPropertyChanged(_propertyName);
                     return;
                 }
                 if (currentValue != null && value == null)
@@ -269,7 +280,7 @@ namespace StoryTimeDevKit.Models
                 }
                 if (!currentValue.Equals(value))
                 {
-                    obj.OnPropertyChanged(Name);
+                    _editorModel.OnPropertyChanged(_propertyName);
                 }
             }
 
@@ -290,7 +301,7 @@ namespace StoryTimeDevKit.Models
 
             public override Type PropertyType
             {
-                get { return propertyType; }
+                get { return _propertyType; }
             }
         }
     }
