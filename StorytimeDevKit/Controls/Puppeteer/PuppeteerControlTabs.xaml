@@ -67,7 +67,7 @@
                             <Image Width ="26" Height="30" Source="/Images/Puppeteer/AnimationTimeLine/infinite.png"/>
                         </ToggleButton>
                     </StackPanel>
-                    <my1:AnimationTimeLineControl x:Name="TimeLines" Width="Auto" Height="114" BorderThickness="0" Grid.Row="1" SecondsPerStep="0.25" />
+                    <my1:AnimationTimeLineControl x:Name="TimeLines" Width="Auto"  BorderThickness="0" Grid.Row="1" SecondsPerStep="0.25" />
                 </Grid>
             </TabItem>
         </TabControl>
