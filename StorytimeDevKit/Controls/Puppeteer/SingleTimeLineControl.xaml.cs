@@ -178,13 +178,17 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                 }
             }
 
-            private void OnEndChangesHandler(DataPoint previous)
+            private void OnEndChangesHandler(DataPoint point)
             {
-                _frame.EndTime = _control.GetTimeFromXPosition(EndX);
+                var endTime = _control.GetTimeFromXPosition(EndX);
+                if (_frame != null)
+                {
+                    _frame.EndTime = endTime;
+                }
                 var next = _control.GetDataPointAfter(this);
                 if (next != null)
                 {
-                    next._frame.StartTime = _frame.EndTime;
+                    next._frame.StartTime = endTime;
                 }
             }
 
