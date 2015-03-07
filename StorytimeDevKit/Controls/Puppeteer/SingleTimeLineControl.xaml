@@ -61,18 +61,5 @@
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
-
-        <!--<tt:TimeLineControl 
-            Height="20"
-            ItemTemplate="{StaticResource UsedTemplateProperty}"
-            HorizontalAlignment="Left"
-            x:Name="TimeLine"
-            UnitSize="20"
-            MinimumUnitWidth="20"
-            Background="Transparent"
-            DrawTimeGrid="True"
-            MinWidth="4000"
-            MaxWidth="4000"
-            SynchedWithSiblings="True"/>-->
     </Grid>
 </UserControl>
