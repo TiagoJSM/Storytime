@@ -149,6 +149,26 @@ namespace StoryTimeDevKit.Controls.Puppeteer
                 }
             }
 
+            public Brush FrameColor
+            {
+                get
+                {
+                    if(IsFirstDataPoint)
+                    {
+                        return new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                    }
+                    return new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                }
+            }
+
+            public bool IsFirstDataPoint
+            {
+                get
+                {
+                    return _previous == null;
+                }
+            }
+
             public DataPoint(DataPoint previous, TimeFrame frame, SingleTimeLineControl control)
             {
                 _previous = previous;

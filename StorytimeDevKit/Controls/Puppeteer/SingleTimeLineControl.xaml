@@ -32,7 +32,7 @@
                             <Button.Template>
                                 <ControlTemplate>
                                     <Rectangle 
-                                        Fill="Red" 
+                                        Fill="{Binding FrameColor}" 
                                         Height="7"/>
                                 </ControlTemplate>
                             </Button.Template>
