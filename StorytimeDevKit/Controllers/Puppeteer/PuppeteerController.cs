@@ -412,7 +412,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             //Commands.Push(command);
         }
 
-        private void OnStopRotationHandler(float originalRotation, float finalRotation)
+        private void OnStopRotationHandler(float originalRotation, float finalRotation, float totalRotation)
         {
             if (base.SelectedObject == null) return;
             //IReversibleCommand command = new RotateActorCommand(_puppeteerEdControlData._transformSceneObjectModel.Actor, originalRotation, finalRotation);

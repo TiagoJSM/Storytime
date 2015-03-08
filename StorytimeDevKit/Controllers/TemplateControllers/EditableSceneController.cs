@@ -174,9 +174,9 @@ namespace StoryTimeDevKit.Controllers.TemplateControllers
             SceneObjectViewModel.SceneObject.StartRotation(originalRotation);
         }
 
-        private void OnStopRotationHandler(float originalRotation, float finalRotation)
+        private void OnStopRotationHandler(float originalRotation, float finalRotation, float totalRotation)
         {
-            SceneObjectViewModel.SceneObject.EndRotation(originalRotation, finalRotation);
+            SceneObjectViewModel.SceneObject.EndRotation(originalRotation, finalRotation, totalRotation);
         }
 
         private void OnRotateHandler(float rotation)

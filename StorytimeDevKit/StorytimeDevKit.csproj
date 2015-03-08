@@ -197,6 +197,7 @@
     <Compile Include="Entities\Components\BoneComponent.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\SkeletonExtensions.cs" />
+    <Compile Include="Models\Puppeteer\BoneState.cs" />
     <Compile Include="Models\Puppeteer\SaveSkeletonDialogModel.cs" />
     <Compile Include="Models\SavedData\Bones\SavedAnimatedSkeleton.cs" />
     <Compile Include="Models\SavedData\Bones\SavedAnimatedSkeletonFile.cs" />
@@ -255,7 +256,6 @@
     <Compile Include="Models\MainWindow\TransformModeViewModel.cs" />
     <Compile Include="Models\Puppeteer\AssetViewModel.cs" />
     <Compile Include="Models\Puppeteer\BoneAnimationTimeFrameModel.cs" />
-    <Compile Include="Models\Puppeteer\BoneState.cs" />
     <Compile Include="Models\Puppeteer\BoneViewModel.cs" />
     <Compile Include="Models\Puppeteer\TimeFrame.cs" />
     <Compile Include="Models\Puppeteer\TimelineTuple.cs" />

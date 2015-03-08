@@ -25,7 +25,6 @@ namespace StoryTimeDevKit.Models.SceneObjects
         {
             get 
             { 
-                /*return _boneAttachedAsset.RenderingOffset;*/
                 return _boneAttachedAsset.Transformation.Translation.ToVector2();
             }
         }
@@ -62,7 +61,7 @@ namespace StoryTimeDevKit.Models.SceneObjects
                 OnRotationChanges(_boneAttachedAsset.Rotation);
         }
 
-        public void EndRotation(float fromRotation, float toRotation)
+        public void EndRotation(float fromRotation, float toRotation, float totalRotation)
         {
         }
 

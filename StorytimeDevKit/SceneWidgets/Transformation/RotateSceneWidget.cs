@@ -13,7 +13,7 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
 {
     public delegate void OnStartRotation(float originalRotation);
     public delegate void OnRotation(float rotation);
-    public delegate void OnStopRotation(float originalRotation, float finalRotation);
+    public delegate void OnStopRotation(float originalRotation, float finalRotation, float totalRotation);
 
     public class RotateSceneWidget : BaseWidget
     {
@@ -21,6 +21,8 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
         private float _startRotation;
         private float _lastAngle;
         private float _originalRotation;
+        private float _totalRotation;
+
         private Circle Intersection
         {
             get
@@ -64,6 +66,7 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
         {
             _lastAngle = currentPosition.AngleWithCenterIn(Position);
             _originalRotation = Rotation;
+            _totalRotation = 0;
             if (OnStartRotation != null)
                 OnStartRotation(_originalRotation);
         }
@@ -73,6 +76,7 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
             var currentAngle = currentPosition.AngleWithCenterIn(Position);
             var rotation = currentAngle - _lastAngle;
             _lastAngle = currentAngle;
+            _totalRotation += rotation;
             Rotation = Rotation + rotation;
             if (OnRotation != null)
                 OnRotation(rotation);
@@ -81,7 +85,7 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
         private void OnStopDragHandler(Vector2 startDrag, Vector2 currentPosition)
         {
             if (OnStopRotation != null)
-                OnStopRotation(_originalRotation, Rotation);
+                OnStopRotation(_originalRotation, Rotation, _totalRotation);
         }
     }
 }

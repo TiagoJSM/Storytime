@@ -210,7 +210,7 @@ namespace StoryTimeDevKit.Controllers.Scenes
             SelectedStack.Push(command);
         }
 
-        private void OnStopRotationHandler(float originalRotation, float finalRotation)
+        private void OnStopRotationHandler(float originalRotation, float finalRotation, float totalRotation)
         {
             var controlData = CurrentSceneControlData;
 

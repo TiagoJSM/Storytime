@@ -100,7 +100,7 @@ namespace StoryTimeDevKit.Models.SceneObjects
                 OnRotationChanges(_boneActor.Body.Rotation);
         }
 
-        public void EndRotation(float fromRotation, float toRotation)
+        public void EndRotation(float fromRotation, float toRotation, float totalRotation)
         {
             var endTransformState = new BoneState()
             {
