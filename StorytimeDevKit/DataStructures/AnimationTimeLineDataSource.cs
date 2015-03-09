@@ -104,50 +104,25 @@ namespace StoryTimeDevKit.DataStructures
             var dataCollection = GetCollectionBoundToActor(actor);
             var frame = GetLastTimeFrame(dataCollection);
 
-            BoneAnimationTimeFrameModel item = null;
-            if (frame == null)
-            {
-                item = new BoneAnimationTimeFrameModel()
-                {
-                    StartTime = new TimeSpan(),
-                    EndTime = TimeSpan.FromSeconds(animationEndTimeInSeconds),
-                    StartState = new BoneState()
-                    {
-                        Rotation = fromState.Rotation,
-                        Translation = fromState.Translation
-                    },
-                    EndState = new BoneState()
-                    {
-                        Rotation = toState.Rotation,
-                        Translation = toState.Translation
-                    }
-                };
-            }
-            else
-            {
-                item = new BoneAnimationTimeFrameModel()
-                {
-                    StartTime = frame.EndTime,
-                    EndTime = TimeSpan.FromSeconds(animationEndTimeInSeconds),
-                    StartState = frame.EndState,
-                    EndState = new BoneState()
-                    {
-                        Rotation = toState.Rotation,
-                        Translation = toState.Translation
-                    }
-                };
-            }
+            var startTime = frame == null ? new TimeSpan() : frame.EndTime;
+            var endTime = TimeSpan.FromSeconds(animationEndTimeInSeconds);
 
             var animationFrame = new BoneAnimationFrame()
-                {
-                    StartTime = item.StartTime,
-                    EndTime = item.EndTime,
-                    StartTranslation = item.StartState.Translation,
-                    StartRotation = item.StartState.Rotation,
-                    EndTranslation = item.EndState.Translation,
-                    EndRotation = item.EndState.Rotation
-                };
-            item.AnimationFrame = animationFrame;
+            {
+                StartTime = startTime,
+                EndTime = endTime,
+                StartTranslation = frame == null ? fromState.Translation : frame.StartPosition,
+                StartRotation = frame == null ? fromState.Rotation : frame.StartRotation,
+                EndTranslation = toState.Translation,
+                EndRotation = toState.Rotation
+            };
+
+            BoneAnimationTimeFrameModel item = new BoneAnimationTimeFrameModel(animationFrame)
+            {
+                StartTime = startTime,
+                EndTime = endTime
+            };
+
             Animation.AddAnimationFrame(actor.AssignedBone, animationFrame);
 
             dataCollection.Add(item);
@@ -155,8 +130,8 @@ namespace StoryTimeDevKit.DataStructures
 
         private void SetActorPropertiesToBoneEndState(BoneAnimationTimeFrameModel frame, BoneActor actor, BoneState toState)
         {
-            frame.EndState.Translation = toState.Translation;
-            frame.EndState.Rotation = toState.Rotation;
+            frame.EndTranslation = toState.Translation;
+            frame.EndRotation = toState.Rotation;
 
             frame.AnimationFrame.EndTranslation = toState.Translation;
             frame.AnimationFrame.EndRotation = toState.Rotation;

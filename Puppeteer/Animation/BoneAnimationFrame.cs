@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.Utils;
 using Puppeteer.Armature;
+using StoryTimeCore.Extensions;
 
 namespace Puppeteer.Animation
 {
@@ -34,7 +35,8 @@ namespace Puppeteer.Animation
 
         public float InterpolateRotation(TimeSpan totalElapsed)
         {
-            return MathematicalUtils.LinearInterpolation(StartRotation, EndRotation, Duration, totalElapsed - StartTime);
+            //var endRotation = StartRotation + TotalRotation;
+            return MathematicalUtils.LinearInterpolation(StartRotation, EndRotation, Duration, totalElapsed - StartTime).ReduceRotationToOneTurn();
         }
 
         public void SetBoneTransformationValues(Bone bone, TimeSpan totalElapsed)

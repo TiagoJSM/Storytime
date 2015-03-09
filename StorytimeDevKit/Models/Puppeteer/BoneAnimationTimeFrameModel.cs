@@ -9,12 +9,56 @@ namespace StoryTimeDevKit.Models.Puppeteer
 {
     public class BoneAnimationTimeFrameModel : TimeFrame
     {
-        public BoneState StartState { get; set; }
-        public BoneState EndState { get; set; }
-        public BoneAnimationFrame AnimationFrame { get; set; }
-
-        public BoneAnimationTimeFrameModel()
+        public Vector2 StartPosition
         {
+            get
+            {
+                return AnimationFrame.StartTranslation;
+            }
+            set
+            {
+                AnimationFrame.StartTranslation = value;
+            }
+        }
+        public float StartRotation
+        {
+            get
+            {
+                return AnimationFrame.StartRotation;
+            }
+            set
+            {
+                AnimationFrame.StartRotation = value;
+            }
+        }
+        public Vector2 EndTranslation 
+        {
+            get
+            {
+                return AnimationFrame.EndTranslation;
+            }
+            set
+            {
+                AnimationFrame.EndTranslation = value;
+            } 
+        }
+        public float EndRotation 
+        {
+            get
+            {
+                return AnimationFrame.EndRotation;
+            }
+            set
+            {
+                AnimationFrame.EndRotation = value;
+            }
+        }
+
+        public BoneAnimationFrame AnimationFrame { get; private set; }
+
+        public BoneAnimationTimeFrameModel(BoneAnimationFrame animationFrame)
+        {
+            AnimationFrame = animationFrame;
             base.OnStartTimeChanges += OnStartTimeChangesHandler;
             base.OnEndTimeChanges += OnEndTimeChangesHandler;
         }
