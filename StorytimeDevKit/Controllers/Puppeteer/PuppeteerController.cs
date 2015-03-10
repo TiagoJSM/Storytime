@@ -291,10 +291,10 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             _sceneBoneData.SynchronizeBoneChain(bone);
         }
 
-        public void AddAnimationFrameFor(BoneActor actor, BoneState fromState, BoneState toState)
+        public void AddAnimationFrameFor(BoneActor actor, AnimationTransformation animationTransform)
         {
             if (Seconds == null) return;
-            _animationTimeLineData.AddAnimationFrame(actor, Seconds.Value, fromState, toState);
+            _animationTimeLineData.AddAnimationFrame(actor, Seconds.Value, animationTransform);
         }
 
         public void Load(FileInfo file)
@@ -498,17 +498,14 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
             foreach(var frame in savedBoneAnimation.AnimationFrames)
             {
                 var seconds = frame.EndTime.TotalSeconds;
-                var fromState = new BoneState()
+                var animationTransform = new AnimationTransformation()
                 {
-                    Rotation = frame.StartRotation,
-                    Translation = frame.StartTranslation
+                    StartRotation = frame.StartRotation,
+                    StartPosition = frame.StartPosition,
+                    EndPosition = frame.EndPosition,
+                    TotalRotation = frame.TotalRotation
                 };
-                var toState = new BoneState()
-                {
-                    Rotation = frame.EndRotation,
-                    Translation = frame.EndTranslation
-                };
-                _animationTimeLineData.AddAnimationFrame(actor, seconds, fromState, toState);
+                _animationTimeLineData.AddAnimationFrame(actor, seconds, animationTransform);
             }
         }
 

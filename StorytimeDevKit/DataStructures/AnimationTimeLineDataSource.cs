@@ -38,12 +38,12 @@ namespace StoryTimeDevKit.DataStructures
             _timeFramesMapper.Add(actor, timeFramecollection);
         }
 
-        public void AddAnimationFrame(BoneActor actor, double animationEndTimeInSeconds, BoneState fromState, BoneState toState)
+        public void AddAnimationFrame(BoneActor actor, double animationEndTimeInSeconds, AnimationTransformation animationTransform)
         {
             var frameAtTime = GetFrameAt(actor, animationEndTimeInSeconds);
             if (frameAtTime == null)
             {
-                AddNewAnimationFrame(actor, animationEndTimeInSeconds, fromState, toState);
+                AddNewAnimationFrame(actor, animationEndTimeInSeconds, animationTransform);
                 return;
             }
 
@@ -52,7 +52,7 @@ namespace StoryTimeDevKit.DataStructures
                 return;
             }
 
-            SetActorPropertiesToBoneEndState(frameAtTime, actor, toState);
+            SetActorPropertiesToBoneEndState(frameAtTime, actor, animationTransform);
         }
 
         public ObservableCollection<TimeFrame> GetCollectionBoundToActor(BoneActor actor)
@@ -99,7 +99,7 @@ namespace StoryTimeDevKit.DataStructures
             return items.FirstOrDefault(i => i.EndTime == frame.StartTime) as BoneAnimationTimeFrameModel;
         }
 
-        private void AddNewAnimationFrame(BoneActor actor, double animationEndTimeInSeconds, BoneState fromState, BoneState toState)
+        private void AddNewAnimationFrame(BoneActor actor, double animationEndTimeInSeconds, AnimationTransformation animationTransform)
         {
             var dataCollection = GetCollectionBoundToActor(actor);
             var frame = GetLastTimeFrame(dataCollection);
@@ -111,10 +111,10 @@ namespace StoryTimeDevKit.DataStructures
             {
                 StartTime = startTime,
                 EndTime = endTime,
-                StartTranslation = frame == null ? fromState.Translation : frame.StartPosition,
-                StartRotation = frame == null ? fromState.Rotation : frame.StartRotation,
-                EndTranslation = toState.Translation,
-                EndRotation = toState.Rotation
+                StartTranslation = frame == null ? animationTransform.StartPosition : frame.StartPosition,
+                StartRotation = frame == null ? animationTransform.StartRotation : frame.StartRotation,
+                EndTranslation = animationTransform.EndPosition,
+                TotalRotation = animationTransform.TotalRotation
             };
 
             BoneAnimationTimeFrameModel item = new BoneAnimationTimeFrameModel(animationFrame)
@@ -128,21 +128,21 @@ namespace StoryTimeDevKit.DataStructures
             dataCollection.Add(item);
         }
 
-        private void SetActorPropertiesToBoneEndState(BoneAnimationTimeFrameModel frame, BoneActor actor, BoneState toState)
+        private void SetActorPropertiesToBoneEndState(BoneAnimationTimeFrameModel frame, BoneActor actor, AnimationTransformation toState)
         {
-            frame.EndTranslation = toState.Translation;
-            frame.EndRotation = toState.Rotation;
+            frame.EndTranslation = toState.StartPosition;
+            frame.EndRotation = toState.StartRotation;
 
-            frame.AnimationFrame.EndTranslation = toState.Translation;
-            frame.AnimationFrame.EndRotation = toState.Rotation;
+            frame.AnimationFrame.EndTranslation = toState.StartPosition;
+            frame.AnimationFrame.TotalRotation = toState.StartRotation;
 
             var items = GetCollectionBoundToActor(actor);
             var nextFrame = GetFrameAfter(items, frame);
 
             if (nextFrame == null) return;
 
-            nextFrame.AnimationFrame.StartTranslation = toState.Translation;
-            nextFrame.AnimationFrame.StartRotation = toState.Rotation;
+            nextFrame.AnimationFrame.StartTranslation = toState.StartPosition;
+            nextFrame.AnimationFrame.StartRotation = toState.StartRotation;
         }
 
         private void CheckIfAnimationTimeFramesCountChanges(object sender, NotifyCollectionChangedEventArgs e)

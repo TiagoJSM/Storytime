@@ -197,7 +197,7 @@
     <Compile Include="Entities\Components\BoneComponent.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\SkeletonExtensions.cs" />
-    <Compile Include="Models\Puppeteer\BoneState.cs" />
+    <Compile Include="Models\Puppeteer\AnimationTransformation.cs" />
     <Compile Include="Models\Puppeteer\SaveSkeletonDialogModel.cs" />
     <Compile Include="Models\SavedData\Bones\SavedAnimatedSkeleton.cs" />
     <Compile Include="Models\SavedData\Bones\SavedAnimatedSkeletonFile.cs" />

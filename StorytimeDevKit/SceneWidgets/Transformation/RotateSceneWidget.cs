@@ -74,9 +74,14 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
         private void OnDragHandler(Vector2 dragged, Vector2 currentPosition)
         {
             var currentAngle = currentPosition.AngleWithCenterIn(Position);
+            System.Diagnostics.Debug.WriteLine("Position " + Position + " currentAngle" + currentAngle);
             var rotation = currentAngle - _lastAngle;
+            System.Diagnostics.Debug.WriteLine("currentAngle " + currentAngle + " " + "last angle " + _lastAngle);
             _lastAngle = currentAngle;
+            System.Diagnostics.Debug.WriteLine("rotation " + rotation);
             _totalRotation += rotation;
+            System.Diagnostics.Debug.WriteLine("total rotation " + _totalRotation);
+            System.Diagnostics.Debug.WriteLine("");
             Rotation = Rotation + rotation;
             if (OnRotation != null)
                 OnRotation(rotation);

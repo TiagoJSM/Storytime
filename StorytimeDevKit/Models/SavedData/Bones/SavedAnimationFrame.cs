@@ -26,13 +26,13 @@ namespace StoryTimeDevKit.Models.SavedData.Bones
             get { return XmlConvert.ToString(EndTime); }
             set { EndTime = XmlConvert.ToTimeSpan(value); }
         }
-        [XmlElement("StartTranslation")]
-        public Vector2 StartTranslation { get; set; }
+        [XmlElement("StartPosition")]
+        public Vector2 StartPosition { get; set; }
         [XmlElement("StartRotation")]
         public float StartRotation { get; set; }
-        [XmlElement("EndTranslation")]
-        public Vector2 EndTranslation { get; set; }
-        [XmlElement("EndRotation")]
-        public float EndRotation { get; set; }
+        [XmlElement("EndPosition")]
+        public Vector2 EndPosition { get; set; }
+        [XmlElement("TotalRotation")]
+        public float TotalRotation { get; set; }
     }
 }

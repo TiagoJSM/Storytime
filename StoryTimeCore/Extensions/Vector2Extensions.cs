@@ -42,6 +42,10 @@ namespace StoryTimeCore.Extensions
         public static float AngleWithCenterIn(this Vector2 point, Vector2 center)
         {
             var angle = (float)Math.Atan2(point.Y - center.Y, point.X - center.X) * 180 / MathHelper.Pi;
+            if (angle < 0)
+            {
+                angle = angle + 360;
+            }
             return angle;
         }
 

@@ -18,7 +18,7 @@ namespace StoryTimeDevKit.Models.SceneObjects
         private BoneActor _boneActor;
         private IPuppeteerSceneOjectActionContext _context;
         private Bone _bone;
-        private BoneState _startTransformState;
+        private AnimationTransformation _animationTransform;
 
         public event OnPositionChanges OnPositionChanges;
         public event OnRotationChanges OnRotationChanges;
@@ -58,10 +58,10 @@ namespace StoryTimeDevKit.Models.SceneObjects
 
         public void StartTranslate(Vector2 position)
         {
-            _startTransformState = new BoneState()
+            _animationTransform = new AnimationTransformation()
             {
-                Translation = _bone.Translation,
-                Rotation = _bone.Rotation
+                StartPosition = _bone.Translation,
+                StartRotation = _bone.Rotation
             };
         }
 
@@ -75,20 +75,17 @@ namespace StoryTimeDevKit.Models.SceneObjects
 
         public void EndTranslation(Vector2 fromTranslation, Vector2 toTranslation)
         {
-            var endTransformState = new BoneState()
-            {
-                Translation = _bone.Translation,
-                Rotation = _bone.Rotation
-            };
-            _context.AddAnimationFrameFor(_boneActor, _startTransformState, endTransformState);
+            _animationTransform.EndPosition = _bone.Translation;
+            _animationTransform.TotalRotation = _bone.Rotation;
+            _context.AddAnimationFrameFor(_boneActor, _animationTransform);
         }
 
         public void StartRotation(float originalRotation)
         {
-            _startTransformState = new BoneState()
+            _animationTransform = new AnimationTransformation()
             {
-                Translation = _bone.Translation,
-                Rotation = _bone.Rotation
+                StartPosition = _bone.Translation,
+                StartRotation = _bone.Rotation
             };
         }
 
@@ -102,12 +99,9 @@ namespace StoryTimeDevKit.Models.SceneObjects
 
         public void EndRotation(float fromRotation, float toRotation, float totalRotation)
         {
-            var endTransformState = new BoneState()
-            {
-                Translation = _bone.Translation,
-                Rotation = _bone.Rotation
-            };
-            _context.AddAnimationFrameFor(_boneActor, _startTransformState, endTransformState);
+            _animationTransform.EndPosition = _bone.Translation;
+            _animationTransform.TotalRotation = totalRotation;
+            _context.AddAnimationFrameFor(_boneActor, _animationTransform);
         }
     }
 }

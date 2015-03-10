@@ -49,12 +49,12 @@ namespace StoryTimeDevKit.Extensions
                         {
                             return new SavedAnimationFrame()
                             {
-                                EndRotation = baf.EndRotation,
+                                TotalRotation = baf.TotalRotation,
                                 EndTime = baf.EndTime,
-                                EndTranslation = baf.EndTranslation,
+                                EndPosition = baf.EndTranslation,
                                 StartRotation = baf.StartRotation,
                                 StartTime = baf.StartTime,
-                                StartTranslation = baf.StartTranslation
+                                StartPosition = baf.StartTranslation
                             };
                         })
                         .ToArray()
