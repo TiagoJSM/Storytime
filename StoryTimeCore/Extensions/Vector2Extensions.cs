@@ -36,7 +36,7 @@ namespace StoryTimeCore.Extensions
         {
             var xDisplacementToCenter = vec.X - center.X;
             var yDisplacementToCenter = vec.Y - center.Y;
-            return new Vector2(/*vec.X +*/ scale.X * xDisplacementToCenter, /*vec.Y +*/ scale.Y * yDisplacementToCenter);
+            return new Vector2(scale.X * xDisplacementToCenter, scale.Y * yDisplacementToCenter);
         }
 
         public static float AngleWithCenterIn(this Vector2 point, Vector2 center)

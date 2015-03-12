@@ -8,6 +8,7 @@ using StoryTimeDevKit.Entities.Renderables;
 using Microsoft.Xna.Framework;
 using StoryTimeCore.DataStructures;
 using StoryTimeCore.Extensions;
+using StoryTimeCore.Utils;
 
 namespace StoryTimeDevKit.SceneWidgets.Transformation
 {
@@ -22,6 +23,7 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
         private float _lastAngle;
         private float _originalRotation;
         private float _totalRotation;
+        private Vector2 _lastPosition;
 
         private Circle Intersection
         {
@@ -64,6 +66,7 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
 
         private void OnStartDragHandler(Vector2 currentPosition)
         {
+            _lastPosition = currentPosition;
             _lastAngle = currentPosition.AngleWithCenterIn(Position);
             _originalRotation = Rotation;
             _totalRotation = 0;
@@ -73,18 +76,22 @@ namespace StoryTimeDevKit.SceneWidgets.Transformation
 
         private void OnDragHandler(Vector2 dragged, Vector2 currentPosition)
         {
+            var clockwise = MathematicalUtils.IsClockwiseRotation(_lastPosition, currentPosition, Position);
+
+            var angle = MathematicalUtils.AngleBetween(_lastPosition, currentPosition, Position);
+            if (clockwise)
+            {
+                angle = -angle;
+            }
+            _lastPosition = currentPosition;
             var currentAngle = currentPosition.AngleWithCenterIn(Position);
-            System.Diagnostics.Debug.WriteLine("Position " + Position + " currentAngle" + currentAngle);
-            var rotation = currentAngle - _lastAngle;
-            System.Diagnostics.Debug.WriteLine("currentAngle " + currentAngle + " " + "last angle " + _lastAngle);
+            
             _lastAngle = currentAngle;
-            System.Diagnostics.Debug.WriteLine("rotation " + rotation);
-            _totalRotation += rotation;
-            System.Diagnostics.Debug.WriteLine("total rotation " + _totalRotation);
-            System.Diagnostics.Debug.WriteLine("");
-            Rotation = Rotation + rotation;
+            _totalRotation += angle;
+            Rotation = Rotation + angle;
+
             if (OnRotation != null)
-                OnRotation(rotation);
+                OnRotation(angle);
         }
 
         private void OnStopDragHandler(Vector2 startDrag, Vector2 currentPosition)

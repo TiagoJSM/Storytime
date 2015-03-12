@@ -36,5 +36,30 @@ namespace StoryTimeCore.Utils
                 LinearInterpolation(startValue.G, endValue.G, totalTime, elapsedTime),
                 LinearInterpolation(startValue.B, endValue.B, totalTime, elapsedTime));
         }
+
+        public static float CrossProduct(Vector2 a, Vector2 b)
+        {
+            return (a.X * b.X) + (a.Y * b.Y);
+        }
+
+        public static bool IsClockwiseRotation(Vector2 a, Vector2 b, Vector2 center)
+        {
+            return ((a.X - center.X) * (b.Y - center.Y) - (a.Y - center.Y) * (b.X - center.X)) < 0;
+        }
+
+        public static float AngleBetween(Vector2 a, Vector2 b)
+        {
+            var degrees =
+                (float)Math.Acos(
+                    CrossProduct(a, b) /
+                    (a.Length() * b.Length())
+                );
+            return degrees;
+        }
+
+        public static float AngleBetween(Vector2 a, Vector2 b, Vector2 center)
+        {
+            return MathHelper.ToDegrees(AngleBetween(a - center, b - center));
+        }
     }
 }

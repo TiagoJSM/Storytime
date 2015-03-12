@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using StoryTimeUI.Delegates;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using StoryTimeCore.Extensions;
 
 namespace StoryTimeUI
 {
@@ -66,7 +67,7 @@ namespace StoryTimeUI
             set
             {
                 if (_rotation == value) return;
-                _rotation = value;
+                _rotation = value.ReduceRotationToOneTurn();
                 OnPropertyChanged("Rotation");
             }
         }
