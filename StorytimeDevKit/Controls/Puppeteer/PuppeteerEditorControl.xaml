@@ -73,7 +73,14 @@
 					            Path=SaveAnimatedSkeletonCommand}"/>
             </MenuItem>
         </Menu>
-        <my:XnaControl Grid.Row="1" Grid.Column="0" x:Name="PuppeteerEditor" Margin="0,0,4,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AllowDrop="True"/>
+        <my:XnaControl 
+            Grid.Row="1" 
+            Grid.Column="0" 
+            x:Name="PuppeteerEditor" 
+            Margin="0,0,4,0" 
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch" 
+            AllowDrop="True"/>
         <ToolBar HorizontalAlignment="Left" Name="toolBar1" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="{Binding ElementName=MainGrid,Path=ActualWidth}" Height="Auto" Margin="0,24,0,0">
             <RadioButton 
                 Name="SelectBoneMode"
@@ -172,7 +179,13 @@
             </RadioButton>
             <Separator />
         </ToolBar>
-        <TabControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Name="tabControl1" VerticalAlignment="Stretch" Foreground="#FF190000">
+        <TabControl 
+            Grid.Column="1" 
+            Grid.Row="1" 
+            HorizontalAlignment="Stretch" 
+            Name="tabControl1" 
+            VerticalAlignment="Stretch" 
+            Foreground="#FF190000">
             <TabItem Header="Skeleton" Name="SkeletonControl">
                 <my1:SkeletonTreeViewControl  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </TabItem>

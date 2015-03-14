@@ -111,8 +111,8 @@ namespace StoryTimeDevKit.DataStructures
             {
                 StartTime = startTime,
                 EndTime = endTime,
-                StartTranslation = frame == null ? animationTransform.StartPosition : frame.StartPosition,
-                StartRotation = frame == null ? animationTransform.StartRotation : frame.StartRotation,
+                StartTranslation = frame == null ? animationTransform.StartPosition : frame.EndTranslation,
+                StartRotation = frame == null ? animationTransform.StartRotation : frame.EndRotation,
                 EndTranslation = animationTransform.EndPosition,
                 TotalRotation = animationTransform.TotalRotation
             };
