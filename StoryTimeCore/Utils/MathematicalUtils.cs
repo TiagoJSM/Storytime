@@ -73,12 +73,8 @@ namespace StoryTimeCore.Utils
 
         public static float AngleBetween(Vector2 a, Vector2 b)
         {
-            var degrees =
-                (float)Math.Acos(
-                    CrossProduct(a, b) /
-                    (a.Length() * b.Length())
-                );
-            return degrees;
+            var aux = CrossProduct(a, b) / (a.Length() * b.Length());
+            return (float)Math.Acos(aux);
         }
 
         public static float AngleBetween(Vector2 a, Vector2 b, Vector2 center)
