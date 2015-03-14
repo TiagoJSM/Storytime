@@ -503,7 +503,7 @@ namespace StoryTimeDevKit.Controllers.Puppeteer
                     StartRotation = frame.StartRotation,
                     StartPosition = frame.StartPosition,
                     EndPosition = frame.EndPosition,
-                    TotalRotation = frame.TotalRotation
+                    EndRotation = frame.EndRotation
                 };
                 _animationTimeLineData.AddAnimationFrame(actor, seconds, animationTransform);
             }

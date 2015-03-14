@@ -26,7 +26,9 @@ namespace Puppeteer.Animation
         public float StartRotation { get; set; }
 
         public Vector2 EndTranslation { get; set; }
-        public float TotalRotation { get; set; }
+        public float EndRotation { get; set; }
+
+        public bool ClockwiseRotation { get; set; }
 
         public Vector2 InterpolateTranslation(TimeSpan totalElapsed)
         {
@@ -35,8 +37,15 @@ namespace Puppeteer.Animation
 
         public float InterpolateRotation(TimeSpan totalElapsed)
         {
-            var endRotation = StartRotation + TotalRotation;
-            return MathematicalUtils.LinearInterpolation(StartRotation, endRotation, Duration, totalElapsed - StartTime).ReduceRotationToOneTurn();
+            return 
+                MathematicalUtils
+                    .LinearInterpolationBetweenAngles(
+                        StartRotation, 
+                        EndRotation, 
+                        Duration, 
+                        totalElapsed - StartTime, 
+                        ClockwiseRotation)
+                    .ReduceRotationToOneTurn();
         }
 
         public void SetBoneTransformationValues(Bone bone, TimeSpan totalElapsed)

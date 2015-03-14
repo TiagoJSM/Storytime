@@ -49,7 +49,7 @@ namespace StoryTimeDevKit.Extensions
                         {
                             return new SavedAnimationFrame()
                             {
-                                TotalRotation = baf.TotalRotation,
+                                EndRotation = baf.EndRotation,
                                 EndTime = baf.EndTime,
                                 EndPosition = baf.EndTranslation,
                                 StartRotation = baf.StartRotation,

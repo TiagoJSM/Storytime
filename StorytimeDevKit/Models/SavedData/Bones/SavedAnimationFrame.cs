@@ -33,6 +33,6 @@ namespace StoryTimeDevKit.Models.SavedData.Bones
         [XmlElement("EndPosition")]
         public Vector2 EndPosition { get; set; }
         [XmlElement("TotalRotation")]
-        public float TotalRotation { get; set; }
+        public float EndRotation { get; set; }
     }
 }

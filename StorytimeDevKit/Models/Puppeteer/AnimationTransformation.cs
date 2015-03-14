@@ -12,6 +12,7 @@ namespace StoryTimeDevKit.Models.Puppeteer
         public Vector2 StartPosition { get; set; }
         public float StartRotation { get; set; }
         public Vector2 EndPosition { get; set; }
-        public float TotalRotation { get; set; }
+        public float EndRotation { get; set; }
+        public bool ClockwiseRotation { get; set; }
     }
 }

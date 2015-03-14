@@ -114,7 +114,8 @@ namespace StoryTimeDevKit.DataStructures
                 StartTranslation = frame == null ? animationTransform.StartPosition : frame.EndTranslation,
                 StartRotation = frame == null ? animationTransform.StartRotation : frame.EndRotation,
                 EndTranslation = animationTransform.EndPosition,
-                TotalRotation = animationTransform.TotalRotation
+                EndRotation = animationTransform.EndRotation,
+                ClockwiseRotation = animationTransform.ClockwiseRotation
             };
 
             BoneAnimationTimeFrameModel item = new BoneAnimationTimeFrameModel(animationFrame)
@@ -130,19 +131,16 @@ namespace StoryTimeDevKit.DataStructures
 
         private void SetActorPropertiesToBoneEndState(BoneAnimationTimeFrameModel frame, BoneActor actor, AnimationTransformation toState)
         {
-            frame.EndTranslation = toState.StartPosition;
-            frame.EndRotation = toState.StartRotation;
-
-            frame.AnimationFrame.EndTranslation = toState.StartPosition;
-            frame.AnimationFrame.TotalRotation = toState.StartRotation;
+            frame.EndTranslation = toState.EndPosition;
+            frame.EndRotation = toState.EndRotation;
 
             var items = GetCollectionBoundToActor(actor);
             var nextFrame = GetFrameAfter(items, frame);
 
             if (nextFrame == null) return;
 
-            nextFrame.AnimationFrame.StartTranslation = toState.StartPosition;
-            nextFrame.AnimationFrame.StartRotation = toState.StartRotation;
+            nextFrame.StartPosition = toState.EndPosition;
+            nextFrame.StartRotation = toState.EndRotation;
         }
 
         private void CheckIfAnimationTimeFramesCountChanges(object sender, NotifyCollectionChangedEventArgs e)

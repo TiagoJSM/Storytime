@@ -52,5 +52,10 @@ namespace StoryTimeCore.Extensions
             }
             return rotation;
         }
+
+        public static float MinorDifferenceBetweenAngle(this float angleDegree, float other)
+        {
+            return 180 - Math.Abs(Math.Abs(angleDegree - other) - 180); 
+        }
     }
 }

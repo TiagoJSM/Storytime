@@ -46,11 +46,11 @@ namespace StoryTimeDevKit.Models.Puppeteer
         {
             get
             {
-                return AnimationFrame.TotalRotation;
+                return AnimationFrame.EndRotation;
             }
             set
             {
-                AnimationFrame.TotalRotation = value;
+                AnimationFrame.EndRotation = value;
             }
         }
 

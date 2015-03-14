@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using StoryTimeCore.Extensions;
 
 namespace StoryTimeCore.Utils
 {
@@ -35,6 +36,29 @@ namespace StoryTimeCore.Utils
                 LinearInterpolation(startValue.R, endValue.R, totalTime, elapsedTime),
                 LinearInterpolation(startValue.G, endValue.G, totalTime, elapsedTime),
                 LinearInterpolation(startValue.B, endValue.B, totalTime, elapsedTime));
+        }
+
+        public static float LinearInterpolationBetweenAngles(
+            float startValueDegrees, 
+            float endValueDegrees, 
+            TimeSpan totalTime, 
+            TimeSpan elapsedTime,
+            bool clockWise)
+        {
+            var sign = clockWise ? -1 : 1;
+            var minorDifference = startValueDegrees.MinorDifferenceBetweenAngle(endValueDegrees);
+            var angleSubtraction = endValueDegrees - startValueDegrees;
+
+            float rotation = (endValueDegrees - startValueDegrees).ReduceRotationToOneTurn();
+            if (clockWise)
+            {
+                rotation = 360 - rotation;
+            }
+            rotation *= sign;
+
+            //var valueDifference = endValueDegrees - startValueDegrees;
+            var timeFraction = (float)elapsedTime.Ticks / (float)totalTime.Ticks;
+            return startValueDegrees + rotation * timeFraction;
         }
 
         public static float CrossProduct(Vector2 a, Vector2 b)

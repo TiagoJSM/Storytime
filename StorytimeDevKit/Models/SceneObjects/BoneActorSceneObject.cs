@@ -76,7 +76,7 @@ namespace StoryTimeDevKit.Models.SceneObjects
         public void EndTranslation(Vector2 fromTranslation, Vector2 toTranslation)
         {
             _animationTransform.EndPosition = _bone.Translation;
-            _animationTransform.TotalRotation = _bone.Rotation;
+            _animationTransform.EndRotation = _bone.Rotation;
             _context.AddAnimationFrameFor(_boneActor, _animationTransform);
         }
 
@@ -100,7 +100,8 @@ namespace StoryTimeDevKit.Models.SceneObjects
         public void EndRotation(float fromRotation, float toRotation, float totalRotation)
         {
             _animationTransform.EndPosition = _bone.Translation;
-            _animationTransform.TotalRotation = totalRotation;
+            _animationTransform.EndRotation = toRotation;
+            _animationTransform.ClockwiseRotation = totalRotation < 0;
             _context.AddAnimationFrameFor(_boneActor, _animationTransform);
         }
     }
